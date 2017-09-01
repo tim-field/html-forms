@@ -26,3 +26,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+namespace HTML_Forms;
+
+function _bootstrap() {
+
+    if( ! function_exists( 'hf' ) ) {
+        require __DIR__ . '/vendor/autoload.php';
+    }
+
+    if( is_admin() ) {
+        if( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+            $admin = new Admin\Admin( __FILE__ );
+            $admin->hook();
+        }
+    }
+}
+
+add_action( 'plugins_loaded', 'HTML_Forms\\_bootstrap', 10 );
