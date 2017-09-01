@@ -34,6 +34,9 @@ function _bootstrap() {
         require __DIR__ . '/vendor/autoload.php';
     }
 
+    $forms = new Forms();
+    $forms->hook();
+
     if( is_admin() ) {
         if( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
             $admin = new Admin\Admin( __FILE__ );
