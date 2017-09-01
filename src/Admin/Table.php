@@ -38,7 +38,6 @@ class Table extends WP_List_Table {
         $this->process_bulk_action();
 
         $this->_column_headers = array( $columns, $hidden, $sortable );
-        $this->items = $this->get_items();
         $this->set_pagination_args(
             array(
                 'per_page' => 50,
@@ -47,6 +46,10 @@ class Table extends WP_List_Table {
         );
     }
 
+
+    public function prepare_items() {
+        $this->items = $this->get_items();
+    }
     /**
      * Get an associative array ( id => link ) with the list
      * of views available on this table.

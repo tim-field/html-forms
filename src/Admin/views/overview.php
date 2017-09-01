@@ -25,6 +25,7 @@ defined( 'ABSPATH' ) or exit;
         } ?>
     </h1>
 
+
     <?php $table->views(); ?>
 
     <form method="get" action="<?php echo admin_url( 'admin.php' ); ?>">
@@ -32,7 +33,7 @@ defined( 'ABSPATH' ) or exit;
         <?php if( ! empty( $_GET['post_status'] ) ) { ?>
             <input type="hidden" name="post_status" value="<?php echo esc_attr( $_GET['post_status'] ); ?>" />
         <?php } ?>
-        <?php $table->search_box( 'search', 'mc4wp-log-search' ); ?>
+        <?php $table->search_box( 'search', 'html-forms-search' ); ?>
     </form>
 
     <form method="post">

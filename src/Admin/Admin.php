@@ -21,6 +21,7 @@ class Admin {
 
     public function page_overview() {
         $table = new Table();
+        $table->prepare_items();
 
         require __DIR__ . '/views/overview.php';
     }
