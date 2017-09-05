@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) or exit;
     </p>
 
     <h1 class="page-title"><?php _e( 'Forms', 'html-forms' ); ?>
-        <a href="#" class="page-title-action">
+        <a href="<?php echo admin_url( 'admin.php?page=html-forms-add-form' ); ?>" class="page-title-action">
             <span class="dashicons dashicons-plus-alt" style="vertical-align: middle; line-height: 16px; margin: 0 4px 0 0; "></span>
             <?php _e( 'Add new form', 'html-forms' ); ?>
         </a>
