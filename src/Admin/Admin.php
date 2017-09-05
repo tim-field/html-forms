@@ -50,6 +50,11 @@ class Admin {
     }
 
     public function page_overview() {
+        if( ! empty( $_GET['view'] ) && $_GET['view'] === 'edit' ) {
+            $this->page_edit_form();
+            return;
+        }
+
         $table = new Table();
         $table->prepare_items();
 
@@ -64,24 +69,42 @@ class Admin {
         // Fix for MultiSite stripping KSES for roles other than administrator
         remove_all_filters( 'content_save_pre' );
 
+        $data = $_POST['form'];
+        $form_title = sanitize_text_field( $data['title'] );
         $form_id = wp_insert_post(
             array(
                 'post_type' => 'html-form',
                 'post_status' => 'publish',
-                'post_title' => 'My form', // TODO: get from request data
+                'post_title' => $form_title,
                 'post_content' => '<!-- Nothing here... Add some fields! -->', // TODO: get from request data
             )
         );
 
-        wp_redirect( admin_url( 'admin.php?page=html-forms-edit-form&form_id=' . $form_id ));
+        wp_redirect( admin_url( 'admin.php?page=html-forms&view=edit&form_id=' . $form_id ));
         exit;
     }
 
     public function page_edit_form() {
+        $form_id = (int) $_GET['form_id'];
+        $form = hf_get_form( $form_id );
         require __DIR__ . '/views/edit-form.php';
     }
 
     public function process_save_form() {
-        // TODO
+        $form_id = (int) $_POST['form_id'];
+        $form = hf_get_form( $form_id );
+
+        $data = $_POST['form'];
+
+        // Fix for MultiSite stripping KSES for roles other than administrator
+        remove_all_filters( 'content_save_pre' );
+
+        $form_id = wp_insert_post( array(
+            'ID' => $form_id,
+            'post_type' => 'html-form',
+            'post_status' => 'publish',
+            'post_title' => $data['title'],
+            'post_content' => $data['markup'],
+        ) );
     }
 }

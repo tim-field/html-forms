@@ -164,13 +164,12 @@ class Table extends WP_List_Table {
      * @param WP_Post $post
      * @return string
      */
-    public function column_form_name( $post ) {
-
+    public function column_form_name( WP_Post $post ) {
         if( $this->is_trash ) {
             return sprintf( '<strong>%s</strong>', esc_html( $post->post_title ) );
         }
 
-        $edit_link = '#';
+        $edit_link = admin_url( 'admin.php?page=html-forms&view=edit&form_id=' . $post->ID );
         $title      = '<strong><a class="row-title" href="' . $edit_link . '">' . esc_html( $post->post_title ) . '</a></strong>';
 
         $actions    = array(
@@ -188,6 +187,10 @@ class Table extends WP_List_Table {
      * @return string
      */
     public function column_shortcode( WP_Post $post ) {
+        if( $this->is_trash ) {
+            return '';
+        }
+
         return sprintf( '<input style="width: 260px;" type="text" onfocus="this.select();" readonly="readonly" value="%s">', esc_attr( '[html_form slug="' . $post->post_name . '"]' ) );
     }
 
@@ -195,7 +198,7 @@ class Table extends WP_List_Table {
      * The text that is shown when there are no items to show
      */
     public function no_items() {
-        echo sprintf( __( 'No forms found. <a href="%s">Would you like to create one now</a>?', 'html-forms' ), '#' );
+        echo sprintf( __( 'No forms found. <a href="%s">Would you like to create one now</a>?', 'html-forms' ), admin_url( 'admin.php?page=html-forms-add-form') );
     }
 
     /**
