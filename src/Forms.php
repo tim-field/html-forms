@@ -18,5 +18,12 @@ class Forms {
 				'public' => false
             )
         );
+
+        add_shortcode( 'html_form', array( $this, 'shortcode' ) );
+    }
+
+    public function shortcode( $attributes = array(), $content = '' ) {
+        $form = hf_get_form( $attributes['slug'] );
+        return $form . $content;
     }
 }

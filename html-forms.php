@@ -34,6 +34,8 @@ function _bootstrap() {
         require __DIR__ . '/vendor/autoload.php';
     }
 
+    define( 'HTML_FORMS_VERSION', '1.0' );
+
     require __DIR__ .'/src/functions.php';
 
     $forms = new Forms();
