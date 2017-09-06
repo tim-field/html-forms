@@ -38,6 +38,8 @@ function _bootstrap() {
 
     require __DIR__ .'/src/functions.php';
 
+    load_plugin_textdomain( 'html-forms', '', dirname( __FILE__ ) . '/languages' );
+
     $forms = new Forms();
     $forms->hook();
 
@@ -47,6 +49,7 @@ function _bootstrap() {
             $admin->hook();
         }
     }
+
 }
 
 add_action( 'plugins_loaded', 'HTML_Forms\\_bootstrap', 10 );

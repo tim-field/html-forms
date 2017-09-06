@@ -1,0 +1,62 @@
+# Copyright (C) 2017 html-forms
+# This file is distributed under the same license as the html-forms package.
+msgid ""
+msgstr ""
+"Project-Id-Version: html-forms\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/Admin/Table.php:110
+msgid "Form"
+msgstr ""
+
+#: src/Admin/Table.php:111
+msgid "Shortcode"
+msgstr ""
+
+#: src/Admin/Table.php:176
+msgid "Fields"
+msgstr ""
+
+#: src/Admin/Table.php:177
+msgid "Settings"
+msgstr ""
+
+#: src/Admin/Table.php:178
+msgid "Messages"
+msgstr ""
+
+#: src/Admin/Table.php:201
+msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
+msgstr ""
+
+#: src/Admin/views/add-form.php:10, src/Admin/views/edit-form.php:6, src/Admin/views/overview.php:12
+msgid "You are here: "
+msgstr ""
+
+#: src/Admin/views/add-form.php:12, src/Admin/views/add-form.php:15, src/Admin/views/overview.php:20
+msgid "Add new form"
+msgstr ""
+
+#: src/Admin/views/edit-form.php:8, src/Admin/views/edit-form.php:11
+msgid "Edit form"
+msgstr ""
+
+#: src/Admin/views/edit-form.php:21
+msgid "Enter form title here"
+msgstr ""
+
+#: src/Admin/views/edit-form.php:22
+msgid "Enter the title of your sign-up form"
+msgstr ""
+
+#: src/Admin/views/overview.php:14, src/Admin/views/overview.php:17
+msgid "Forms"
+msgstr ""
