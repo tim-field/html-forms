@@ -1,4 +1,5 @@
-<div style="margin-top: 20px;">
+<div class="hf-small-margin">
     <label>Form code</label>
-    <textarea class="widefat" name="form[markup]" rows="16"><?php echo esc_html( $form->markup ); ?></textarea>
+    <textarea id="hf-form-editor" class="widefat" name="form[markup]" cols="160" rows="20" autocomplete="false" autocorrect="false" autocapitalize="false" spellcheck="false"><?php echo htmlspecialchars( $form->markup, ENT_QUOTES, get_option( 'blog_charset' ) ); ?></textarea>
+    <?php submit_button(); ?>
 </div>

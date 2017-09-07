@@ -44,7 +44,6 @@ $tabs = array(
             </h2>
 
             <div id="tabs">
-
                 <?php
                 // output each tab
                 foreach( $tabs as $tab => $name ) {
@@ -58,6 +57,5 @@ $tabs = array(
             </div><!-- / tabs -->
         </div>
 
-        <?php submit_button(); ?>
     </form>
 </div>

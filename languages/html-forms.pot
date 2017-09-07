@@ -60,3 +60,35 @@ msgstr ""
 #: src/Admin/views/overview.php:14, src/Admin/views/overview.php:17
 msgid "Forms"
 msgstr ""
+
+#: src/Admin/views/tab-messages.php:6
+msgid "Form Messages"
+msgstr ""
+
+#: src/Admin/views/tab-messages.php:10
+msgid "Invalid email address"
+msgstr ""
+
+#: src/Admin/views/tab-messages.php:13
+msgid "The text that shows when an invalid email address is given."
+msgstr ""
+
+#: src/Admin/views/tab-messages.php:17
+msgid "Required field missing"
+msgstr ""
+
+#: src/Admin/views/tab-messages.php:20
+msgid "The text that shows when a required field for the selected list(s) is missing."
+msgstr ""
+
+#: src/Admin/views/tab-messages.php:25
+msgid "General error"
+msgstr ""
+
+#: src/Admin/views/tab-messages.php:28
+msgid "The text that shows when a general error occured."
+msgstr ""
+
+#: src/Admin/views/tab-messages.php:35
+msgid "HTML tags like %s are allowed in the message fields."
+msgstr ""

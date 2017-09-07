@@ -4,10 +4,12 @@ namespace HTML_Forms;
 
 class Form {
 
-    public $ID;
-    public $title;
-    public $slug;
-    public $markup;
+    public $ID = 0;
+    public $title = '';
+    public $slug = '';
+    public $markup = '';
+    public $messages = array();
+    public $settings = array();
 
     public function __construct( $ID ) {
         $this->ID = $ID;

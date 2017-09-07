@@ -30,9 +30,25 @@ function hf_get_form( $form_id_or_slug ) {
         $post = $posts[0];
     }
 
+    $settings = array();
+    $post_meta = get_post_meta( $post->ID );
+    if( ! empty( $post_meta['_hf_settings'][0] ) ) {
+        $settings = (array) maybe_unserialize( $post_meta['_hf_settings'][0] );
+    }
+
+    $messages = array();
+    foreach( $post_meta as $meta_key => $meta_values ) {
+        if( strpos( $meta_key, 'hf_message_' ) === 0 ) {
+            $message_key = substr( $meta_key, strlen( 'hf_message_' ) );
+            $messages[$message_key] = (string) $meta_values[0];
+        }
+    }
+
     $form = new Form( $post->ID );
     $form->title = $post->post_title;
     $form->slug = $post->post_name;
     $form->markup = $post->post_content;
+    $form->settings = $settings;
+    $form->messages = $messages;
     return $form;
 }

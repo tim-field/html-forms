@@ -104,7 +104,6 @@ class Admin {
     public function process_save_form() {
         $form_id = (int) $_POST['form_id'];
         $form = hf_get_form( $form_id );
-
         $data = $_POST['form'];
 
         // Fix for MultiSite stripping KSES for roles other than administrator
@@ -117,6 +116,15 @@ class Admin {
             'post_title' => $data['title'],
             'post_content' => $data['markup'],
         ) );
+
+        if( ! empty( $data['settings'] ) ) {
+            update_post_meta( $form_id, '_hf_settings', $data['settings'] );
+        }
+
+        // save form messages in individual meta keys
+        foreach( $data['messages'] as $key => $message ) {
+            update_post_meta( $form_id, 'hf_message_' . $key, $message );
+        }
     }
 
     /**
