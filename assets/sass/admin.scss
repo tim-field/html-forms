@@ -1,1 +1,21 @@
-.iets { display: block; }
+.hf-small-margin {
+  margin: {
+    top: 20px;
+    bottom: 20px;
+  }
+}
+
+.hf-tab {
+  display: none;
+  background: inherit;
+  border: none;
+  font-weight: initial;
+
+  &.hf-tab-active {
+    display: block;
+  }
+
+  h2{
+    margin-top: 20px;
+  }
+}

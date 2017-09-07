@@ -1,1 +1,1 @@
-{"version":3,"names":[],"mappings":"","sources":["admin.css"],"sourcesContent":[".iets {\n  display: block; }\n"],"file":"admin.min.css"}
+{"version":3,"names":[],"mappings":"","sources":["admin.css"],"sourcesContent":[".hf-small-margin {\n  margin-top: 20px;\n  margin-bottom: 20px; }\n\n.hf-tab {\n  display: none;\n  background: inherit;\n  border: none;\n  font-weight: initial; }\n  .hf-tab.hf-tab-active {\n    display: block; }\n  .hf-tab h2 {\n    margin-top: 20px; }\n"],"file":"admin.min.css"}

@@ -13,6 +13,7 @@ class Admin {
     public function hook() {
         add_action( 'admin_menu', array( $this, 'menu' ) );
         add_action( 'init', array( $this, 'listen' ) );
+        add_action( 'admin_print_styles', array( $this, 'assets' ) );
         add_action( 'html_forms_admin_action_create_form', array( $this, 'process_create_form' ) );
         add_action( 'html_forms_admin_action_save_form', array( $this, 'process_save_form' ) );
     }
@@ -40,6 +41,15 @@ class Admin {
         $redirect_url = ! empty( $_REQUEST['_redirect_to'] ) ? $_REQUEST['_redirect_to'] : remove_query_arg( '_html_forms_admin_action' );
         wp_safe_redirect( $redirect_url );
         exit;
+    }
+
+    public function assets() {
+        if( empty( $_GET['page'] ) || strpos( $_GET['page'], 'html-forms' ) !== 0 ) {
+            return;
+        }
+
+        wp_enqueue_style( 'hf-admin', plugins_url( 'assets/css/admin.css', $this->plugin_file ), array(), HTML_FORMS_VERSION );
+        wp_enqueue_script( 'hf-admin', plugins_url( 'assets/js/admin.js', $this->plugin_file ), array(), HTML_FORMS_VERSION, true  );
     }
 
     public function menu() {
@@ -85,6 +95,7 @@ class Admin {
     }
 
     public function page_edit_form() {
+        $active_tab = ! empty( $_GET['tab'] ) ? $_GET['tab'] : 'fields';
         $form_id = (int) $_GET['form_id'];
         $form = hf_get_form( $form_id );
         require __DIR__ . '/views/edit-form.php';
@@ -107,4 +118,17 @@ class Admin {
             'post_content' => $data['markup'],
         ) );
     }
+
+    /**
+     * Get URL for a tab on the current page.
+     *
+     * @since 3.0
+     * @internal
+     * @param $tab
+     * @return string
+     */
+    public function get_tab_url( $tab ) {
+        return add_query_arg( array( 'tab' => $tab ), remove_query_arg( 'tab' ) );
+    }
+
 }

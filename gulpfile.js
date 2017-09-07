@@ -12,6 +12,8 @@ const wpPot = require('gulp-wp-pot');
 const insert = require('gulp-insert');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
+const gutil = require('gulp-util');
+const babel  = require('gulp-babel');
 
 gulp.task('default', ['css', 'js', 'minify-css', 'minify-js', 'pot']);
 
@@ -33,13 +35,14 @@ gulp.task('js', function () {
         .pipe(source('admin.js'))
         .pipe(insert.wrap('(function () { var require = undefined; var module = undefined; var exports = undefined; var define = undefined;', '; })();'))
         .pipe(buffer())
+        .pipe(babel({presets: ['es2015']}))
         .pipe(gulp.dest('./assets/js'));
 });
 
 gulp.task('minify-js', ['js'], function() {
     return gulp.src(['./assets/js/**/*.js','!./assets/js/**/*.min.js'])
         .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(streamify(uglify()))
+        .pipe(streamify(uglify())).on('error', gutil.log)
         .pipe(rename({extname: '.min.js'}))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./assets/js'));

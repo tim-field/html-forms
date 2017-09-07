@@ -37,7 +37,7 @@ msgstr ""
 msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
 msgstr ""
 
-#: src/Admin/views/add-form.php:10, src/Admin/views/edit-form.php:6, src/Admin/views/overview.php:12
+#: src/Admin/views/add-form.php:10, src/Admin/views/edit-form.php:14, src/Admin/views/overview.php:12
 msgid "You are here: "
 msgstr ""
 
@@ -45,15 +45,15 @@ msgstr ""
 msgid "Add new form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:8, src/Admin/views/edit-form.php:11
+#: src/Admin/views/edit-form.php:16, src/Admin/views/edit-form.php:19
 msgid "Edit form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:21
+#: src/Admin/views/edit-form.php:29
 msgid "Enter form title here"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:22
+#: src/Admin/views/edit-form.php:30
 msgid "Enter the title of your sign-up form"
 msgstr ""
 
