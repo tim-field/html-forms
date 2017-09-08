@@ -13,6 +13,10 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: src/Form.php:28
+msgid "Please enable JavaScript for this form to work."
+msgstr ""
+
 #: src/Admin/Table.php:110
 msgid "Form"
 msgstr ""
@@ -66,29 +70,61 @@ msgid "Form Messages"
 msgstr ""
 
 #: src/Admin/views/tab-messages.php:10
-msgid "Invalid email address"
+msgid "Success"
 msgstr ""
 
 #: src/Admin/views/tab-messages.php:13
-msgid "The text that shows when an invalid email address is given."
+msgid "The text that shows after a successful form submission."
 msgstr ""
 
 #: src/Admin/views/tab-messages.php:17
-msgid "Required field missing"
+msgid "Invalid email address"
 msgstr ""
 
 #: src/Admin/views/tab-messages.php:20
+msgid "The text that shows when an invalid email address is given."
+msgstr ""
+
+#: src/Admin/views/tab-messages.php:24
+msgid "Required field missing"
+msgstr ""
+
+#: src/Admin/views/tab-messages.php:27
 msgid "The text that shows when a required field for the selected list(s) is missing."
 msgstr ""
 
-#: src/Admin/views/tab-messages.php:25
+#: src/Admin/views/tab-messages.php:32
 msgid "General error"
 msgstr ""
 
-#: src/Admin/views/tab-messages.php:28
+#: src/Admin/views/tab-messages.php:35
 msgid "The text that shows when a general error occured."
 msgstr ""
 
-#: src/Admin/views/tab-messages.php:35
+#: src/Admin/views/tab-messages.php:42
 msgid "HTML tags like %s are allowed in the message fields."
+msgstr ""
+
+#: src/Admin/views/tab-settings.php:1
+msgid "Form Settings"
+msgstr ""
+
+#: src/Admin/views/tab-settings.php:6
+msgid "Hide form after a successful sign-up?"
+msgstr ""
+
+#: src/Admin/views/tab-settings.php:17
+msgid "Select \"yes\" to hide the form fields after a successful sign-up."
+msgstr ""
+
+#: src/Admin/views/tab-settings.php:23
+msgid "Redirect to URL after successful sign-ups"
+msgstr ""
+
+#: src/Admin/views/tab-settings.php:25
+msgid "Example: %s"
+msgstr ""
+
+#: src/Admin/views/tab-settings.php:26
+msgid "Leave empty or enter <code>0</code> for no redirect. Otherwise, use complete (absolute) URLs, including <code>http://</code>."
 msgstr ""

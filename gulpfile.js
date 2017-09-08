@@ -14,6 +14,7 @@ const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const gutil = require('gulp-util');
 const babel  = require('gulp-babel');
+const es = require('event-stream');
 
 gulp.task('default', ['css', 'js', 'minify-css', 'minify-js', 'pot']);
 
@@ -27,16 +28,26 @@ gulp.task('css', function () {
         .pipe(gulp.dest('./assets/css'));
 });
 
-gulp.task('js', function () {
-    return browserify({
-        entries: './assets/browserify/admin.js'
-    }).on('error', console.log)
-        .bundle()
-        .pipe(source('admin.js'))
-        .pipe(insert.wrap('(function () { var require = undefined; var module = undefined; var exports = undefined; var define = undefined;', '; })();'))
-        .pipe(buffer())
-        .pipe(babel({presets: ['es2015']}))
-        .pipe(gulp.dest('./assets/js'));
+gulp.task('js', function() {
+    let files = [
+        './assets/browserify/public.js',
+        './assets/browserify/admin.js',
+    ];
+
+    // map them to our stream function
+    let tasks = files.map(function(entry) {
+        let filename = entry.split('/').pop();
+        return browserify({ entries: [entry] }).on('error', gutil.log)
+            .bundle()
+            .pipe(source(filename))
+            .pipe(insert.wrap('(function () { var require = undefined; var module = undefined; var exports = undefined; var define = undefined;', '; })();'))
+            .pipe(buffer())
+            .pipe(babel({presets: ['es2015']}))
+            .pipe(gulp.dest('./assets/js'));
+    });
+
+    // create a merged stream
+    return  es.merge(tasks);
 });
 
 gulp.task('minify-js', ['js'], function() {

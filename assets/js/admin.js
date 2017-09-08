@@ -18,6 +18,34 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   })({ 1: [function (require, module, exports) {
       'use strict';
 
+      var tabs = document.querySelectorAll('.hf-tab');
+      var tabNavs = document.querySelectorAll('#hf-tabs-nav a');
+      for (var i = 0; i < tabNavs.length; i++) {
+        tabNavs[i].addEventListener('click', openTab);
+      }
+
+      function openTab(e) {
+        var tabTarget = this.getAttribute('data-tab-target');
+        for (var _i = 0; _i < tabNavs.length; _i++) {
+          tabNavs[_i].classList.toggle('nav-tab-active', tabNavs[_i] === this);
+        }
+        this.blur();
+
+        for (var _i2 = 0; _i2 < tabs.length; _i2++) {
+          var tab = tabs[_i2];
+          tab.classList.toggle('hf-tab-active', tab.getAttribute('data-tab') === tabTarget);
+        }
+
+        e.preventDefault();
+      }
+    }, {}], 2: [function (require, module, exports) {
+      'use strict';
+
+      require('./admin-tabs.js');
+      require('./form-editor.js');
+    }, { "./admin-tabs.js": 1, "./form-editor.js": 3 }], 3: [function (require, module, exports) {
+      'use strict';
+
       // load CodeMirror & plugins
 
       var CodeMirror = require('codemirror');
@@ -30,31 +58,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       require('codemirror/addon/edit/closetag.js');
 
       var element = document.querySelector('#hf-form-editor');
-      var editor = CodeMirror.fromTextArea(element, {
-        selectionPointer: true,
-        matchTags: { bothTags: true },
-        mode: "htmlmixed",
-        htmlMode: true,
-        autoCloseTags: true,
-        autoRefresh: true
-      });
-
-      var tabs = document.querySelectorAll('.hf-tab');
-      var tabNavs = document.querySelectorAll('#hf-tabs-nav a');
-      for (var i = 0; i < tabNavs.length; i++) {
-        tabNavs[i].addEventListener('click', openTab);
+      if (element) {
+        var editor = CodeMirror.fromTextArea(element, {
+          selectionPointer: true,
+          matchTags: { bothTags: true },
+          mode: "htmlmixed",
+          htmlMode: true,
+          autoCloseTags: true,
+          autoRefresh: true
+        });
       }
-
-      function openTab(e) {
-        var tabTarget = this.getAttribute('data-tab-target');
-        for (var _i = 0; _i < tabs.length; _i++) {
-          var tab = tabs[_i];
-          tab.classList.toggle('hf-tab-active', tab.getAttribute('data-tab') === tabTarget);
-        }
-
-        e.preventDefault();
-      }
-    }, { "codemirror": 5, "codemirror/addon/edit/closetag.js": 2, "codemirror/addon/edit/matchtags": 3, "codemirror/addon/fold/xml-fold": 4, "codemirror/mode/css/css": 6, "codemirror/mode/htmlmixed/htmlmixed": 7, "codemirror/mode/javascript/javascript": 8, "codemirror/mode/xml/xml": 9 }], 2: [function (require, module, exports) {
+    }, { "codemirror": 7, "codemirror/addon/edit/closetag.js": 4, "codemirror/addon/edit/matchtags": 5, "codemirror/addon/fold/xml-fold": 6, "codemirror/mode/css/css": 8, "codemirror/mode/htmlmixed/htmlmixed": 9, "codemirror/mode/javascript/javascript": 10, "codemirror/mode/xml/xml": 11 }], 4: [function (require, module, exports) {
       // CodeMirror, copyright (c) by Marijn Haverbeke and others
       // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -217,7 +231,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           return true;
         }
       });
-    }, { "../../lib/codemirror": 5, "../fold/xml-fold": 4 }], 3: [function (require, module, exports) {
+    }, { "../../lib/codemirror": 7, "../fold/xml-fold": 6 }], 5: [function (require, module, exports) {
       // CodeMirror, copyright (c) by Marijn Haverbeke and others
       // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -280,7 +294,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           }
         };
       });
-    }, { "../../lib/codemirror": 5, "../fold/xml-fold": 4 }], 4: [function (require, module, exports) {
+    }, { "../../lib/codemirror": 7, "../fold/xml-fold": 6 }], 6: [function (require, module, exports) {
       // CodeMirror, copyright (c) by Marijn Haverbeke and others
       // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -495,7 +509,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           return findMatchingClose(iter, name);
         };
       });
-    }, { "../../lib/codemirror": 5 }], 5: [function (require, module, exports) {
+    }, { "../../lib/codemirror": 7 }], 7: [function (require, module, exports) {
       // CodeMirror, copyright (c) by Marijn Haverbeke and others
       // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -12572,7 +12586,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         return CodeMirror$1;
       });
-    }, {}], 6: [function (require, module, exports) {
+    }, {}], 8: [function (require, module, exports) {
       // CodeMirror, copyright (c) by Marijn Haverbeke and others
       // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -13132,7 +13146,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           helperType: "gss"
         });
       });
-    }, { "../../lib/codemirror": 5 }], 7: [function (require, module, exports) {
+    }, { "../../lib/codemirror": 7 }], 9: [function (require, module, exports) {
       // CodeMirror, copyright (c) by Marijn Haverbeke and others
       // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -13271,7 +13285,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         CodeMirror.defineMIME("text/html", "htmlmixed");
       });
-    }, { "../../lib/codemirror": 5, "../css/css": 6, "../javascript/javascript": 8, "../xml/xml": 9 }], 8: [function (require, module, exports) {
+    }, { "../../lib/codemirror": 7, "../css/css": 8, "../javascript/javascript": 10, "../xml/xml": 11 }], 10: [function (require, module, exports) {
       // CodeMirror, copyright (c) by Marijn Haverbeke and others
       // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -14122,7 +14136,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         CodeMirror.defineMIME("text/typescript", { name: "javascript", typescript: true });
         CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript: true });
       });
-    }, { "../../lib/codemirror": 5 }], 9: [function (require, module, exports) {
+    }, { "../../lib/codemirror": 7 }], 11: [function (require, module, exports) {
       // CodeMirror, copyright (c) by Marijn Haverbeke and others
       // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -14499,6 +14513,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         CodeMirror.defineMIME("application/xml", "xml");
         if (!CodeMirror.mimeModes.hasOwnProperty("text/html")) CodeMirror.defineMIME("text/html", { name: "xml", htmlMode: true });
       });
-    }, { "../../lib/codemirror": 5 }] }, {}, [1]);
+    }, { "../../lib/codemirror": 7 }] }, {}, [2]);
   ;
 })();
