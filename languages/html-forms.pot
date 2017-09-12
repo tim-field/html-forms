@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Form.php:30
+#: src/Form.php:53
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 

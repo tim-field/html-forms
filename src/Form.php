@@ -65,5 +65,20 @@ class Form {
         return $html;
     }
 
+    /**
+     * @return array
+     */
+    public function get_required_fields() {
+        $required_fields = explode( ',', $this->settings['required_fields'] );
+        return $required_fields;
+    }
+
+    /**
+     * @return array
+     */
+    public function get_email_fields() {
+        $email_fields = explode( ',', $this->settings['email_fields'] );
+        return $email_fields;
+    }
 
 }

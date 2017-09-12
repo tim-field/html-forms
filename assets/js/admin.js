@@ -58,9 +58,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       require('codemirror/addon/edit/closetag.js');
 
       var editor = void 0,
-          element = document.querySelector('#hf-form-editor');
+          element = document.querySelector('#hf-form-editor'),
+          dom = document.createElement('form'),
+          requiredFieldsInput = document.getElementById('hf-required-fields'),
+          emailFieldsInput = document.getElementById('hf-email-fields');
 
       if (element) {
+        dom.innerHTML = element.value;
+
         editor = CodeMirror.fromTextArea(element, {
           selectionPointer: true,
           matchTags: { bothTags: true },
@@ -69,6 +74,31 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           autoCloseTags: true,
           autoRefresh: true
         });
+
+        editor.on('update', updateShadowDOM);
+        editor.on('blur', updateRequiredFields);
+        editor.on('blur', updateEmailFields);
+      }
+
+      function updateShadowDOM() {
+        console.log("Updating");
+        dom.innerHTML = editor.getValue();
+      }
+
+      function updateRequiredFields() {
+        var fields = dom.querySelectorAll('[required]');
+        var fieldNames = [].map.call(fields, function (f) {
+          return f.name;
+        });
+        requiredFieldsInput.value = fieldNames.join(',');
+      }
+
+      function updateEmailFields() {
+        var fields = dom.querySelectorAll('input[type="email"]');
+        var fieldNames = [].map.call(fields, function (f) {
+          return f.name;
+        });
+        emailFieldsInput.value = fieldNames.join(',');
       }
     }, { "codemirror": 7, "codemirror/addon/edit/closetag.js": 4, "codemirror/addon/edit/matchtags": 5, "codemirror/addon/fold/xml-fold": 6, "codemirror/mode/css/css": 8, "codemirror/mode/htmlmixed/htmlmixed": 9, "codemirror/mode/javascript/javascript": 10, "codemirror/mode/xml/xml": 11 }], 4: [function (require, module, exports) {
       // CodeMirror, copyright (c) by Marijn Haverbeke and others
