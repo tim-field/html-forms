@@ -11,13 +11,36 @@ class Form {
     public $messages = array();
     public $settings = array();
 
+    /**
+     * Form constructor.
+     *
+     * @param $ID
+     */
     public function __construct( $ID ) {
         $this->ID = $ID;
     }
 
+    /**
+     * @return string
+     */
     public function __toString() {
-        $form_classes = apply_filters( 'hf_form_classes', array(), $this );
-        $form_action = apply_filters( 'hf_form_action', null, $this );
+        $form = $this;
+
+        /**
+         * Filters the CSS classes to be added to this form's class attribute.
+         *
+         * @param array $form_classes
+         * @param Form $form
+         */
+        $form_classes = apply_filters( 'hf_form_classes', array(), $form );
+
+        /**
+         * Filters the action attribute for this form.
+         *
+         * @param string $form_action
+         * @param Form $form
+         */
+        $form_action = apply_filters( 'hf_form_action', null, $form );
         $form_action_attr = is_null( $form_action ) ? '' : sprintf('action="%s"', $form_action );
 
         $html = '';
@@ -31,6 +54,14 @@ class Form {
         $html .= '</div>';
         $html .= '</form>';
         $html .= '<!-- / HTML Forms -->';
+
+        /**
+         * Filters the resulting HTML for this form.
+         *
+         * @param string $html
+         * @param Form $form
+         */
+        $html = apply_filters( 'hf_form_html', $html, $form );
         return $html;
     }
 
