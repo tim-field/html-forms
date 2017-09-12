@@ -102,7 +102,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
             document.addEventListener('submit', function (e) {
                 var formElement = e.target;
-                if (formElement.className.indexOf('html-form') < 0) {
+                if (formElement.className.indexOf('hf-form') < 0) {
                     return;
                 }
 
@@ -132,6 +132,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                             // Show form message
                             if (response.message) {
                                 addFormMessage(formElement, response.message);
+                            }
+
+                            if (response.hide_form) {
+                                formElement.querySelector('.hf-fields-wrap').style.display = 'none';
                             }
 
                             // Should we redirect?

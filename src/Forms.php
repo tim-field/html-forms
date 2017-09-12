@@ -53,7 +53,8 @@ class Forms {
             'message' => array(
                 'type' => 'success',
                 'text' => $form->messages['success'],
-            )
+            ),
+            'hide_form' => (bool) $form->settings['hide_after_success'],
         );
 
         if( ! empty( $form->settings['redirect_url'] ) ) {
