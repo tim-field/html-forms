@@ -10,10 +10,11 @@ require('codemirror/addon/fold/xml-fold');
 require('codemirror/addon/edit/matchtags');
 require('codemirror/addon/edit/closetag.js');
 
+let editor,
+    element = document.querySelector('#hf-form-editor');
 
-let element = document.querySelector('#hf-form-editor');
 if( element ) {
-    let editor = CodeMirror.fromTextArea(element, {
+    editor = CodeMirror.fromTextArea(element, {
         selectionPointer: true,
         matchTags: { bothTags: true },
         mode: "htmlmixed",

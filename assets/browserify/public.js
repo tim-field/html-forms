@@ -1,5 +1,6 @@
 "use strict";
 
+require('es5-shim');
 const serialize = require('form-serialize');
 const Loader = require('./form-loading-indicator.js');
 const vars = window.hf_js_vars || { ajax_url: window.location.href };

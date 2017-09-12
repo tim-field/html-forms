@@ -57,9 +57,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       require('codemirror/addon/edit/matchtags');
       require('codemirror/addon/edit/closetag.js');
 
-      var element = document.querySelector('#hf-form-editor');
+      var editor = void 0,
+          element = document.querySelector('#hf-form-editor');
+
       if (element) {
-        var editor = CodeMirror.fromTextArea(element, {
+        editor = CodeMirror.fromTextArea(element, {
           selectionPointer: true,
           matchTags: { bothTags: true },
           mode: "htmlmixed",
