@@ -10,4 +10,5 @@ return array(
     'HTML_Forms\\Admin\\Table' => $baseDir . '/src/Admin/Table.php',
     'HTML_Forms\\Form' => $baseDir . '/src/Form.php',
     'HTML_Forms\\Forms' => $baseDir . '/src/Forms.php',
+    'HTML_Forms\\Submission' => $baseDir . '/src/Admin/Submission.php',
 );

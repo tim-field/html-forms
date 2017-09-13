@@ -68,10 +68,23 @@ class Forms
 
         $form_id = (int)$_POST['_hf_form_id'];
         $form = hf_get_form($form_id);
-
         $case = $this->validate_form($form, $_POST);
 
+        // filter out all field names starting with _
+        $data = array_filter( $_POST, function( $k ) {
+            return ! empty( $k ) && $k[0] !== '_';
+        }, ARRAY_FILTER_USE_KEY );
+
         if ($case === 'success') {
+            $submission = new Submission();
+            $submission->form_id = $form_id;
+            $submission->data = $data;
+            $submission->ip_address = $_SERVER['REMOTE_ADDR'];
+            $submission->user_agent = $_SERVER['HTTP_USER_AGENT'];
+            $submission->save();
+
+            // TODO: Process form actions
+
             $data = array(
                 'message' => array(
                     'type' => 'success',
@@ -98,10 +111,6 @@ class Forms
 
         wp_send_json($data, 200);
         exit;
-
-        // TODO: Save form entry
-
-        // TODO: Process form actions
     }
 
     public function shortcode($attributes = array(), $content = '')

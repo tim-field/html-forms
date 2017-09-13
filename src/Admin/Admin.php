@@ -23,6 +23,11 @@ class Admin {
             return;
         }
 
+        // do nothing if logged in user is not of role administrator
+        if( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
         $action = (string) $_REQUEST['_html_forms_admin_action'];
 
         /**

@@ -28,16 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace HTML_Forms;
 
+use wpdb;
+
 function _bootstrap() {
-
-    if( ! function_exists( 'hf' ) ) {
-        require __DIR__ . '/vendor/autoload.php';
-    }
-
-    define( 'HTML_FORMS_VERSION', '1.0' );
-
-    require __DIR__ .'/src/functions.php';
-
     load_plugin_textdomain( 'html-forms', '', dirname( __FILE__ ) . '/languages' );
 
     $forms = new Forms( __FILE__ );
@@ -49,7 +42,30 @@ function _bootstrap() {
             $admin->hook();
         }
     }
+}
+
+function _install() {
+    /** @var WPDB */
+    global $wpdb;
+
+    $table = $wpdb->prefix . 'hf_submissions';
+
+    $wpdb->query("CREATE TABLE IF NOT EXISTS {$table}(
+        `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        `form_id` INT UNSIGNED NOT NULL,
+        `data` TEXT NOT NULL,
+        `user_agent` TEXT NULL,
+        `ip_address` VARCHAR(255) NULL,
+        `submitted_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);");
 
 }
 
+define( 'HTML_FORMS_VERSION', '1.0' );
+
+if( ! function_exists( 'hf' ) ) {
+    require __DIR__ . '/vendor/autoload.php';
+}
+
+register_activation_hook( __FILE__, 'HTML_Forms\\_install');
 add_action( 'plugins_loaded', 'HTML_Forms\\_bootstrap', 10 );

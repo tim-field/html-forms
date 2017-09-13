@@ -1,5 +1,4 @@
 ## Must
-- Save form submissions in database.
 
 ## Should
 - Email action.
