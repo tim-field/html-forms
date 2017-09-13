@@ -2,6 +2,8 @@
 
 namespace HTML_Forms\Admin;
 
+use HTML_Forms\Submission;
+
 class Admin {
 
     private $plugin_file;
@@ -64,6 +66,8 @@ class Admin {
         add_menu_page( 'HTML Forms', 'HTML Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ), plugins_url('assets/img/favicon.ico', $this->plugin_file ), '99.88491' );
         add_submenu_page( 'html-forms', 'All forms', 'All Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ) );
         add_submenu_page( 'html-forms', 'Add new form', 'Add New', 'manage_options', 'html-forms-add-form', array( $this, 'page_new_form' ) );
+        add_submenu_page( 'html-forms', 'Form submissions', 'Submissions', 'manage_options', 'html-forms-submissions', array( $this, 'page_submissions' ) );
+
     }
 
     public function page_overview() {
@@ -80,6 +84,37 @@ class Admin {
 
     public function page_new_form() {
         require __DIR__ . '/views/add-form.php';
+    }
+
+    public function page_submissions() {
+        global $wpdb;
+        $table = $wpdb->prefix .'hf_submissions';
+
+        // TODO: Abstract this away in helper function?
+        $results = $wpdb->get_results( "SELECT s.* FROM {$table} s ORDER BY s.submitted_at DESC LIMIT 100;", OBJECT_K );
+        $submissions = array();
+        foreach( $results as $key => $object ) {
+            $submission = new Submission();
+            $submission->id = $object->id;
+            $submission->form_id = $object->form_id;
+            $submission->data = json_decode( $object->data, true );
+            $submission->ip_address = (string) $object->ip_address;
+            $submission->user_agent = (string) $object->user_agent;
+            $submission->submitted_at = $object->submitted_at;
+            $submissions[$key] = $submission;
+        }
+
+        $columns = array();
+        foreach( $submissions as $submission ) {
+            foreach( $submission->data as $field => $value ) {
+                if (!array_key_exists($field, $columns)) {
+                    $columns[$field] = true;
+                }
+            }
+        }
+        $columns = array_keys( $columns );
+
+        require __DIR__ . '/views/submissions.php';
     }
 
     public function process_create_form() {

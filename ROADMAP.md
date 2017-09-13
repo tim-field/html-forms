@@ -2,7 +2,8 @@
 
 ## Should
 - Email action.
-- Show form submissions in admin area.
+- Allow for array values when showing form submissions.
+- Split up form submissions in admin area by form (so table doesn't get too big).
 
 ## Could
 - Allow for nested field values (and validation) with dot notation
@@ -10,6 +11,7 @@
 - Pre-set form CSS themes
 - Form widget.
 - Function to register static forms (for theme developers).
+- Create function to easily retrieve object-casted form submissions
 
 ## Would
 - Better browser-compat field for [type="date"] fields.
