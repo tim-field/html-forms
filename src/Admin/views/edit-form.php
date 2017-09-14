@@ -4,7 +4,8 @@ $tabs = array(
     'fields'        => __( 'Fields', 'html-forms' ),
     'messages'      => __( 'Messages', 'html-forms' ),
     'settings'      => __( 'Settings', 'html-forms' ),
-    'submissions' => __( 'Submissions', 'html-forms' ),
+    'actions'       => __( 'Actions', 'html-forms' ),
+    'submissions'   => __( 'Submissions', 'html-forms' ),
 );
 
 ?>

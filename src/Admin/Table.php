@@ -172,12 +172,17 @@ class Table extends WP_List_Table {
         $edit_link = admin_url( 'admin.php?page=html-forms&view=edit&form_id=' . $post->ID );
         $title      = '<strong><a class="row-title" href="' . $edit_link . '">' . esc_html( $post->post_title ) . '</a></strong>';
 
-        $actions    = array(
-            'edit'   => '<a href="' . esc_attr( $edit_link ) . '">' . __( 'Fields', 'html-forms' ) . '</a>',
-            'settings' => '<a href="'. esc_attr( add_query_arg( array( 'tab' => 'settings' ), $edit_link ) ) .'">'. __( 'Settings', 'html-forms' ) . '</a>',
-            'messages' => '<a href="'. esc_attr( add_query_arg( array( 'tab' => 'messages' ), $edit_link ) ) .'">'. __( 'Messages', 'html-forms' ) .'</a>',
-            'submissions' => '<a href="'. esc_attr( add_query_arg( array( 'tab' => 'submissions' ), $edit_link ) ) .'">'. __( 'Submissions', 'html-forms' ) .'</a>',
+        $actions = array();
+        $tabs = array(
+            'fields'        => __( 'Fields', 'html-forms' ),
+            'messages'      => __( 'Messages', 'html-forms' ),
+            'settings'      => __( 'Settings', 'html-forms' ),
+            'actions'       => __( 'Actions', 'html-forms' ),
+            'submissions' => __( 'Submissions', 'html-forms' ),
         );
+        foreach( $tabs as $tab_slug => $tab_title ) {
+            $actions[$tab_slug] = '<a href="'. esc_attr( add_query_arg( array( 'tab' => $tab_slug ), $edit_link ) ) .'">'. $tab_title . '</a>';
+        }
 
         return $title . $this->row_actions( $actions );
     }
