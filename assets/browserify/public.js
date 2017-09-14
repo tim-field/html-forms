@@ -27,6 +27,12 @@ document.addEventListener('submit', function(e) {
     }
 
     e.preventDefault();
+
+    submitForm(formElement);
+}, true );
+
+
+function submitForm(formElement) {
     const loader = new Loader(formElement);
     const data = serialize(formElement);
     let request = new XMLHttpRequest();
@@ -76,4 +82,4 @@ document.addEventListener('submit', function(e) {
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.send(data);
     request = null;
-}, true );
+}

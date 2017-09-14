@@ -14,6 +14,8 @@
 - Allow deleting submission columns (key delete).
 - Allow renaming submission columns (key rename).
 - Export as CSV / XSL
+- Delete individual form submissions.
+- Bulk delete form submissions.
 
 ## Would
 - Better browser-compat field for [type="date"] fields.

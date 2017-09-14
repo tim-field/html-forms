@@ -36,6 +36,10 @@ function _bootstrap() {
     $forms = new Forms( __FILE__ );
     $forms->hook();
 
+    // hook actions
+    $email_action = new Actions\Email();
+    $email_action->hook();
+
     if( is_admin() ) {
         if( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
             $admin = new Admin\Admin( __FILE__ );

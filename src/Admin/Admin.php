@@ -177,4 +177,20 @@ class Admin {
         return add_query_arg( array( 'tab' => $tab ), remove_query_arg( 'tab' ) );
     }
 
+    /**
+     * @return array
+     */
+    public function get_available_form_actions() {
+        $actions = array();
+
+        /**
+         * Filters the available form actions
+         *
+         * @param array $actions
+         */
+        $actions = apply_filters( 'hf_available_form_actions', $actions );
+
+        return $actions;
+    }
+
 }
