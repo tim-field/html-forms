@@ -173,9 +173,10 @@ class Table extends WP_List_Table {
         $title      = '<strong><a class="row-title" href="' . $edit_link . '">' . esc_html( $post->post_title ) . '</a></strong>';
 
         $actions    = array(
-            'edit'   => '<a href="' . $edit_link . '">' . __( 'Fields', 'html-forms' ) . '</a>',
-            'settings' => '<a href="'. add_query_arg( array( 'tab' => 'settings' ), $edit_link ) .'">'. __( 'Settings', 'html-forms' ) . '</a>',
-            'messages' => '<a href="'. add_query_arg( array( 'tab' => 'messages' ), $edit_link ) .'">'. __( 'Messages', 'html-forms' ) .'</a>',
+            'edit'   => '<a href="' . esc_attr( $edit_link ) . '">' . __( 'Fields', 'html-forms' ) . '</a>',
+            'settings' => '<a href="'. esc_attr( add_query_arg( array( 'tab' => 'settings' ), $edit_link ) ) .'">'. __( 'Settings', 'html-forms' ) . '</a>',
+            'messages' => '<a href="'. esc_attr( add_query_arg( array( 'tab' => 'messages' ), $edit_link ) ) .'">'. __( 'Messages', 'html-forms' ) .'</a>',
+            'submissions' => '<a href="'. esc_attr( add_query_arg( array( 'tab' => 'submissions' ), $edit_link ) ) .'">'. __( 'Submissions', 'html-forms' ) .'</a>',
         );
 
         return $title . $this->row_actions( $actions );

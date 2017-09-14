@@ -1,13 +1,14 @@
 <?php defined( 'ABSPATH' ) or exit;
 
 $tabs = array(
-    'fields'        => __( 'Fields', 'mailchimp-for-wp' ),
-    'messages'      => __( 'Messages', 'mailchimp-for-wp' ),
-    'settings'      => __( 'Settings', 'mailchimp-for-wp' )
+    'fields'        => __( 'Fields', 'html-forms' ),
+    'messages'      => __( 'Messages', 'html-forms' ),
+    'settings'      => __( 'Settings', 'html-forms' ),
+    'submissions' => __( 'Submissions', 'html-forms' ),
 );
 
 ?>
-
+<script>document.title = 'Edit form' + ' - ' + document.title;</script>
 <div class="wrap">
 
     <p class="breadcrumbs">

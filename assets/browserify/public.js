@@ -16,7 +16,7 @@ function addFormMessage(formElement, message) {
     let txtElement = document.createElement('p');
     txtElement.className = 'hf-message hf-message-' + message.type;
     txtElement.innerHTML = message.text;
-    formElement.insertBefore(txtElement, formElement.firstElementChild);
+    formElement.insertAfter(txtElement, formElement.lastElementChild);
 }
 
 

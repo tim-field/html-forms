@@ -25,23 +25,27 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: src/Admin/Table.php:176
+#: src/Admin/Table.php:176, src/Admin/views/edit-form.php:4
 msgid "Fields"
 msgstr ""
 
-#: src/Admin/Table.php:177
+#: src/Admin/Table.php:177, src/Admin/views/edit-form.php:6
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/Table.php:178
+#: src/Admin/Table.php:178, src/Admin/views/edit-form.php:5
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Table.php:201
+#: src/Admin/Table.php:179, src/Admin/views/edit-form.php:7
+msgid "Submissions"
+msgstr ""
+
+#: src/Admin/Table.php:202
 msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
 msgstr ""
 
-#: src/Admin/views/add-form.php:10, src/Admin/views/edit-form.php:14, src/Admin/views/overview.php:12
+#: src/Admin/views/add-form.php:10, src/Admin/views/edit-form.php:15, src/Admin/views/overview.php:12
 msgid "You are here: "
 msgstr ""
 
@@ -49,15 +53,15 @@ msgstr ""
 msgid "Add new form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:16, src/Admin/views/edit-form.php:19
+#: src/Admin/views/edit-form.php:17, src/Admin/views/edit-form.php:20
 msgid "Edit form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:29
+#: src/Admin/views/edit-form.php:30
 msgid "Enter form title here"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:30
+#: src/Admin/views/edit-form.php:31
 msgid "Enter the title of your sign-up form"
 msgstr ""
 
@@ -127,4 +131,8 @@ msgstr ""
 
 #: src/Admin/views/tab-settings.php:26
 msgid "Leave empty or enter <code>0</code> for no redirect. Otherwise, use complete (absolute) URLs, including <code>http://</code>."
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:6
+msgid "Form Submissions"
 msgstr ""

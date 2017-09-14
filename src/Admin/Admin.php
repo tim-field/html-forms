@@ -64,10 +64,8 @@ class Admin {
     public function menu() {
         // add top menu item
         add_menu_page( 'HTML Forms', 'HTML Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ), plugins_url('assets/img/favicon.ico', $this->plugin_file ), '99.88491' );
-        add_submenu_page( 'html-forms', 'All forms', 'All Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ) );
+        add_submenu_page( 'html-forms', 'Forms', 'All Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ) );
         add_submenu_page( 'html-forms', 'Add new form', 'Add New', 'manage_options', 'html-forms-add-form', array( $this, 'page_new_form' ) );
-        add_submenu_page( 'html-forms', 'Form submissions', 'Submissions', 'manage_options', 'html-forms-submissions', array( $this, 'page_submissions' ) );
-
     }
 
     public function page_overview() {
@@ -86,38 +84,7 @@ class Admin {
         require __DIR__ . '/views/add-form.php';
     }
 
-    public function page_submissions() {
-        global $wpdb;
-        $table = $wpdb->prefix .'hf_submissions';
-
-        // TODO: Abstract this away in helper function?
-        $results = $wpdb->get_results( "SELECT s.* FROM {$table} s ORDER BY s.submitted_at DESC LIMIT 100;", OBJECT_K );
-        $submissions = array();
-        foreach( $results as $key => $object ) {
-            $submission = new Submission();
-            $submission->id = $object->id;
-            $submission->form_id = $object->form_id;
-            $submission->data = json_decode( $object->data, true );
-            $submission->ip_address = (string) $object->ip_address;
-            $submission->user_agent = (string) $object->user_agent;
-            $submission->submitted_at = $object->submitted_at;
-            $submissions[$key] = $submission;
-        }
-
-        $columns = array();
-        foreach( $submissions as $submission ) {
-            foreach( $submission->data as $field => $value ) {
-                if (!array_key_exists($field, $columns)) {
-                    $columns[$field] = true;
-                }
-            }
-        }
-        $columns = array_keys( $columns );
-
-        require __DIR__ . '/views/submissions.php';
-    }
-
-    public function process_create_form() {
+     public function process_create_form() {
         // Fix for MultiSite stripping KSES for roles other than administrator
         remove_all_filters( 'content_save_pre' );
 
@@ -140,6 +107,35 @@ class Admin {
         $active_tab = ! empty( $_GET['tab'] ) ? $_GET['tab'] : 'fields';
         $form_id = (int) $_GET['form_id'];
         $form = hf_get_form( $form_id );
+
+        global $wpdb;
+        $table = $wpdb->prefix .'hf_submissions';
+
+        // TODO: Abstract this away in helper function?
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT s.* FROM {$table} s WHERE s.form_id = %d ORDER BY s.submitted_at DESC LIMIT 100;", $form_id ), OBJECT_K );
+        $submissions = array();
+        foreach( $results as $key => $object ) {
+            $submission = new Submission();
+            $submission->id = $object->id;
+            $submission->form_id = $object->form_id;
+            $submission->data = json_decode( $object->data, true );
+            $submission->ip_address = (string) $object->ip_address;
+            $submission->user_agent = (string) $object->user_agent;
+            $submission->submitted_at = $object->submitted_at;
+            $submissions[$key] = $submission;
+        }
+
+        $columns = array();
+        foreach( $submissions as $submission ) {
+            foreach( $submission->data as $field => $value ) {
+                if (!array_key_exists($field, $columns)) {
+                    $columns[$field] = true;
+                }
+            }
+        }
+        $columns = array_keys( $columns );
+
+
         require __DIR__ . '/views/edit-form.php';
     }
 

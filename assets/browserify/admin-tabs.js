@@ -18,5 +18,7 @@ function openTab(e) {
         tab.classList.toggle('hf-tab-active', tab.getAttribute('data-tab') === tabTarget);
     }
 
+    document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + " ");
+
     e.preventDefault();
 }

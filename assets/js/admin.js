@@ -36,6 +36,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           tab.classList.toggle('hf-tab-active', tab.getAttribute('data-tab') === tabTarget);
         }
 
+        document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + " ");
+
         e.preventDefault();
       }
     }, {}], 2: [function (require, module, exports) {
@@ -81,18 +83,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       }
 
       function updateShadowDOM() {
-        console.log("Updating");
         dom.innerHTML = editor.getValue();
       }
 
+      // TODO: Convert nested fields to dot notation here.
       function updateRequiredFields() {
         var fields = dom.querySelectorAll('[required]');
         var fieldNames = [].map.call(fields, function (f) {
-          return f.name;
+          return f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1');
         });
         requiredFieldsInput.value = fieldNames.join(',');
       }
 
+      // TODO: Convert nested fields to dot notation here.
       function updateEmailFields() {
         var fields = dom.querySelectorAll('input[type="email"]');
         var fieldNames = [].map.call(fields, function (f) {

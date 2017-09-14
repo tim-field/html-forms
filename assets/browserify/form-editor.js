@@ -41,7 +41,7 @@ function updateShadowDOM() {
 // TODO: Convert nested fields to dot notation here.
 function updateRequiredFields() {
     let fields = dom.querySelectorAll('[required]');
-    let fieldNames = [].map.call(fields, (f) => f.name);
+    let fieldNames = [].map.call(fields, (f) => f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1' ));
     requiredFieldsInput.value = fieldNames.join(',');
 }
 

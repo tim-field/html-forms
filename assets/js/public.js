@@ -98,7 +98,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 var txtElement = document.createElement('p');
                 txtElement.className = 'hf-message hf-message-' + message.type;
                 txtElement.innerHTML = message.text;
-                formElement.insertBefore(txtElement, formElement.firstElementChild);
+                formElement.insertAfter(txtElement, formElement.lastElementChild);
             }
 
             document.addEventListener('submit', function (e) {

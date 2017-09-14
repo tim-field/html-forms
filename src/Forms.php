@@ -42,17 +42,38 @@ class Forms
         ));
     }
 
-    private function validate_form(Form $form, $data)
-    {
-        // TODO: Support dot notation here for nested array values.
+    private function array_get( $array, $key, $default = null ) {
+        if ( is_null( $key ) ) {
+            return $array;
+        }
+
+        if ( isset( $array[$key] ) ) {
+            return $array[$key];
+        }
+
+        $segments = explode( '.', $key );
+        foreach ( $segments as $segment) {
+            if ( ! is_array( $array ) || ! array_key_exists( $segment, $array ) ) {
+                return $default;
+            }
+            $array = $array[$segment];
+        }
+
+        return $array;
+    }
+
+    private function validate_form(Form $form, $data) {
+
         foreach ($form->get_required_fields() as $field_name) {
-            if (empty($_POST[$field_name])) {
+            $value = $this->array_get( $data, $field_name );
+            if ( empty( $value ) ) {
                 return 'required_field_missing';
             }
         }
 
         foreach ($form->get_email_fields() as $field_name) {
-            if (!empty($_POST[$field_name]) && !is_email($_POST[$field_name])) {
+            $value = $this->array_get( $data, $field_name );
+            if ( ! empty( $value ) && ! is_email( $value ) ) {
                 return 'invalid_email';
             }
         }
@@ -60,8 +81,7 @@ class Forms
         return 'success';
     }
 
-    public function listen()
-    {
+    public function listen() {
         if (empty($_POST['_hf_form_id'])) {
             return;
         }
