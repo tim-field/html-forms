@@ -10,14 +10,14 @@ require('codemirror/addon/fold/xml-fold');
 require('codemirror/addon/edit/matchtags');
 require('codemirror/addon/edit/closetag.js');
 
-let editor,
-    element = document.querySelector('#hf-form-editor'),
-    dom = document.createElement('form'),
-    requiredFieldsInput = document.getElementById('hf-required-fields'),
+let editor, element, dom, requiredFieldsInput, emailFieldsInput;
+
+function init() {
+    element = document.getElementById('hf-form-editor');
+    dom = document.createElement('form');
+    requiredFieldsInput = document.getElementById('hf-required-fields');
     emailFieldsInput = document.getElementById('hf-email-fields');
 
-
-if( element ) {
     dom.innerHTML = element.value;
 
     editor = CodeMirror.fromTextArea(element, {
@@ -38,16 +38,18 @@ function updateShadowDOM() {
     dom.innerHTML = editor.getValue();
 }
 
-// TODO: Convert nested fields to dot notation here.
 function updateRequiredFields() {
     let fields = dom.querySelectorAll('[required]');
     let fieldNames = [].map.call(fields, (f) => f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1' ));
     requiredFieldsInput.value = fieldNames.join(',');
 }
 
-// TODO: Convert nested fields to dot notation here.
 function updateEmailFields() {
     let fields = dom.querySelectorAll('input[type="email"]');
-    let fieldNames = [].map.call(fields, (f) => f.name);
+    let fieldNames = [].map.call(fields, (f) => f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1' ));
     emailFieldsInput.value = fieldNames.join(',');
 }
+
+export default {
+    'init': init,
+};

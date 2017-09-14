@@ -38,11 +38,11 @@ gulp.task('js', function() {
     let tasks = files.map(function(entry) {
         let filename = entry.split('/').pop();
         return browserify({ entries: [entry] }).on('error', gutil.log)
+            .transform("babelify", {presets: ["es2015"]})
             .bundle()
             .pipe(source(filename))
-            .pipe(insert.wrap('(function () { var require = undefined; var module = undefined; var exports = undefined; var define = undefined;', '; })();'))
             .pipe(buffer())
-            .pipe(babel({presets: ['es2015']}))
+            .pipe(insert.wrap('(function () { var require = undefined; var module = undefined; var exports = undefined; var define = undefined;', '; })();'))
             .pipe(gulp.dest('./assets/js'));
     });
 

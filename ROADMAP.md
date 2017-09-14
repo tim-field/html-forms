@@ -13,6 +13,7 @@
 - Allow sorting submission columns.
 - Allow deleting submission columns (key delete).
 - Allow renaming submission columns (key rename).
+- Export as CSV / XSL
 
 ## Would
 - Better browser-compat field for [type="date"] fields.

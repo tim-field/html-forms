@@ -1,4 +1,10 @@
 'use strict';
 
-require('./admin-tabs.js');
-require('./form-editor.js');
+import Tabs from './admin-tabs.js';
+import Editor from './form-editor.js';
+
+Tabs.init();
+
+if( document.getElementById('hf-form-editor') ) {
+    Editor.init();
+}

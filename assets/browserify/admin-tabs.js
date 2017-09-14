@@ -1,12 +1,17 @@
 'use strict';
 
-let tabs = document.querySelectorAll('.hf-tab');
-let tabNavs = document.querySelectorAll('#hf-tabs-nav a');
-for(let i=0; i<tabNavs.length; i++) {
-    tabNavs[i].addEventListener('click', openTab);
-}
+let tabs, tabNavs;
+let Tabs = {};
 
-function openTab(e) {
+Tabs.init = function() {
+    tabs = document.querySelectorAll('.hf-tab');
+    tabNavs = document.querySelectorAll('#hf-tabs-nav a');
+    for(let i=0; i<tabNavs.length; i++) {
+        tabNavs[i].addEventListener('click', Tabs.open);
+    }
+};
+
+Tabs.open = function(e) {
     let tabTarget = this.getAttribute('data-tab-target');
     for(let i=0; i<tabNavs.length; i++) {
         tabNavs[i].classList.toggle('nav-tab-active', tabNavs[i] === this);
@@ -21,4 +26,7 @@ function openTab(e) {
     document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + " ");
 
     e.preventDefault();
-}
+};
+
+
+export default Tabs;

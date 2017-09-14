@@ -16,7 +16,7 @@ function addFormMessage(formElement, message) {
     let txtElement = document.createElement('p');
     txtElement.className = 'hf-message hf-message-' + message.type;
     txtElement.innerHTML = message.text;
-    formElement.insertAfter(txtElement, formElement.lastElementChild);
+    formElement.insertBefore(txtElement, formElement.lastElementChild.nextElementSibling);
 }
 
 
@@ -62,6 +62,9 @@ document.addEventListener('submit', function(e) {
                 if( response.redirect_url ) {
                     window.location = response.redirect_url;
                 }
+
+                // clear form
+                formElement.reset();
             } else {
                 // Server error :(
                 console.log(this.responseText);
