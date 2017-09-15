@@ -92,6 +92,11 @@ document.addEventListener('submit', function (e) {
     }
 
     e.preventDefault();
+
+    submitForm(formElement);
+}, true);
+
+function submitForm(formElement) {
     var loader = new Loader(formElement);
     var data = serialize(formElement);
     var request = new XMLHttpRequest();
@@ -141,7 +146,7 @@ document.addEventListener('submit', function (e) {
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.send(data);
     request = null;
-}, true);
+}
 
 },{"./form-loading-indicator.js":1,"es5-shim":3,"form-serialize":4}],3:[function(require,module,exports){
 /*!

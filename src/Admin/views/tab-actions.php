@@ -11,14 +11,14 @@ $available_actions = $this->get_available_form_actions();
             do_action( 'hf_render_form_action_settings_' . $action['type'], $action['settings'] );
         }
     } else {
-        echo '<p>' . __( 'No form actions configured for this form.', 'html-forms' ) . '</p>';
+        echo '<p id="hf-form-actions-empty">' . __( 'No form actions configured for this form.', 'html-forms' ) . '</p>';
     }
     ?>
 </div>
 
 <div class="hf-small-margin">
     <h4><?php echo __( 'Add form action', 'html-forms' ); ?></h4>
-    <p>
+    <p id="hf-available-form-actions">
         <?php
         foreach( $available_actions as $type => $label ) {
             echo sprintf( '<input type="button" value="%s" data-action-type="%s" class="button" />', esc_html( $label ), esc_attr( $type ) );
@@ -27,7 +27,7 @@ $available_actions = $this->get_available_form_actions();
     </p>
 </div>
 
-<div style="display: none;" id="hf-action-templates">
+<div style="display: none;" id="hf-form-action-templates">
     <?php
         foreach( $available_actions as $type => $label ) {
             echo sprintf( '<div id="hf-action-type-%s-template">', $type );

@@ -4,57 +4,74 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var tabs = void 0,
-    tabNavs = void 0;
-var Tabs = {};
+var availableActions = void 0,
+    actionTemplates = void 0,
+    actions = void 0;
 
-Tabs.init = function () {
-    tabs = document.querySelectorAll('.hf-tab');
-    tabNavs = document.querySelectorAll('#hf-tabs-nav a');
-    for (var i = 0; i < tabNavs.length; i++) {
-        tabNavs[i].addEventListener('click', Tabs.open);
-    }
-};
+function init() {
+    actions = document.getElementById('hf-form-actions');
+    availableActions = document.getElementById('hf-available-form-actions');
+    actionTemplates = document.getElementById('hf-form-action-templates');
 
-Tabs.open = function (e) {
-    var tabTarget = this.getAttribute('data-tab-target');
-    for (var i = 0; i < tabNavs.length; i++) {
-        tabNavs[i].classList.toggle('nav-tab-active', tabNavs[i] === this);
-    }
-    this.blur();
+    availableActions.addEventListener('click', function (e) {
+        var el = e.target || e.srcElement;
 
-    for (var _i = 0; _i < tabs.length; _i++) {
-        var tab = tabs[_i];
-        tab.classList.toggle('hf-tab-active', tab.getAttribute('data-tab') === tabTarget);
-    }
+        if (el.tagName !== 'INPUT') {
+            return;
+        }
+        var actionType = el.getAttribute('data-action-type');
+        var actionTemplate = actionTemplates.querySelector('#hf-action-type-' + actionType + '-template');
 
-    document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + " ");
+        var wrap = document.createElement('div');
+        wrap.className = "hf-action-settings accordion expanded ";
 
-    e.preventDefault();
-};
+        var heading = document.createElement('h4');
+        heading.className = "accordion-heading";
+        heading.innerText = el.value;
+        wrap.appendChild(heading);
 
-exports.default = Tabs;
+        var content = document.createElement('div');
+        content.className = "accordion-content";
+        content.innerHTML = actionTemplate.innerHTML;
+        wrap.appendChild(content);
 
-},{}],2:[function(require,module,exports){
-'use strict';
+        var deleteWrap = document.createElement('p');
+        deleteWrap.style.textAlign = 'right';
+        var deleteLink = document.createElement('a');
+        deleteLink.className = "danger";
+        deleteLink.innerText = 'Delete this action';
+        deleteWrap.appendChild(deleteLink);
+        content.appendChild(deleteWrap);
 
-var _adminTabs = require('./admin-tabs.js');
+        // add toggle function
+        heading.addEventListener('click', function (wrap, content) {
+            return function () {
+                var show = content.offsetParent === null;
+                wrap.className = wrap.className.replace('expanded', '');
+                if (show) {
+                    wrap.className = wrap.className + " expanded";
+                }
+                content.style.display = show ? 'block' : 'none';
+            };
+        }(wrap, content));
 
-var _adminTabs2 = _interopRequireDefault(_adminTabs);
+        deleteLink.addEventListener('click', function () {
+            var actionWrap = this.parentElement.parentElement;
+            actionWrap.parentElement.removeChild(actionWrap);
+        });
 
-var _formEditor = require('./form-editor.js');
+        actions.appendChild(wrap);
 
-var _formEditor2 = _interopRequireDefault(_formEditor);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_adminTabs2.default.init();
-
-if (document.getElementById('hf-form-editor')) {
-    _formEditor2.default.init();
+        // hide "no form actions" message
+        actions.querySelector('#hf-form-actions-empty').style.display = 'none';
+    }, true);
 }
 
-},{"./admin-tabs.js":1,"./form-editor.js":3}],3:[function(require,module,exports){
+exports.default = {
+    'init': init
+};
+
+},{}],2:[function(require,module,exports){
 'use strict';
 
 // load CodeMirror & plugins
@@ -123,7 +140,68 @@ exports.default = {
     'init': init
 };
 
-},{"codemirror":7,"codemirror/addon/edit/closetag.js":4,"codemirror/addon/edit/matchtags":5,"codemirror/addon/fold/xml-fold":6,"codemirror/mode/css/css":8,"codemirror/mode/htmlmixed/htmlmixed":9,"codemirror/mode/javascript/javascript":10,"codemirror/mode/xml/xml":11}],4:[function(require,module,exports){
+},{"codemirror":8,"codemirror/addon/edit/closetag.js":5,"codemirror/addon/edit/matchtags":6,"codemirror/addon/fold/xml-fold":7,"codemirror/mode/css/css":9,"codemirror/mode/htmlmixed/htmlmixed":10,"codemirror/mode/javascript/javascript":11,"codemirror/mode/xml/xml":12}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var tabs = void 0,
+    tabNavs = void 0;
+var Tabs = {};
+
+Tabs.init = function () {
+    tabs = document.querySelectorAll('.hf-tab');
+    tabNavs = document.querySelectorAll('#hf-tabs-nav a');
+    for (var i = 0; i < tabNavs.length; i++) {
+        tabNavs[i].addEventListener('click', Tabs.open);
+    }
+};
+
+Tabs.open = function (e) {
+    var tabTarget = this.getAttribute('data-tab-target');
+    for (var i = 0; i < tabNavs.length; i++) {
+        tabNavs[i].classList.toggle('nav-tab-active', tabNavs[i] === this);
+    }
+    this.blur();
+
+    for (var _i = 0; _i < tabs.length; _i++) {
+        var tab = tabs[_i];
+        tab.classList.toggle('hf-tab-active', tab.getAttribute('data-tab') === tabTarget);
+    }
+
+    document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + " ");
+
+    e.preventDefault();
+};
+
+exports.default = Tabs;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+var _adminTabs = require('./admin-tabs.js');
+
+var _adminTabs2 = _interopRequireDefault(_adminTabs);
+
+var _adminFormEditor = require('./admin-form-editor.js');
+
+var _adminFormEditor2 = _interopRequireDefault(_adminFormEditor);
+
+var _adminFormActions = require('./admin-form-actions.js');
+
+var _adminFormActions2 = _interopRequireDefault(_adminFormActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_adminTabs2.default.init();
+
+if (document.getElementById('hf-form-editor')) {
+    _adminFormEditor2.default.init();
+    _adminFormActions2.default.init();
+}
+
+},{"./admin-form-actions.js":1,"./admin-form-editor.js":2,"./admin-tabs.js":3}],5:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -294,7 +372,7 @@ exports.default = {
   }
 });
 
-},{"../../lib/codemirror":7,"../fold/xml-fold":6}],5:[function(require,module,exports){
+},{"../../lib/codemirror":8,"../fold/xml-fold":7}],6:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -362,7 +440,7 @@ exports.default = {
   };
 });
 
-},{"../../lib/codemirror":7,"../fold/xml-fold":6}],6:[function(require,module,exports){
+},{"../../lib/codemirror":8,"../fold/xml-fold":7}],7:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -546,7 +624,7 @@ exports.default = {
   };
 });
 
-},{"../../lib/codemirror":7}],7:[function(require,module,exports){
+},{"../../lib/codemirror":8}],8:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -10039,7 +10117,7 @@ return CodeMirror$1;
 
 })));
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -10872,7 +10950,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
 
 });
 
-},{"../../lib/codemirror":7}],9:[function(require,module,exports){
+},{"../../lib/codemirror":8}],10:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -11026,7 +11104,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
   CodeMirror.defineMIME("text/html", "htmlmixed");
 });
 
-},{"../../lib/codemirror":7,"../css/css":8,"../javascript/javascript":10,"../xml/xml":11}],10:[function(require,module,exports){
+},{"../../lib/codemirror":8,"../css/css":9,"../javascript/javascript":11,"../xml/xml":12}],11:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -11866,7 +11944,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 
 });
 
-},{"../../lib/codemirror":7}],11:[function(require,module,exports){
+},{"../../lib/codemirror":8}],12:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -12262,5 +12340,5 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 
 });
 
-},{"../../lib/codemirror":7}]},{},[2]);
+},{"../../lib/codemirror":8}]},{},[4]);
 ; })();

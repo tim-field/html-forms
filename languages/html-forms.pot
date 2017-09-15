@@ -17,6 +17,10 @@ msgstr ""
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
+#: src/Actions/Email.php:11
+msgid "Email"
+msgstr ""
+
 #: src/Admin/Table.php:110
 msgid "Form"
 msgstr ""
@@ -25,27 +29,31 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: src/Admin/Table.php:176, src/Admin/views/edit-form.php:4
+#: src/Admin/Table.php:177, src/Admin/views/edit-form.php:4
 msgid "Fields"
-msgstr ""
-
-#: src/Admin/Table.php:177, src/Admin/views/edit-form.php:6
-msgid "Settings"
 msgstr ""
 
 #: src/Admin/Table.php:178, src/Admin/views/edit-form.php:5
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Table.php:179, src/Admin/views/edit-form.php:7
+#: src/Admin/Table.php:179, src/Admin/views/edit-form.php:6
+msgid "Settings"
+msgstr ""
+
+#: src/Admin/Table.php:180, src/Admin/views/edit-form.php:7
+msgid "Actions"
+msgstr ""
+
+#: src/Admin/Table.php:181, src/Admin/views/edit-form.php:8
 msgid "Submissions"
 msgstr ""
 
-#: src/Admin/Table.php:202
+#: src/Admin/Table.php:207
 msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
 msgstr ""
 
-#: src/Admin/views/add-form.php:10, src/Admin/views/edit-form.php:15, src/Admin/views/overview.php:12
+#: src/Admin/views/add-form.php:10, src/Admin/views/edit-form.php:16, src/Admin/views/overview.php:12
 msgid "You are here: "
 msgstr ""
 
@@ -53,20 +61,32 @@ msgstr ""
 msgid "Add new form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:17, src/Admin/views/edit-form.php:20
+#: src/Admin/views/edit-form.php:18, src/Admin/views/edit-form.php:21
 msgid "Edit form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:30
+#: src/Admin/views/edit-form.php:31
 msgid "Enter form title here"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:31
+#: src/Admin/views/edit-form.php:32
 msgid "Enter the title of your sign-up form"
 msgstr ""
 
 #: src/Admin/views/overview.php:14, src/Admin/views/overview.php:17
 msgid "Forms"
+msgstr ""
+
+#: src/Admin/views/tab-actions.php:5
+msgid "Form Actions"
+msgstr ""
+
+#: src/Admin/views/tab-actions.php:14
+msgid "No form actions configured for this form."
+msgstr ""
+
+#: src/Admin/views/tab-actions.php:20
+msgid "Add form action"
 msgstr ""
 
 #: src/Admin/views/tab-messages.php:6

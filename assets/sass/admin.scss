@@ -20,4 +20,54 @@
   }
 }
 
+.accordion{
+  border: 1px solid #e5e5e5;
+  margin-bottom: 6px;
+}
+
+.accordion-heading {
+  color: #555555;
+  background-color: #fff;
+  border-bottom: 1px solid #eeeeee;
+  padding: 10px 10px 11px 14px;
+  line-height: 21px;
+  cursor: pointer;
+  position: relative;
+  margin: 0;
+  font-size: 14px;
+
+  &:hover {
+    color: #23282d;
+    background: #f5f5f5;
+  }
+}
+
+.accordion-heading:after {
+  content: '\f140';
+  font: normal 20px/1 'dashicons';
+  float: right;
+  right: 20px;
+}
+
+.accordion.expanded .accordion-heading:after {
+  content: "\f142";
+}
+
+.accordion-content {
+  padding: 20px;
+  background: #fff;
+}
+
+.danger {
+  color: #a00;
+}
+
+.pull-right {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
+
 @import "codemirror";
