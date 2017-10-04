@@ -21,6 +21,22 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: src/Actions/Email.php:21
+msgid "From"
+msgstr ""
+
+#: src/Actions/Email.php:27
+msgid "To"
+msgstr ""
+
+#: src/Actions/Email.php:33
+msgid "Subject"
+msgstr ""
+
+#: src/Actions/Email.php:39
+msgid "Message"
+msgstr ""
+
 #: src/Admin/Table.php:110
 msgid "Form"
 msgstr ""
@@ -77,15 +93,15 @@ msgstr ""
 msgid "Forms"
 msgstr ""
 
-#: src/Admin/views/tab-actions.php:5
+#: src/Admin/views/tab-actions.php:6
 msgid "Form Actions"
 msgstr ""
 
-#: src/Admin/views/tab-actions.php:14
+#: src/Admin/views/tab-actions.php:20
 msgid "No form actions configured for this form."
 msgstr ""
 
-#: src/Admin/views/tab-actions.php:20
+#: src/Admin/views/tab-actions.php:26
 msgid "Add form action"
 msgstr ""
 

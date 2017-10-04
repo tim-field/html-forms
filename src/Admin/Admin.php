@@ -163,6 +163,7 @@ class Admin {
         foreach( $data['messages'] as $key => $message ) {
             update_post_meta( $form_id, 'hf_message_' . $key, $message );
         }
+
     }
 
     /**

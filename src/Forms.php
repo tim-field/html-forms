@@ -131,6 +131,7 @@ class Forms
             // sanitize data: strip tags etc.
             $data = $this->sanitize( $data );
 
+            // save form submission
             $submission = new Submission();
             $submission->form_id = $form_id;
             $submission->data = $data;
@@ -138,7 +139,12 @@ class Forms
             $submission->user_agent = sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] );
             $submission->save();
 
-            // TODO: Process form actions
+            // process form actions
+            foreach( $form->settings['actions'] as $action_settings ) {
+                do_action('hf_process_form_action_' . $action_settings['type'], $action_settings, $submission, $form );
+            }
+
+            do_action( 'hf_form_processed', $form );
 
             $response = array(
                 'message' => array(

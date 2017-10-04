@@ -32,7 +32,7 @@ class Form {
          * @param array $form_classes
          * @param Form $form
          */
-        $form_classes = apply_filters( 'hf_form_classes', array(), $form );
+        $form_classes_attr = apply_filters( 'hf_form_element_class_attr', '', $form );
 
         /**
          * Filters the action attribute for this form.
@@ -40,12 +40,12 @@ class Form {
          * @param string $form_action
          * @param Form $form
          */
-        $form_action = apply_filters( 'hf_form_action', null, $form );
+        $form_action = apply_filters( 'hf_form_element_action_attr', null, $form );
         $form_action_attr = is_null( $form_action ) ? '' : sprintf('action="%s"', $form_action );
 
         $html = '';
         $html .= sprintf( '<!-- HTML Forms v%s - %s -->', HTML_FORMS_VERSION, 'https://wordpress.org/plugins/html-forms/' );
-        $html .= sprintf( '<form method="post" %s class="hf-form hf-form-%d %s">', $form_action_attr, $this->ID, join( ' ', $form_classes ) );
+        $html .= sprintf( '<form method="post" %s class="hf-form hf-form-%d %s">', $form_action_attr, $this->ID, $form_classes_attr );
 
         $html .= '<div class="hf-fields-wrap">';
         $html .= sprintf( '<input type="hidden" name="_hf_form_id" value="%d" />', $this->ID );

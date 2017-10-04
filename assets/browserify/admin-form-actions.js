@@ -7,59 +7,83 @@ function init() {
     availableActions = document.getElementById('hf-available-form-actions');
     actionTemplates = document.getElementById('hf-form-action-templates');
 
-    availableActions.addEventListener('click', function(e) {
-        let el = e.target || e.srcElement;
+    // turn settings into accordions
+    [].forEach.call( actions.querySelectorAll('.hf-action-settings'), function(el) {
+        el.parentNode.removeChild(el);
 
-        if( el.tagName !== 'INPUT' ) {
-            return;
-        }
-        let actionType = el.getAttribute('data-action-type');
-        let actionTemplate = actionTemplates.querySelector(`#hf-action-type-${actionType}-template`);
-
-
-        let wrap = document.createElement('div');
-        wrap.className = "hf-action-settings accordion expanded ";
-
-        let heading = document.createElement('h4');
-        heading.className = "accordion-heading";
-        heading.innerText = el.value;
-        wrap.appendChild(heading);
-
-        let content = document.createElement('div');
-        content.className = "accordion-content";
-        content.innerHTML = actionTemplate.innerHTML;
-        wrap.appendChild(content);
-
-        let deleteWrap = document.createElement('p');
-        deleteWrap.style.textAlign = 'right';
-        let deleteLink = document.createElement('a');
-        deleteLink.className = "danger";
-        deleteLink.innerText = 'Delete this action';
-        deleteWrap.appendChild(deleteLink);
-        content.appendChild(deleteWrap);
-
-        // add toggle function
-        heading.addEventListener('click', (function(wrap, content) {
-            return function() {
-                let show = content.offsetParent === null;
-                wrap.className = wrap.className.replace('expanded', '');
-                if(show) {
-                    wrap.className = wrap.className + " expanded";
-                }
-                content.style.display = show? 'block' : 'none';
-            }
-        })(wrap, content));
-
-        deleteLink.addEventListener('click', function() {
-            let actionWrap = this.parentElement.parentElement;
-            actionWrap.parentElement.removeChild(actionWrap);
-        });
-
+        let wrap = createAccordion(el.getAttribute('data-title'), el.innerHTML);
         actions.appendChild(wrap);
 
-        // hide "no form actions" message
         actions.querySelector('#hf-form-actions-empty').style.display = 'none';
-    }, true);
+    });
+
+    availableActions.addEventListener('click', addAction, true);
+}
+
+function createAccordion(headingText, contentHTML) {
+    let wrap = document.createElement('div');
+    wrap.className = "accordion expanded ";
+
+    let heading = document.createElement('h4');
+    heading.className = "accordion-heading";
+    heading.innerText = headingText;
+    wrap.appendChild(heading);
+
+    let content = document.createElement('div');
+    content.className = "accordion-content";
+    content.innerHTML = contentHTML;
+    wrap.appendChild(content);
+
+    let deleteWrap = document.createElement('p');
+    deleteWrap.style.textAlign = 'right';
+    let deleteLink = document.createElement('a');
+    deleteLink.className = "danger";
+    deleteLink.innerText = 'Delete this action';
+    deleteWrap.appendChild(deleteLink);
+    content.appendChild(deleteWrap);
+
+    // bind handlers
+    heading.addEventListener('click', createToggleActionHandler(wrap, content));
+    deleteLink.addEventListener('click', createDeleteActionHandler(wrap));
+    return wrap;
+}
+
+function addAction(e) {
+    let el = e.target || e.srcElement;
+    if( el.tagName !== 'INPUT' ) {
+        return;
+    }
+
+    let actionType = el.getAttribute('data-action-type');
+    let actionTemplate = actionTemplates.querySelector(`#hf-action-type-${actionType}-template`);
+
+    // append HTML to actions wrapper
+    let wrap = createAccordion(el.value, actionTemplate.innerHTML);
+    actions.appendChild(wrap);
+
+    // hide "no form actions" message
+    actions.querySelector('#hf-form-actions-empty').style.display = 'none';
+}
+
+function createDeleteActionHandler(wrap) {
+    return function() {
+        actions.removeChild(wrap);
+
+        if( actions.childElementCount === 1 ) {
+            actions.querySelector('#hf-form-actions-empty').style.display = '';
+        }
+    }
+}
+
+function createToggleActionHandler(wrap, content) {
+    return function() {
+        let show = content.offsetParent === null;
+        wrap.className = wrap.className.replace('expanded', '');
+        if(show) {
+            wrap.className = wrap.className + " expanded";
+        }
+        content.style.display = show? 'block' : 'none';
+    }
 }
 
 

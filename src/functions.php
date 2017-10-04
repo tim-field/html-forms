@@ -52,3 +52,38 @@ function hf_get_form( $form_id_or_slug ) {
     $form->messages = $messages;
     return $form;
 }
+
+function hf_array_get( $array, $key, $default = null ) {
+    if ( is_null( $key ) ) {
+        return $array;
+    }
+
+    if ( isset( $array[$key] ) ) {
+        return $array[$key];
+    }
+
+    foreach (explode( '.', $key ) as $segment) {
+        if ( ! is_array( $array ) || ! array_key_exists( $segment, $array ) ) {
+            return $default;
+        }
+
+        $array = $array[$segment];
+    }
+
+    return $array;
+}
+
+/**
+ * @param string $template
+ * @param array $data
+ *
+ * @return string
+ */
+function hf_template( $template, array $data = array() ) {
+    $template = preg_replace_callback( '/\[([ -~]+)\]/', function( $matches ) use ( $data ) {
+        $key = $matches[1];
+        $replacement = hf_array_get( $data, $key, '' );
+        return $replacement;
+    }, $template );
+    return $template;
+}

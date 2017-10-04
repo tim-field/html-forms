@@ -2,22 +2,28 @@
 $available_actions = $this->get_available_form_actions();
 ?>
 
-<h2><?php echo __( 'Form Actions', 'html-forms' ); ?></h2>
+<div>
+    <h2><?php echo __( 'Form Actions', 'html-forms' ); ?></h2>
 
-<div id="hf-form-actions">
-    <?php
-    if( ! empty( $form->settings['actions'] ) ) {
-        foreach ($form->settings['actions'] as $action) {
-            do_action( 'hf_render_form_action_settings_' . $action['type'], $action['settings'] );
+    <div id="hf-form-actions">
+        <?php
+        if( ! empty( $form->settings['actions'] ) ) {
+            foreach ($form->settings['actions'] as $action_settings ) {
+                ?>
+                   <div class="hf-action-settings" data-title="<?php echo esc_attr( $available_actions[ $action_settings['type'] ] ); ?>">
+                       <?php do_action( 'hf_render_form_action_' . $action_settings['type'] . '_settings', $action_settings ); ?>
+                   </div>
+                <?php
+            }
         }
-    } else {
+
         echo '<p id="hf-form-actions-empty">' . __( 'No form actions configured for this form.', 'html-forms' ) . '</p>';
-    }
-    ?>
+        ?>
+    </div>
 </div>
 
-<div class="hf-small-margin">
-    <h4><?php echo __( 'Add form action', 'html-forms' ); ?></h4>
+<div class="hf-medium-margin">
+    <h3><?php echo __( 'Add form action', 'html-forms' ); ?></h3>
     <p id="hf-available-form-actions">
         <?php
         foreach( $available_actions as $type => $label ) {
@@ -27,14 +33,16 @@ $available_actions = $this->get_available_form_actions();
     </p>
 </div>
 
-<div style="display: none;" id="hf-form-action-templates">
-    <?php
-        foreach( $available_actions as $type => $label ) {
-            echo sprintf( '<div id="hf-action-type-%s-template">', $type );
-            do_action( 'hf_render_form_action_' . $type . '_settings', array() );
-            echo '</div>';
-        }
-    ?>
+<div>
+    <?php submit_button(); ?>
 </div>
 
-
+<div style="display: none;" id="hf-form-action-templates">
+    <?php
+    foreach( $available_actions as $type => $label ) {
+        echo sprintf( '<script type="text/x-template" id="hf-action-type-%s-template">', $type );
+        do_action( 'hf_render_form_action_' . $type . '_settings', array() );
+        echo '</script>';
+    }
+    ?>
+</div>
