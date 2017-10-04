@@ -48,6 +48,13 @@ class Email extends Action {
         <?php
    }
 
+    /**
+     * Processes this action
+     *
+     * @param array $settings
+     * @param Submission $submission
+     * @param Form $form
+     */
    public function process( array $settings, Submission $submission, Form $form ) {
        $to = hf_template( $settings['to'], $submission->data );
        $subject = hf_template( $settings['subject'], $submission->data );
