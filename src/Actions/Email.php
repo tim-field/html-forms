@@ -42,6 +42,7 @@ class Email extends Action {
                <th><?php echo __( 'Message', 'html-forms' ); ?></th>
                <td>
                    <textarea name="form[settings][actions][0][message]" rows="8" class="widefat" placeholder="Your email message" required><?php echo esc_textarea( $settings['message'] ); ?></textarea>
+                    <p class="help">You can use the following variables: <span class="hf-field-names"></span></p>
                </td>
            </tr>
        </table>

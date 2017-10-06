@@ -17,23 +17,23 @@ msgstr ""
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/Actions/Email.php:11
+#: src/Actions/Email.php:14
 msgid "Email"
 msgstr ""
 
-#: src/Actions/Email.php:21
+#: src/Actions/Email.php:24
 msgid "From"
 msgstr ""
 
-#: src/Actions/Email.php:27
+#: src/Actions/Email.php:30
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:33
+#: src/Actions/Email.php:36
 msgid "Subject"
 msgstr ""
 
-#: src/Actions/Email.php:39
+#: src/Actions/Email.php:42
 msgid "Message"
 msgstr ""
 

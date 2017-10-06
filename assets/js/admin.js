@@ -56,10 +56,10 @@ function createAccordion(headingText, contentHTML) {
 
 function addAction(e) {
     var el = e.target || e.srcElement;
-
     if (el.tagName !== 'INPUT') {
         return;
     }
+
     var actionType = el.getAttribute('data-action-type');
     var actionTemplate = actionTemplates.querySelector('#hf-action-type-' + actionType + '-template');
 
@@ -137,8 +137,53 @@ function init() {
     });
 
     editor.on('update', updateShadowDOM);
+    editor.on('blur', updateFieldVariables);
     editor.on('blur', updateRequiredFields);
     editor.on('blur', updateEmailFields);
+
+    updateFieldVariables();
+}
+
+function selectText(el) {
+    if (document.selection) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(el);
+        range.select();
+    } else if (window.getSelection) {
+        var _range = document.createRange();
+        _range.selectNode(el);
+        window.getSelection().addRange(_range);
+    }
+}
+
+function getFieldVariableName(f) {
+    return f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1');
+}
+
+function updateFieldVariables() {
+    var fields = dom.querySelectorAll('input[name], select[name], textarea[name], button[name]');
+    var fieldVariables = [].map.call(fields, function (f) {
+        return '[' + getFieldVariableName(f) + ']';
+    });
+    var variableElements = fieldVariables.map(function (n) {
+        var el = document.createElement('code');
+        el.innerText = n;
+        return el;
+    });
+
+    [].forEach.call(document.querySelectorAll('.hf-field-names'), function (el) {
+        while (el.firstChild) {
+            el.removeChild(el.firstChild);
+        }
+
+        variableElements.forEach(function (vel, i, arr) {
+            el.appendChild(vel);
+
+            if (i < arr.length - 1) {
+                el.appendChild(document.createTextNode(', '));
+            }
+        });
+    });
 }
 
 function updateShadowDOM() {
@@ -147,17 +192,13 @@ function updateShadowDOM() {
 
 function updateRequiredFields() {
     var fields = dom.querySelectorAll('[required]');
-    var fieldNames = [].map.call(fields, function (f) {
-        return f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1');
-    });
+    var fieldNames = [].map.call(fields, getFieldVariableName);
     requiredFieldsInput.value = fieldNames.join(',');
 }
 
 function updateEmailFields() {
     var fields = dom.querySelectorAll('input[type="email"]');
-    var fieldNames = [].map.call(fields, function (f) {
-        return f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1');
-    });
+    var fieldNames = [].map.call(fields, getFieldVariableName);
     emailFieldsInput.value = fieldNames.join(',');
 }
 

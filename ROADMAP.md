@@ -1,7 +1,7 @@
 ## Must
 
 ## Should
-- Email action.
+- Helper for inserting data variables in string settings.
 
 ## Could
 - Helper for generating field HTML and adding to form editor.
@@ -16,6 +16,7 @@
 - Export as CSV / XSL
 - Delete individual form submissions.
 - Bulk delete form submissions.
+- Paginate form submissions
 
 ## Would
 - Better browser-compat field for [type="date"] fields.

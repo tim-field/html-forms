@@ -30,8 +30,51 @@ function init() {
     });
 
     editor.on('update', updateShadowDOM);
+    editor.on('blur', updateFieldVariables);
     editor.on('blur', updateRequiredFields);
     editor.on('blur', updateEmailFields);
+
+    updateFieldVariables();
+}
+
+function selectText(el) {
+    if (document.selection) {
+        let range = document.body.createTextRange();
+        range.moveToElementText(el);
+        range.select();
+    } else if (window.getSelection) {
+        let range = document.createRange();
+        range.selectNode(el);
+        window.getSelection().addRange(range);
+    }
+}
+
+function getFieldVariableName(f) {
+    return f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1' )
+}
+
+function updateFieldVariables() {
+    const fields = dom.querySelectorAll('input[name], select[name], textarea[name], button[name]');
+    const fieldVariables = [].map.call(fields, (f) => '[' +  getFieldVariableName(f) + ']');
+    const variableElements = fieldVariables.map((n) => {
+        let el = document.createElement('code');
+        el.innerText = n;
+        return el;
+    });
+
+    [].forEach.call( document.querySelectorAll('.hf-field-names'), (el) => {
+        while (el.firstChild) {
+            el.removeChild(el.firstChild);
+        }
+
+        variableElements.forEach((vel, i, arr) => {
+            el.appendChild(vel);
+
+            if( i < ( arr.length - 1 ) ) {
+                el.appendChild(document.createTextNode(', '));
+            }
+        })
+    });
 }
 
 function updateShadowDOM() {
@@ -40,13 +83,13 @@ function updateShadowDOM() {
 
 function updateRequiredFields() {
     let fields = dom.querySelectorAll('[required]');
-    let fieldNames = [].map.call(fields, (f) => f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1' ));
+    let fieldNames = [].map.call(fields, getFieldVariableName);
     requiredFieldsInput.value = fieldNames.join(',');
 }
 
 function updateEmailFields() {
     let fields = dom.querySelectorAll('input[type="email"]');
-    let fieldNames = [].map.call(fields, (f) => f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1' ));
+    let fieldNames = [].map.call(fields, getFieldVariableName);
     emailFieldsInput.value = fieldNames.join(',');
 }
 
