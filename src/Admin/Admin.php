@@ -16,12 +16,14 @@ class Admin {
         add_action( 'admin_menu', array( $this, 'menu' ) );
         add_action( 'init', array( $this, 'listen' ) );
         add_action( 'admin_print_styles', array( $this, 'assets' ) );
-        add_action( 'html_forms_admin_action_create_form', array( $this, 'process_create_form' ) );
-        add_action( 'html_forms_admin_action_save_form', array( $this, 'process_save_form' ) );
+        add_action( 'hf_admin_action_create_form', array( $this, 'process_create_form' ) );
+        add_action( 'hf_admin_action_save_form', array( $this, 'process_save_form' ) );
+        add_action( 'hf_admin_action_bulk_delete_submissions', array( $this, 'process_bulk_delete_submissions' ) );
     }
 
     public function listen() {
-        if( empty( $_REQUEST['_html_forms_admin_action'] ) ) {
+        $request = array_merge( $_GET, $_POST );
+        if( empty( $request['_hf_admin_action'] ) ) {
             return;
         }
 
@@ -30,10 +32,10 @@ class Admin {
             return;
         }
 
-        $action = (string) $_REQUEST['_html_forms_admin_action'];
+        $action = (string) $request['_hf_admin_action'];
 
         /**
-         * Allows you to hook into requests containing `_html_forms_admin_action` => action name.
+         * Allows you to hook into requests containing `_hf_admin_action` => action name.
          *
          * The dynamic portion of the hook name, `$action`, refers to the action name.
          *
@@ -42,10 +44,10 @@ class Admin {
          *
          * @since 3.0
          */
-        do_action( 'html_forms_admin_action_' . $action );
+        do_action( 'hf_admin_action_' . $action );
 
         // redirect back to where we came from
-        $redirect_url = ! empty( $_REQUEST['_redirect_to'] ) ? $_REQUEST['_redirect_to'] : remove_query_arg( '_html_forms_admin_action' );
+        $redirect_url = ! empty( $_REQUEST['_redirect_to'] ) ? $_REQUEST['_redirect_to'] : remove_query_arg( '_hf_admin_action' );
         wp_safe_redirect( $redirect_url );
         exit;
     }
@@ -192,6 +194,13 @@ class Admin {
         $actions = apply_filters( 'hf_available_form_actions', $actions );
 
         return $actions;
+    }
+
+    public function process_bulk_delete_submissions() {
+        global $wpdb;
+        $table = $wpdb->prefix .'hf_submissions';
+        $ids = join( ',', array_map( 'esc_sql', $_POST['id'] ) );
+        $wpdb->query( sprintf( "DELETE FROM {$table} WHERE id IN( %s );", $ids ) );
     }
 
 }

@@ -15,7 +15,7 @@
     <h1 class="page-title"><?php _e( 'Add new form', 'html-forms' ); ?></h1>
 
     <form method="post" style="max-width: 600px;">
-        <input type="hidden" name="_html_forms_admin_action" value="create_form" />
+        <input type="hidden" name="_hf_admin_action" value="create_form" />
 
         <p>
             <label>Form title</label>

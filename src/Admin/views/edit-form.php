@@ -21,7 +21,7 @@ $tabs = array(
     <h1 class="page-title"><?php _e( 'Edit form', 'html-forms' ); ?></h1>
 
     <form method="post">
-        <input type="hidden" name="_html_forms_admin_action" value="save_form" />
+        <input type="hidden" name="_hf_admin_action" value="save_form" />
         <input type="hidden" name="form_id" value="<?php echo esc_attr( $form->ID ); ?>" />
         <input type="submit" style="display: none; " />
 
