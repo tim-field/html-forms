@@ -18,7 +18,7 @@ msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
 #: src/Actions/Email.php:14
-msgid "Email"
+msgid "Send Email"
 msgstr ""
 
 #: src/Actions/Email.php:24
@@ -169,6 +169,6 @@ msgstr ""
 msgid "Leave empty or enter <code>0</code> for no redirect. Otherwise, use complete (absolute) URLs, including <code>http://</code>."
 msgstr ""
 
-#: src/Admin/views/tab-submissions.php:6
+#: src/Admin/views/tab-submissions.php:9
 msgid "Form Submissions"
 msgstr ""

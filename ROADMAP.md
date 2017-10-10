@@ -1,10 +1,10 @@
 ## Must
 
 ## Should
+- Helper for generating field HTML and adding to form editor.
 
 
 ## Could
-- Helper for generating field HTML and adding to form editor.
 - Pre-set form CSS themes
 - Form widget.
 - Function to register static forms (for theme developers).
@@ -15,7 +15,6 @@
 - Allow renaming submission columns (key rename).
 - Export as CSV / XSL
 - Delete individual form submissions.
-- Bulk delete form submissions.
 - Paginate form submissions
 
 ## Would

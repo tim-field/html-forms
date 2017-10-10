@@ -1,5 +1,9 @@
 <div class="hf-small-margin">
-    <label>Form code</label>
+    <div id="hf-field-builder"></div>
+</div>
+
+<div class="hf-small-margin">
+    <h4><label for="hf-form-editor"><?php _e( 'Form code', 'html-forms' ); ?></label></h4>
     <textarea id="hf-form-editor" class="widefat" name="form[markup]" cols="160" rows="20" autocomplete="false" autocorrect="false" autocapitalize="false" spellcheck="false"><?php echo htmlspecialchars( $form->markup, ENT_QUOTES, get_option( 'blog_charset' ) ); ?></textarea>
     <?php submit_button(); ?>
 </div>
