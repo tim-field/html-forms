@@ -8,10 +8,10 @@ use HTML_Forms\Submission;
 class Email extends Action {
 
    public $type = 'email';
-   public $label = 'Email';
+   public $label = 'Send Email';
 
    public function __construct() {
-       $this->label = __( 'Email', 'html-forms' );
+       $this->label = __( 'Send Email', 'html-forms' );
    }
 
    public function page_settings( $settings ) {

@@ -1,7 +1,7 @@
 ## Must
 
 ## Should
-- Helper for inserting data variables in string settings.
+
 
 ## Could
 - Helper for generating field HTML and adding to form editor.

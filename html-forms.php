@@ -49,7 +49,7 @@ function _bootstrap() {
 }
 
 function _install() {
-    /** @var WPDB */
+    /** @var wpdb */
     global $wpdb;
 
     $table = $wpdb->prefix . 'hf_submissions';
