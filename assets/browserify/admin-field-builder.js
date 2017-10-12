@@ -2,7 +2,7 @@
 
 import { h, Component, render } from 'preact';
 import linkState from 'linkstate';
-import { AddToForm, RequiredField, DefaultValue, Placeholder, Label, Wrap } from './field-builder/config-fields.js';
+import { AddToForm, Required, DefaultValue, Placeholder, Label, Wrap, Choices, ButtonText } from './field-builder/config-fields.js';
 import { htmlgenerate } from './field-builder/html.js';
 let Editor;
 
@@ -68,14 +68,31 @@ class FieldConfigurator extends Component {
             fieldType: props.fieldType,
             fieldLabel: "",
             placeholder: "",
-            defaultValue: "",
+            value: "",
             wrap: true,
             required: false,
+            choices: [
+                {
+                    checked: false,
+                    label: "One",
+                },
+                {
+                    checked: false,
+                    label: "Two",
+                },
+            ],
         };
 
-        this.addToForm = this.addToForm.bind(this)
-        FieldConfigurator.handleKeyPress = FieldConfigurator.handleKeyPress.bind(this)
-        this.handleCancel = this.handleCancel.bind(this)
+        this.addToForm = this.addToForm.bind(this);
+        FieldConfigurator.handleKeyPress = FieldConfigurator.handleKeyPress.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+
+        this.choiceHandlers = {
+            "add": this.addChoice.bind(this),
+            "delete": this.deleteChoice.bind(this),
+            "changeLabel": this.changeChoiceLabel.bind(this),
+            "toggleChecked": this.toggleChoiceChecked.bind(this),
+        }
     }
 
     componentWillReceiveProps(props) {
@@ -85,6 +102,33 @@ class FieldConfigurator extends Component {
     addToForm() {
         const html = htmlgenerate(this.state);
         Editor.replaceSelection(html);
+    }
+
+    addChoice(e) {
+        let arr = this.state.choices;
+        arr.push({ checked: false, label: "..." });
+        this.setState({choices: arr });
+    }
+
+    deleteChoice(e) {
+        let arr = this.state.choices;
+        let index = e.target.parentElement.getAttribute('data-key');
+        arr.splice(index, 1);
+        this.setState({choices: arr });
+    }
+
+    changeChoiceLabel(e) {
+        let arr = this.state.choices;
+        let index = e.target.parentElement.getAttribute('data-key');
+        arr[index].label = e.target.value;
+        this.setState({choices: arr });
+    }
+
+    toggleChoiceChecked(e) {
+        let arr = this.state.choices;
+        let index = e.target.parentElement.getAttribute('data-key');
+        arr[index].checked = !arr[index].checked;
+        this.setState({choices: arr });
     }
 
     static handleKeyPress(e) {
@@ -99,7 +143,7 @@ class FieldConfigurator extends Component {
     }
 
     render(props, state) {
-        console.log(this.state);
+        console.log(state);
 
         if(state.fieldType === "") {
             return "";
@@ -107,7 +151,7 @@ class FieldConfigurator extends Component {
 
         let formFields;
 
-        switch(this.state.fieldType) {
+        switch(state.fieldType) {
             case "text":
             case "email":
             case "url":
@@ -115,11 +159,11 @@ class FieldConfigurator extends Component {
             case "textarea":
                 formFields = (
                     <div>
-                        <Label value={this.state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
-                        <Placeholder value={this.state.placeholder} onChange={linkState(this, 'placeholder')}/>
-                        <DefaultValue value={this.state.defaultValue} onChange={linkState(this, 'defaultValue')}/>
-                        <RequiredField checked={this.state.required} onChange={linkState(this, 'required')}/>
-                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')}/>
+                        <Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
+                        <Placeholder value={state.placeholder} onChange={linkState(this, 'placeholder')}/>
+                        <DefaultValue value={state.value} onChange={linkState(this, 'value')}/>
+                        <Required checked={state.required} onChange={linkState(this, 'required')}/>
+                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')}/>
                         <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
                     </div>
                 );
@@ -127,8 +171,8 @@ class FieldConfigurator extends Component {
             case "submit":
                 formFields = (
                     <div>
-                        <DefaultValue value={this.state.defaultValue} onChange={linkState(this, 'defaultValue')}/>
-                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')}/>
+                        <ButtonText value={state.value} onChange={linkState(this, 'value')}/>
+                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')}/>
                         <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
                     </div>
                 );
@@ -137,21 +181,33 @@ class FieldConfigurator extends Component {
             case "date":
                 formFields = (
                     <div>
-                        <Label value={this.state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
-                        <DefaultValue value={this.state.defaultValue} onChange={linkState(this, 'defaultValue')}/>
-                        <RequiredField checked={this.state.required} onChange={linkState(this, 'required')}/>
-                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')}/>
+                        <Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
+                        <DefaultValue value={state.value} onChange={linkState(this, 'value')}/>
+                        <Required checked={state.required} onChange={linkState(this, 'required')}/>
+                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')}/>
+                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
+                    </div>
+                );
+                break;
+            case "dropdown":
+                formFields = (
+                    <div>
+                        <Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')} />
+                        <Choices multiple={false} choices={state.choices} handlers={this.choiceHandlers} />
+                        <Required checked={state.required} onChange={linkState(this, 'required')}/>
+                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')} />
                         <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
                     </div>
                 );
                 break;
 
             case "radio-buttons":
-            case "dropdown":
             case "checkboxes":
                 formFields = (
                     <div>
-                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')} />
+                        <Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
+                        <Choices multiple={state.fieldType === "checkboxes"} choices={state.choices} handlers={this.choiceHandlers} />
+                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')} />
                         <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
                     </div>
                 );

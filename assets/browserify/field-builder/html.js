@@ -15,7 +15,7 @@ function htmlgenerate(conf) {
                 required: conf.required,
                 placeholder: conf.placeholder,
                 name: namify(conf.fieldLabel),
-                value: conf.defaultValue,
+                value: conf.value,
             };
             field = html("input", fieldAttr);
             break;
@@ -28,6 +28,57 @@ function htmlgenerate(conf) {
             field = html("textarea", fieldAttr, conf.value);
             break;
 
+        case "dropdown":
+            fieldAttr = {
+                required: conf.required,
+                name: namify(conf.fieldLabel),
+            };
+            const opts = conf.choices.map((choice) => (
+                html("option", { defaultChecked: choice.checked }, choice.label )
+            ));
+            field = html("select", fieldAttr, opts);
+            break;
+
+        case "radio-buttons":
+            field = conf.choices.map((choice) => (
+                html("label", {}, [
+                    html("input", {
+                        type:"radio",
+                        name: namify(conf.fieldLabel),
+                        value: choice.label,
+                        selected: choice.checked,
+                    }),
+                    " ",
+                    html("span", {}, choice.label )
+                ])
+            ));
+            break;
+
+        case "checkboxes":
+            field = conf.choices.map((choice) => (
+                html("label", {}, [
+                    html("input", {
+                        type: "checkbox",
+                        name: namify(conf.fieldLabel) + "[]",
+                        value: choice.label,
+                        checked: choice.checked,
+                    }),
+                    " ",
+                    html("span", {}, choice.label )
+                ])
+            ));
+            break;
+
+        case "submit":
+            fieldAttr = {
+                type: "submit",
+                value: conf.value,
+            };
+            field = html("input", fieldAttr);
+            break;
+
+
+
     }
 
     let str = "";
@@ -38,6 +89,8 @@ function htmlgenerate(conf) {
         str += renderToString(label);
         str += renderToString(field);
     }
+
+    console.log(str);
 
     str = htmlutil.prettyPrint(str);
     return str;

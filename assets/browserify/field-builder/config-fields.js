@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import { h, Component } from 'preact';
 
 function AddToForm(props){
     return (
@@ -27,6 +27,16 @@ function Placeholder(props){
     )
 }
 
+function ButtonText(props){
+    return (
+        <div class="hf-small-margin">
+            <label for="hf-fg-default-value">Button text</label>
+            <input id="hf-fg-default-value" type="text" value={props.value} onChange={props.onChange} />
+            <p class="help">Text to show on the button.</p>
+        </div>
+    )
+}
+
 function DefaultValue(props){
     return (
         <div class="hf-small-margin">
@@ -48,7 +58,7 @@ function Wrap(props) {
     )
 }
 
-function RequiredField(props) {
+function Required(props) {
     return (
         <div class="hf-small-margin">
             <label class="inline">
@@ -59,6 +69,24 @@ function RequiredField(props) {
     )
 }
 
+function Choices(props) {
+    let choiceFields = props.choices.map((choice, k) => (
+        <div data-key={k}>
+            <input type={props.multiple ? "checkbox" : "radio"} name="selected" defaultChecked={choice.checked} onChange={props.handlers.toggleChecked} />
+            <input type="text" value={choice.label} placeholder="Choice label" style="width: 80%;" onChange={props.handlers.changeLabel} />
+            <a href="javascript:void(0);" onClick={props.handlers.delete} style="text-decoration: none;">✕</a>
+        </div>
+    ));
+
+    return (
+        <div class="hf-small-margin">
+            <label>Choices</label>
+            {choiceFields}
+            <input type={props.multiple ? "checkbox" : "radio"} style="visibility: hidden;" /><a href="javascript:void(0);" onClick={props.handlers.add}>Add choice</a>
+        </div>
+    )
+}
+
 export {
-    AddToForm, Label, Placeholder, DefaultValue, Wrap, RequiredField
+    AddToForm, Label, Placeholder, DefaultValue, Wrap, Required, Choices, ButtonText
 }
