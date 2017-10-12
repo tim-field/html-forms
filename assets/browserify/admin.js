@@ -11,5 +11,5 @@ if( document.getElementById('hf-form-editor') ) {
     Editor.init();
     Actions.init();
 
-    FieldBuilder.init();
+    FieldBuilder.init(Editor);
 }

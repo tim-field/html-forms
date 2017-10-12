@@ -2,8 +2,10 @@
 
 import { h, Component, render } from 'preact';
 import linkState from 'linkstate';
-import renderToString from 'preact-render-to-string';
-import htmlutil from 'html';
+import { AddToForm, RequiredField, DefaultValue, Placeholder, Label, Wrap } from './field-builder/config-fields.js';
+import { htmlgenerate } from './field-builder/html.js';
+let Editor;
+
 
 class FieldBuilder extends Component {
     constructor() {
@@ -13,33 +15,45 @@ class FieldBuilder extends Component {
             fieldType: "",
         };
 
-        this.setFieldType = this.setFieldType.bind(this);
+        this.handleCancel = this.handleCancel.bind(this)
     }
 
-    setFieldType(e) {
-       this.setState({ fieldType: e.target.value });
+    handleCancel() {
+        this.setState({ fieldType: "" })
     }
 
-    render() {
+    render(props, state) {
+        const fields = {
+            "text": "Text",
+            "email": "Email",
+            "url": "URL",
+            "number": "Number",
+            "date": "Date",
+            "textarea": "Textarea",
+            "dropdown": "Dropdown",
+            "checkboxes": "Checkboxes",
+            "radio-buttons": "Radio buttons",
+            "submit": "Submit button",
+        };
+        const fieldButtons = Object.keys(fields).map((key) => {
+                let label = fields[key];
+                return (
+                    <button type="button" value={key} className={"button " + ( state.fieldType === key ? "active" : "")}
+                        onClick={linkState(this, 'fieldType')}>{label}</button>
+                )
+            }
+        );
+
         return (
             <div class="hf-field-builder">
                 <h4>
                     Add field
                 </h4>
-                <div>
-                    <button type="button" value="text" className="button" onClick={linkState(this, 'fieldType')}>Text</button> &nbsp;
-                    <button type="button" value="email" className="button" onClick={linkState(this, 'fieldType')}>Email</button> &nbsp;
-                    <button type="button" value="url" className="button" onClick={linkState(this, 'fieldType')}>URL</button> &nbsp;
-                    <button type="button" value="number" className="button" onClick={linkState(this, 'fieldType')}>Number</button> &nbsp;
-                    <button type="button" value="date" className="button" onClick={linkState(this, 'fieldType')}>Date</button> &nbsp;
-                    <button type="button" value="textarea" className="button" onClick={linkState(this, 'fieldType')}>Textarea</button> &nbsp;
-                    <button type="button" value="dropdown" className="button" onClick={linkState(this, 'fieldType')}>Dropdown Menu</button> &nbsp;
-                    <button type="button" value="checkboxes" className="button" onClick={linkState(this, 'fieldType')}>Checkboxes</button> &nbsp;
-                    <button type="button" value="radio-buttons" className="button" onClick={linkState(this, 'fieldType')}>Radio buttons</button> &nbsp;
-                    <button type="button" value="submit" className="button" onClick={linkState(this, 'fieldType')}>Submit</button> &nbsp;
+                <div class="available-fields">
+                    {fieldButtons}
                 </div>
                 <div style="max-width: 480px;">
-                    <FieldConfigurator fieldType={this.state.fieldType} />
+                    <FieldConfigurator fieldType={this.state.fieldType} onCancel={this.handleCancel} />
                 </div>
             </div>
         );
@@ -52,15 +66,16 @@ class FieldConfigurator extends Component {
 
         this.state = {
             fieldType: props.fieldType,
-            required: false,
+            fieldLabel: "",
             placeholder: "",
             defaultValue: "",
-            fieldLabel: "",
             wrap: true,
+            required: false,
         };
 
         this.addToForm = this.addToForm.bind(this)
         this.handleKeyPress = this.handleKeyPress.bind(this)
+        this.handleCancel = this.handleCancel.bind(this)
     }
 
     componentWillReceiveProps(props) {
@@ -68,34 +83,19 @@ class FieldConfigurator extends Component {
     }
 
     addToForm() {
-        let label = this.state.fieldLabel.length ? h("label", {}, this.state.fieldLabel ) : "";
-        let field = h("input", filterEmptyObjectValues({
-            type: this.state.fieldType,
-            required: this.state.required,
-            placeholder: this.state.placeholder,
-            value: this.state.defaultValue,
-        }));
-
-        let html = "";
-        if( this.state.wrap ) {
-           let tmpl = h("p", {}, [label, field]);
-           html = renderToString(tmpl);
-        } else {
-           html += renderToString(label);
-           html += renderToString(field);
-        }
-
-        html = htmlutil.prettyPrint(html);
-        console.log(html);
-
-        // TODO: Add to editor here.
+        const html = htmlgenerate(this.state);
+        Editor.replaceSelection(html);
     }
 
     handleKeyPress(e) {
+        // stop RETURN from submitting the parent form.
         if(e.keyCode === 13) {
-            this.addToForm();
             e.preventDefault();
         }
+    }
+
+    handleCancel() {
+        this.props.onCancel();
     }
 
     render() {
@@ -108,91 +108,59 @@ class FieldConfigurator extends Component {
             case "text":
             case "email":
             case "url":
+            case "number":
+            case "textarea":
                 return (
                     <div onKeyPress={this.handleKeyPress}>
-                        <Label value={this.state.fieldLabel} onChange={linkState(this, 'fieldLabel')} />
-                        <Placeholder value={this.state.placeholder}  onChange={linkState(this, 'placeholder')} />
-                        <DefaultValue value={this.state.defaultValue}  onChange={linkState(this, 'defaultValue')} />
-                        <RequiredField checked={this.state.required}  onChange={linkState(this, 'required')} />
-                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')} />
-                        <AddToForm onClick={this.addToForm} />
+                        <Label value={this.state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
+                        <Placeholder value={this.state.placeholder} onChange={linkState(this, 'placeholder')}/>
+                        <DefaultValue value={this.state.defaultValue} onChange={linkState(this, 'defaultValue')}/>
+                        <RequiredField checked={this.state.required} onChange={linkState(this, 'required')}/>
+                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')}/>
+                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
+                    </div>
+                );
+
+            case "submit":
+                return (
+                    <div onKeyPress={this.handleKeyPress}>
+                        <DefaultValue value={this.state.defaultValue} onChange={linkState(this, 'defaultValue')}/>
+                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')}/>
+                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
+                    </div>
+                );
+
+            case "date":
+                return (
+                    <div onKeyPress={this.handleKeyPress}>
+                        <Label value={this.state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
+                        <DefaultValue value={this.state.defaultValue} onChange={linkState(this, 'defaultValue')}/>
+                        <RequiredField checked={this.state.required} onChange={linkState(this, 'required')}/>
+                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')}/>
+                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
+                    </div>
+                );
+
+            case "radio-buttons":
+            case "dropdown":
+            case "checkboxes":
+                return (
+                    <div onKeyPress={this.handleKeyPress}>
+                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')}/>
+                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
                     </div>
                 );
         }
+
     }
 }
 
-function filterEmptyObjectValues(obj) {
-    let newObj = {};
-    for (var propName in obj) {
-        if( obj[propName] !== false && obj[propName] !== "" ) {
-            newObj[propName] = obj[propName];
-        }
-    }
-    return newObj;
-}
 
-function AddToForm(props){
-    return (
-        <div class="hf-small-margin">
-            <button class="button" type="button" onClick={props.onClick}>Add to form</button>
-        </div>
-    )
-}
-
-function Label(props){
-    return (
-        <div class="hf-small-margin">
-            <label>Field label</label>
-            <input type="text" value={props.value} onChange={props.onChange} />
-        </div>
-    )
-}
-
-function Placeholder(props){
-    return (
-        <div class="hf-small-margin">
-            <label>Placeholder <span class="hf-italic hf-pull-right">Optional</span></label>
-            <input type="text" value={props.value} onChange={props.onChange} />
-            <p class="help">Text to show when field has no value.</p>
-        </div>
-    )
-}
-
-function DefaultValue(props){
-    return (
-        <div class="hf-small-margin">
-            <label>Default value <span class="hf-italic hf-pull-right">Optional</span></label>
-            <input type="text" value={props.value} onChange={props.onChange} />
-            <p class="help">Text to pre-fill this field with.</p>
-        </div>
-    )
-}
-
-function Wrap(props) {
-    return (
-        <div class="hf-small-margin">
-            <label  class="inline">
-                <input type="checkbox" value="1" defaultChecked={props.checked} onChange={props.onChange} />
-                Wrap field in paragraph tags?
-            </label>
-        </div>
-    )
-}
-
-function RequiredField(props) {
-    return (
-        <div class="hf-small-margin">
-            <label class="inline">
-                <input type="checkbox" value="1" defaultChecked={props.checked} onChange={props.onChange} />
-                Required field?
-            </label>
-        </div>
-    )
-}
 
 export default {
-    init: function() {
+    init: function(editor) {
+        Editor = editor;
+
         render((
             <FieldBuilder />
         ), document.getElementById('hf-field-builder'));

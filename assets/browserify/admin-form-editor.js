@@ -37,18 +37,6 @@ function init() {
     updateFieldVariables();
 }
 
-function selectText(el) {
-    if (document.selection) {
-        let range = document.body.createTextRange();
-        range.moveToElementText(el);
-        range.select();
-    } else if (window.getSelection) {
-        let range = document.createRange();
-        range.selectNode(el);
-        window.getSelection().addRange(range);
-    }
-}
-
 function getFieldVariableName(f) {
     return f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1' )
 }
@@ -93,6 +81,12 @@ function updateEmailFields() {
     emailFieldsInput.value = fieldNames.join(',');
 }
 
+function replaceSelection(str) {
+    editor.replaceSelection(str);
+    editor.focus();
+}
+
 export default {
     'init': init,
+    'replaceSelection': replaceSelection,
 };

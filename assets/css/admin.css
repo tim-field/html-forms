@@ -59,6 +59,9 @@
 .hf-italic {
   font-style: italic; }
 
+.hf-small {
+  font-size: 90%; }
+
 .hf-pull-right {
   float: right; }
 
@@ -78,6 +81,8 @@
     margin-top: 0; }
   .hf-field-builder input[type="text"] {
     width: 100%; }
+  .hf-field-builder .available-fields button {
+    margin-right: 4px; }
 
 /* BASICS */
 /* Codemirror */
