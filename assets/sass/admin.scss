@@ -117,7 +117,13 @@
   .available-fields button {
     margin-right: 4px;
   }
+
+  .field-config *:last-child {
+    margin-bottom: 0;
+  }
 }
+
+
 
 
 @import "codemirror";

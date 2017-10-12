@@ -118,7 +118,7 @@ var FieldConfigurator = function (_Component2) {
         };
 
         _this3.addToForm = _this3.addToForm.bind(_this3);
-        _this3.handleKeyPress = _this3.handleKeyPress.bind(_this3);
+        FieldConfigurator.handleKeyPress = FieldConfigurator.handleKeyPress.bind(_this3);
         _this3.handleCancel = _this3.handleCancel.bind(_this3);
         return _this3;
     }
@@ -135,35 +135,30 @@ var FieldConfigurator = function (_Component2) {
             Editor.replaceSelection(html);
         }
     }, {
-        key: 'handleKeyPress',
-        value: function handleKeyPress(e) {
-            // stop RETURN from submitting the parent form.
-            if (e.keyCode === 13) {
-                e.preventDefault();
-            }
-        }
-    }, {
         key: 'handleCancel',
         value: function handleCancel() {
             this.props.onCancel();
         }
     }, {
         key: 'render',
-        value: function render() {
+        value: function render(props, state) {
             console.log(this.state);
-            switch (this.state.fieldType) {
-                case "":
-                default:
-                    return "";
 
+            if (state.fieldType === "") {
+                return "";
+            }
+
+            var formFields = void 0;
+
+            switch (this.state.fieldType) {
                 case "text":
                 case "email":
                 case "url":
                 case "number":
                 case "textarea":
-                    return (0, _preact.h)(
+                    formFields = (0, _preact.h)(
                         'div',
-                        { onKeyPress: this.handleKeyPress },
+                        null,
                         (0, _preact.h)(_configFields.Label, { value: this.state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
                         (0, _preact.h)(_configFields.Placeholder, { value: this.state.placeholder, onChange: (0, _linkstate2.default)(this, 'placeholder') }),
                         (0, _preact.h)(_configFields.DefaultValue, { value: this.state.defaultValue, onChange: (0, _linkstate2.default)(this, 'defaultValue') }),
@@ -171,36 +166,53 @@ var FieldConfigurator = function (_Component2) {
                         (0, _preact.h)(_configFields.Wrap, { checked: this.state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
                         (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
                     );
-
+                    break;
                 case "submit":
-                    return (0, _preact.h)(
+                    formFields = (0, _preact.h)(
                         'div',
-                        { onKeyPress: this.handleKeyPress },
+                        null,
                         (0, _preact.h)(_configFields.DefaultValue, { value: this.state.defaultValue, onChange: (0, _linkstate2.default)(this, 'defaultValue') }),
                         (0, _preact.h)(_configFields.Wrap, { checked: this.state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
                         (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
                     );
+                    break;
 
                 case "date":
-                    return (0, _preact.h)(
+                    formFields = (0, _preact.h)(
                         'div',
-                        { onKeyPress: this.handleKeyPress },
+                        null,
                         (0, _preact.h)(_configFields.Label, { value: this.state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
                         (0, _preact.h)(_configFields.DefaultValue, { value: this.state.defaultValue, onChange: (0, _linkstate2.default)(this, 'defaultValue') }),
                         (0, _preact.h)(_configFields.RequiredField, { checked: this.state.required, onChange: (0, _linkstate2.default)(this, 'required') }),
                         (0, _preact.h)(_configFields.Wrap, { checked: this.state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
                         (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
                     );
+                    break;
 
                 case "radio-buttons":
                 case "dropdown":
                 case "checkboxes":
-                    return (0, _preact.h)(
+                    formFields = (0, _preact.h)(
                         'div',
-                        { onKeyPress: this.handleKeyPress },
+                        null,
                         (0, _preact.h)(_configFields.Wrap, { checked: this.state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
                         (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
                     );
+                    break;
+            }
+
+            return (0, _preact.h)(
+                'div',
+                { 'class': 'field-config', onKeyPress: FieldConfigurator.handleKeyPress },
+                formFields
+            );
+        }
+    }], [{
+        key: 'handleKeyPress',
+        value: function handleKeyPress(e) {
+            // stop RETURN from submitting the parent form.
+            if (e.keyCode === 13) {
+                e.preventDefault();
             }
         }
     }]);

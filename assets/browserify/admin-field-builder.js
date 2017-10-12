@@ -74,7 +74,7 @@ class FieldConfigurator extends Component {
         };
 
         this.addToForm = this.addToForm.bind(this)
-        this.handleKeyPress = this.handleKeyPress.bind(this)
+        FieldConfigurator.handleKeyPress = FieldConfigurator.handleKeyPress.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
     }
 
@@ -87,7 +87,7 @@ class FieldConfigurator extends Component {
         Editor.replaceSelection(html);
     }
 
-    handleKeyPress(e) {
+    static handleKeyPress(e) {
         // stop RETURN from submitting the parent form.
         if(e.keyCode === 13) {
             e.preventDefault();
@@ -98,20 +98,23 @@ class FieldConfigurator extends Component {
         this.props.onCancel();
     }
 
-    render() {
+    render(props, state) {
         console.log(this.state);
-        switch(this.state.fieldType) {
-            case "":
-            default:
-                return "";
 
+        if(state.fieldType === "") {
+            return "";
+        }
+
+        let formFields;
+
+        switch(this.state.fieldType) {
             case "text":
             case "email":
             case "url":
             case "number":
             case "textarea":
-                return (
-                    <div onKeyPress={this.handleKeyPress}>
+                formFields = (
+                    <div>
                         <Label value={this.state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
                         <Placeholder value={this.state.placeholder} onChange={linkState(this, 'placeholder')}/>
                         <DefaultValue value={this.state.defaultValue} onChange={linkState(this, 'defaultValue')}/>
@@ -120,19 +123,20 @@ class FieldConfigurator extends Component {
                         <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
                     </div>
                 );
-
+                break;
             case "submit":
-                return (
-                    <div onKeyPress={this.handleKeyPress}>
+                formFields = (
+                    <div>
                         <DefaultValue value={this.state.defaultValue} onChange={linkState(this, 'defaultValue')}/>
                         <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')}/>
                         <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
                     </div>
                 );
+                break;
 
             case "date":
-                return (
-                    <div onKeyPress={this.handleKeyPress}>
+                formFields = (
+                    <div>
                         <Label value={this.state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
                         <DefaultValue value={this.state.defaultValue} onChange={linkState(this, 'defaultValue')}/>
                         <RequiredField checked={this.state.required} onChange={linkState(this, 'required')}/>
@@ -140,18 +144,25 @@ class FieldConfigurator extends Component {
                         <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
                     </div>
                 );
+                break;
 
             case "radio-buttons":
             case "dropdown":
             case "checkboxes":
-                return (
-                    <div onKeyPress={this.handleKeyPress}>
-                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')}/>
+                formFields = (
+                    <div>
+                        <Wrap checked={this.state.wrap} onChange={linkState(this, 'wrap')} />
                         <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
                     </div>
                 );
+                break;
         }
 
+        return (
+            <div class="field-config" onKeyPress={FieldConfigurator.handleKeyPress}>
+                {formFields}
+            </div>
+        )
     }
 }
 
