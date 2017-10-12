@@ -1,10 +1,12 @@
 ## Must
+- Test field builder for errors and in different browsers.
 
 ## Should
-- Helper for generating field HTML and adding to form editor.
-
+- Mark required fields in field builder.
+- Test switching between fields in field builder for stray attributes. 
 
 ## Could
+- Add `date` and `number` specific attributes to these fields in the field builder.
 - Pre-set form CSS themes
 - Form widget.
 - Function to register static forms (for theme developers).
