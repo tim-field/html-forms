@@ -77,4 +77,39 @@
   clear: both;
 }
 
+.hf-italic {
+  font-style: italic;
+}
+
+.hf-pull-right {
+  float: right;
+}
+
+.hf-field-builder {
+  h4:first-of-type{
+    margin-top: 0;
+  }
+
+  border: 1px solid #ccc;
+  padding: 20px;
+  background: #fff;
+
+  label{
+    display: block;
+    font-weight: bold;
+
+    &.inline,
+    span {
+      font-weight: normal;
+    }
+  }
+
+  .help { margin-top: 0; }
+
+  input[type="text"] {
+    width: 100%;
+  }
+}
+
+
 @import "codemirror";

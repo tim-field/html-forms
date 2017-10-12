@@ -89,6 +89,10 @@ msgstr ""
 msgid "Enter the title of your sign-up form"
 msgstr ""
 
+#: src/Admin/views/edit-form.php:35
+msgid "Copy this shortcode and paste it into your post, page, or text widget content:"
+msgstr ""
+
 #: src/Admin/views/overview.php:14, src/Admin/views/overview.php:17
 msgid "Forms"
 msgstr ""
@@ -103,6 +107,10 @@ msgstr ""
 
 #: src/Admin/views/tab-actions.php:26
 msgid "Add form action"
+msgstr ""
+
+#: src/Admin/views/tab-fields.php:6
+msgid "Form code"
 msgstr ""
 
 #: src/Admin/views/tab-messages.php:6

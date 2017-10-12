@@ -56,6 +56,29 @@
 .clear {
   clear: both; }
 
+.hf-italic {
+  font-style: italic; }
+
+.hf-pull-right {
+  float: right; }
+
+.hf-field-builder {
+  border: 1px solid #ccc;
+  padding: 20px;
+  background: #fff; }
+  .hf-field-builder h4:first-of-type {
+    margin-top: 0; }
+  .hf-field-builder label {
+    display: block;
+    font-weight: bold; }
+    .hf-field-builder label.inline,
+    .hf-field-builder label span {
+      font-weight: normal; }
+  .hf-field-builder .help {
+    margin-top: 0; }
+  .hf-field-builder input[type="text"] {
+    width: 100%; }
+
 /* BASICS */
 /* Codemirror */
 .CodeMirror {

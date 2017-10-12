@@ -9,27 +9,53 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _preact = require('preact');
 
+var _linkstate = require('linkstate');
+
+var _linkstate2 = _interopRequireDefault(_linkstate);
+
+var _preactRenderToString = require('preact-render-to-string');
+
+var _preactRenderToString2 = _interopRequireDefault(_preactRenderToString);
+
+var _html = require('html');
+
+var _html2 = _interopRequireDefault(_html);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Clock = function (_Component) {
-    _inherits(Clock, _Component);
+var FieldBuilder = function (_Component) {
+    _inherits(FieldBuilder, _Component);
 
-    function Clock() {
-        _classCallCheck(this, Clock);
+    function FieldBuilder() {
+        _classCallCheck(this, FieldBuilder);
 
-        return _possibleConstructorReturn(this, (Clock.__proto__ || Object.getPrototypeOf(Clock)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (FieldBuilder.__proto__ || Object.getPrototypeOf(FieldBuilder)).call(this));
+
+        _this.state = {
+            fieldType: ""
+        };
+
+        _this.setFieldType = _this.setFieldType.bind(_this);
+        return _this;
     }
 
-    _createClass(Clock, [{
+    _createClass(FieldBuilder, [{
+        key: 'setFieldType',
+        value: function setFieldType(e) {
+            this.setState({ fieldType: e.target.value });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return (0, _preact.h)(
                 'div',
-                null,
+                { 'class': 'hf-field-builder' },
                 (0, _preact.h)(
                     'h4',
                     null,
@@ -39,80 +65,281 @@ var Clock = function (_Component) {
                     'div',
                     null,
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'text', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'Text'
                     ),
                     ' \xA0',
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'email', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'Email'
                     ),
                     ' \xA0',
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'url', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'URL'
                     ),
                     ' \xA0',
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'number', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'Number'
                     ),
                     ' \xA0',
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'date', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'Date'
                     ),
                     ' \xA0',
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'textarea', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'Textarea'
                     ),
                     ' \xA0',
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'dropdown', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'Dropdown Menu'
                     ),
                     ' \xA0',
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'checkboxes', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'Checkboxes'
                     ),
                     ' \xA0',
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'radio-buttons', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'Radio buttons'
                     ),
                     ' \xA0',
                     (0, _preact.h)(
-                        'a',
-                        { className: 'button' },
+                        'button',
+                        { type: 'button', value: 'submit', className: 'button', onClick: (0, _linkstate2.default)(this, 'fieldType') },
                         'Submit'
                     ),
                     ' \xA0'
+                ),
+                (0, _preact.h)(
+                    'div',
+                    { style: 'max-width: 480px;' },
+                    (0, _preact.h)(FieldConfigurator, { fieldType: this.state.fieldType })
                 )
             );
         }
     }]);
 
-    return Clock;
+    return FieldBuilder;
 }(_preact.Component);
+
+var FieldConfigurator = function (_Component2) {
+    _inherits(FieldConfigurator, _Component2);
+
+    function FieldConfigurator(props) {
+        _classCallCheck(this, FieldConfigurator);
+
+        var _this2 = _possibleConstructorReturn(this, (FieldConfigurator.__proto__ || Object.getPrototypeOf(FieldConfigurator)).call(this, props));
+
+        _this2.state = {
+            fieldType: props.fieldType,
+            required: false,
+            placeholder: "",
+            defaultValue: "",
+            fieldLabel: "",
+            wrap: true
+        };
+
+        _this2.addToForm = _this2.addToForm.bind(_this2);
+        _this2.handleKeyPress = _this2.handleKeyPress.bind(_this2);
+        return _this2;
+    }
+
+    _createClass(FieldConfigurator, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(props) {
+            this.setState({ fieldType: props.fieldType });
+        }
+    }, {
+        key: 'addToForm',
+        value: function addToForm() {
+            var label = this.state.fieldLabel.length ? (0, _preact.h)("label", {}, this.state.fieldLabel) : "";
+            var field = (0, _preact.h)("input", filterEmptyObjectValues({
+                type: this.state.fieldType,
+                required: this.state.required,
+                placeholder: this.state.placeholder,
+                value: this.state.defaultValue
+            }));
+
+            var html = "";
+            if (this.state.wrap) {
+                var tmpl = (0, _preact.h)("p", {}, [label, field]);
+                html = (0, _preactRenderToString2.default)(tmpl);
+            } else {
+                html += (0, _preactRenderToString2.default)(label);
+                html += (0, _preactRenderToString2.default)(field);
+            }
+
+            html = _html2.default.prettyPrint(html);
+            console.log(html);
+
+            // TODO: Add to editor here.
+        }
+    }, {
+        key: 'handleKeyPress',
+        value: function handleKeyPress(e) {
+            if (e.keyCode === 13) {
+                this.addToForm();
+                e.preventDefault();
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            console.log(this.state);
+            switch (this.state.fieldType) {
+                case "":
+                default:
+                    return "";
+
+                case "text":
+                case "email":
+                case "url":
+                    return (0, _preact.h)(
+                        'div',
+                        { onKeyPress: this.handleKeyPress },
+                        (0, _preact.h)(Label, { value: this.state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
+                        (0, _preact.h)(Placeholder, { value: this.state.placeholder, onChange: (0, _linkstate2.default)(this, 'placeholder') }),
+                        (0, _preact.h)(DefaultValue, { value: this.state.defaultValue, onChange: (0, _linkstate2.default)(this, 'defaultValue') }),
+                        (0, _preact.h)(RequiredField, { checked: this.state.required, onChange: (0, _linkstate2.default)(this, 'required') }),
+                        (0, _preact.h)(Wrap, { checked: this.state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
+                        (0, _preact.h)(AddToForm, { onClick: this.addToForm })
+                    );
+            }
+        }
+    }]);
+
+    return FieldConfigurator;
+}(_preact.Component);
+
+function filterEmptyObjectValues(obj) {
+    var newObj = {};
+    for (var propName in obj) {
+        if (obj[propName] !== false && obj[propName] !== "") {
+            newObj[propName] = obj[propName];
+        }
+    }
+    return newObj;
+}
+
+function AddToForm(props) {
+    return (0, _preact.h)(
+        'div',
+        { 'class': 'hf-small-margin' },
+        (0, _preact.h)(
+            'button',
+            { 'class': 'button', type: 'button', onClick: props.onClick },
+            'Add to form'
+        )
+    );
+}
+
+function Label(props) {
+    return (0, _preact.h)(
+        'div',
+        { 'class': 'hf-small-margin' },
+        (0, _preact.h)(
+            'label',
+            null,
+            'Field label'
+        ),
+        (0, _preact.h)('input', { type: 'text', value: props.value, onChange: props.onChange })
+    );
+}
+
+function Placeholder(props) {
+    return (0, _preact.h)(
+        'div',
+        { 'class': 'hf-small-margin' },
+        (0, _preact.h)(
+            'label',
+            null,
+            'Placeholder ',
+            (0, _preact.h)(
+                'span',
+                { 'class': 'hf-italic hf-pull-right' },
+                'Optional'
+            )
+        ),
+        (0, _preact.h)('input', { type: 'text', value: props.value, onChange: props.onChange }),
+        (0, _preact.h)(
+            'p',
+            { 'class': 'help' },
+            'Text to show when field has no value.'
+        )
+    );
+}
+
+function DefaultValue(props) {
+    return (0, _preact.h)(
+        'div',
+        { 'class': 'hf-small-margin' },
+        (0, _preact.h)(
+            'label',
+            null,
+            'Default value ',
+            (0, _preact.h)(
+                'span',
+                { 'class': 'hf-italic hf-pull-right' },
+                'Optional'
+            )
+        ),
+        (0, _preact.h)('input', { type: 'text', value: props.value, onChange: props.onChange }),
+        (0, _preact.h)(
+            'p',
+            { 'class': 'help' },
+            'Text to pre-fill this field with.'
+        )
+    );
+}
+
+function Wrap(props) {
+    return (0, _preact.h)(
+        'div',
+        { 'class': 'hf-small-margin' },
+        (0, _preact.h)(
+            'label',
+            { 'class': 'inline' },
+            (0, _preact.h)('input', { type: 'checkbox', value: '1', defaultChecked: props.checked, onChange: props.onChange }),
+            'Wrap field in paragraph tags?'
+        )
+    );
+}
+
+function RequiredField(props) {
+    return (0, _preact.h)(
+        'div',
+        { 'class': 'hf-small-margin' },
+        (0, _preact.h)(
+            'label',
+            { 'class': 'inline' },
+            (0, _preact.h)('input', { type: 'checkbox', value: '1', defaultChecked: props.checked, onChange: props.onChange }),
+            'Required field?'
+        )
+    );
+}
 
 exports.default = {
     init: function init() {
-        (0, _preact.render)((0, _preact.h)(Clock, null), document.getElementById('hf-field-builder'));
+        (0, _preact.render)((0, _preact.h)(FieldBuilder, null), document.getElementById('hf-field-builder'));
     }
 };
 
-},{"preact":14}],2:[function(require,module,exports){
+},{"html":14,"linkstate":15,"preact":17,"preact-render-to-string":16}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12527,6 +12754,839 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 });
 
 },{"../../lib/codemirror":9}],14:[function(require,module,exports){
+/*
+
+ Style HTML
+---------------
+
+  Written by Nochum Sossonko, (nsossonko@hotmail.com)
+
+  Based on code initially developed by: Einar Lielmanis, <elfz@laacz.lv>
+    http://jsbeautifier.org/
+
+
+  You are free to use this in any way you want, in case you find this useful or working for you.
+
+  Usage:
+    style_html(html_source);
+
+    style_html(html_source, options);
+
+  The options are:
+    indent_size (default 4)          — indentation size,
+    indent_char (default space)      — character to indent with,
+    max_char (default 70)            -  maximum amount of characters per line,
+    brace_style (default "collapse") - "collapse" | "expand" | "end-expand"
+            put braces on the same line as control statements (default), or put braces on own line (Allman / ANSI style), or just put end braces on own line.
+    unformatted (defaults to inline tags) - list of tags, that shouldn't be reformatted
+    indent_scripts (default normal)  - "keep"|"separate"|"normal"
+
+    e.g.
+
+    style_html(html_source, {
+      'indent_size': 2,
+      'indent_char': ' ',
+      'max_char': 78,
+      'brace_style': 'expand',
+      'unformatted': ['a', 'sub', 'sup', 'b', 'i', 'u']
+    });
+*/
+
+function style_html(html_source, options) {
+//Wrapper function to invoke all the necessary constructors and deal with the output.
+
+  var multi_parser,
+      indent_size,
+      indent_character,
+      max_char,
+      brace_style,
+      unformatted;
+
+  options = options || {};
+  indent_size = options.indent_size || 4;
+  indent_character = options.indent_char || ' ';
+  brace_style = options.brace_style || 'collapse';
+  max_char = options.max_char == 0 ? Infinity : options.max_char || 70;
+  unformatted = options.unformatted || ['a', 'span', 'bdo', 'em', 'strong', 'dfn', 'code', 'samp', 'kbd', 'var', 'cite', 'abbr', 'acronym', 'q', 'sub', 'sup', 'tt', 'i', 'b', 'big', 'small', 'u', 's', 'strike', 'font', 'ins', 'del', 'pre', 'address', 'dt', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+
+  function Parser() {
+
+    this.pos = 0; //Parser position
+    this.token = '';
+    this.current_mode = 'CONTENT'; //reflects the current Parser mode: TAG/CONTENT
+    this.tags = { //An object to hold tags, their position, and their parent-tags, initiated with default values
+      parent: 'parent1',
+      parentcount: 1,
+      parent1: ''
+    };
+    this.tag_type = '';
+    this.token_text = this.last_token = this.last_text = this.token_type = '';
+
+    this.Utils = { //Uilities made available to the various functions
+      whitespace: "\n\r\t ".split(''),
+      single_token: 'br,input,link,meta,!doctype,basefont,base,area,hr,wbr,param,img,isindex,?xml,embed,?php,?,?='.split(','), //all the single tags for HTML
+      extra_liners: 'head,body,/html'.split(','), //for tags that need a line of whitespace before them
+      in_array: function (what, arr) {
+        for (var i=0; i<arr.length; i++) {
+          if (what === arr[i]) {
+            return true;
+          }
+        }
+        return false;
+      }
+    }
+
+    this.get_content = function () { //function to capture regular content between tags
+
+      var input_char = '',
+          content = [],
+          space = false; //if a space is needed
+
+      while (this.input.charAt(this.pos) !== '<') {
+        if (this.pos >= this.input.length) {
+          return content.length?content.join(''):['', 'TK_EOF'];
+        }
+
+        input_char = this.input.charAt(this.pos);
+        this.pos++;
+        this.line_char_count++;
+
+        if (this.Utils.in_array(input_char, this.Utils.whitespace)) {
+          if (content.length) {
+            space = true;
+          }
+          this.line_char_count--;
+          continue; //don't want to insert unnecessary space
+        }
+        else if (space) {
+          if (this.line_char_count >= this.max_char) { //insert a line when the max_char is reached
+            content.push('\n');
+            for (var i=0; i<this.indent_level; i++) {
+              content.push(this.indent_string);
+            }
+            this.line_char_count = 0;
+          }
+          else{
+            content.push(' ');
+            this.line_char_count++;
+          }
+          space = false;
+        }
+        content.push(input_char); //letter at-a-time (or string) inserted to an array
+      }
+      return content.length?content.join(''):'';
+    }
+
+    this.get_contents_to = function (name) { //get the full content of a script or style to pass to js_beautify
+      if (this.pos == this.input.length) {
+        return ['', 'TK_EOF'];
+      }
+      var input_char = '';
+      var content = '';
+      var reg_match = new RegExp('\<\/' + name + '\\s*\>', 'igm');
+      reg_match.lastIndex = this.pos;
+      var reg_array = reg_match.exec(this.input);
+      var end_script = reg_array?reg_array.index:this.input.length; //absolute end of script
+      if(this.pos < end_script) { //get everything in between the script tags
+        content = this.input.substring(this.pos, end_script);
+        this.pos = end_script;
+      }
+      return content;
+    }
+
+    this.record_tag = function (tag){ //function to record a tag and its parent in this.tags Object
+      if (this.tags[tag + 'count']) { //check for the existence of this tag type
+        this.tags[tag + 'count']++;
+        this.tags[tag + this.tags[tag + 'count']] = this.indent_level; //and record the present indent level
+      }
+      else { //otherwise initialize this tag type
+        this.tags[tag + 'count'] = 1;
+        this.tags[tag + this.tags[tag + 'count']] = this.indent_level; //and record the present indent level
+      }
+      this.tags[tag + this.tags[tag + 'count'] + 'parent'] = this.tags.parent; //set the parent (i.e. in the case of a div this.tags.div1parent)
+      this.tags.parent = tag + this.tags[tag + 'count']; //and make this the current parent (i.e. in the case of a div 'div1')
+    }
+
+    this.retrieve_tag = function (tag) { //function to retrieve the opening tag to the corresponding closer
+      if (this.tags[tag + 'count']) { //if the openener is not in the Object we ignore it
+        var temp_parent = this.tags.parent; //check to see if it's a closable tag.
+        while (temp_parent) { //till we reach '' (the initial value);
+          if (tag + this.tags[tag + 'count'] === temp_parent) { //if this is it use it
+            break;
+          }
+          temp_parent = this.tags[temp_parent + 'parent']; //otherwise keep on climbing up the DOM Tree
+        }
+        if (temp_parent) { //if we caught something
+          this.indent_level = this.tags[tag + this.tags[tag + 'count']]; //set the indent_level accordingly
+          this.tags.parent = this.tags[temp_parent + 'parent']; //and set the current parent
+        }
+        delete this.tags[tag + this.tags[tag + 'count'] + 'parent']; //delete the closed tags parent reference...
+        delete this.tags[tag + this.tags[tag + 'count']]; //...and the tag itself
+        if (this.tags[tag + 'count'] == 1) {
+          delete this.tags[tag + 'count'];
+        }
+        else {
+          this.tags[tag + 'count']--;
+        }
+      }
+    }
+
+    this.get_tag = function () { //function to get a full tag and parse its type
+      var input_char = '',
+          content = [],
+          space = false,
+          tag_start, tag_end;
+
+      do {
+        if (this.pos >= this.input.length) {
+          return content.length?content.join(''):['', 'TK_EOF'];
+        }
+
+        input_char = this.input.charAt(this.pos);
+        this.pos++;
+        this.line_char_count++;
+
+        if (this.Utils.in_array(input_char, this.Utils.whitespace)) { //don't want to insert unnecessary space
+          space = true;
+          this.line_char_count--;
+          continue;
+        }
+
+        if (input_char === "'" || input_char === '"') {
+          if (!content[1] || content[1] !== '!') { //if we're in a comment strings don't get treated specially
+            input_char += this.get_unformatted(input_char);
+            space = true;
+          }
+        }
+
+        if (input_char === '=') { //no space before =
+          space = false;
+        }
+
+        if (content.length && content[content.length-1] !== '=' && input_char !== '>'
+            && space) { //no space after = or before >
+          if (this.line_char_count >= this.max_char) {
+            this.print_newline(false, content);
+            this.line_char_count = 0;
+          }
+          else {
+            content.push(' ');
+            this.line_char_count++;
+          }
+          space = false;
+        }
+        if (input_char === '<') {
+            tag_start = this.pos - 1;
+        }
+        content.push(input_char); //inserts character at-a-time (or string)
+      } while (input_char !== '>');
+
+      var tag_complete = content.join('');
+      var tag_index;
+      if (tag_complete.indexOf(' ') != -1) { //if there's whitespace, thats where the tag name ends
+        tag_index = tag_complete.indexOf(' ');
+      }
+      else { //otherwise go with the tag ending
+        tag_index = tag_complete.indexOf('>');
+      }
+      var tag_check = tag_complete.substring(1, tag_index).toLowerCase();
+      if (tag_complete.charAt(tag_complete.length-2) === '/' ||
+          this.Utils.in_array(tag_check, this.Utils.single_token)) { //if this tag name is a single tag type (either in the list or has a closing /)
+        this.tag_type = 'SINGLE';
+      }
+      else if (tag_check === 'script') { //for later script handling
+        this.record_tag(tag_check);
+        this.tag_type = 'SCRIPT';
+      }
+      else if (tag_check === 'style') { //for future style handling (for now it justs uses get_content)
+        this.record_tag(tag_check);
+        this.tag_type = 'STYLE';
+      }
+      else if (this.Utils.in_array(tag_check, unformatted)) { // do not reformat the "unformatted" tags
+        var comment = this.get_unformatted('</'+tag_check+'>', tag_complete); //...delegate to get_unformatted function
+        content.push(comment);
+        // Preserve collapsed whitespace either before or after this tag.
+        if (tag_start > 0 && this.Utils.in_array(this.input.charAt(tag_start - 1), this.Utils.whitespace)){
+            content.splice(0, 0, this.input.charAt(tag_start - 1));
+        }
+        tag_end = this.pos - 1;
+        if (this.Utils.in_array(this.input.charAt(tag_end + 1), this.Utils.whitespace)){
+            content.push(this.input.charAt(tag_end + 1));
+        }
+        this.tag_type = 'SINGLE';
+      }
+      else if (tag_check.charAt(0) === '!') { //peek for <!-- comment
+        if (tag_check.indexOf('[if') != -1) { //peek for <!--[if conditional comment
+          if (tag_complete.indexOf('!IE') != -1) { //this type needs a closing --> so...
+            var comment = this.get_unformatted('-->', tag_complete); //...delegate to get_unformatted
+            content.push(comment);
+          }
+          this.tag_type = 'START';
+        }
+        else if (tag_check.indexOf('[endif') != -1) {//peek for <!--[endif end conditional comment
+          this.tag_type = 'END';
+          this.unindent();
+        }
+        else if (tag_check.indexOf('[cdata[') != -1) { //if it's a <[cdata[ comment...
+          var comment = this.get_unformatted(']]>', tag_complete); //...delegate to get_unformatted function
+          content.push(comment);
+          this.tag_type = 'SINGLE'; //<![CDATA[ comments are treated like single tags
+        }
+        else {
+          var comment = this.get_unformatted('-->', tag_complete);
+          content.push(comment);
+          this.tag_type = 'SINGLE';
+        }
+      }
+      else {
+        if (tag_check.charAt(0) === '/') { //this tag is a double tag so check for tag-ending
+          this.retrieve_tag(tag_check.substring(1)); //remove it and all ancestors
+          this.tag_type = 'END';
+        }
+        else { //otherwise it's a start-tag
+          this.record_tag(tag_check); //push it on the tag stack
+          this.tag_type = 'START';
+        }
+        if (this.Utils.in_array(tag_check, this.Utils.extra_liners)) { //check if this double needs an extra line
+          this.print_newline(true, this.output);
+        }
+      }
+      return content.join(''); //returns fully formatted tag
+    }
+
+    this.get_unformatted = function (delimiter, orig_tag) { //function to return unformatted content in its entirety
+
+      if (orig_tag && orig_tag.toLowerCase().indexOf(delimiter) != -1) {
+        return '';
+      }
+      var input_char = '';
+      var content = '';
+      var space = true;
+      do {
+
+        if (this.pos >= this.input.length) {
+          return content;
+        }
+
+        input_char = this.input.charAt(this.pos);
+        this.pos++
+
+        if (this.Utils.in_array(input_char, this.Utils.whitespace)) {
+          if (!space) {
+            this.line_char_count--;
+            continue;
+          }
+          if (input_char === '\n' || input_char === '\r') {
+            content += '\n';
+            /*  Don't change tab indention for unformatted blocks.  If using code for html editing, this will greatly affect <pre> tags if they are specified in the 'unformatted array'
+            for (var i=0; i<this.indent_level; i++) {
+              content += this.indent_string;
+            }
+            space = false; //...and make sure other indentation is erased
+            */
+            this.line_char_count = 0;
+            continue;
+          }
+        }
+        content += input_char;
+        this.line_char_count++;
+        space = true;
+
+
+      } while (content.toLowerCase().indexOf(delimiter) == -1);
+      return content;
+    }
+
+    this.get_token = function () { //initial handler for token-retrieval
+      var token;
+
+      if (this.last_token === 'TK_TAG_SCRIPT' || this.last_token === 'TK_TAG_STYLE') { //check if we need to format javascript
+       var type = this.last_token.substr(7)
+       token = this.get_contents_to(type);
+        if (typeof token !== 'string') {
+          return token;
+        }
+        return [token, 'TK_' + type];
+      }
+      if (this.current_mode === 'CONTENT') {
+        token = this.get_content();
+        if (typeof token !== 'string') {
+          return token;
+        }
+        else {
+          return [token, 'TK_CONTENT'];
+        }
+      }
+
+      if (this.current_mode === 'TAG') {
+        token = this.get_tag();
+        if (typeof token !== 'string') {
+          return token;
+        }
+        else {
+          var tag_name_type = 'TK_TAG_' + this.tag_type;
+          return [token, tag_name_type];
+        }
+      }
+    }
+
+    this.get_full_indent = function (level) {
+      level = this.indent_level + level || 0;
+      if (level < 1)
+        return '';
+
+      return Array(level + 1).join(this.indent_string);
+    }
+
+
+    this.printer = function (js_source, indent_character, indent_size, max_char, brace_style) { //handles input/output and some other printing functions
+
+      this.input = js_source || ''; //gets the input for the Parser
+      this.output = [];
+      this.indent_character = indent_character;
+      this.indent_string = '';
+      this.indent_size = indent_size;
+      this.brace_style = brace_style;
+      this.indent_level = 0;
+      this.max_char = max_char;
+      this.line_char_count = 0; //count to see if max_char was exceeded
+
+      for (var i=0; i<this.indent_size; i++) {
+        this.indent_string += this.indent_character;
+      }
+
+      this.print_newline = function (ignore, arr) {
+        this.line_char_count = 0;
+        if (!arr || !arr.length) {
+          return;
+        }
+        if (!ignore) { //we might want the extra line
+          while (this.Utils.in_array(arr[arr.length-1], this.Utils.whitespace)) {
+            arr.pop();
+          }
+        }
+        arr.push('\n');
+        for (var i=0; i<this.indent_level; i++) {
+          arr.push(this.indent_string);
+        }
+      }
+
+      this.print_token = function (text) {
+        this.output.push(text);
+      }
+
+      this.indent = function () {
+        this.indent_level++;
+      }
+
+      this.unindent = function () {
+        if (this.indent_level > 0) {
+          this.indent_level--;
+        }
+      }
+    }
+    return this;
+  }
+
+  /*_____________________--------------------_____________________*/
+
+  multi_parser = new Parser(); //wrapping functions Parser
+  multi_parser.printer(html_source, indent_character, indent_size, max_char, brace_style); //initialize starting values
+
+  while (true) {
+      var t = multi_parser.get_token();
+      multi_parser.token_text = t[0];
+      multi_parser.token_type = t[1];
+
+    if (multi_parser.token_type === 'TK_EOF') {
+      break;
+    }
+
+    switch (multi_parser.token_type) {
+      case 'TK_TAG_START':
+        multi_parser.print_newline(false, multi_parser.output);
+        multi_parser.print_token(multi_parser.token_text);
+        multi_parser.indent();
+        multi_parser.current_mode = 'CONTENT';
+        break;
+      case 'TK_TAG_STYLE':
+      case 'TK_TAG_SCRIPT':
+        multi_parser.print_newline(false, multi_parser.output);
+        multi_parser.print_token(multi_parser.token_text);
+        multi_parser.current_mode = 'CONTENT';
+        break;
+      case 'TK_TAG_END':
+        //Print new line only if the tag has no content and has child
+        if (multi_parser.last_token === 'TK_CONTENT' && multi_parser.last_text === '') {
+            var tag_name = multi_parser.token_text.match(/\w+/)[0];
+            var tag_extracted_from_last_output = multi_parser.output[multi_parser.output.length -1].match(/<\s*(\w+)/);
+            if (tag_extracted_from_last_output === null || tag_extracted_from_last_output[1] !== tag_name)
+                multi_parser.print_newline(true, multi_parser.output);
+        }
+        multi_parser.print_token(multi_parser.token_text);
+        multi_parser.current_mode = 'CONTENT';
+        break;
+      case 'TK_TAG_SINGLE':
+        // Don't add a newline before elements that should remain unformatted.
+        var tag_check = multi_parser.token_text.match(/^\s*<([a-z]+)/i);
+        if (!tag_check || !multi_parser.Utils.in_array(tag_check[1], unformatted)){
+            multi_parser.print_newline(false, multi_parser.output);
+        }
+        multi_parser.print_token(multi_parser.token_text);
+        multi_parser.current_mode = 'CONTENT';
+        break;
+      case 'TK_CONTENT':
+        if (multi_parser.token_text !== '') {
+          multi_parser.print_token(multi_parser.token_text);
+        }
+        multi_parser.current_mode = 'TAG';
+        break;
+      case 'TK_STYLE':
+      case 'TK_SCRIPT':
+        if (multi_parser.token_text !== '') {
+          multi_parser.output.push('\n');
+          var text = multi_parser.token_text;
+          if (multi_parser.token_type == 'TK_SCRIPT') {
+            var _beautifier = typeof js_beautify == 'function' && js_beautify;
+          } else if (multi_parser.token_type == 'TK_STYLE') {
+            var _beautifier = typeof css_beautify == 'function' && css_beautify;
+          }
+
+          if (options.indent_scripts == "keep") {
+            var script_indent_level = 0;
+          } else if (options.indent_scripts == "separate") {
+            var script_indent_level = -multi_parser.indent_level;
+          } else {
+            var script_indent_level = 1;
+          }
+
+          var indentation = multi_parser.get_full_indent(script_indent_level);
+          if (_beautifier) {
+            // call the Beautifier if avaliable
+            text = _beautifier(text.replace(/^\s*/, indentation), options);
+          } else {
+            // simply indent the string otherwise
+            var white = text.match(/^\s*/)[0];
+            var _level = white.match(/[^\n\r]*$/)[0].split(multi_parser.indent_string).length - 1;
+            var reindent = multi_parser.get_full_indent(script_indent_level -_level);
+            text = text.replace(/^\s*/, indentation)
+                   .replace(/\r\n|\r|\n/g, '\n' + reindent)
+                   .replace(/\s*$/, '');
+          }
+          if (text) {
+            multi_parser.print_token(text);
+            multi_parser.print_newline(true, multi_parser.output);
+          }
+        }
+        multi_parser.current_mode = 'TAG';
+        break;
+    }
+    multi_parser.last_token = multi_parser.token_type;
+    multi_parser.last_text = multi_parser.token_text;
+  }
+  return multi_parser.output.join('');
+}
+
+module.exports = {
+  prettyPrint: style_html
+};
+},{}],15:[function(require,module,exports){
+function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]];return void 0===t?n:t}function linkState(t,e,n){var l=e.split("."),r=t.__lsc||(t.__lsc={});return r[e+n]||(r[e+n]=function(e){for(var r=e&&e.target||this,a={},i=a,o="string"==typeof n?dlv(e,n):r.nodeName?r.type.match(/^che|rad/)?r.checked:r.value:e,s=0;s<l.length-1;s++)i=i[l[s]]||(i[l[s]]=!s&&t.state[l[s]]||{});i[l[s]]=o,t.setState(a)})}module.exports=linkState;
+
+
+},{}],16:[function(require,module,exports){
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.preactRenderToString = factory());
+}(this, (function () {
+
+var NON_DIMENSION_PROPS = {
+	boxFlex: 1, boxFlexGroup: 1, columnCount: 1, fillOpacity: 1, flex: 1, flexGrow: 1,
+	flexPositive: 1, flexShrink: 1, flexNegative: 1, fontWeight: 1, lineClamp: 1, lineHeight: 1,
+	opacity: 1, order: 1, orphans: 1, strokeOpacity: 1, widows: 1, zIndex: 1, zoom: 1
+};
+
+var ESC = {
+	'<': '&lt;',
+	'>': '&gt;',
+	'"': '&quot;',
+	'&': '&amp;'
+};
+
+var objectKeys = Object.keys || function (obj) {
+	var keys = [];
+	for (var i in obj) {
+		if (obj.hasOwnProperty(i)) keys.push(i);
+	}return keys;
+};
+
+var encodeEntities = function (s) {
+	return String(s).replace(/[<>"&]/g, escapeChar);
+};
+
+var escapeChar = function (a) {
+	return ESC[a] || a;
+};
+
+var falsey = function (v) {
+	return v == null || v === false;
+};
+
+var memoize = function (fn) {
+	var mem = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	return function (v) {
+		return mem[v] || (mem[v] = fn(v));
+	};
+};
+
+var indent = function (s, char) {
+	return String(s).replace(/(\n+)/g, '$1' + (char || '\t'));
+};
+
+var isLargeString = function (s, length, ignoreLines) {
+	return String(s).length > (length || 40) || !ignoreLines && String(s).indexOf('\n') !== -1 || String(s).indexOf('<') !== -1;
+};
+
+function styleObjToCss(s) {
+	var str = '';
+	for (var prop in s) {
+		var val = s[prop];
+		if (val != null) {
+			if (str) str += ' ';
+			str += jsToCss(prop);
+			str += ': ';
+			str += val;
+			if (typeof val === 'number' && !NON_DIMENSION_PROPS[prop]) {
+				str += 'px';
+			}
+			str += ';';
+		}
+	}
+	return str || undefined;
+}
+
+function hashToClassName(c) {
+	var str = '';
+	for (var prop in c) {
+		if (c[prop]) {
+			if (str) str += ' ';
+			str += prop;
+		}
+	}
+	return str;
+}
+
+var jsToCss = memoize(function (s) {
+	return s.replace(/([A-Z])/g, '-$1').toLowerCase();
+});
+
+function assign(obj, props) {
+	for (var i in props) {
+		obj[i] = props[i];
+	}return obj;
+}
+
+function getNodeProps(vnode) {
+	var defaultProps = vnode.nodeName.defaultProps,
+	    props = assign({}, defaultProps || vnode.attributes);
+	if (defaultProps) assign(props, vnode.attributes);
+	if (vnode.children) props.children = vnode.children;
+	return props;
+}
+
+var SHALLOW = { shallow: true };
+
+var UNNAMED = [];
+
+var EMPTY = {};
+
+var VOID_ELEMENTS = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+
+renderToString.render = renderToString;
+
+var shallowRender = function (vnode, context) {
+	return renderToString(vnode, context, SHALLOW);
+};
+
+function renderToString(vnode, context, opts, inner, isSvgMode) {
+	var _ref = vnode || EMPTY;
+
+	var nodeName = _ref.nodeName;
+	var attributes = _ref.attributes;
+	var children = _ref.children;
+	var isComponent = false;
+	context = context || {};
+	opts = opts || {};
+
+	var pretty = opts.pretty,
+	    indentChar = typeof pretty === 'string' ? pretty : '\t';
+
+	if (vnode == null || vnode === false) {
+		return '';
+	}
+
+	if (!nodeName) {
+		return encodeEntities(vnode);
+	}
+
+	if (typeof nodeName === 'function') {
+		isComponent = true;
+		if (opts.shallow && (inner || opts.renderRootComponent === false)) {
+			nodeName = getComponentName(nodeName);
+		} else {
+			var props = getNodeProps(vnode),
+			    rendered = void 0;
+
+			if (!nodeName.prototype || typeof nodeName.prototype.render !== 'function') {
+				rendered = nodeName(props, context);
+			} else {
+				var c = new nodeName(props, context);
+
+				c._disable = c.__x = true;
+				c.props = props;
+				c.context = context;
+				if (c.componentWillMount) c.componentWillMount();
+				rendered = c.render(c.props, c.state, c.context);
+
+				if (c.getChildContext) {
+					context = assign(assign({}, context), c.getChildContext());
+				}
+			}
+
+			return renderToString(rendered, context, opts, opts.shallowHighOrder !== false);
+		}
+	}
+
+	var s = '',
+	    html = void 0;
+
+	if (attributes) {
+		var attrs = objectKeys(attributes);
+
+		if (opts && opts.sortAttributes === true) attrs.sort();
+
+		for (var i = 0; i < attrs.length; i++) {
+			var name = attrs[i],
+			    v = attributes[name];
+			if (name === 'children') continue;
+			if (!(opts && opts.allAttributes) && (name === 'key' || name === 'ref')) continue;
+
+			if (name === 'className') {
+				if (attributes['class']) continue;
+				name = 'class';
+			} else if (isSvgMode && name.match(/^xlink\:?(.+)/)) {
+				name = name.toLowerCase().replace(/^xlink\:?(.+)/, 'xlink:$1');
+			}
+
+			if (name === 'class' && v && typeof v === 'object') {
+				v = hashToClassName(v);
+			} else if (name === 'style' && v && typeof v === 'object') {
+				v = styleObjToCss(v);
+			}
+
+			var hooked = opts.attributeHook && opts.attributeHook(name, v, context, opts, isComponent);
+			if (hooked || hooked === '') {
+				s += hooked;
+				continue;
+			}
+
+			if (name === 'dangerouslySetInnerHTML') {
+				html = v && v.__html;
+			} else if ((v || v === 0 || v === '') && typeof v !== 'function') {
+				if (v === true || v === '') {
+					v = name;
+
+					if (!opts || !opts.xml) {
+						s += ' ' + name;
+						continue;
+					}
+				}
+				s += ' ' + name + '="' + encodeEntities(v) + '"';
+			}
+		}
+	}
+
+	var sub = s.replace(/^\n\s*/, ' ');
+	if (sub !== s && !~sub.indexOf('\n')) s = sub;else if (pretty && ~s.indexOf('\n')) s += '\n';
+
+	s = '<' + nodeName + s + '>';
+
+	if (VOID_ELEMENTS.indexOf(nodeName) > -1) {
+		s = s.replace(/>$/, ' />');
+	}
+
+	if (html) {
+		if (pretty && isLargeString(html)) {
+			html = '\n' + indentChar + indent(html, indentChar);
+		}
+		s += html;
+	} else {
+		var len = children && children.length,
+		    pieces = [],
+		    hasLarge = ~s.indexOf('\n');
+		for (var _i = 0; _i < len; _i++) {
+			var child = children[_i];
+			if (!falsey(child)) {
+				var childSvgMode = nodeName === 'svg' ? true : nodeName === 'foreignObject' ? false : isSvgMode,
+				    ret = renderToString(child, context, opts, true, childSvgMode);
+				if (!hasLarge && pretty && isLargeString(ret)) hasLarge = true;
+				if (ret) pieces.push(ret);
+			}
+		}
+		if (pretty && hasLarge) {
+			for (var _i2 = pieces.length; _i2--;) {
+				pieces[_i2] = '\n' + indentChar + indent(pieces[_i2], indentChar);
+			}
+		}
+		if (pieces.length) {
+			s += pieces.join('');
+		} else if (opts && opts.xml) {
+			return s.substring(0, s.length - 1) + ' />';
+		}
+	}
+
+	if (opts.jsx || VOID_ELEMENTS.indexOf(nodeName) === -1) {
+		if (pretty && ~s.indexOf('\n')) s += '\n';
+		s += '</' + nodeName + '>';
+	}
+
+	return s;
+}
+
+function getComponentName(component) {
+	var proto = component.prototype,
+	    ctor = proto && proto.constructor;
+	return component.displayName || component.name || proto && (proto.displayName || proto.name) || getFallbackComponentName(component);
+}
+
+function getFallbackComponentName(component) {
+	var str = Function.prototype.toString.call(component),
+	    name = (str.match(/^\s*function\s+([^\( ]+)/) || EMPTY)[1];
+	if (!name) {
+		var index = -1;
+		for (var i = UNNAMED.length; i--;) {
+			if (UNNAMED[i] === component) {
+				index = i;
+				break;
+			}
+		}
+
+		if (index < 0) {
+			index = UNNAMED.push(component) - 1;
+		}
+		name = 'UnnamedComponent' + index;
+	}
+	return name;
+}
+renderToString.shallowRender = shallowRender;
+
+return renderToString;
+
+})));
+
+
+},{}],17:[function(require,module,exports){
 !function() {
     'use strict';
     function VNode() {}

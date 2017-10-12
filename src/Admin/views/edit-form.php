@@ -32,7 +32,7 @@ $tabs = array(
                 <input type="text" name="form[title]" size="30" value="<?php echo esc_attr( $form->title ); ?>" id="title" spellcheck="true" autocomplete="off" placeholder="<?php echo __( "Enter the title of your sign-up form", 'html-forms' ); ?>" style="line-height: initial;" >
             </div>
             <div class="inside" style="margin-top: 3px;">
-                <label for="shortcode">Shortcode: </label>
+                <label for="shortcode"><?php _e( 'Copy this shortcode and paste it into your post, page, or text widget content:', 'html-forms' ); ?></label><br />
                 <input id="shortcode" type="text" class="regular-text" value="<?php echo esc_attr( sprintf( '[html_form slug="%s"]', $form->slug ) ); ?>" readonly onclick="this.select()">
             </div>
         </div>
