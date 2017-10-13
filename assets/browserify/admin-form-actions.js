@@ -11,7 +11,12 @@ function init() {
     [].forEach.call( actions.querySelectorAll('.hf-action-settings'), function(el) {
         el.parentNode.removeChild(el);
 
-        let wrap = createAccordion(el.getAttribute('data-title'), el.innerHTML);
+        let heading = el.getAttribute('data-title');
+        let summary = el.querySelector('.hf-action-summary');
+        if( summary ) {
+            heading += ' &mdash; <span class="hf-muted">' + summary.innerHTML + '</span>';
+        }
+        let wrap = createAccordion(heading, el.innerHTML);
         actions.appendChild(wrap);
 
         actions.querySelector('#hf-form-actions-empty').style.display = 'none';
@@ -20,23 +25,24 @@ function init() {
     availableActions.addEventListener('click', addAction, true);
 }
 
-function createAccordion(headingText, contentHTML) {
+function createAccordion(headingHTML, contentHTML) {
     let wrap = document.createElement('div');
-    wrap.className = "accordion expanded ";
+    wrap.className = "hf-accordion expanded ";
 
     let heading = document.createElement('h4');
-    heading.className = "accordion-heading";
-    heading.innerText = headingText;
+    heading.className = "hf-accordion-heading";
+    heading.innerHTML = headingHTML;
     wrap.appendChild(heading);
 
     let content = document.createElement('div');
-    content.className = "accordion-content";
+    content.className = "hf-accordion-content";
     content.innerHTML = contentHTML;
     wrap.appendChild(content);
 
     let deleteWrap = document.createElement('p');
     deleteWrap.style.textAlign = 'right';
     let deleteLink = document.createElement('a');
+    deleteLink.href = 'javascript:void(0);';
     deleteLink.className = "danger";
     deleteLink.innerText = 'Delete this action';
     deleteWrap.appendChild(deleteLink);

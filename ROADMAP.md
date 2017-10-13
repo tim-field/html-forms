@@ -1,9 +1,6 @@
 ## Must
-- Test field builder for errors and in different browsers.
 
 ## Should
-- Mark required fields in field builder.
-- Test switching between fields in field builder for stray attributes. 
 
 ## Could
 - Add `date` and `number` specific attributes to these fields in the field builder.
@@ -16,10 +13,10 @@
 - Allow deleting submission columns (key delete).
 - Allow renaming submission columns (key rename).
 - Export as CSV / XSL
-- Delete individual form submissions.
 - Paginate form submissions
 
 ## Would
+- Delete individual form submissions.
 - Better browser-compat field for [type="date"] fields.
 - Action: Subscribe to MailChimp
 - Option to process form actions in background.

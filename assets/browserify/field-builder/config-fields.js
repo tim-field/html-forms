@@ -11,7 +11,7 @@ function AddToForm(props){
 function Label(props){
     return (
         <div class="hf-small-margin">
-            <label for="hf-fg-field-label">Field label <span class="required">*</span></label>
+            <label for="hf-fg-field-label">Field label <span class="hf-required">*</span></label>
             <input id="hf-fg-field-label" type="text" value={props.value} onChange={props.onChange} />
         </div>
     )
@@ -30,7 +30,7 @@ function Placeholder(props){
 function ButtonText(props){
     return (
         <div class="hf-small-margin">
-            <label for="hf-fg-default-value">Button text <span class="required">*</span></label>
+            <label for="hf-fg-default-value">Button text <span class="hf-required">*</span></label>
             <input id="hf-fg-default-value" type="text" value={props.value} onChange={props.onChange} />
             <p class="help">Text to show on the button.</p>
         </div>

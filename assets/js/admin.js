@@ -96,6 +96,17 @@ var FieldBuilder = (_class = function (_Component) {
             });
         }
     }, {
+        key: 'openFieldConfig',
+        value: function openFieldConfig(e) {
+            var newFieldType = e.target.value;
+
+            if (this.state.fieldType === newFieldType) {
+                this.setState({ fieldType: "" });
+            } else {
+                this.setState({ fieldType: newFieldType });
+            }
+        }
+    }, {
         key: 'render',
         value: function render(props, state) {
             var _this2 = this;
@@ -104,8 +115,7 @@ var FieldBuilder = (_class = function (_Component) {
                 var label = fields[key];
                 return (0, _preact.h)(
                     'button',
-                    { type: 'button', value: key, className: "button " + (state.fieldType === key ? "active" : ""),
-                        onClick: (0, _linkstate2.default)(_this2, 'fieldType') },
+                    { type: 'button', value: key, className: "button " + (state.fieldType === key ? "active" : ""), onClick: _this2.openFieldConfig },
                     label
                 );
             });
@@ -138,7 +148,7 @@ var FieldBuilder = (_class = function (_Component) {
     }]);
 
     return FieldBuilder;
-}(_preact.Component), (_applyDecoratedDescriptor(_class.prototype, 'handleCancel', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleCancel'), _class.prototype)), _class);
+}(_preact.Component), (_applyDecoratedDescriptor(_class.prototype, 'handleCancel', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleCancel'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'openFieldConfig', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'openFieldConfig'), _class.prototype)), _class);
 var FieldConfigurator = (_class2 = function (_Component2) {
     _inherits(FieldConfigurator, _Component2);
 
@@ -147,22 +157,7 @@ var FieldConfigurator = (_class2 = function (_Component2) {
 
         var _this3 = _possibleConstructorReturn(this, (FieldConfigurator.__proto__ || Object.getPrototypeOf(FieldConfigurator)).call(this, props));
 
-        _this3.state = {
-            fieldType: props.fieldType,
-            fieldLabel: "",
-            placeholder: "",
-            value: "",
-            wrap: true,
-            required: false,
-            choices: [{
-                checked: false,
-                label: "One"
-            }, {
-                checked: false,
-                label: "Two"
-            }]
-        };
-
+        _this3.state = _this3.getInitialState();
         _this3.choiceHandlers = {
             "add": _this3.addChoice,
             "delete": _this3.deleteChoice,
@@ -173,6 +168,25 @@ var FieldConfigurator = (_class2 = function (_Component2) {
     }
 
     _createClass(FieldConfigurator, [{
+        key: 'getInitialState',
+        value: function getInitialState() {
+            return {
+                fieldType: this.props.fieldType,
+                fieldLabel: "",
+                placeholder: "",
+                value: "",
+                wrap: true,
+                required: false,
+                choices: [{
+                    checked: false,
+                    label: "One"
+                }, {
+                    checked: false,
+                    label: "Two"
+                }]
+            };
+        }
+    }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(props) {
             this.setState({
@@ -219,13 +233,13 @@ var FieldConfigurator = (_class2 = function (_Component2) {
     }, {
         key: 'handleCancel',
         value: function handleCancel() {
+            // revert back to initial state
+            this.setState(this.getInitialState());
             this.props.onCancel();
         }
     }, {
         key: 'render',
         value: function render(props, state) {
-            console.log(state);
-
             if (state.fieldType === "") {
                 return "";
             }
@@ -340,7 +354,12 @@ function init() {
     [].forEach.call(actions.querySelectorAll('.hf-action-settings'), function (el) {
         el.parentNode.removeChild(el);
 
-        var wrap = createAccordion(el.getAttribute('data-title'), el.innerHTML);
+        var heading = el.getAttribute('data-title');
+        var summary = el.querySelector('.hf-action-summary');
+        if (summary) {
+            heading += ' &mdash; <span class="hf-muted">' + summary.innerHTML + '</span>';
+        }
+        var wrap = createAccordion(heading, el.innerHTML);
         actions.appendChild(wrap);
 
         actions.querySelector('#hf-form-actions-empty').style.display = 'none';
@@ -349,23 +368,24 @@ function init() {
     availableActions.addEventListener('click', addAction, true);
 }
 
-function createAccordion(headingText, contentHTML) {
+function createAccordion(headingHTML, contentHTML) {
     var wrap = document.createElement('div');
-    wrap.className = "accordion expanded ";
+    wrap.className = "hf-accordion expanded ";
 
     var heading = document.createElement('h4');
-    heading.className = "accordion-heading";
-    heading.innerText = headingText;
+    heading.className = "hf-accordion-heading";
+    heading.innerHTML = headingHTML;
     wrap.appendChild(heading);
 
     var content = document.createElement('div');
-    content.className = "accordion-content";
+    content.className = "hf-accordion-content";
     content.innerHTML = contentHTML;
     wrap.appendChild(content);
 
     var deleteWrap = document.createElement('p');
     deleteWrap.style.textAlign = 'right';
     var deleteLink = document.createElement('a');
+    deleteLink.href = 'javascript:void(0);';
     deleteLink.className = "danger";
     deleteLink.innerText = 'Delete this action';
     deleteWrap.appendChild(deleteLink);
@@ -630,7 +650,7 @@ function Label(props) {
             "Field label ",
             (0, _preact.h)(
                 "span",
-                { "class": "required" },
+                { "class": "hf-required" },
                 "*"
             )
         ),
@@ -671,7 +691,7 @@ function ButtonText(props) {
             "Button text ",
             (0, _preact.h)(
                 "span",
-                { "class": "required" },
+                { "class": "hf-required" },
                 "*"
             )
         ),
@@ -874,6 +894,7 @@ function htmlgenerate(conf) {
     }
 
     str = _html2.default.prettyPrint(str);
+
     return str;
 }
 

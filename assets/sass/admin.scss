@@ -27,12 +27,12 @@
   }
 }
 
-.accordion{
+.hf-accordion{
   border: 1px solid #e5e5e5;
   margin-bottom: 6px;
 }
 
-.accordion-heading {
+.hf-accordion-heading {
   color: #555555;
   background-color: #fff;
   border-bottom: 1px solid #eeeeee;
@@ -47,32 +47,34 @@
     color: #23282d;
     background: #f5f5f5;
   }
+
+  &:after {
+    content: '\f140';
+    font: normal 20px/1 'dashicons';
+    float: right;
+    right: 20px;
+  }
 }
 
-.accordion-heading:after {
-  content: '\f140';
-  font: normal 20px/1 'dashicons';
-  float: right;
-  right: 20px;
-}
-
-.accordion.expanded .accordion-heading:after {
+.hf-accordion.expanded .hf-accordion-heading:after {
   content: "\f142";
 }
 
-.accordion-content {
+.hf-accordion-content {
   padding: 20px;
   background: #fff;
 }
 
+.hf-action-summary {
+  display: none;
+}
+
+.hf-danger,
 .danger {
   color: #a00;
 }
 
-.pull-right {
-  float: right;
-}
-
+.hf-clear,
 .clear {
   clear: both;
 }
@@ -85,8 +87,20 @@
   font-size: 90%;
 }
 
+.pull-right,
 .hf-pull-right {
   float: right;
+}
+
+.hf-required {
+   color: indianred;
+   font-size: 110%;
+}
+
+.hf-muted {
+  font-weight: normal;
+  font-size: 90%;
+  color: #999;
 }
 
 .hf-field-builder {
@@ -112,11 +126,6 @@
 
   input[type="text"] {
     width: 100%;
-  }
-
-  .required {
-    color: indianred;
-    font-size: 110%;
   }
 
   .available-fields button {

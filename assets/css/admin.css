@@ -16,11 +16,11 @@
   .hf-tab h2 {
     margin-top: 20px; }
 
-.accordion {
+.hf-accordion {
   border: 1px solid #e5e5e5;
   margin-bottom: 6px; }
 
-.accordion-heading {
+.hf-accordion-heading {
   color: #555555;
   background-color: #fff;
   border-bottom: 1px solid #eeeeee;
@@ -30,29 +30,30 @@
   position: relative;
   margin: 0;
   font-size: 14px; }
-  .accordion-heading:hover {
+  .hf-accordion-heading:hover {
     color: #23282d;
     background: #f5f5f5; }
+  .hf-accordion-heading:after {
+    content: '\f140';
+    font: normal 20px/1 'dashicons';
+    float: right;
+    right: 20px; }
 
-.accordion-heading:after {
-  content: '\f140';
-  font: normal 20px/1 'dashicons';
-  float: right;
-  right: 20px; }
-
-.accordion.expanded .accordion-heading:after {
+.hf-accordion.expanded .hf-accordion-heading:after {
   content: "\f142"; }
 
-.accordion-content {
+.hf-accordion-content {
   padding: 20px;
   background: #fff; }
 
+.hf-action-summary {
+  display: none; }
+
+.hf-danger,
 .danger {
   color: #a00; }
 
-.pull-right {
-  float: right; }
-
+.hf-clear,
 .clear {
   clear: both; }
 
@@ -62,8 +63,18 @@
 .hf-small {
   font-size: 90%; }
 
+.pull-right,
 .hf-pull-right {
   float: right; }
+
+.hf-required {
+  color: indianred;
+  font-size: 110%; }
+
+.hf-muted {
+  font-weight: normal;
+  font-size: 90%;
+  color: #999; }
 
 .hf-field-builder {
   border: 1px solid #ccc;
@@ -81,9 +92,6 @@
     margin-top: 0; }
   .hf-field-builder input[type="text"] {
     width: 100%; }
-  .hf-field-builder .required {
-    color: indianred;
-    font-size: 110%; }
   .hf-field-builder .available-fields button {
     margin-right: 4px; }
   .hf-field-builder .field-config *:last-child {

@@ -36,12 +36,22 @@ class FieldBuilder extends Component {
         });
     }
 
+    @bind
+    openFieldConfig(e) {
+        let newFieldType = e.target.value;
+
+        if( this.state.fieldType === newFieldType ) {
+            this.setState({ fieldType: "" });
+        } else {
+            this.setState({ fieldType: newFieldType });
+        }
+    }
+
     render(props, state) {
         const fieldButtons = Object.keys(fields).map((key) => {
                 let label = fields[key];
                 return (
-                    <button type="button" value={key} className={"button " + ( state.fieldType === key ? "active" : "")}
-                        onClick={linkState(this, 'fieldType')}>{label}</button>
+                    <button type="button" value={key} className={"button " + ( state.fieldType === key ? "active" : "")} onClick={this.openFieldConfig}>{label}</button>
                 )
             }
         );
@@ -67,31 +77,34 @@ class FieldConfigurator extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            fieldType: props.fieldType,
-            fieldLabel: "",
-            placeholder: "",
-            value: "",
-            wrap: true,
-            required: false,
-            choices: [
-                {
-                    checked: false,
-                    label: "One",
-                },
-                {
-                    checked: false,
-                    label: "Two",
-                },
-            ],
-        };
-
+        this.state = this.getInitialState();
         this.choiceHandlers = {
             "add": this.addChoice,
             "delete": this.deleteChoice,
             "changeLabel": this.changeChoiceLabel,
             "toggleChecked": this.toggleChoiceChecked,
         }
+    }
+
+    getInitialState() {
+       return {
+            fieldType: this.props.fieldType,
+            fieldLabel: "",
+            placeholder: "",
+            value: "",
+            wrap: true,
+            required: false,
+            choices: [
+            {
+                checked: false,
+                label: "One",
+            },
+            {
+                checked: false,
+                label: "Two",
+            },
+        ],
+       };
     }
 
     componentWillReceiveProps(props) {
@@ -147,12 +160,12 @@ class FieldConfigurator extends Component {
 
     @bind
     handleCancel() {
+        // revert back to initial state
+        this.setState(this.getInitialState());
         this.props.onCancel();
     }
 
     render(props, state) {
-        console.log(state);
-
         if(state.fieldType === "") {
             return "";
         }

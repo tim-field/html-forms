@@ -81,6 +81,7 @@ function htmlgenerate(conf) {
 
     }
 
+
     let str = "";
     if( conf.wrap ) {
         let tmpl = h("p", {}, [label, field]);
@@ -91,6 +92,7 @@ function htmlgenerate(conf) {
     }
 
     str = htmlutil.prettyPrint(str);
+
     return str;
 }
 
