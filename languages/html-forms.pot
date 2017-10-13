@@ -21,19 +21,19 @@ msgstr ""
 msgid "Send Email"
 msgstr ""
 
-#: src/Actions/Email.php:24
+#: src/Actions/Email.php:25
 msgid "From"
 msgstr ""
 
-#: src/Actions/Email.php:30
+#: src/Actions/Email.php:31
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:36
+#: src/Actions/Email.php:37
 msgid "Subject"
 msgstr ""
 
-#: src/Actions/Email.php:42
+#: src/Actions/Email.php:43
 msgid "Message"
 msgstr ""
 
@@ -177,6 +177,6 @@ msgstr ""
 msgid "Leave empty or enter <code>0</code> for no redirect. Otherwise, use complete (absolute) URLs, including <code>http://</code>."
 msgstr ""
 
-#: src/Admin/views/tab-submissions.php:9
+#: src/Admin/views/tab-submissions.php:23
 msgid "Form Submissions"
 msgstr ""

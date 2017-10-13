@@ -97,6 +97,35 @@
   .hf-field-builder .field-config *:last-child {
     margin-bottom: 0; }
 
+.hf-column:hover .hf-column-menu {
+  display: block; }
+
+.hf-column-menu {
+  display: none;
+  float: right;
+  position: relative; }
+  .hf-column-menu .submenu-toggle:after {
+    content: "\f333";
+    font: normal 20px/1 'dashicons';
+    float: right;
+    right: 20px; }
+  .hf-column-menu .submenu {
+    border: 1px solid #e1e1e1;
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    min-width: 140px;
+    background: white; }
+    .hf-column-menu .submenu a {
+      font-size: 12px;
+      padding: 2px 4px;
+      text-align: right;
+      display: block;
+      border-bottom: 1px dotted #e1e1e1; }
+  .hf-column-menu:hover .submenu {
+    display: block; }
+
 /* BASICS */
 /* Codemirror */
 .CodeMirror {

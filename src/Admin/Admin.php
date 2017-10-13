@@ -19,6 +19,8 @@ class Admin {
         add_action( 'hf_admin_action_create_form', array( $this, 'process_create_form' ) );
         add_action( 'hf_admin_action_save_form', array( $this, 'process_save_form' ) );
         add_action( 'hf_admin_action_bulk_delete_submissions', array( $this, 'process_bulk_delete_submissions' ) );
+        add_action ('hf_admin_action_delete_data_column', array( $this, 'process_delete_data_column' ) );
+        add_action( 'hf_admin_action_rename_data_column', array( $this, 'process_rename_data_column' ) );
     }
 
     public function listen() {
@@ -201,6 +203,24 @@ class Admin {
         $table = $wpdb->prefix .'hf_submissions';
         $ids = join( ',', array_map( 'esc_sql', $_POST['id'] ) );
         $wpdb->query( sprintf( "DELETE FROM {$table} WHERE id IN( %s );", $ids ) );
+    }
+
+    public function process_delete_data_column() {
+        global $wpdb;
+        $form_id = (int) $_GET['form_id'];
+        $column_key = (string) $_GET['column_key'];
+        $table = $wpdb->prefix .'hf_submissions';
+
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT s.id, s.data FROM {$table} s WHERE s.form_id = %d;", $form_id ), OBJECT_K );
+        foreach( $results as $result ) {
+            $data = json_decode( $result->data, true );
+            unset( $data[ $column_key] );
+            $wpdb->update( $table, array( 'data' => json_encode( $data ) ), array( 'id' => $result->id ) );
+        }
+    }
+
+    public function process_rename_data_column() {
+
     }
 
 }

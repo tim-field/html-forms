@@ -2,6 +2,20 @@
 
 defined( 'ABSPATH' ) or exit;
 $datetime_format = sprintf('%s %s', get_option( 'date_format' ), get_option( 'time_format' ) );
+
+function hf_column_toolbox( $key ) {
+    global $form;
+
+    ?>
+    <div class="hf-column-menu">
+        <div class="submenu-toggle"></div>
+        <div class="submenu">
+            <a href="#"><?php echo __( 'Rename column', 'html-forms' ); ?></a>
+            <a class="hf-danger" href="<?php echo esc_attr( add_query_arg( array( '_hf_admin_action' => 'delete_data_column', 'column_key' => $key ) ) ); ?>"><?php echo __( 'Delete column', 'html-forms' ); ?></a>
+        </div>
+    </div>
+    <?php
+}
 ?>
 
 </form><?php // close main form. This means this always has to be the last tab or it will break stuff. ?>
@@ -30,9 +44,12 @@ $datetime_format = sprintf('%s %s', get_option( 'date_format' ), get_option( 'ti
         <thead>
             <tr>
                 <td id="cb" class="manage-column column-cb check-column"><input type="checkbox" /></td>
-                <th scope="col" class="manage-column">Timestamp</th>
+                <th scope="col" class="hf-column manage-column">Timestamp</th>
                 <?php foreach( $columns as $column ) {
-                    echo sprintf( '<th scope="col" class="manage-column">%s</th>', esc_html( ucfirst( strtolower( $column ) ) ) );
+                    echo '<th scope="col" class="hf-column manage-column">';
+                    echo esc_html( ucfirst( strtolower( $column ) ) );
+                    hf_column_toolbox( $column );
+                    echo '</th>';
                 } ?>
             </tr>
         </thead>

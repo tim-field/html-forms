@@ -10,7 +10,6 @@
 - Create function to easily retrieve object-casted form submissions
 - HTML template placeholders (for theme developers).
 - Allow sorting submission columns.
-- Allow deleting submission columns (key delete).
 - Allow renaming submission columns (key rename).
 - Export as CSV / XSL
 - Paginate form submissions
