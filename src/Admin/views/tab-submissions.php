@@ -74,6 +74,9 @@ function hf_column_toolbox( $key ) {
                } ?>
             </tr>
         <?php } ?>
+        <?php if ( empty( $submissions ) ) {
+            printf( '<tr><td colspan="2">%s</td></tr>', __( 'Nothing to see here, yet!', 'html-forms' ) );
+        } ?>
         </tbody>
     </table>
 
