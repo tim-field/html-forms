@@ -30,8 +30,26 @@ function hf_get_form( $form_id_or_slug ) {
         $post = $posts[0];
     }
 
-    $settings = array();
+    static $default_messages;
+    if( $default_messages === null ) {
+        $default_messages = array(
+            'success' => __('Thank you! We will be in touch soon.', 'html-forms'),
+            'invalid_email' => __( 'Sorry, that email address looks invalid.', 'html-forms' ),
+            'required_field_missing' => __( "Please fill in the required fields.", "html-forms" ),
+            'error' => __( 'Oops. An error occurred.', 'html-forms' ),
+        );
+    }
+
+    static $default_settings = array(
+        'hide_after_success' => 0,
+        'redirect_url' => '',
+        'required_fields' =>'',
+        'email_fields' => '',
+    );
+
     $post_meta = get_post_meta( $post->ID );
+
+    $settings = array();
     if( ! empty( $post_meta['_hf_settings'][0] ) ) {
         $settings = (array) maybe_unserialize( $post_meta['_hf_settings'][0] );
     }
@@ -48,8 +66,8 @@ function hf_get_form( $form_id_or_slug ) {
     $form->title = $post->post_title;
     $form->slug = $post->post_name;
     $form->markup = $post->post_content;
-    $form->settings = $settings;
-    $form->messages = $messages;
+    $form->settings = array_merge( $default_settings, $settings );
+    $form->messages = array_merge( $default_messages, $messages );
     return $form;
 }
 

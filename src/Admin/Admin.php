@@ -6,8 +6,16 @@ use HTML_Forms\Submission;
 
 class Admin {
 
+    /**
+     * @var string
+     */
     private $plugin_file;
 
+    /**
+     * Admin constructor.
+     *
+     * @param string $plugin_file
+     */
     public function __construct( $plugin_file ) {
         $this->plugin_file = $plugin_file;
     }
@@ -99,7 +107,7 @@ class Admin {
                 'post_type' => 'html-form',
                 'post_status' => 'publish',
                 'post_title' => $form_title,
-                'post_content' => '<!-- Nothing here... Add some fields! -->', // TODO: get from request data
+                'post_content' => $this->get_default_form_content(),
             )
         );
 
@@ -220,7 +228,16 @@ class Admin {
     }
 
     public function process_rename_data_column() {
+        // TODO: Implement this method.
+    }
 
+    private function get_default_form_content() {
+        $html = '';
+        $html .= sprintf( "<p>\n\t<label>%1\$s</label>\n\t<input type=\"text\" name=\"NAME\" placeholder=\"%1\$s\" required />\n</p>", __( 'Your name', 'html-forms' ) ) . PHP_EOL;
+        $html .= sprintf( "<p>\n\t<label>%1\$s</label>\n\t<input type=\"email\" name=\"EMAIL\" placeholder=\"%1\$s\" required />\n</p>", __( 'Your email', 'html-forms' ) ) . PHP_EOL;
+        $html .= sprintf( "<p>\n\t<label>%1\$s</label>\n\t<input type=\"text\" name=\"SUBJECT\" placeholder=\"%1\$s\" required />\n</p>", __( 'Subject', 'html-forms' ) ) . PHP_EOL;
+        $html .= sprintf( "<p>\n\t<label>%1\$s</label>\n\t<textarea name=\"MESSAGE\" placeholder=\"%1\$s\" required></textarea>\n</p>", __( 'Message', 'html-forms' ) ). PHP_EOL;
+        return $html;
     }
 
 }
