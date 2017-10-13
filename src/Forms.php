@@ -5,11 +5,26 @@ namespace HTML_Forms;
 class Forms
 {
 
+    /**
+     * @var string
+     */
     private $plugin_file;
 
-    public function __construct($plugin_file)
+    /**
+     * @var array
+     */
+    private $settings;
+
+    /**
+     * Forms constructor.
+     *
+     * @param string $plugin_file
+     * @param array $settings
+     */
+    public function __construct($plugin_file, array $settings )
     {
         $this->plugin_file = $plugin_file;
+        $this->settings = $settings;
     }
 
     public function hook()
@@ -41,40 +56,16 @@ class Forms
         wp_localize_script('html-forms', 'hf_js_vars', array(
             'ajax_url' => admin_url('admin-ajax.php'),
         ));
-    }
 
-    /**
-     * Access a nested array's value by dot notation
-     *
-     * @param array $array
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    private function array_get( $array, $key, $default = null ) {
-        if ( is_null( $key ) ) {
-            return $array;
+        if( $this->settings['load_stylesheet'] ) {
+            wp_enqueue_style( 'html-forms', plugins_url( 'assets/css/forms' . $suffix . '.css', $this->plugin_file ), array(), HTML_FORMS_VERSION );
         }
-
-        if ( isset( $array[$key] ) ) {
-            return $array[$key];
-        }
-
-        $segments = explode( '.', $key );
-        foreach ( $segments as $segment) {
-            if ( ! is_array( $array ) || ! array_key_exists( $segment, $array ) ) {
-                return $default;
-            }
-            $array = $array[$segment];
-        }
-
-        return $array;
     }
 
     private function validate_form(Form $form, $data) {
         $required_fields = $form->get_required_fields();
         foreach ($required_fields as $field_name) {
-            $value = $this->array_get( $data, $field_name );
+            $value = hf_array_get( $data, $field_name );
             if ( empty( $value ) ) {
                 return 'required_field_missing';
             }
@@ -82,11 +73,13 @@ class Forms
 
         $email_fields = $form->get_email_fields();
         foreach ($email_fields as $field_name) {
-            $value = $this->array_get( $data, $field_name );
+            $value = hf_array_get( $data, $field_name );
             if ( ! empty( $value ) && ! is_email( $value ) ) {
                 return 'invalid_email';
             }
         }
+
+        // TODO: Add honeypot.
 
         return 'success';
     }

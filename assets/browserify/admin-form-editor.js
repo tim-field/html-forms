@@ -31,13 +31,13 @@ function init() {
         matchBrackets: true,
     });
 
-    editor.on('changes', debounce(updateShadowDOM, 500));
+    editor.on('changes', debounce(updateShadowDOM, 100));
     editor.on('blur', updateShadowDOM);
     editor.on('blur', updateFieldVariables);
     editor.on('blur', updateRequiredFields);
     editor.on('blur', updateEmailFields);
 
-    document.getElementById('wpbody').addEventListener('click', debounce(updateFieldVariables, 500));
+    document.getElementById('wpbody').addEventListener('click', updateFieldVariables);
 }
 
 function getFieldVariableName(f) {
@@ -47,16 +47,18 @@ function getFieldVariableName(f) {
 function updateFieldVariables() {
     const fields = dom.querySelectorAll('input[name], select[name], textarea[name], button[name]');
     const fieldVariables = [].map.call(fields, (f) => '[' +  getFieldVariableName(f) + ']');
-    const variableElements = fieldVariables.map((n) => {
-        let el = document.createElement('code');
-        el.innerText = n;
-        return el;
-    });
+
 
     [].forEach.call( document.querySelectorAll('.hf-field-names'), (el) => {
         while (el.firstChild) {
             el.removeChild(el.firstChild);
         }
+
+        let variableElements = fieldVariables.map((n) => {
+            let el = document.createElement('code');
+            el.innerText = n;
+            return el;
+        });
 
         variableElements.forEach((vel, i, arr) => {
             el.appendChild(vel);

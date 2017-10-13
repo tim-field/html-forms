@@ -45,19 +45,19 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:37, src/Admin/Admin.php:238
+#: src/Actions/Email.php:37, src/Admin/Admin.php:259
 msgid "Subject"
 msgstr ""
 
-#: src/Actions/Email.php:43, src/Admin/Admin.php:239
+#: src/Actions/Email.php:43, src/Admin/Admin.php:260
 msgid "Message"
 msgstr ""
 
-#: src/Admin/Admin.php:236
+#: src/Admin/Admin.php:257
 msgid "Your name"
 msgstr ""
 
-#: src/Admin/Admin.php:237
+#: src/Admin/Admin.php:258
 msgid "Your email"
 msgstr ""
 
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Table.php:179, src/Admin/views/edit-form.php:6
+#: src/Admin/Table.php:179, src/Admin/views/edit-form.php:6, src/Admin/views/global-settings.php:8, src/Admin/views/global-settings.php:11
 msgid "Settings"
 msgstr ""
 
@@ -93,7 +93,7 @@ msgstr ""
 msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
 msgstr ""
 
-#: src/Admin/views/add-form.php:10, src/Admin/views/edit-form.php:16, src/Admin/views/overview.php:12
+#: src/Admin/views/add-form.php:10, src/Admin/views/edit-form.php:16, src/Admin/views/global-settings.php:6, src/Admin/views/overview.php:12
 msgid "You are here: "
 msgstr ""
 
@@ -115,6 +115,14 @@ msgstr ""
 
 #: src/Admin/views/edit-form.php:34
 msgid "Copy this shortcode and paste it into your post, page, or text widget content:"
+msgstr ""
+
+#: src/Admin/views/global-settings.php:18
+msgid "Load stylesheet?"
+msgstr ""
+
+#: src/Admin/views/global-settings.php:23
+msgid "Select \"yes\" to apply some basic form styles to all HTML Forms."
 msgstr ""
 
 #: src/Admin/views/overview.php:14, src/Admin/views/overview.php:17

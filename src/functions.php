@@ -71,6 +71,18 @@ function hf_get_form( $form_id_or_slug ) {
     return $form;
 }
 
+/**
+ * @return array
+ */
+function hf_get_settings() {
+    static $default_settings = array(
+        'load_stylesheet' => 0,
+    );
+
+    $settings = get_option( 'hf_settings', array() );
+    return array_merge( $default_settings, $settings );
+}
+
 function hf_array_get( $array, $key, $default = null ) {
     if ( is_null( $key ) ) {
         return $array;

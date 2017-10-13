@@ -33,7 +33,9 @@ use wpdb;
 function _bootstrap() {
     load_plugin_textdomain( 'html-forms', '', dirname( __FILE__ ) . '/languages' );
 
-    $forms = new Forms( __FILE__ );
+    $settings = hf_get_settings();
+
+    $forms = new Forms( __FILE__, $settings );
     $forms->hook();
 
     // hook actions

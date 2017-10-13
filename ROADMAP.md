@@ -1,6 +1,7 @@
 ## Must
 
 ## Should
+- Honeypot spam protection.
 
 ## Could
 - Add `date` and `number` specific attributes to these fields in the field builder.

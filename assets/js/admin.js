@@ -481,13 +481,13 @@ function init() {
         matchBrackets: true
     });
 
-    editor.on('changes', debounce(updateShadowDOM, 500));
+    editor.on('changes', debounce(updateShadowDOM, 100));
     editor.on('blur', updateShadowDOM);
     editor.on('blur', updateFieldVariables);
     editor.on('blur', updateRequiredFields);
     editor.on('blur', updateEmailFields);
 
-    document.getElementById('wpbody').addEventListener('click', debounce(updateFieldVariables, 500));
+    document.getElementById('wpbody').addEventListener('click', updateFieldVariables);
 }
 
 function getFieldVariableName(f) {
@@ -499,16 +499,17 @@ function updateFieldVariables() {
     var fieldVariables = [].map.call(fields, function (f) {
         return '[' + getFieldVariableName(f) + ']';
     });
-    var variableElements = fieldVariables.map(function (n) {
-        var el = document.createElement('code');
-        el.innerText = n;
-        return el;
-    });
 
     [].forEach.call(document.querySelectorAll('.hf-field-names'), function (el) {
         while (el.firstChild) {
             el.removeChild(el.firstChild);
         }
+
+        var variableElements = fieldVariables.map(function (n) {
+            var el = document.createElement('code');
+            el.innerText = n;
+            return el;
+        });
 
         variableElements.forEach(function (vel, i, arr) {
             el.appendChild(vel);

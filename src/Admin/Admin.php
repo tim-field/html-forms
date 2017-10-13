@@ -22,6 +22,7 @@ class Admin {
 
     public function hook() {
         add_action( 'admin_menu', array( $this, 'menu' ) );
+        add_action( 'init', array( $this, 'register_settings' ) );
         add_action( 'init', array( $this, 'listen' ) );
         add_action( 'admin_print_styles', array( $this, 'assets' ) );
         add_action( 'hf_admin_action_create_form', array( $this, 'process_create_form' ) );
@@ -29,6 +30,19 @@ class Admin {
         add_action( 'hf_admin_action_bulk_delete_submissions', array( $this, 'process_bulk_delete_submissions' ) );
         add_action ('hf_admin_action_delete_data_column', array( $this, 'process_delete_data_column' ) );
         add_action( 'hf_admin_action_rename_data_column', array( $this, 'process_rename_data_column' ) );
+    }
+
+    public function register_settings() {
+        // register settings
+        register_setting( 'hf_settings', 'hf_settings', array( $this, 'sanitize_settings' ) );
+    }
+
+    /**
+     * @param array $dirty
+     * @return array
+     */
+    public function sanitize_settings( $dirty ) {
+        return $dirty;
     }
 
     public function listen() {
@@ -78,6 +92,7 @@ class Admin {
         add_menu_page( 'HTML Forms', 'HTML Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ), plugins_url('assets/img/favicon.ico', $this->plugin_file ), '99.88491' );
         add_submenu_page( 'html-forms', 'Forms', 'All Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ) );
         add_submenu_page( 'html-forms', 'Add new form', 'Add New', 'manage_options', 'html-forms-add-form', array( $this, 'page_new_form' ) );
+        add_submenu_page( 'html-forms', 'Settings', 'Settings', 'manage_options', 'html-forms-settings', array( $this, 'page_settings' ) );
     }
 
     public function page_overview() {
@@ -94,6 +109,12 @@ class Admin {
 
     public function page_new_form() {
         require __DIR__ . '/views/add-form.php';
+    }
+
+
+    public function page_settings() {
+        $settings = hf_get_settings();
+        require __DIR__ . '/views/global-settings.php';
     }
 
      public function process_create_form() {
