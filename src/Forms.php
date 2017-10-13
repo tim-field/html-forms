@@ -49,8 +49,7 @@ class Forms
         add_shortcode('html_form', array($this, 'shortcode'));
     }
 
-    public function assets()
-    {
+    public function assets() {
         $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         wp_enqueue_script('html-forms', plugins_url('assets/js/public'. $suffix .'.js', $this->plugin_file), array(), HTML_FORMS_VERSION, true);
         wp_localize_script('html-forms', 'hf_js_vars', array(
@@ -62,7 +61,32 @@ class Forms
         }
     }
 
-    private function validate_form(Form $form, $data) {
+    /**
+     * @param Form $form
+     * @param array $data
+     * @return string
+     */
+    private function validate_form(Form $form, array $data) {
+        $honeypot_key = sprintf( '_hf_h%d', $form->ID );
+        if( ! isset( $data[$honeypot_key] ) || $data[$honeypot_key] !== "" ) {
+            return 'spam';
+        }
+
+        /**
+         * This filter allows you to perform your own form validation.
+         *
+         * Return a non-empty string if you want to raise an error.
+         * Error codes with a specific error message are: "required_field_missing", "invalid_email", and "error"
+         *
+         * @param string $error_code
+         * @param Form $form
+         * @param array $data
+         */
+        $error = apply_filters( 'hf_validate_form', '', $form, $data );
+        if( ! empty( $error ) ) {
+            return $error;
+        }
+
         $required_fields = $form->get_required_fields();
         foreach ($required_fields as $field_name) {
             $value = hf_array_get( $data, $field_name );
@@ -79,9 +103,8 @@ class Forms
             }
         }
 
-        // TODO: Add honeypot.
-
-        return 'success';
+        // all good: no errors!
+        return '';
     }
 
     public function sanitize( $value ) {
@@ -108,13 +131,14 @@ class Forms
             return;
         }
 
-        $form_id = (int)$_POST['_hf_form_id'];
+        $data = $_POST;
+        $form_id = (int) $data['_hf_form_id'];
         $form = hf_get_form($form_id);
-        $case = $this->validate_form($form, $_POST);
+        $error_code = $this->validate_form($form, $data);
 
-        if ($case === 'success') {
+        if (empty( $error_code ) ) {
             // filter out all field names starting with _
-            $data = array_filter( $_POST, function( $k ) {
+            $data = array_filter( $data, function( $k ) {
                 return ! empty( $k ) && $k[0] !== '_';
             }, ARRAY_FILTER_USE_KEY );
 
@@ -145,12 +169,12 @@ class Forms
             }
 
             /**
-             * General purpose hook after all form actions have been queued or processed.
+             * General purpose hook after all form actions have been processed.
              *
              * @param Submission $submission
              * @param Form $form
              */
-            do_action( 'hf_form_submission_processed', $submission, $form );
+            do_action( 'hf_form_success', $submission, $form );
 
             $response = array(
                 'message' => array(
@@ -167,9 +191,19 @@ class Forms
             $response = array(
                 'message' => array(
                     'type' => 'warning',
-                    'text' => $form->messages[$case],
-                )
+                    'text' => isset( $form->messages[ $error_code ] ) ? $form->messages[ $error_code ] : $form->messages['error'],
+                ),
+                'error' => $error_code,
             );
+
+            /**
+             * General purpose hook for when a form error occurred
+             *
+             * @param string $error_code
+             * @param Form $form
+             * @param array $data
+             */
+            do_action( 'hf_form_error', $error_code, $form, $data );
         }
 
         send_origin_headers();

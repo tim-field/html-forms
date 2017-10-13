@@ -34,7 +34,7 @@ document.addEventListener('submit', function(e) {
 
 function submitForm(formElement) {
     const loader = new Loader(formElement);
-    const data = serialize(formElement);
+    const data = serialize(formElement, { "hash": false, "empty": true });
     let request = new XMLHttpRequest();
 
     cleanFormMessages(formElement);

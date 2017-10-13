@@ -49,6 +49,7 @@ class Form {
 
         $html .= '<div class="hf-fields-wrap">';
         $html .= sprintf( '<input type="hidden" name="_hf_form_id" value="%d" />', $this->ID );
+        $html .= sprintf( '<div style="display: none;"><input type="text" name="_hf_h%d" value="" /></div>', $this->ID );
         $html .= $this->markup;
         $html .= '<noscript>' . __( "Please enable JavaScript for this form to work.", 'html-forms' ) . '</noscript>';
         $html .= '</div>';

@@ -98,7 +98,7 @@ document.addEventListener('submit', function (e) {
 
 function submitForm(formElement) {
     var loader = new Loader(formElement);
-    var data = serialize(formElement);
+    var data = serialize(formElement, { "hash": false, "empty": true });
     var request = new XMLHttpRequest();
 
     cleanFormMessages(formElement);
