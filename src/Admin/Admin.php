@@ -57,7 +57,7 @@ class Admin {
             return;
         }
 
-        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.min' : '';
+        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
         wp_enqueue_style( 'hf-admin', plugins_url( 'assets/css/admin'. $suffix .'.css', $this->plugin_file ), array(), HTML_FORMS_VERSION );
         wp_enqueue_script( 'hf-admin', plugins_url( 'assets/js/admin'. $suffix .'.js', $this->plugin_file ), array(), HTML_FORMS_VERSION, true  );

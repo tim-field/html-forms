@@ -1,9 +1,9 @@
-import { h, Component } from 'preact';
+import { h } from 'preact';
 
 function AddToForm(props){
     return (
         <div class="hf-small-margin">
-            <button class="button" type="button" onClick={props.onSubmit}>Add to form</button> &nbsp; <a href="javascript:void(0);" class="hf-small" style="vertical-align: middle;" onClick={props.onCancel}>or close field helper</a>
+            <button class="button" type="button" onClick={props.onSubmit}>Add field to form</button> &nbsp; <a href="javascript:void(0);" class="hf-small" style="vertical-align: middle;" onClick={props.onCancel}>or close field helper</a>
         </div>
     )
 }
@@ -11,7 +11,7 @@ function AddToForm(props){
 function Label(props){
     return (
         <div class="hf-small-margin">
-            <label for="hf-fg-field-label">Field label</label>
+            <label for="hf-fg-field-label">Field label <span class="required">*</span></label>
             <input id="hf-fg-field-label" type="text" value={props.value} onChange={props.onChange} />
         </div>
     )
@@ -30,7 +30,7 @@ function Placeholder(props){
 function ButtonText(props){
     return (
         <div class="hf-small-margin">
-            <label for="hf-fg-default-value">Button text</label>
+            <label for="hf-fg-default-value">Button text <span class="required">*</span></label>
             <input id="hf-fg-default-value" type="text" value={props.value} onChange={props.onChange} />
             <p class="help">Text to show on the button.</p>
         </div>
@@ -52,7 +52,7 @@ function Wrap(props) {
         <div class="hf-small-margin">
             <label class="inline">
                 <input type="checkbox" value="1" defaultChecked={props.checked} onChange={props.onChange} />
-                Wrap field in paragraph tags?
+                Wrap this field in paragraph tags.
             </label>
         </div>
     )
@@ -63,7 +63,7 @@ function Required(props) {
         <div class="hf-small-margin">
             <label class="inline">
                 <input type="checkbox" value="1" defaultChecked={props.checked} onChange={props.onChange} />
-                Required field?
+                This field is required.
             </label>
         </div>
     )
@@ -72,9 +72,9 @@ function Required(props) {
 function Choices(props) {
     let choiceFields = props.choices.map((choice, k) => (
         <div data-key={k}>
-            <input type={props.multiple ? "checkbox" : "radio"} name="selected" defaultChecked={choice.checked} onChange={props.handlers.toggleChecked} />
+            <input type={props.multiple ? "checkbox" : "radio"} name="selected" defaultChecked={choice.checked} onChange={props.handlers.toggleChecked} title="Pre-select this choice?" />
             <input type="text" value={choice.label} placeholder="Choice label" style="width: 80%;" onChange={props.handlers.changeLabel} />
-            <a href="javascript:void(0);" onClick={props.handlers.delete} style="text-decoration: none;">✕</a>
+            <a href="javascript:void(0);" onClick={props.handlers.delete} style="text-decoration: none;" title="Delete choice">✕</a>
         </div>
     ));
 

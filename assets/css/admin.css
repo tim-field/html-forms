@@ -77,10 +77,13 @@
     .hf-field-builder label.inline,
     .hf-field-builder label span {
       font-weight: normal; }
-  .hf-field-builder .help {
+  .hf-field-builder input + .help {
     margin-top: 0; }
   .hf-field-builder input[type="text"] {
     width: 100%; }
+  .hf-field-builder .required {
+    color: indianred;
+    font-size: 110%; }
   .hf-field-builder .available-fields button {
     margin-right: 4px; }
   .hf-field-builder .field-config *:last-child {

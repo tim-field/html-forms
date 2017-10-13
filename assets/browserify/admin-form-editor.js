@@ -26,7 +26,9 @@ function init() {
         mode: "htmlmixed",
         htmlMode: true,
         autoCloseTags: true,
-        autoRefresh: true
+        autoRefresh: true,
+        styleActiveLine: true,
+        matchBrackets: true,
     });
 
     editor.on('update', updateShadowDOM);

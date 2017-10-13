@@ -12,26 +12,26 @@ function htmlgenerate(conf) {
         default:
             fieldAttr = {
                 type: conf.fieldType,
-                required: conf.required,
-                placeholder: conf.placeholder,
                 name: namify(conf.fieldLabel),
                 value: conf.value,
+                placeholder: conf.placeholder,
+                required: conf.required,
             };
             field = html("input", fieldAttr);
             break;
         case "textarea":
             fieldAttr = {
-                required: conf.required,
-                placeholder: conf.placeholder,
                 name: namify(conf.fieldLabel),
+                placeholder: conf.placeholder,
+                required: conf.required,
             };
             field = html("textarea", fieldAttr, conf.value);
             break;
 
         case "dropdown":
             fieldAttr = {
-                required: conf.required,
                 name: namify(conf.fieldLabel),
+                required: conf.required,
             };
             const opts = conf.choices.map((choice) => (
                 html("option", { defaultChecked: choice.checked }, choice.label )
@@ -89,8 +89,6 @@ function htmlgenerate(conf) {
         str += renderToString(label);
         str += renderToString(field);
     }
-
-    console.log(str);
 
     str = htmlutil.prettyPrint(str);
     return str;

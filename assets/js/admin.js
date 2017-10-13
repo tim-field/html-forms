@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _desc, _value, _class, _desc2, _value2, _class2;
+
 var _preact = require('preact');
 
 var _linkstate = require('linkstate');
@@ -17,6 +19,8 @@ var _configFields = require('./field-builder/config-fields.js');
 
 var _html = require('./field-builder/html.js');
 
+var _decko = require('decko');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25,9 +29,52 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+    var desc = {};
+    Object['ke' + 'ys'](descriptor).forEach(function (key) {
+        desc[key] = descriptor[key];
+    });
+    desc.enumerable = !!desc.enumerable;
+    desc.configurable = !!desc.configurable;
+
+    if ('value' in desc || desc.initializer) {
+        desc.writable = true;
+    }
+
+    desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+        return decorator(target, property, desc) || desc;
+    }, desc);
+
+    if (context && desc.initializer !== void 0) {
+        desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+        desc.initializer = undefined;
+    }
+
+    if (desc.initializer === void 0) {
+        Object['define' + 'Property'](target, property, desc);
+        desc = null;
+    }
+
+    return desc;
+}
+
 var Editor = void 0;
 
-var FieldBuilder = function (_Component) {
+
+var fields = {
+    "text": "Text",
+    "email": "Email",
+    "url": "URL",
+    "number": "Number",
+    "date": "Date",
+    "textarea": "Textarea",
+    "dropdown": "Dropdown",
+    "checkboxes": "Checkboxes",
+    "radio-buttons": "Radio buttons",
+    "submit": "Submit button"
+};
+
+var FieldBuilder = (_class = function (_Component) {
     _inherits(FieldBuilder, _Component);
 
     function FieldBuilder() {
@@ -38,33 +85,21 @@ var FieldBuilder = function (_Component) {
         _this.state = {
             fieldType: ""
         };
-
-        _this.handleCancel = _this.handleCancel.bind(_this);
         return _this;
     }
 
     _createClass(FieldBuilder, [{
         key: 'handleCancel',
         value: function handleCancel() {
-            this.setState({ fieldType: "" });
+            this.setState({
+                fieldType: ""
+            });
         }
     }, {
         key: 'render',
         value: function render(props, state) {
             var _this2 = this;
 
-            var fields = {
-                "text": "Text",
-                "email": "Email",
-                "url": "URL",
-                "number": "Number",
-                "date": "Date",
-                "textarea": "Textarea",
-                "dropdown": "Dropdown",
-                "checkboxes": "Checkboxes",
-                "radio-buttons": "Radio buttons",
-                "submit": "Submit button"
-            };
             var fieldButtons = Object.keys(fields).map(function (key) {
                 var label = fields[key];
                 return (0, _preact.h)(
@@ -91,16 +126,20 @@ var FieldBuilder = function (_Component) {
                 (0, _preact.h)(
                     'div',
                     { style: 'max-width: 480px;' },
-                    (0, _preact.h)(FieldConfigurator, { fieldType: this.state.fieldType, onCancel: this.handleCancel })
-                )
+                    (0, _preact.h)(FieldConfigurator, { fieldType: state.fieldType, onCancel: this.handleCancel })
+                ),
+                state.fieldType === "" ? (0, _preact.h)(
+                    'p',
+                    { 'class': 'help', style: 'margin-bottom: 0;' },
+                    'Use the buttons above to generate your field HTML, or manually modify your form below.'
+                ) : ""
             );
         }
     }]);
 
     return FieldBuilder;
-}(_preact.Component);
-
-var FieldConfigurator = function (_Component2) {
+}(_preact.Component), (_applyDecoratedDescriptor(_class.prototype, 'handleCancel', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleCancel'), _class.prototype)), _class);
+var FieldConfigurator = (_class2 = function (_Component2) {
     _inherits(FieldConfigurator, _Component2);
 
     function FieldConfigurator(props) {
@@ -124,15 +163,11 @@ var FieldConfigurator = function (_Component2) {
             }]
         };
 
-        _this3.addToForm = _this3.addToForm.bind(_this3);
-        FieldConfigurator.handleKeyPress = FieldConfigurator.handleKeyPress.bind(_this3);
-        _this3.handleCancel = _this3.handleCancel.bind(_this3);
-
         _this3.choiceHandlers = {
-            "add": _this3.addChoice.bind(_this3),
-            "delete": _this3.deleteChoice.bind(_this3),
-            "changeLabel": _this3.changeChoiceLabel.bind(_this3),
-            "toggleChecked": _this3.toggleChoiceChecked.bind(_this3)
+            "add": _this3.addChoice,
+            "delete": _this3.deleteChoice,
+            "changeLabel": _this3.changeChoiceLabel,
+            "toggleChecked": _this3.toggleChoiceChecked
         };
         return _this3;
     }
@@ -140,7 +175,9 @@ var FieldConfigurator = function (_Component2) {
     _createClass(FieldConfigurator, [{
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(props) {
-            this.setState({ fieldType: props.fieldType });
+            this.setState({
+                fieldType: props.fieldType
+            });
         }
     }, {
         key: 'addToForm',
@@ -150,7 +187,7 @@ var FieldConfigurator = function (_Component2) {
         }
     }, {
         key: 'addChoice',
-        value: function addChoice(e) {
+        value: function addChoice() {
             var arr = this.state.choices;
             arr.push({ checked: false, label: "..." });
             this.setState({ choices: arr });
@@ -275,8 +312,7 @@ var FieldConfigurator = function (_Component2) {
     }]);
 
     return FieldConfigurator;
-}(_preact.Component);
-
+}(_preact.Component), (_applyDecoratedDescriptor(_class2.prototype, 'addToForm', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'addToForm'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'addChoice', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'addChoice'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteChoice', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteChoice'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'changeChoiceLabel', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'changeChoiceLabel'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'toggleChoiceChecked', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'toggleChoiceChecked'), _class2.prototype), _applyDecoratedDescriptor(_class2, 'handleKeyPress', [_decko.bind], Object.getOwnPropertyDescriptor(_class2, 'handleKeyPress'), _class2), _applyDecoratedDescriptor(_class2.prototype, 'handleCancel', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'handleCancel'), _class2.prototype)), _class2);
 exports.default = {
     init: function init(editor) {
         Editor = editor;
@@ -285,7 +321,7 @@ exports.default = {
     }
 };
 
-},{"./field-builder/config-fields.js":6,"./field-builder/html.js":7,"linkstate":17,"preact":19}],2:[function(require,module,exports){
+},{"./field-builder/config-fields.js":6,"./field-builder/html.js":7,"decko":16,"linkstate":18,"preact":20}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -420,7 +456,9 @@ function init() {
         mode: "htmlmixed",
         htmlMode: true,
         autoCloseTags: true,
-        autoRefresh: true
+        autoRefresh: true,
+        styleActiveLine: true,
+        matchBrackets: true
     });
 
     editor.on('update', updateShadowDOM);
@@ -571,7 +609,7 @@ function AddToForm(props) {
         (0, _preact.h)(
             "button",
             { "class": "button", type: "button", onClick: props.onSubmit },
-            "Add to form"
+            "Add field to form"
         ),
         " \xA0 ",
         (0, _preact.h)(
@@ -589,7 +627,12 @@ function Label(props) {
         (0, _preact.h)(
             "label",
             { "for": "hf-fg-field-label" },
-            "Field label"
+            "Field label ",
+            (0, _preact.h)(
+                "span",
+                { "class": "required" },
+                "*"
+            )
         ),
         (0, _preact.h)("input", { id: "hf-fg-field-label", type: "text", value: props.value, onChange: props.onChange })
     );
@@ -625,7 +668,12 @@ function ButtonText(props) {
         (0, _preact.h)(
             "label",
             { "for": "hf-fg-default-value" },
-            "Button text"
+            "Button text ",
+            (0, _preact.h)(
+                "span",
+                { "class": "required" },
+                "*"
+            )
         ),
         (0, _preact.h)("input", { id: "hf-fg-default-value", type: "text", value: props.value, onChange: props.onChange }),
         (0, _preact.h)(
@@ -667,7 +715,7 @@ function Wrap(props) {
             "label",
             { "class": "inline" },
             (0, _preact.h)("input", { type: "checkbox", value: "1", defaultChecked: props.checked, onChange: props.onChange }),
-            "Wrap field in paragraph tags?"
+            "Wrap this field in paragraph tags."
         )
     );
 }
@@ -680,7 +728,7 @@ function Required(props) {
             "label",
             { "class": "inline" },
             (0, _preact.h)("input", { type: "checkbox", value: "1", defaultChecked: props.checked, onChange: props.onChange }),
-            "Required field?"
+            "This field is required."
         )
     );
 }
@@ -690,11 +738,11 @@ function Choices(props) {
         return (0, _preact.h)(
             "div",
             { "data-key": k },
-            (0, _preact.h)("input", { type: props.multiple ? "checkbox" : "radio", name: "selected", defaultChecked: choice.checked, onChange: props.handlers.toggleChecked }),
+            (0, _preact.h)("input", { type: props.multiple ? "checkbox" : "radio", name: "selected", defaultChecked: choice.checked, onChange: props.handlers.toggleChecked, title: "Pre-select this choice?" }),
             (0, _preact.h)("input", { type: "text", value: choice.label, placeholder: "Choice label", style: "width: 80%;", onChange: props.handlers.changeLabel }),
             (0, _preact.h)(
                 "a",
-                { href: "javascript:void(0);", onClick: props.handlers.delete, style: "text-decoration: none;" },
+                { href: "javascript:void(0);", onClick: props.handlers.delete, style: "text-decoration: none;", title: "Delete choice" },
                 "\u2715"
             )
         );
@@ -727,7 +775,7 @@ exports.Required = Required;
 exports.Choices = Choices;
 exports.ButtonText = ButtonText;
 
-},{"preact":19}],7:[function(require,module,exports){
+},{"preact":20}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -757,26 +805,26 @@ function htmlgenerate(conf) {
         default:
             fieldAttr = {
                 type: conf.fieldType,
-                required: conf.required,
-                placeholder: conf.placeholder,
                 name: namify(conf.fieldLabel),
-                value: conf.value
+                value: conf.value,
+                placeholder: conf.placeholder,
+                required: conf.required
             };
             field = html("input", fieldAttr);
             break;
         case "textarea":
             fieldAttr = {
-                required: conf.required,
+                name: namify(conf.fieldLabel),
                 placeholder: conf.placeholder,
-                name: namify(conf.fieldLabel)
+                required: conf.required
             };
             field = html("textarea", fieldAttr, conf.value);
             break;
 
         case "dropdown":
             fieldAttr = {
-                required: conf.required,
-                name: namify(conf.fieldLabel)
+                name: namify(conf.fieldLabel),
+                required: conf.required
             };
             var opts = conf.choices.map(function (choice) {
                 return html("option", { defaultChecked: choice.checked }, choice.label);
@@ -825,8 +873,6 @@ function htmlgenerate(conf) {
         str += (0, _preactRenderToString2.default)(field);
     }
 
-    console.log(str);
-
     str = _html2.default.prettyPrint(str);
     return str;
 }
@@ -851,7 +897,7 @@ function filterEmptyObjectValues(obj) {
 
 exports.htmlgenerate = htmlgenerate;
 
-},{"html":16,"preact":19,"preact-render-to-string":18}],8:[function(require,module,exports){
+},{"html":17,"preact":20,"preact-render-to-string":19}],8:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -12991,6 +13037,10 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 });
 
 },{"../../lib/codemirror":11}],16:[function(require,module,exports){
+(function(global,factory){if(typeof define === 'function' && define.amd){define(['exports'],factory);}else if(typeof exports !== 'undefined'){factory(exports);}else {var mod={exports:{}};factory(mod.exports);global.decko = mod.exports;}})(this,function(exports){'use strict';exports.__esModule = true;var EMPTY={};var HOP=Object.prototype.hasOwnProperty;var fns={memoize:function memoize(fn){var opt=arguments.length <= 1 || arguments[1] === undefined?EMPTY:arguments[1];var cache=opt.cache || {};return function(){for(var _len=arguments.length,a=Array(_len),_key=0;_key < _len;_key++) {a[_key] = arguments[_key];}var k=String(a[0]);if(opt.caseSensitive === false)k = k.toLowerCase();return HOP.call(cache,k)?cache[k]:cache[k] = fn.apply(this,a);};},debounce:function debounce(fn,opts){if(typeof opts === 'function'){var p=fn;fn = opts;opts = p;}var delay=opts && opts.delay || opts || 0,args=undefined,context=undefined,timer=undefined;return function(){for(var _len2=arguments.length,a=Array(_len2),_key2=0;_key2 < _len2;_key2++) {a[_key2] = arguments[_key2];}args = a;context = this;if(!timer)timer = setTimeout(function(){fn.apply(context,args);args = context = timer = null;},delay);};},bind:function bind(target,key,_ref){var fn=_ref.value;return {configurable:true,get:function get(){var value=fn.bind(this);Object.defineProperty(this,key,{value:value,configurable:true,writable:true});return value;}};}};var memoize=multiMethod(fns.memoize),debounce=multiMethod(fns.debounce),bind=multiMethod(function(f,c){return f.bind(c);},function(){return fns.bind;});exports.memoize = memoize;exports.debounce = debounce;exports.bind = bind;exports['default'] = {memoize:memoize,debounce:debounce,bind:bind};function multiMethod(inner,deco){deco = deco || inner.decorate || decorator(inner);var d=deco();return function(){for(var _len3=arguments.length,args=Array(_len3),_key3=0;_key3 < _len3;_key3++) {args[_key3] = arguments[_key3];}var l=args.length;return (l < 2?deco:l > 2?d:inner).apply(undefined,args);};}function decorator(fn){return function(opt){return typeof opt === 'function'?fn(opt):function(target,key,desc){desc.value = fn(desc.value,opt,target,key,desc);};};}});
+
+
+},{}],17:[function(require,module,exports){
 /*
 
  Style HTML
@@ -13527,11 +13577,11 @@ function style_html(html_source, options) {
 module.exports = {
   prettyPrint: style_html
 };
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]];return void 0===t?n:t}function linkState(t,e,n){var l=e.split("."),r=t.__lsc||(t.__lsc={});return r[e+n]||(r[e+n]=function(e){for(var r=e&&e.target||this,a={},i=a,o="string"==typeof n?dlv(e,n):r.nodeName?r.type.match(/^che|rad/)?r.checked:r.value:e,s=0;s<l.length-1;s++)i=i[l[s]]||(i[l[s]]=!s&&t.state[l[s]]||{});i[l[s]]=o,t.setState(a)})}module.exports=linkState;
 
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
@@ -13823,7 +13873,7 @@ return renderToString;
 })));
 
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 !function() {
     'use strict';
     function VNode() {}

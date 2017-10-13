@@ -108,10 +108,15 @@
     }
   }
 
-  .help { margin-top: 0; }
+  input + .help { margin-top: 0; }
 
   input[type="text"] {
     width: 100%;
+  }
+
+  .required {
+    color: indianred;
+    font-size: 110%;
   }
 
   .available-fields button {

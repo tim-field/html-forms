@@ -38,7 +38,13 @@ gulp.task('js', function() {
     let tasks = files.map(function(entry) {
         let filename = entry.split('/').pop();
         return browserify({ entries: [entry] }).on('error', gutil.log)
-            .transform("babelify", {presets: ["es2015"]})
+            .transform("babelify", {
+                presets: ["es2015"],
+                plugins: [
+                    "transform-decorators-legacy",
+                    ["transform-react-jsx", { "pragma":"h" }]
+                ]
+            })
             .bundle()
             .pipe(source(filename))
             .pipe(buffer())

@@ -36,7 +36,7 @@ class Forms
 
     public function assets()
     {
-        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.min' : '';
+        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         wp_enqueue_script('html-forms', plugins_url('assets/js/public'. $suffix .'.js', $this->plugin_file), array(), HTML_FORMS_VERSION, true);
         wp_localize_script('html-forms', 'hf_js_vars', array(
             'ajax_url' => admin_url('admin-ajax.php'),

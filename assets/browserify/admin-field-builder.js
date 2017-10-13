@@ -5,7 +5,20 @@ import linkState from 'linkstate';
 import { AddToForm, Required, DefaultValue, Placeholder, Label, Wrap, Choices, ButtonText } from './field-builder/config-fields.js';
 import { htmlgenerate } from './field-builder/html.js';
 let Editor;
+import { bind } from 'decko';
 
+const fields = {
+    "text": "Text",
+    "email": "Email",
+    "url": "URL",
+    "number": "Number",
+    "date": "Date",
+    "textarea": "Textarea",
+    "dropdown": "Dropdown",
+    "checkboxes": "Checkboxes",
+    "radio-buttons": "Radio buttons",
+    "submit": "Submit button",
+};
 
 class FieldBuilder extends Component {
     constructor() {
@@ -14,27 +27,16 @@ class FieldBuilder extends Component {
         this.state = {
             fieldType: "",
         };
-
-        this.handleCancel = this.handleCancel.bind(this)
     }
 
+    @bind
     handleCancel() {
-        this.setState({ fieldType: "" })
+        this.setState({
+            fieldType: "",
+        });
     }
 
     render(props, state) {
-        const fields = {
-            "text": "Text",
-            "email": "Email",
-            "url": "URL",
-            "number": "Number",
-            "date": "Date",
-            "textarea": "Textarea",
-            "dropdown": "Dropdown",
-            "checkboxes": "Checkboxes",
-            "radio-buttons": "Radio buttons",
-            "submit": "Submit button",
-        };
         const fieldButtons = Object.keys(fields).map((key) => {
                 let label = fields[key];
                 return (
@@ -53,8 +55,9 @@ class FieldBuilder extends Component {
                     {fieldButtons}
                 </div>
                 <div style="max-width: 480px;">
-                    <FieldConfigurator fieldType={this.state.fieldType} onCancel={this.handleCancel} />
+                    <FieldConfigurator fieldType={state.fieldType} onCancel={this.handleCancel} />
                 </div>
+                {state.fieldType === "" ? <p class="help" style="margin-bottom: 0;">Use the buttons above to generate your field HTML, or manually modify your form below.</p> : ""}
             </div>
         );
     }
@@ -83,33 +86,34 @@ class FieldConfigurator extends Component {
             ],
         };
 
-        this.addToForm = this.addToForm.bind(this);
-        FieldConfigurator.handleKeyPress = FieldConfigurator.handleKeyPress.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-
         this.choiceHandlers = {
-            "add": this.addChoice.bind(this),
-            "delete": this.deleteChoice.bind(this),
-            "changeLabel": this.changeChoiceLabel.bind(this),
-            "toggleChecked": this.toggleChoiceChecked.bind(this),
+            "add": this.addChoice,
+            "delete": this.deleteChoice,
+            "changeLabel": this.changeChoiceLabel,
+            "toggleChecked": this.toggleChoiceChecked,
         }
     }
 
     componentWillReceiveProps(props) {
-        this.setState({ fieldType: props.fieldType })
+        this.setState({
+            fieldType: props.fieldType,
+        });
     }
 
+    @bind
     addToForm() {
         const html = htmlgenerate(this.state);
         Editor.replaceSelection(html);
     }
 
-    addChoice(e) {
+    @bind
+    addChoice() {
         let arr = this.state.choices;
         arr.push({ checked: false, label: "..." });
         this.setState({choices: arr });
     }
 
+    @bind
     deleteChoice(e) {
         let arr = this.state.choices;
         let index = e.target.parentElement.getAttribute('data-key');
@@ -117,6 +121,7 @@ class FieldConfigurator extends Component {
         this.setState({choices: arr });
     }
 
+    @bind
     changeChoiceLabel(e) {
         let arr = this.state.choices;
         let index = e.target.parentElement.getAttribute('data-key');
@@ -124,6 +129,7 @@ class FieldConfigurator extends Component {
         this.setState({choices: arr });
     }
 
+    @bind
     toggleChoiceChecked(e) {
         let arr = this.state.choices;
         let index = e.target.parentElement.getAttribute('data-key');
@@ -131,6 +137,7 @@ class FieldConfigurator extends Component {
         this.setState({choices: arr });
     }
 
+    @bind
     static handleKeyPress(e) {
         // stop RETURN from submitting the parent form.
         if(e.keyCode === 13) {
@@ -138,6 +145,7 @@ class FieldConfigurator extends Component {
         }
     }
 
+    @bind
     handleCancel() {
         this.props.onCancel();
     }
