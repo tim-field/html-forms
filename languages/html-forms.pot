@@ -17,6 +17,22 @@ msgstr ""
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
+#: src/functions.php:36
+msgid "Thank you! We will be in touch soon."
+msgstr ""
+
+#: src/functions.php:37
+msgid "Sorry, that email address looks invalid."
+msgstr ""
+
+#: src/functions.php:38
+msgid "Please fill in the required fields."
+msgstr ""
+
+#: src/functions.php:39
+msgid "Oops. An error occurred."
+msgstr ""
+
 #: src/Actions/Email.php:14
 msgid "Send Email"
 msgstr ""
@@ -29,12 +45,20 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:37
+#: src/Actions/Email.php:37, src/Admin/Admin.php:238
 msgid "Subject"
 msgstr ""
 
-#: src/Actions/Email.php:43
+#: src/Actions/Email.php:43, src/Admin/Admin.php:239
 msgid "Message"
+msgstr ""
+
+#: src/Admin/Admin.php:236
+msgid "Your name"
+msgstr ""
+
+#: src/Admin/Admin.php:237
+msgid "Your email"
 msgstr ""
 
 #: src/Admin/Table.php:110
@@ -81,15 +105,15 @@ msgstr ""
 msgid "Edit form"
 msgstr ""
 
+#: src/Admin/views/edit-form.php:30
+msgid "Form title"
+msgstr ""
+
 #: src/Admin/views/edit-form.php:31
-msgid "Enter form title here"
+msgid "Enter the title of your form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:32
-msgid "Enter the title of your sign-up form"
-msgstr ""
-
-#: src/Admin/views/edit-form.php:35
+#: src/Admin/views/edit-form.php:34
 msgid "Copy this shortcode and paste it into your post, page, or text widget content:"
 msgstr ""
 
@@ -107,6 +131,10 @@ msgstr ""
 
 #: src/Admin/views/tab-actions.php:26
 msgid "Add form action"
+msgstr ""
+
+#: src/Admin/views/tab-actions.php:27
+msgid "Use the below button(s) to configure and perform an action whenever this form is successfully submitted."
 msgstr ""
 
 #: src/Admin/views/tab-fields.php:6
@@ -177,6 +205,18 @@ msgstr ""
 msgid "Leave empty or enter <code>0</code> for no redirect. Otherwise, use complete (absolute) URLs, including <code>http://</code>."
 msgstr ""
 
+#: src/Admin/views/tab-submissions.php:13
+msgid "Rename column"
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:14
+msgid "Delete column"
+msgstr ""
+
 #: src/Admin/views/tab-submissions.php:23
 msgid "Form Submissions"
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:78
+msgid "Nothing to see here, yet!"
 msgstr ""

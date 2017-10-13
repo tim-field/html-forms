@@ -481,12 +481,13 @@ function init() {
         matchBrackets: true
     });
 
-    editor.on('update', updateShadowDOM);
+    editor.on('changes', debounce(updateShadowDOM, 500));
+    editor.on('blur', updateShadowDOM);
     editor.on('blur', updateFieldVariables);
     editor.on('blur', updateRequiredFields);
     editor.on('blur', updateEmailFields);
 
-    updateFieldVariables();
+    document.getElementById('wpbody').addEventListener('click', debounce(updateFieldVariables, 500));
 }
 
 function getFieldVariableName(f) {
@@ -539,6 +540,22 @@ function replaceSelection(str) {
     editor.replaceSelection(str);
     editor.focus();
 }
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+        var context = this,
+            args = arguments;
+        var later = function later() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
 
 exports.default = {
     'init': init,

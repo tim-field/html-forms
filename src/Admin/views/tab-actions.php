@@ -24,6 +24,7 @@ $available_actions = $this->get_available_form_actions();
 
 <div class="hf-medium-margin">
     <h3><?php echo __( 'Add form action', 'html-forms' ); ?></h3>
+    <p><?php _e( 'Use the below button(s) to configure and perform an action whenever this form is successfully submitted.', 'html-forms' ); ?></p>
     <p id="hf-available-form-actions">
         <?php
         foreach( $available_actions as $type => $label ) {
