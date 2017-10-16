@@ -1,18 +1,24 @@
 ## Must
 
 ## Should
+- Visual editing for email action message body.
+- Store source URL (where form was submitted from).
+
 
 ## Could
 - Add `date` and `number` specific attributes to these fields in the field builder.
-- Pre-set form CSS themes
-- Form widget.
 - Function to register static forms (for theme developers).
 - Create function to easily retrieve object-casted form submissions
 - HTML template placeholders (for theme developers).
 - Allow sorting submission columns.
 - Allow renaming submission columns (key rename).
-- Export as CSV / XSL
+- Plus: Export as CSV / XSL
 - Paginate form submissions
+- Form widget.
+- Plus: Schedule form.
+- Plus: Limit form submissions.
+- Require user to be logged in (w/ message for guests).
+- Conditional logic.
 
 ## Would
 - Delete individual form submissions.
