@@ -45,19 +45,19 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:37, src/Admin/Admin.php:259
+#: src/Actions/Email.php:37, src/Admin/Admin.php:284
 msgid "Subject"
 msgstr ""
 
-#: src/Actions/Email.php:43, src/Admin/Admin.php:260
+#: src/Actions/Email.php:43, src/Admin/Admin.php:285
 msgid "Message"
 msgstr ""
 
-#: src/Admin/Admin.php:257
+#: src/Admin/Admin.php:282
 msgid "Your name"
 msgstr ""
 
-#: src/Admin/Admin.php:258
+#: src/Admin/Admin.php:283
 msgid "Your email"
 msgstr ""
 
@@ -69,7 +69,7 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: src/Admin/Table.php:177, src/Admin/views/edit-form.php:4
+#: src/Admin/Table.php:177, src/Admin/views/edit-form.php:4, src/Admin/views/tab-submissions.php:136
 msgid "Fields"
 msgstr ""
 
@@ -218,13 +218,41 @@ msgid "Rename column"
 msgstr ""
 
 #: src/Admin/views/tab-submissions.php:14
+msgid "Are you sure you want to delete this column? All data will be lost."
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:14
 msgid "Delete column"
 msgstr ""
 
-#: src/Admin/views/tab-submissions.php:23
+#: src/Admin/views/tab-submissions.php:22
 msgid "Form Submissions"
 msgstr ""
 
-#: src/Admin/views/tab-submissions.php:78
+#: src/Admin/views/tab-submissions.php:47, src/Admin/views/tab-submissions.php:118
+msgid "Timestamp"
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:81
 msgid "Nothing to see here, yet!"
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:114
+msgid "Meta information"
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:122
+msgid "User Agent"
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:126
+msgid "IP Address"
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:130
+msgid "Referrer URL"
+msgstr ""
+
+#: src/Admin/views/tab-submissions.php:153
+msgid "Back to submissions list"
 msgstr ""

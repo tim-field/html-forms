@@ -2,8 +2,6 @@
 
 ## Should
 - Visual editing for email action message body.
-- Store source URL (where form was submitted from).
-
 
 ## Could
 - Add `date` and `number` specific attributes to these fields in the field builder.

@@ -10,8 +10,9 @@ function hf_column_toolbox( $key ) {
     <div class="hf-column-menu">
         <div class="submenu-toggle"></div>
         <div class="submenu">
-            <a href="#"><?php echo __( 'Rename column', 'html-forms' ); ?></a>
-            <a class="hf-danger" href="<?php echo esc_attr( add_query_arg( array( '_hf_admin_action' => 'delete_data_column', 'column_key' => $key ) ) ); ?>"><?php echo __( 'Delete column', 'html-forms' ); ?></a>
+            <a class="hf-danger" href="<?php echo esc_attr( add_query_arg( array( '_hf_admin_action' => 'delete_data_column', 'column_key' => $key ) ) ); ?>" data-hf-confirm="<?php esc_attr_e( 'Are you sure you want to delete this column? All data will be lost.', 'html-forms' ); ?>">
+                <?php echo __( 'Delete column', 'html-forms' ); ?>
+            </a>
         </div>
     </div>
     <?php
