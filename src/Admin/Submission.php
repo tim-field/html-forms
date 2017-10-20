@@ -8,6 +8,7 @@ class Submission {
     public $data = array();
     public $ip_address = '';
     public $user_agent = '';
+    public $referer_url = '';
     public $submitted_at;
 
     public function save() {
@@ -19,7 +20,7 @@ class Submission {
             'form_id' => $this->form_id,
         );
 
-        foreach( array( 'ip_address', 'user_agent', 'submitted_at' ) as $prop ) {
+        foreach( array( 'ip_address', 'user_agent', 'submitted_at', 'referer_url' ) as $prop ) {
             if( ! empty( $this->$prop ) ) {
                 $data[ $prop ] = $this->$prop;
             }

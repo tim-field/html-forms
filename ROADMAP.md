@@ -15,10 +15,13 @@
 - Plus: Export as CSV / XSL
 - Paginate form submissions
 - Form widget.
-- Plus: Schedule form.
-- Plus: Limit form submissions.
-- Require user to be logged in (w/ message for guests).
+- Plus: Schedule form (see Gravity Forms)
+- Plus: Limit form submissions (see Gravity Forms)
+- Require user to be logged in (w/ message for guests) (see Gravity Forms)
 - Conditional logic.
+- Leave email message blank for an automagic email (see Statamic)
+- Silently fail when honeypot fails (trick bots).
+
 
 ## Would
 - Delete individual form submissions.

@@ -62,6 +62,7 @@ function _install() {
         `data` TEXT NOT NULL,
         `user_agent` TEXT NULL,
         `ip_address` VARCHAR(255) NULL,
+        `referer_url` VARCHAR(255) NULL,
         `submitted_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );");
 

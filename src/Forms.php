@@ -115,6 +115,11 @@ class Forms
             // convert &amp; back to &
             $value = html_entity_decode($value, ENT_NOQUOTES);
         } elseif (is_array($value)) {
+            // filter out empty values
+            $value = array_filter( $value, function( $v ) {
+                return ! empty( $v );
+            });
+
             $value = array_map(array( $this, 'sanitize' ), $value);
         } elseif (is_object($value)) {
             $vars = get_object_vars($value);
@@ -137,6 +142,7 @@ class Forms
         $error_code = $this->validate_form($form, $data);
 
         if (empty( $error_code ) ) {
+
             // filter out all field names starting with _
             $data = array_filter( $data, function( $k ) {
                 return ! empty( $k ) && $k[0] !== '_';
@@ -154,6 +160,7 @@ class Forms
             $submission->data = $data;
             $submission->ip_address = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
             $submission->user_agent = sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] );
+            $submission->referer_url = sanitize_text_field( $_SERVER['HTTP_REFERER'] );
             $submission->save();
 
             // process form actions
