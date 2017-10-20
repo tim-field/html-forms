@@ -49,7 +49,8 @@ class Forms
         add_shortcode('html_form', array($this, 'shortcode'));
     }
 
-    public function assets() {
+    public function assets()
+    {
         $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         wp_enqueue_script('html-forms', plugins_url('assets/js/public'. $suffix .'.js', $this->plugin_file), array(), HTML_FORMS_VERSION, true);
         wp_localize_script('html-forms', 'hf_js_vars', array(
@@ -66,7 +67,8 @@ class Forms
      * @param array $data
      * @return string
      */
-    private function validate_form(Form $form, array $data) {
+    private function validate_form(Form $form, array $data)
+    {
         $honeypot_key = sprintf( '_hf_h%d', $form->ID );
         if( ! isset( $data[$honeypot_key] ) || $data[$honeypot_key] !== "" ) {
             return 'spam';
@@ -107,7 +109,8 @@ class Forms
         return '';
     }
 
-    public function sanitize( $value ) {
+    public function sanitize( $value )
+    {
         if (is_string($value)) {
             // strip all HTML tags & whitespace
             $value = trim(strip_tags($value));

@@ -111,6 +111,11 @@ function hf_column_toolbox( $key ) {
         font-size: 14px;
         text-align: left;
         }
+        pre{
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
     </style>
     <h3><?php _e( 'Meta information', 'html-forms' ); ?></h3>
     <table>
@@ -150,6 +155,10 @@ function hf_column_toolbox( $key ) {
         } ?>
         </tbody>
     </table>
+    <div class="hf-small-margin"></div>
+    <h3><?php _e( 'Raw', 'html-forms' ); ?></h3>
+    <pre><?php print_r( $submission ); ?></pre>
 
+    <div class="hf-small-margin"></div>
     <p><a href="<?php echo esc_attr( remove_query_arg( 'submission_id' ) ); ?>">&lsaquo; <?php _e( 'Back to submissions list', 'html-forms' ); ?></a></p>
 <?php } // end if singular submission ?>
