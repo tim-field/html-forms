@@ -50,7 +50,7 @@ $tabs = array(
                 foreach( $tabs as $tab => $name ) {
                     $class = ($active_tab === $tab) ? 'hf-tab-active' : '';
                     echo sprintf('<div class="hf-tab %s" id="tab-%s" data-tab="%s">', $class, $tab, $tab);
-                    include __DIR__ . '/tab-' . $tab . '.php';;
+                    do_action( 'hf_admin_output_form_tab_' . $tab, $form );
                     echo '</div>';
                 } // end foreach tab
                 ?>

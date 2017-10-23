@@ -1,6 +1,7 @@
 <?php
 
 use HTML_Forms\Form;
+use HTML_Forms\Submission;
 
 /**
  * @param $form_id_or_slug int|string
@@ -71,6 +72,40 @@ function hf_get_form( $form_id_or_slug ) {
     return $form;
 }
 
+/**
+ * @param $form_id
+ * @param array $args
+ * @return Submission[]
+ */
+function hf_get_form_submissions( $form_id, array $args = array() ) {
+    $default_args = array(
+        'offset' => 0,
+        'limit' => 1000
+    );
+    $args = array_merge( $default_args, $args );
+
+    global $wpdb;
+    $table = $wpdb->prefix .'hf_submissions';
+    $results = $wpdb->get_results( $wpdb->prepare( "SELECT s.* FROM {$table} s WHERE s.form_id = %d ORDER BY s.submitted_at DESC LIMIT {$args['offset']}, {$args['limit']};", $form_id ), OBJECT_K );
+    $submissions = array();
+    foreach( $results as $key => $object ) {
+        $submission = Submission::from_object( $object );
+        $submissions[$key] = $submission;
+    }
+    return $submissions;
+}
+
+/**
+ * @param int $submission_id
+ * @return Submission
+ */
+function hf_get_form_submission( $submission_id ) {
+    global $wpdb;
+    $table = $wpdb->prefix .'hf_submissions';
+    $object = $wpdb->get_row( $wpdb->prepare( "SELECT s.* FROM {$table} s WHERE s.id = %d;", $submission_id ), OBJECT );
+    $submission = Submission::from_object( $object );
+    return $submission;
+}
 /**
  * @return array
  */

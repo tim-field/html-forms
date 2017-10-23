@@ -2,6 +2,7 @@
 
 namespace HTML_Forms\Admin;
 
+use HTML_Forms\Form;
 use HTML_Forms\Submission;
 
 class Admin {
@@ -28,9 +29,16 @@ class Admin {
         add_action( 'hf_admin_action_create_form', array( $this, 'process_create_form' ) );
         add_action( 'hf_admin_action_save_form', array( $this, 'process_save_form' ) );
         add_action( 'hf_admin_action_bulk_delete_submissions', array( $this, 'process_bulk_delete_submissions' ) );
-        add_action ('hf_admin_action_delete_data_column', array( $this, 'process_delete_data_column' ) );
-        add_action( 'hf_admin_action_rename_data_column', array( $this, 'process_rename_data_column' ) );
+
+        add_action( 'hf_admin_output_form_tab_fields', array( $this, 'tab_fields' ) );
+        add_action( 'hf_admin_output_form_tab_messages', array( $this, 'tab_messages' ) );
+        add_action( 'hf_admin_output_form_tab_settings', array( $this, 'tab_settings' ) );
+        add_action( 'hf_admin_output_form_tab_actions', array( $this, 'tab_actions' ) );
+        add_action( 'hf_admin_output_form_tab_submissions', array( $this, 'tab_submissions_list' ) );
+        add_action( 'hf_admin_output_form_tab_submissions', array( $this, 'tab_submissions_detail' ) );
     }
+
+
 
     public function register_settings() {
         // register settings
@@ -117,7 +125,67 @@ class Admin {
         require __DIR__ . '/views/global-settings.php';
     }
 
-     public function process_create_form() {
+
+    public function page_edit_form() {
+        $active_tab = ! empty( $_GET['tab'] ) ? $_GET['tab'] : 'fields';
+        $form_id = (int) $_GET['form_id'];
+        $form = hf_get_form( $form_id );
+
+        require __DIR__ . '/views/edit-form.php';
+    }
+
+    public function tab_fields( Form $form ) {
+        require __DIR__ . '/views/tab-fields.php';
+    }
+
+
+    public function tab_messages( Form $form ) {
+        require __DIR__ . '/views/tab-messages.php';
+    }
+
+
+    public function tab_settings( Form $form ) {
+        require __DIR__ . '/views/tab-settings.php';
+    }
+
+
+    public function tab_actions( Form $form ) {
+        require __DIR__ . '/views/tab-actions.php';
+    }
+
+
+    public function tab_submissions_list( Form $form ) {
+        if( ! empty( $_GET['submission_id'] ) ) {
+            return;
+        }
+
+        $submissions = hf_get_form_submissions( $form->ID );
+
+        // create array of columns for submissions tab
+        $columns = array();
+        foreach( $submissions as $s ) {
+            foreach( $s->data as $field => $value ) {
+                if (!array_key_exists($field, $columns)) {
+                    $columns[$field] = true;
+                }
+            }
+        }
+        $columns = array_keys( $columns );
+
+        require __DIR__ . '/views/tab-submissions-list.php';
+    }
+
+    public function tab_submissions_detail( Form $form ) {
+        if( empty( $_GET['submission_id'] ) ) {
+            return;
+        }
+
+        $submission = hf_get_form_submission( (int) $_GET['submission_id'] );
+        require __DIR__ . '/views/tab-submissions-detail.php';
+    }
+
+
+    public function process_create_form() {
         // Fix for MultiSite stripping KSES for roles other than administrator
         remove_all_filters( 'content_save_pre' );
 
@@ -134,67 +202,6 @@ class Admin {
 
         wp_redirect( admin_url( 'admin.php?page=html-forms&view=edit&form_id=' . $form_id ));
         exit;
-    }
-
-    private function map_object_to_submission( $object ) {
-        $submission = new Submission();
-        $submission->id = $object->id;
-        $submission->form_id = $object->form_id;
-        $submission->data = json_decode( $object->data, true );
-        $submission->ip_address = (string) $object->ip_address;
-        $submission->user_agent = (string) $object->user_agent;
-        $submission->referer_url = (string) $object->referer_url;
-        $submission->submitted_at = $object->submitted_at;
-        return $submission;
-    }
-
-    private function get_submission_by_id( $id ) {
-        global $wpdb;
-        $table = $wpdb->prefix .'hf_submissions';
-        $object = $wpdb->get_row( $wpdb->prepare( "SELECT s.* FROM {$table} s WHERE s.id = %d;", $id ), OBJECT );
-        $submission = $this->map_object_to_submission( $object );
-        return $submission;
-    }
-
-    // TODO: Abstract this away in helper function?
-    private function get_submissions_for_form_id( $form_id ) {
-        global $wpdb;
-        $table = $wpdb->prefix .'hf_submissions';
-        $results = $wpdb->get_results( $wpdb->prepare( "SELECT s.* FROM {$table} s WHERE s.form_id = %d ORDER BY s.submitted_at DESC LIMIT 100;", $form_id ), OBJECT_K );
-        $submissions = array();
-        foreach( $results as $key => $object ) {
-            $submission = $this->map_object_to_submission( $object );
-            $submissions[$key] = $submission;
-        }
-        return $submissions;
-    }
-
-    public function page_edit_form() {
-        $active_tab = ! empty( $_GET['tab'] ) ? $_GET['tab'] : 'fields';
-        $form_id = (int) $_GET['form_id'];
-        $form = hf_get_form( $form_id );
-        $submission = null;
-        $submissions = array();
-
-        if( isset( $_GET['submission_id'] ) ) {
-            $submission = $this->get_submission_by_id( (int) $_GET['submission_id'] );
-        } else {
-            $submissions = $this->get_submissions_for_form_id( $form_id );
-        }
-
-        // create array of columns for submissions tab
-        $columns = array();
-        $haystack = $submission ? array( $submission ) : $submissions;
-        foreach( $haystack as $s ) {
-            foreach( $s->data as $field => $value ) {
-                if (!array_key_exists($field, $columns)) {
-                    $columns[$field] = true;
-                }
-            }
-        }
-        $columns = array_keys( $columns );
-
-        require __DIR__ . '/views/edit-form.php';
     }
 
     public function process_save_form() {
@@ -257,24 +264,6 @@ class Admin {
         $table = $wpdb->prefix .'hf_submissions';
         $ids = join( ',', array_map( 'esc_sql', $_POST['id'] ) );
         $wpdb->query( sprintf( "DELETE FROM {$table} WHERE id IN( %s );", $ids ) );
-    }
-
-    public function process_delete_data_column() {
-        global $wpdb;
-        $form_id = (int) $_GET['form_id'];
-        $column_key = (string) $_GET['column_key'];
-        $table = $wpdb->prefix .'hf_submissions';
-
-        $results = $wpdb->get_results( $wpdb->prepare( "SELECT s.id, s.data FROM {$table} s WHERE s.form_id = %d;", $form_id ), OBJECT_K );
-        foreach( $results as $result ) {
-            $data = json_decode( $result->data, true );
-            unset( $data[ $column_key] );
-            $wpdb->update( $table, array( 'data' => json_encode( $data ) ), array( 'id' => $result->id ) );
-        }
-    }
-
-    public function process_rename_data_column() {
-        // TODO: Implement this method.
     }
 
     private function get_default_form_content() {
