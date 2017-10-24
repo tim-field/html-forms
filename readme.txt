@@ -75,5 +75,9 @@ HTML Forms is being developed on GitHub. If you want to collaborate, please look
 == Changelog ==
 
 
+##### 1.0 - In development
+
+Introducing HTML Forms, a different approach to forms for WordPress websites.
+
 
 
