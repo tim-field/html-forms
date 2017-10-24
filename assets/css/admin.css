@@ -1,11 +1,3 @@
-.hf-small-margin {
-  margin-top: 20px;
-  margin-bottom: 20px; }
-
-.hf-medium-margin {
-  margin-top: 40px;
-  margin-bottom: 40px; }
-
 .hf-tab {
   display: none;
   background: inherit;
@@ -48,33 +40,6 @@
 
 .hf-action-summary {
   display: none; }
-
-.hf-danger,
-.danger {
-  color: #a00; }
-
-.hf-clear,
-.clear {
-  clear: both; }
-
-.hf-italic {
-  font-style: italic; }
-
-.hf-small {
-  font-size: 90%; }
-
-.pull-right,
-.hf-pull-right {
-  float: right; }
-
-.hf-required {
-  color: indianred;
-  font-size: 110%; }
-
-.hf-muted {
-  font-weight: normal;
-  font-size: 90%;
-  color: #999; }
 
 .hf-field-builder {
   border: 1px solid #ccc;
@@ -125,6 +90,46 @@
       border-bottom: 1px dotted #e1e1e1; }
   .hf-column-menu:hover .submenu {
     display: block; }
+
+.hf-small-margin {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+
+.hf-medium-margin {
+  margin-top: 40px;
+  margin-bottom: 40px; }
+
+.hf-well {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ddd; }
+
+.hf-danger,
+.danger {
+  color: #a00; }
+
+.hf-clear,
+.clear {
+  clear: both; }
+
+.hf-italic {
+  font-style: italic; }
+
+.hf-small {
+  font-size: 90%; }
+
+.pull-right,
+.hf-pull-right {
+  float: right; }
+
+.hf-required {
+  color: indianred;
+  font-size: 110%; }
+
+.hf-muted {
+  font-weight: normal;
+  font-size: 90%;
+  color: #999; }
 
 /* BASICS */
 /* Codemirror */

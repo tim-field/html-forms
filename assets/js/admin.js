@@ -29,6 +29,41 @@ exports.default = {
 },{}],2:[function(require,module,exports){
 'use strict';
 
+var _tabs = require('./tabs.js');
+
+var _tabs2 = _interopRequireDefault(_tabs);
+
+var _formEditor = require('./form-editor.js');
+
+var _formEditor2 = _interopRequireDefault(_formEditor);
+
+var _formActions = require('./form-actions.js');
+
+var _formActions2 = _interopRequireDefault(_formActions);
+
+var _fieldBuilder = require('./field-builder.js');
+
+var _fieldBuilder2 = _interopRequireDefault(_fieldBuilder);
+
+var _actionConfirmations = require('./action-confirmations.js');
+
+var _actionConfirmations2 = _interopRequireDefault(_actionConfirmations);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_tabs2.default.init();
+_actionConfirmations2.default.init();
+
+if (document.getElementById('hf-form-editor')) {
+    _formEditor2.default.init();
+    _formActions2.default.init();
+
+    _fieldBuilder2.default.init(_formEditor2.default);
+}
+
+},{"./action-confirmations.js":1,"./field-builder.js":3,"./form-actions.js":6,"./form-editor.js":7,"./tabs.js":8}],3:[function(require,module,exports){
+'use strict';
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -363,307 +398,7 @@ exports.default = {
     }
 };
 
-},{"./field-builder/config-fields.js":7,"./field-builder/html.js":8,"decko":17,"linkstate":19,"preact":21}],3:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var availableActions = void 0,
-    actionTemplates = void 0,
-    actions = void 0;
-
-function init() {
-    actions = document.getElementById('hf-form-actions');
-    availableActions = document.getElementById('hf-available-form-actions');
-    actionTemplates = document.getElementById('hf-form-action-templates');
-
-    // turn settings into accordions
-    [].forEach.call(actions.querySelectorAll('.hf-action-settings'), function (el) {
-        el.parentNode.removeChild(el);
-
-        var heading = el.getAttribute('data-title');
-        var summary = el.querySelector('.hf-action-summary');
-        if (summary) {
-            heading += ' &mdash; <span class="hf-muted">' + summary.innerHTML + '</span>';
-        }
-        var wrap = createAccordion(heading, el.innerHTML);
-        actions.appendChild(wrap);
-
-        actions.querySelector('#hf-form-actions-empty').style.display = 'none';
-    });
-
-    availableActions.addEventListener('click', addAction, true);
-}
-
-function createAccordion(headingHTML, contentHTML) {
-    var wrap = document.createElement('div');
-    wrap.className = "hf-accordion expanded ";
-
-    var heading = document.createElement('h4');
-    heading.className = "hf-accordion-heading";
-    heading.innerHTML = headingHTML;
-    wrap.appendChild(heading);
-
-    var content = document.createElement('div');
-    content.className = "hf-accordion-content";
-    content.innerHTML = contentHTML;
-    wrap.appendChild(content);
-
-    var deleteWrap = document.createElement('p');
-    deleteWrap.style.textAlign = 'right';
-    var deleteLink = document.createElement('a');
-    deleteLink.href = 'javascript:void(0);';
-    deleteLink.className = "danger";
-    deleteLink.innerText = 'Delete this action';
-    deleteWrap.appendChild(deleteLink);
-    content.appendChild(deleteWrap);
-
-    // bind handlers
-    heading.addEventListener('click', createToggleActionHandler(wrap, content));
-    deleteLink.addEventListener('click', createDeleteActionHandler(wrap));
-    return wrap;
-}
-
-function addAction(e) {
-    var el = e.target || e.srcElement;
-    if (el.tagName !== 'INPUT') {
-        return;
-    }
-
-    var actionType = el.getAttribute('data-action-type');
-    var actionTemplate = actionTemplates.querySelector('#hf-action-type-' + actionType + '-template');
-
-    // append HTML to actions wrapper
-    var wrap = createAccordion(el.value, actionTemplate.innerHTML);
-    actions.appendChild(wrap);
-
-    // hide "no form actions" message
-    actions.querySelector('#hf-form-actions-empty').style.display = 'none';
-}
-
-function createDeleteActionHandler(wrap) {
-    return function () {
-        actions.removeChild(wrap);
-
-        if (actions.childElementCount === 1) {
-            actions.querySelector('#hf-form-actions-empty').style.display = '';
-        }
-    };
-}
-
-function createToggleActionHandler(wrap, content) {
-    return function () {
-        var show = content.offsetParent === null;
-        wrap.className = wrap.className.replace('expanded', '');
-        if (show) {
-            wrap.className = wrap.className + " expanded";
-        }
-        content.style.display = show ? 'block' : 'none';
-    };
-}
-
-exports.default = {
-    'init': init
-};
-
-},{}],4:[function(require,module,exports){
-'use strict';
-
-// load CodeMirror & plugins
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var CodeMirror = require('codemirror');
-require('codemirror/mode/xml/xml');
-require('codemirror/mode/javascript/javascript');
-require('codemirror/mode/css/css');
-require('codemirror/mode/htmlmixed/htmlmixed');
-require('codemirror/addon/fold/xml-fold');
-require('codemirror/addon/edit/matchtags');
-require('codemirror/addon/edit/closetag.js');
-
-var editor = void 0,
-    element = void 0,
-    dom = void 0,
-    requiredFieldsInput = void 0,
-    emailFieldsInput = void 0;
-
-function init() {
-    element = document.getElementById('hf-form-editor');
-    dom = document.createElement('form');
-    requiredFieldsInput = document.getElementById('hf-required-fields');
-    emailFieldsInput = document.getElementById('hf-email-fields');
-
-    dom.innerHTML = element.value;
-
-    editor = CodeMirror.fromTextArea(element, {
-        selectionPointer: true,
-        matchTags: { bothTags: true },
-        mode: "htmlmixed",
-        htmlMode: true,
-        autoCloseTags: true,
-        autoRefresh: true,
-        styleActiveLine: true,
-        matchBrackets: true
-    });
-
-    editor.on('changes', debounce(updateShadowDOM, 100));
-    editor.on('blur', updateShadowDOM);
-    editor.on('blur', updateFieldVariables);
-    editor.on('blur', updateRequiredFields);
-    editor.on('blur', updateEmailFields);
-
-    document.getElementById('wpbody').addEventListener('click', updateFieldVariables);
-}
-
-function getFieldVariableName(f) {
-    return f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1');
-}
-
-function updateFieldVariables() {
-    var fields = dom.querySelectorAll('input[name], select[name], textarea[name], button[name]');
-    var fieldVariables = [].map.call(fields, function (f) {
-        return '[' + getFieldVariableName(f) + ']';
-    });
-
-    [].forEach.call(document.querySelectorAll('.hf-field-names'), function (el) {
-        while (el.firstChild) {
-            el.removeChild(el.firstChild);
-        }
-
-        var variableElements = fieldVariables.map(function (n) {
-            var el = document.createElement('code');
-            el.innerText = n;
-            return el;
-        });
-
-        variableElements.forEach(function (vel, i, arr) {
-            el.appendChild(vel);
-
-            if (i < arr.length - 1) {
-                el.appendChild(document.createTextNode(', '));
-            }
-        });
-    });
-}
-
-function updateShadowDOM() {
-    dom.innerHTML = editor.getValue();
-}
-
-function updateRequiredFields() {
-    var fields = dom.querySelectorAll('[required]');
-    var fieldNames = [].map.call(fields, getFieldVariableName);
-    requiredFieldsInput.value = fieldNames.join(',');
-}
-
-function updateEmailFields() {
-    var fields = dom.querySelectorAll('input[type="email"]');
-    var fieldNames = [].map.call(fields, getFieldVariableName);
-    emailFieldsInput.value = fieldNames.join(',');
-}
-
-function replaceSelection(str) {
-    editor.replaceSelection(str);
-    editor.focus();
-}
-
-function debounce(func, wait, immediate) {
-    var timeout;
-    return function () {
-        var context = this,
-            args = arguments;
-        var later = function later() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        var callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-    };
-};
-
-exports.default = {
-    'init': init,
-    'replaceSelection': replaceSelection
-};
-
-},{"codemirror":12,"codemirror/addon/edit/closetag.js":9,"codemirror/addon/edit/matchtags":10,"codemirror/addon/fold/xml-fold":11,"codemirror/mode/css/css":13,"codemirror/mode/htmlmixed/htmlmixed":14,"codemirror/mode/javascript/javascript":15,"codemirror/mode/xml/xml":16}],5:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var tabs = void 0,
-    tabNavs = void 0;
-var Tabs = {};
-
-Tabs.init = function () {
-    tabs = document.querySelectorAll('.hf-tab');
-    tabNavs = document.querySelectorAll('#hf-tabs-nav a');
-    for (var i = 0; i < tabNavs.length; i++) {
-        tabNavs[i].addEventListener('click', Tabs.open);
-    }
-};
-
-Tabs.open = function (e) {
-    var tabTarget = this.getAttribute('data-tab-target');
-    for (var i = 0; i < tabNavs.length; i++) {
-        tabNavs[i].classList.toggle('nav-tab-active', tabNavs[i] === this);
-    }
-    this.blur();
-
-    for (var _i = 0; _i < tabs.length; _i++) {
-        var tab = tabs[_i];
-        tab.classList.toggle('hf-tab-active', tab.getAttribute('data-tab') === tabTarget);
-    }
-
-    document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + " ");
-
-    e.preventDefault();
-};
-
-exports.default = Tabs;
-
-},{}],6:[function(require,module,exports){
-'use strict';
-
-var _adminTabs = require('./admin-tabs.js');
-
-var _adminTabs2 = _interopRequireDefault(_adminTabs);
-
-var _adminFormEditor = require('./admin-form-editor.js');
-
-var _adminFormEditor2 = _interopRequireDefault(_adminFormEditor);
-
-var _adminFormActions = require('./admin-form-actions.js');
-
-var _adminFormActions2 = _interopRequireDefault(_adminFormActions);
-
-var _adminFieldBuilder = require('./admin-field-builder.js');
-
-var _adminFieldBuilder2 = _interopRequireDefault(_adminFieldBuilder);
-
-var _adminConfirmations = require('./admin-confirmations.js');
-
-var _adminConfirmations2 = _interopRequireDefault(_adminConfirmations);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_adminTabs2.default.init();
-_adminConfirmations2.default.init();
-
-if (document.getElementById('hf-form-editor')) {
-    _adminFormEditor2.default.init();
-    _adminFormActions2.default.init();
-
-    _adminFieldBuilder2.default.init(_adminFormEditor2.default);
-}
-
-},{"./admin-confirmations.js":1,"./admin-field-builder.js":2,"./admin-form-actions.js":3,"./admin-form-editor.js":4,"./admin-tabs.js":5}],7:[function(require,module,exports){
+},{"./field-builder/config-fields.js":4,"./field-builder/html.js":5,"decko":17,"linkstate":19,"preact":21}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -846,7 +581,7 @@ exports.Required = Required;
 exports.Choices = Choices;
 exports.ButtonText = ButtonText;
 
-},{"preact":21}],8:[function(require,module,exports){
+},{"preact":21}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -969,7 +704,272 @@ function filterEmptyObjectValues(obj) {
 
 exports.htmlgenerate = htmlgenerate;
 
-},{"html":18,"preact":21,"preact-render-to-string":20}],9:[function(require,module,exports){
+},{"html":18,"preact":21,"preact-render-to-string":20}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var availableActions = void 0,
+    actionTemplates = void 0,
+    actions = void 0;
+
+function init() {
+    actions = document.getElementById('hf-form-actions');
+    availableActions = document.getElementById('hf-available-form-actions');
+    actionTemplates = document.getElementById('hf-form-action-templates');
+
+    // turn settings into accordions
+    [].forEach.call(actions.querySelectorAll('.hf-action-settings'), function (el) {
+        el.parentNode.removeChild(el);
+
+        var heading = el.getAttribute('data-title');
+        var summary = el.querySelector('.hf-action-summary');
+        if (summary) {
+            heading += ' &mdash; <span class="hf-muted">' + summary.innerHTML + '</span>';
+        }
+        var wrap = createAccordion(heading, el.innerHTML);
+        actions.appendChild(wrap);
+
+        actions.querySelector('#hf-form-actions-empty').style.display = 'none';
+    });
+
+    availableActions.addEventListener('click', addAction, true);
+}
+
+function createAccordion(headingHTML, contentHTML) {
+    var wrap = document.createElement('div');
+    wrap.className = "hf-accordion expanded ";
+
+    var heading = document.createElement('h4');
+    heading.className = "hf-accordion-heading";
+    heading.innerHTML = headingHTML;
+    wrap.appendChild(heading);
+
+    var content = document.createElement('div');
+    content.className = "hf-accordion-content";
+    content.innerHTML = contentHTML;
+    wrap.appendChild(content);
+
+    var deleteWrap = document.createElement('p');
+    deleteWrap.style.textAlign = 'right';
+    var deleteLink = document.createElement('a');
+    deleteLink.href = 'javascript:void(0);';
+    deleteLink.className = "danger";
+    deleteLink.innerText = 'Delete this action';
+    deleteWrap.appendChild(deleteLink);
+    content.appendChild(deleteWrap);
+
+    // bind handlers
+    heading.addEventListener('click', createToggleActionHandler(wrap, content));
+    deleteLink.addEventListener('click', createDeleteActionHandler(wrap));
+    return wrap;
+}
+
+function addAction(e) {
+    var el = e.target || e.srcElement;
+    if (el.tagName !== 'INPUT') {
+        return;
+    }
+
+    var actionType = el.getAttribute('data-action-type');
+    var actionTemplate = actionTemplates.querySelector('#hf-action-type-' + actionType + '-template');
+
+    // append HTML to actions wrapper
+    var wrap = createAccordion(el.value, actionTemplate.innerHTML);
+    actions.appendChild(wrap);
+
+    // hide "no form actions" message
+    actions.querySelector('#hf-form-actions-empty').style.display = 'none';
+}
+
+function createDeleteActionHandler(wrap) {
+    return function () {
+        actions.removeChild(wrap);
+
+        if (actions.childElementCount === 1) {
+            actions.querySelector('#hf-form-actions-empty').style.display = '';
+        }
+    };
+}
+
+function createToggleActionHandler(wrap, content) {
+    return function () {
+        var show = content.offsetParent === null;
+        wrap.className = wrap.className.replace('expanded', '');
+        if (show) {
+            wrap.className = wrap.className + " expanded";
+        }
+        content.style.display = show ? 'block' : 'none';
+    };
+}
+
+exports.default = {
+    'init': init
+};
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+// load CodeMirror & plugins
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var CodeMirror = require('codemirror');
+require('codemirror/mode/xml/xml');
+require('codemirror/mode/javascript/javascript');
+require('codemirror/mode/css/css');
+require('codemirror/mode/htmlmixed/htmlmixed');
+require('codemirror/addon/fold/xml-fold');
+require('codemirror/addon/edit/matchtags');
+require('codemirror/addon/edit/closetag.js');
+
+var editor = void 0,
+    element = void 0,
+    dom = void 0,
+    requiredFieldsInput = void 0,
+    emailFieldsInput = void 0;
+
+function init() {
+    element = document.getElementById('hf-form-editor');
+    dom = document.createElement('form');
+    requiredFieldsInput = document.getElementById('hf-required-fields');
+    emailFieldsInput = document.getElementById('hf-email-fields');
+
+    dom.innerHTML = element.value;
+
+    editor = CodeMirror.fromTextArea(element, {
+        selectionPointer: true,
+        matchTags: { bothTags: true },
+        mode: "htmlmixed",
+        htmlMode: true,
+        autoCloseTags: true,
+        autoRefresh: true,
+        styleActiveLine: true,
+        matchBrackets: true
+    });
+
+    editor.on('changes', debounce(updateShadowDOM, 100));
+    editor.on('blur', updateShadowDOM);
+    editor.on('blur', updateFieldVariables);
+    editor.on('blur', updateRequiredFields);
+    editor.on('blur', updateEmailFields);
+
+    document.getElementById('wpbody').addEventListener('click', updateFieldVariables);
+}
+
+function getFieldVariableName(f) {
+    return f.name.replace('[]', '').replace(/\[(\w+)\]/g, '.$1');
+}
+
+function updateFieldVariables() {
+    var fields = dom.querySelectorAll('input[name], select[name], textarea[name], button[name]');
+    var fieldVariables = [].map.call(fields, function (f) {
+        return '[' + getFieldVariableName(f) + ']';
+    });
+
+    [].forEach.call(document.querySelectorAll('.hf-field-names'), function (el) {
+        while (el.firstChild) {
+            el.removeChild(el.firstChild);
+        }
+
+        var variableElements = fieldVariables.map(function (n) {
+            var el = document.createElement('code');
+            el.innerText = n;
+            return el;
+        });
+
+        variableElements.forEach(function (vel, i, arr) {
+            el.appendChild(vel);
+
+            if (i < arr.length - 1) {
+                el.appendChild(document.createTextNode(', '));
+            }
+        });
+    });
+}
+
+function updateShadowDOM() {
+    dom.innerHTML = editor.getValue();
+}
+
+function updateRequiredFields() {
+    var fields = dom.querySelectorAll('[required]');
+    var fieldNames = [].map.call(fields, getFieldVariableName);
+    requiredFieldsInput.value = fieldNames.join(',');
+}
+
+function updateEmailFields() {
+    var fields = dom.querySelectorAll('input[type="email"]');
+    var fieldNames = [].map.call(fields, getFieldVariableName);
+    emailFieldsInput.value = fieldNames.join(',');
+}
+
+function replaceSelection(str) {
+    editor.replaceSelection(str);
+    editor.focus();
+}
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+        var context = this,
+            args = arguments;
+        var later = function later() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
+
+exports.default = {
+    'init': init,
+    'replaceSelection': replaceSelection
+};
+
+},{"codemirror":12,"codemirror/addon/edit/closetag.js":9,"codemirror/addon/edit/matchtags":10,"codemirror/addon/fold/xml-fold":11,"codemirror/mode/css/css":13,"codemirror/mode/htmlmixed/htmlmixed":14,"codemirror/mode/javascript/javascript":15,"codemirror/mode/xml/xml":16}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var tabs = void 0,
+    tabNavs = void 0;
+var Tabs = {};
+
+Tabs.init = function () {
+    tabs = document.querySelectorAll('.hf-tab');
+    tabNavs = document.querySelectorAll('#hf-tabs-nav a');
+    for (var i = 0; i < tabNavs.length; i++) {
+        tabNavs[i].addEventListener('click', Tabs.open);
+    }
+};
+
+Tabs.open = function (e) {
+    var tabTarget = this.getAttribute('data-tab-target');
+    for (var i = 0; i < tabNavs.length; i++) {
+        tabNavs[i].classList.toggle('nav-tab-active', tabNavs[i] === this);
+    }
+    this.blur();
+
+    for (var _i = 0; _i < tabs.length; _i++) {
+        var tab = tabs[_i];
+        tab.classList.toggle('hf-tab-active', tab.getAttribute('data-tab') === tabTarget);
+    }
+
+    document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + " ");
+
+    e.preventDefault();
+};
+
+exports.default = Tabs;
+
+},{}],9:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -14354,5 +14354,5 @@ return renderToString;
     if ('undefined' != typeof module) module.exports = preact; else self.preact = preact;
 }();
 
-},{}]},{},[6]);
+},{}]},{},[2]);
 ; })();

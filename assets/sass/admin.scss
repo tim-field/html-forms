@@ -1,17 +1,3 @@
-.hf-small-margin {
-  margin: {
-    top: 20px;
-    bottom: 20px;
-  }
-}
-
-.hf-medium-margin {
-  margin: {
-    top: 40px;
-    bottom: 40px;
-  }
-}
-
 .hf-tab {
   display: none;
   background: inherit;
@@ -69,39 +55,7 @@
   display: none;
 }
 
-.hf-danger,
-.danger {
-  color: #a00;
-}
 
-.hf-clear,
-.clear {
-  clear: both;
-}
-
-.hf-italic {
-  font-style: italic;
-}
-
-.hf-small {
-  font-size: 90%;
-}
-
-.pull-right,
-.hf-pull-right {
-  float: right;
-}
-
-.hf-required {
-   color: indianred;
-   font-size: 110%;
-}
-
-.hf-muted {
-  font-weight: normal;
-  font-size: 90%;
-  color: #999;
-}
 
 .hf-field-builder {
   h4:first-of-type{
@@ -177,5 +131,5 @@
   }
 }
 
-
+@import "admin_util";
 @import "codemirror";

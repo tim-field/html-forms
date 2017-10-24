@@ -31,7 +31,7 @@ gulp.task('css', function () {
 gulp.task('js', function() {
     let files = [
         './assets/browserify/public.js',
-        './assets/browserify/admin.js',
+        './assets/browserify/admin/admin.js',
     ];
 
     // map them to our stream function

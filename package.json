@@ -7,7 +7,8 @@
     "html": "^1.0.0",
     "linkstate": "^1.1.0",
     "preact": "^8.2.5",
-    "preact-render-to-string": "^3.6.3"
+    "preact-render-to-string": "^3.6.3",
+    "wolfy87-eventemitter": "^5.2.3"
   },
   "devDependencies": {
     "babel-plugin-transform-react-jsx": "^6.24.1",

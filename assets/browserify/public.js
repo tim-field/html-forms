@@ -1,85 +1,105 @@
 "use strict";
 
-require('es5-shim');
+const shim = require('es5-shim');
 const serialize = require('form-serialize');
 const Loader = require('./form-loading-indicator.js');
 const vars = window.hf_js_vars || { ajax_url: window.location.href };
+const EventEmitter = require('wolfy87-eventemitter');
+const events = new EventEmitter();
 
-function cleanFormMessages(formElement) {
-    let messageElements = formElement.querySelectorAll('.hf-message');
+function cleanFormMessages(formEl) {
+    let messageElements = formEl.querySelectorAll('.hf-message');
     messageElements.forEach((el) => {
         el.parentNode.removeChild(el);
     })
 }
 
-function addFormMessage(formElement, message) {
+function addFormMessage(formEl, message) {
     let txtElement = document.createElement('p');
     txtElement.className = 'hf-message hf-message-' + message.type;
     txtElement.innerHTML = message.text;
-    formElement.insertBefore(txtElement, formElement.lastElementChild.nextElementSibling);
+    formEl.insertBefore(txtElement, formEl.lastElementChild.nextElementSibling);
 }
 
+function handleSubmitEvents(e) {
+    const formEl = e.target;
 
-document.addEventListener('submit', function(e) {
-    const formElement = e.target;
-    if( formElement.className.indexOf('hf-form') < 0 ) {
+    // only act on html-forms
+    if( formEl.className.indexOf('hf-form') < 0 ) {
         return;
     }
 
     e.preventDefault();
+    submitForm(formEl);
+}
 
-    submitForm(formElement);
-}, true );
+function submitForm(formEl) {
+    events.emit('submit', [formEl]);
 
-
-function submitForm(formElement) {
-    const loader = new Loader(formElement);
-    const data = serialize(formElement, { "hash": false, "empty": true });
+    const data = serialize(formEl, { "hash": false, "empty": true });
     let request = new XMLHttpRequest();
 
-    cleanFormMessages(formElement);
-    loader.start();
-    request.onreadystatechange = function() {
-        let response;
-
-        // are we done?
-        if (this.readyState === 4) {
-            loader.stop();
-
-            if (this.status >= 200 && this.status < 400) {
-                try {
-                    response = JSON.parse(this.responseText);
-                } catch(error) {
-                    console.log( 'HTML Forms: failed to parse AJAX response.\n\nError: "' + error + '"' );
-
-                    return;
-                }
-
-                // Show form message
-                if(response.message) {
-                    addFormMessage(formElement, response.message);
-                }
-
-                if( response.hide_form ) {
-                    formElement.querySelector('.hf-fields-wrap').style.display = 'none';
-                }
-
-                // Should we redirect?
-                if( response.redirect_url ) {
-                    window.location = response.redirect_url;
-                }
-
-                // clear form
-                formElement.reset();
-            } else {
-                // Server error :(
-                console.log(this.responseText);
-            }
-        }
-    };
-
+    cleanFormMessages(formEl);
+    request.onreadystatechange = createRequestHandler(formEl);
     request.open('POST', vars.ajax_url, true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.send(data);
     request = null;
 }
+
+function createRequestHandler(formEl) {
+    const loader = new Loader(formEl);
+    loader.start();
+
+    return function() {
+        // are we done?
+        if (this.readyState === 4) {
+            let response;
+            loader.stop();
+
+            if (this.status >= 200 && this.status < 400) {
+                try {
+                    response = JSON.parse(this.responseText);
+                } catch (error) {
+                    console.log('HTML Forms: failed to parse AJAX response.\n\nError: "' + error + '"');
+                    return;
+                }
+
+                events.emit('submitted', [formEl]);
+
+                if( response.error ) {
+                    events.emit('error', [formEl]);
+                } else {
+                    events.emit('success', [formEl]);
+                }
+
+                // Show form message
+                if (response.message) {
+                    addFormMessage(formEl, response.message);
+                }
+
+                // Should we hide form?
+                if (response.hide_form) {
+                    formEl.querySelector('.hf-fields-wrap').style.display = 'none';
+                }
+
+                // Should we redirect?
+                if (response.redirect_url) {
+                    window.location = response.redirect_url;
+                }
+
+                // clear form
+                formEl.reset();
+            } else {
+                // Server error :(
+                console.log(this.responseText);
+            }
+        }
+    }
+}
+
+document.addEventListener('submit', handleSubmitEvents, true );
+
+window.html_forms = {
+    'on': events.on.bind(events),
+};
