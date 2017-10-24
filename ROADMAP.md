@@ -7,10 +7,8 @@
 ## Could
 - Add `date` and `number` specific attributes to these fields in the field builder.
 - Function to register static forms (for theme developers).
-- Create function to easily retrieve object-casted form submissions
-- HTML template placeholders (for theme developers).
+    - HTML template placeholders (for theme developers).
 - Allow sorting submission columns.
-- Allow renaming submission columns (key rename).
 - Paginate form submissions
 - Form widget.
 - Require user to be logged in (w/ message for guests) (see Gravity Forms)
