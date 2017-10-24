@@ -46,7 +46,7 @@ class Forms
             )
         );
 
-        add_shortcode('html_form', array($this, 'shortcode'));
+        add_shortcode('hf_form', array($this, 'shortcode'));
     }
 
     public function assets()

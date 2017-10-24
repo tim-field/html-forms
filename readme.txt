@@ -3,7 +3,7 @@ Contributors: Ibericode, DvanKooten, hchouhan, lapzor
 Donate link: https://htmlformsplus.com/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=donate-link
 Tags: form, contact form, email
 Requires at least: 4.5
-Tested up to: 4.8.1
+Tested up to: 4.8.2
 Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -36,10 +36,10 @@ Please take a look at the [HTML Forms knowledge base](https://kb.htmlformsplus.c
 More detailed documentation can be found in the [HTML Forms knowledge base](https://kb.htmlformsplus.com/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=faq).
 
 #### How to display a form in posts or pages?
-Use the `[html_form]` shortcode.
+Use the `[hf_form]` shortcode.
 
 #### How to display a form in widget areas like the sidebar or footer?
-Go to **Appearance > Widgets** and use the **HTML Forms** widget that comes with the plugin.
+Go to **Appearance > Widgets**, add the "Text Widget" to any of your widget areas and use the `[hf_form]` shortcode.
 
 #### How do I show a form in a pop-up?
 
@@ -65,7 +65,7 @@ There are several [add-on plugins for HTML Forms](https://htmlformsplus.com/add-
 
 #### Development
 
-HTML Forms is being developed on GitHub. If you want to collaborate, please look at [ibericode/html-forms](https://gitlab.com/ibericode/html-forms).
+HTML Forms is being developed on GitHub. If you want to collaborate, please look at [ibericode/html-forms](https://github.com/ibericode/html-forms).
 
 
 == Screenshots ==
@@ -75,7 +75,5 @@ HTML Forms is being developed on GitHub. If you want to collaborate, please look
 == Changelog ==
 
 
-
-== Upgrade Notice ==
 
 
