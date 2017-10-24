@@ -2,6 +2,7 @@
 
 ## Should
 - Visual editing for email action message body.
+- Insert form field references via dropdown.
 
 ## Could
 - Add `date` and `number` specific attributes to these fields in the field builder.
@@ -10,11 +11,8 @@
 - HTML template placeholders (for theme developers).
 - Allow sorting submission columns.
 - Allow renaming submission columns (key rename).
-- Plus: Export as CSV / XSL
 - Paginate form submissions
 - Form widget.
-- Plus: Schedule form (see Gravity Forms)
-- Plus: Limit form submissions (see Gravity Forms)
 - Require user to be logged in (w/ message for guests) (see Gravity Forms)
 - Conditional logic.
 - Leave email message blank for an automagic email (see Statamic)

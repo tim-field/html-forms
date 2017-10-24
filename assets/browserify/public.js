@@ -43,6 +43,7 @@ function submitForm(formEl) {
     request.onreadystatechange = createRequestHandler(formEl);
     request.open('POST', vars.ajax_url, true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     request.send(data);
     request = null;
 }

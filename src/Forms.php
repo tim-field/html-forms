@@ -135,7 +135,10 @@ class Forms
     }
 
     public function listen() {
-        if (empty($_POST['_hf_form_id'])) {
+        // only respond to AJAX requests with _hf_form_id set.
+        if (empty($_POST['_hf_form_id'])
+            || empty( $_SERVER['HTTP_X_REQUESTED_WITH'] )
+            || strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) !== strtolower( 'XMLHttpRequest' ) ) {
             return;
         }
 
