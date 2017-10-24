@@ -49,8 +49,20 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
+#: src/Actions/Email.php:39
+msgid "Your email subject"
+msgstr ""
+
 #: src/Actions/Email.php:43, src/Admin/Admin.php:274
 msgid "Message"
+msgstr ""
+
+#: src/Actions/Email.php:45
+msgid "Your email message"
+msgstr ""
+
+#: src/Actions/Email.php:46
+msgid "You can use the following variables: "
 msgstr ""
 
 #: src/Admin/Admin.php:271
