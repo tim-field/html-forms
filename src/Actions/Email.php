@@ -36,14 +36,14 @@ class Email extends Action {
            <tr>
                <th><label><?php echo __( 'Subject', 'html-forms' ); ?></label></th>
                <td>
-                   <input name="form[settings][actions][0][subject]" value="<?php echo esc_attr( $settings['subject'] ); ?>" type="text" class="regular-text" placeholder="Your email subject" />
+                   <input name="form[settings][actions][0][subject]" value="<?php echo esc_attr( $settings['subject'] ); ?>" type="text" class="regular-text" placeholder="<?php echo esc_attr( __( 'Your email subject', 'html-forms' ) ); ?>" />
                </td>
            </tr>
            <tr>
                <th><label><?php echo __( 'Message', 'html-forms' ); ?> <span class="hf-required">*</span></label></th>
                <td>
-                   <textarea name="form[settings][actions][0][message]" rows="8" class="widefat" placeholder="Your email message" required><?php echo esc_textarea( $settings['message'] ); ?></textarea>
-                    <p class="help">You can use the following variables: <span class="hf-field-names"></span></p>
+                   <textarea name="form[settings][actions][0][message]" rows="8" class="widefat" placeholder="<?php echo esc_attr( __( 'Your email message', 'html-forms' ) ); ?>" required><?php echo esc_textarea( $settings['message'] ); ?></textarea>
+                    <p class="help"><?php _e( 'You can use the following variables: ', 'html-forms' ); ?><span class="hf-field-names"></span></p>
                </td>
            </tr>
        </table>
@@ -58,12 +58,19 @@ class Email extends Action {
      * @param Form $form
      */
    public function process( array $settings, Submission $submission, Form $form ) {
-       $to = hf_template( $settings['to'], $submission->data );
-       $subject = hf_template( $settings['subject'], $submission->data );
-       $message = nl2br( hf_template( $settings['message'], $submission->data ) );
-       $from = hf_template( $settings['from'], $submission->data );
+       if( empty( $settings['to'] ) || empty( $settings['message'] ) ) {
+           return;
+       }
 
-       $headers = array( 'Content-Type: text/html; charset=UTF-8', sprintf( 'From: %s', $from ) );
+       $to = hf_template( $settings['to'], $submission->data );
+       $subject = ! empty( $settings['subject'] ) ? hf_template( $settings['subject'], $submission->data ) : '';
+       $message = nl2br( hf_template( $settings['message'], $submission->data ) );
+       $headers = array( 'Content-Type: text/html' );
+
+       if( ! empty( $settings['from'] ) ) {
+           $from = hf_template($settings['from'], $submission->data);
+           $headers[] = sprintf( 'From: %s', $from );
+       }
 
        wp_mail( $to, $subject, $message, $headers );
    }
