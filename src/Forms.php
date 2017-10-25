@@ -47,7 +47,7 @@ class Forms
         );
 
         add_shortcode('hf_form', array($this, 'shortcode'));
-        
+
         // enable shortcodes in text widgets
         add_filter( 'widget_text', 'shortcode_unautop' );
         add_filter( 'widget_text', 'do_shortcode', 11 );
