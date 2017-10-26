@@ -1,4 +1,19 @@
 {
+  "name": "ibericode/html-forms",
+  "type": "wordpress-plugin",
+  "description": "Fast & flexible forms for your WordPress site.",
+  "keywords": ["wordpress","form", "contact form"],
+  "homepage": "https://github.com/ibericode/html-forms",
+  "license": "GPLv2",
+  "authors": [
+    {
+      "name": "Danny van Kooten",
+      "homepage": "http://dvk.co"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  },
   "autoload": {
     "classmap": [
       "src/"
