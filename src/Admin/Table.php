@@ -197,7 +197,7 @@ class Table extends WP_List_Table {
             return '';
         }
 
-        return sprintf( '<input style="width: 260px;" type="text" onfocus="this.select();" readonly="readonly" value="%s">', esc_attr( '[html_form slug="' . $post->post_name . '"]' ) );
+        return sprintf( '<input style="width: 260px;" type="text" onfocus="this.select();" readonly="readonly" value="%s">', esc_attr( '[hf_form slug="' . $post->post_name . '"]' ) );
     }
 
     /**

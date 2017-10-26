@@ -32,7 +32,7 @@ $tabs = array(
             </div>
             <div class="inside" style="margin-top: 3px;">
                 <label for="shortcode"><?php _e( 'Copy this shortcode and paste it into your post, page, or text widget content:', 'html-forms' ); ?></label><br />
-                <input id="shortcode" type="text" class="regular-text" value="<?php echo esc_attr( sprintf( '[html_form slug="%s"]', $form->slug ) ); ?>" readonly onclick="this.select()">
+                <input id="shortcode" type="text" class="regular-text" value="<?php echo esc_attr( sprintf( '[hf_form slug="%s"]', $form->slug ) ); ?>" readonly onclick="this.select()">
             </div>
         </div>
 
