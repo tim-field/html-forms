@@ -74,6 +74,7 @@ HTML Forms is being developed on GitHub. If you want to collaborate, please look
 3. Sending an email when a form is submitted.
 4. Viewing saved form submissions.
 5. Hide form or redirect to URL after form submission.
+6. Configurable form messages.
 
 == Changelog ==
 

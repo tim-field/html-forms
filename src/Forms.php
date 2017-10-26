@@ -122,17 +122,36 @@ class Forms
             // convert &amp; back to &
             $value = html_entity_decode($value, ENT_NOQUOTES);
         } elseif (is_array($value)) {
-            // filter out empty values
-            $value = array_filter( $value, function( $v ) {
-                return ! empty( $v );
-            });
+            $new_value = array();
+            foreach($value as $key => $sub_value) {
+                // skip empty values
+                if(empty($sub_value)) {
+                   continue;
+                }
 
-            $value = array_map(array( $this, 'sanitize' ), $value);
+                // sanitize key
+                $key = trim(strip_tags($key));
+
+                // sanitize sub value
+                $new_value[$key] = $this->sanitize($sub_value);
+            }
+            $value = $new_value;
         } elseif (is_object($value)) {
             $vars = get_object_vars($value);
-            foreach ($vars as $key => $data) {
-                $value->{$key} = $this->sanitize($data);
+            $new_value = new \StdClass();
+            foreach ($vars as $key => $sub_value) {
+                // skip empty values
+                if(empty($sub_value)) {
+                    continue;
+                }
+
+                // sanitize key
+                $key = trim(strip_tags($key));
+
+                // sanitize sub value
+                $new_value->{$key} = $this->sanitize($sub_value);
             }
+            $value = $new_value;
         }
 
         return $value;
