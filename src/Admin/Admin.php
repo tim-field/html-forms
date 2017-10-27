@@ -97,7 +97,7 @@ class Admin {
 
     public function menu() {
         // add top menu item
-        add_menu_page( 'HTML Forms', 'HTML Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ), plugins_url('assets/img/icon-16.png', $this->plugin_file ), '99.88491' );
+        add_menu_page( 'HTML Forms', 'HTML Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ), plugins_url('assets/img/icon.png', $this->plugin_file ), '99.88491' );
         add_submenu_page( 'html-forms', 'Forms', 'All Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ) );
         add_submenu_page( 'html-forms', 'Add new form', 'Add New', 'manage_options', 'html-forms-add-form', array( $this, 'page_new_form' ) );
         add_submenu_page( 'html-forms', 'Settings', 'Settings', 'manage_options', 'html-forms-settings', array( $this, 'page_settings' ) );

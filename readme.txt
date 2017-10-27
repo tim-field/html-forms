@@ -13,24 +13,55 @@ Not just another contact form plugin.
 
 == Description ==
 
-HTML Forms is not just another form plugin and certainly not just another form builder.
+With HTML Forms, you can easily add multi-purpose forms to your WordPress site.
 
-While form builders can be great for some, we think they are also severely limiting your flexibility and slow to work with.
-Add to that the fact that most form builders drastically slow down your site and we're convinced a better (and simpler!) alternative exists.
+The idea behind HTML Forms is different than most other form builder plugins. **You manage the form HTML. The plugin manages the PHP and JavaScript**.
 
-HTML Forms aims to be that simpler alternative. Here's what makes HTML Forms different from other form builders.
+That's right. No intuitive drag & drop interface but full control over the form HTML. No limitations.
 
-- You have full control over the form HTML. No limitations. If you want, we'll help you in generating the field HTML though.
-- You can configure an unlimited amount of actions to run when a form is successfully submitted. For example, to send an email to yourself and another to the person that submitted the form.
-- In these emails, you can access your form field values by referencing the field name. For example: `[NAME]` or `[EMAIL]`.
+We believe that dynamic form builders can be great, but they also severely limit your options. Also, they're slow.
+
+HTML Forms aims to be simpler, faster and smarter.
+
+You define your form fields in HTML and the plugin takes care of submitting the form, saving the form submission and running a configurable set of form actions.
+
+> ### 1. Define your form fields
+> You can use anything that resembles valid HTML. Ensure all `input` elements in your form have a `name` attribute to save data entered in that field.
+> ### 2. Configure your form actions
+> By default, form submissions are automatically saved for you. You can configure several other actions to run when a form is submitted, like sending an email notification or subscribing to MailChimp.
+> ### 3. Show the form somewhere on your site
+> You can show your form by using the `[hf_form]` shortcode in your WordPress posts, pages or widget areas.
+
+## HTML Forms features
+
+- Full control over the form HTML. If you want, we'll help you in generating the field HTML though.
 - Each form submission is automatically saved in your database and can be viewed in a simple table format.
-
-Other features include:
-
+- Configure an unlimited amount of actions to run when a form is successfully submitted. For example, sending out email notifications.
+- Access form field values by referencing the field name, eg `[NAME]` or `[EMAIL]`.
 - Hide form or redirect to URL after a successful submission.
-- Configurable form messages.
+- Configurable & translatable form messages.
 - Field validation.
 - Developer friendly. HTML Forms comes with a myriad of JavaScript events and WordPress hooks that allow you to modify or extend the plugin's default behavior.
+
+## Who is this for?
+
+HTML Forms is for everyone that wants a flexible & high performing form solution.
+
+- Users. Managing your own site? With HTML Forms, you don't need any technical knowledge to setup a contact form.
+- Developers. Building a site for your client? You supply the form HTML, HTML Forms takes care of validating and processing the form.
+- Theme developers. Shipping a theme? HTML Forms allows for complete blend-in with your theme, and you don't have to write yet another contact form plugin.
+
+With HTML Forms you can create any type of form. Contact forms, registration forms, price quote forms, you name it. It's somewhat similar to Contact Form 7, but without yet another template language for you to learn.
+
+For more information, please refer to [htmlforms.io](https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description).
+
+#### Support
+
+Use the [WordPress.org plugin forums](https://wordpress.org/support/plugin/html-forms) for community support where we try to help all of our users. If you found a bug, please create an issue on Github where we can act upon them more efficiently.
+
+#### Development
+
+HTML Forms is being developed on GitHub. If you want to collaborate, please look at [ibericode/html-forms](https://github.com/ibericode/html-forms).
 
 
 == Installation ==
@@ -38,6 +69,8 @@ Other features include:
 1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for **HTML Forms** and click "*Install now*"
 1. Alternatively, download the plugin and upload the contents of `html-forms.zip` to your plugins directory, which usually is `/wp-content/plugins/`.
 1. Activate the plugin
+
+For more information, please refer to [htmlforms.io](https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=installation-instructions).
 
 == Frequently Asked Questions ==
 
@@ -54,17 +87,6 @@ We recommend the [Boxzilla pop-up plugin](https://wordpress.org/plugins/boxzilla
 #### Can I send an email when the form is submitted?
 
 Yes! You can configure this by opening up the "Actions" tab when editing your form and clicking the "Email" button under "Available actions".
-
-
-== Other Notes ==
-
-#### Support
-
-Use the [WordPress.org plugin forums](https://wordpress.org/support/plugin/html-forms) for community support where we try to help all of our users. If you found a bug, please create an issue on Github where we can act upon them more efficiently.
-
-#### Development
-
-HTML Forms is being developed on GitHub. If you want to collaborate, please look at [ibericode/html-forms](https://github.com/ibericode/html-forms).
 
 
 == Screenshots ==
@@ -84,4 +106,4 @@ HTML Forms is being developed on GitHub. If you want to collaborate, please look
 Introducing a first version of HTML Forms, a different approach to forms for WordPress sites.
 
 
-
+== Upgrade Notice ==
