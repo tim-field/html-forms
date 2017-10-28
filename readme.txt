@@ -59,6 +59,8 @@ For more information, please refer to [htmlforms.io](https://htmlforms.io/#utm_s
 
 Use the [WordPress.org plugin forums](https://wordpress.org/support/plugin/html-forms) for community support where we try to help all of our users. If you found a bug, please create an issue on Github where we can act upon them more efficiently.
 
+The [HTML Forms knowledge base](https://kb.htmlforms.io/) covers a wide range of frequently asked questions and is updated on a regular basis.
+
 #### Development
 
 HTML Forms is being developed on GitHub. If you want to collaborate, please look at [ibericode/html-forms](https://github.com/ibericode/html-forms).
@@ -70,9 +72,12 @@ HTML Forms is being developed on GitHub. If you want to collaborate, please look
 1. Alternatively, download the plugin and upload the contents of `html-forms.zip` to your plugins directory, which usually is `/wp-content/plugins/`.
 1. Activate the plugin
 
-For more information, please refer to [htmlforms.io](https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=installation-instructions).
+For more information, please refer to the [HTML Forms Knowledge Base](https://kb.htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=installation-instructions).
 
 == Frequently Asked Questions ==
+
+#### Where can I find help?
+Start by going through the [HTML Forms knowledge base](https://kb.htmlforms.io/) where we cover a wide range of frequently asked questions.
 
 #### How to display a form in posts or pages?
 Use the `[hf_form]` shortcode.
