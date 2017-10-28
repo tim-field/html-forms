@@ -261,6 +261,11 @@ class Admin {
 
     public function process_bulk_delete_submissions() {
         global $wpdb;
+        
+        if( empty( $_POST['id'] ) ) {
+            return;
+        }
+
         $table = $wpdb->prefix .'hf_submissions';
         $ids = join( ',', array_map( 'esc_sql', $_POST['id'] ) );
         $wpdb->query( sprintf( "DELETE FROM {$table} WHERE id IN( %s );", $ids ) );
