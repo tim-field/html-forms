@@ -1,7 +1,7 @@
 Changelog
 =========
 
-##### 1.0.1 - unreleased
+##### 1.0.1 - October 28, 2017
 
 **Improvements**
 - Added SVG admin menu icon.

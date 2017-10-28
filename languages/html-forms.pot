@@ -121,6 +121,14 @@ msgstr ""
 msgid "Your form title.."
 msgstr ""
 
+#: src/Admin/views/admin-footer.php:2
+msgid "Looking for help?"
+msgstr ""
+
+#: src/Admin/views/admin-footer.php:3
+msgid "Check out the <a href=\"%s\">HTML Forms knowledge base</a>"
+msgstr ""
+
 #: src/Admin/views/edit-form.php:18, src/Admin/views/edit-form.php:21
 msgid "Edit form"
 msgstr ""
