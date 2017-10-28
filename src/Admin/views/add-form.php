@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or exit; ?>
 
-<div class="wrap">
+<div class="wrap hf">
 
     <style type="text/css" scoped>
         label{ display: block; font-weight: bold; font-size: 18px; }

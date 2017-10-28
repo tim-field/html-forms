@@ -45,7 +45,7 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:37, src/Admin/Admin.php:273
+#: src/Actions/Email.php:37, src/Admin/Admin.php:281
 msgid "Subject"
 msgstr ""
 
@@ -53,7 +53,7 @@ msgstr ""
 msgid "Your email subject"
 msgstr ""
 
-#: src/Actions/Email.php:43, src/Admin/Admin.php:274
+#: src/Actions/Email.php:43, src/Admin/Admin.php:282
 msgid "Message"
 msgstr ""
 
@@ -65,12 +65,16 @@ msgstr ""
 msgid "You can use the following variables: "
 msgstr ""
 
-#: src/Admin/Admin.php:271
+#: src/Admin/Admin.php:279
 msgid "Your name"
 msgstr ""
 
-#: src/Admin/Admin.php:272
+#: src/Admin/Admin.php:280
 msgid "Your email"
+msgstr ""
+
+#: src/Admin/Admin.php:283
+msgid "Send"
 msgstr ""
 
 #: src/Admin/Table.php:110
@@ -111,6 +115,10 @@ msgstr ""
 
 #: src/Admin/views/add-form.php:12, src/Admin/views/add-form.php:15, src/Admin/views/overview.php:20
 msgid "Add new form"
+msgstr ""
+
+#: src/Admin/views/add-form.php:22
+msgid "Your form title.."
 msgstr ""
 
 #: src/Admin/views/edit-form.php:18, src/Admin/views/edit-form.php:21

@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or exit;
  * @var HTML_Forms\Admin\Table $table
  */
 ?>
-<div class="wrap">
+<div class="wrap hf">
 
     <p class="breadcrumbs">
         <span class="prefix"><?php echo __( 'You are here: ', 'html-forms' ); ?></span>

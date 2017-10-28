@@ -10,7 +10,7 @@ $tabs = array(
 
 ?>
 <script>document.title = 'Edit form' + ' - ' + document.title;</script>
-<div class="wrap">
+<div class="wrap hf">
 
     <p class="breadcrumbs">
         <span class="prefix"><?php echo __( 'You are here: ', 'html-forms' ); ?></span>
