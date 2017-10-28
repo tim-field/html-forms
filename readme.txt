@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.8.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -106,9 +106,22 @@ Yes! You can configure this by opening up the "Actions" tab when editing your fo
 == Changelog ==
 
 
+##### 1.0.1 - October 28, 2017
+
+**Improvements**
+- Added SVG admin menu icon.
+- Field names are now sanitized before they are saved in the database.
+- Submit button was missing for default form fields.
+- Unneeded `<form>` tags are now stripped from the form before saving.
+
+**Additions**
+- Added `data-title` and `data-slug` attributes to the `<form>` element on the frontend.
+
+
 ##### 1.0 - October 25, 2017
 
 Introducing a first version of HTML Forms, a different approach to forms for WordPress sites.
+
 
 
 == Upgrade Notice ==
