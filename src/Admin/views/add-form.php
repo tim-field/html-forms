@@ -19,7 +19,7 @@
 
         <p>
             <label>Form title</label>
-            <input type="text" name="form[title]" value="" placeholder="Your form title.." class="widefat" required />
+            <input type="text" name="form[title]" value="" placeholder="<?php esc_attr_e( 'Your form title..', 'html-forms' ); ?>" class="widefat" required />
         </p>
 
         <?php submit_button(); ?>
