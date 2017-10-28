@@ -39,4 +39,6 @@ defined( 'ABSPATH' ) or exit;
     <form method="post">
         <?php $table->display(); ?>
     </form>
+
+    <?php require __DIR__ . '/admin-footer.php'; ?>
 </div>

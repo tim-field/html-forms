@@ -24,4 +24,7 @@
 
         <?php submit_button(); ?>
     </form>
+
+    <?php require __DIR__ . '/admin-footer.php'; ?>
 </div>
+

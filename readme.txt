@@ -13,7 +13,7 @@ Not just another contact form plugin.
 
 == Description ==
 
-With [HTML Forms](https://htmlforms.io), you can easily add multi-purpose forms to your WordPress site.
+With [HTML Forms](https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description), you can easily add multi-purpose forms to your WordPress site.
 
 The idea behind HTML Forms is different than most other form builder plugins. **You manage the form HTML. The plugin manages the PHP and JavaScript**.
 
@@ -59,7 +59,7 @@ For more information, please refer to [htmlforms.io](https://htmlforms.io/#utm_s
 
 Use the [WordPress.org plugin forums](https://wordpress.org/support/plugin/html-forms) for community support where we try to help all of our users. If you found a bug, please create an issue on Github where we can act upon them more efficiently.
 
-The [HTML Forms knowledge base](https://kb.htmlforms.io/) covers a wide range of frequently asked questions and is updated on a regular basis.
+The [HTML Forms knowledge base](https://kb.htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description) covers a wide range of frequently asked questions and is updated on a regular basis.
 
 #### Development
 
@@ -77,7 +77,7 @@ For more information, please refer to the [HTML Forms Knowledge Base](https://kb
 == Frequently Asked Questions ==
 
 #### Where can I find help?
-Start by going through the [HTML Forms knowledge base](https://kb.htmlforms.io/) where we cover a wide range of frequently asked questions.
+Start by going through the [HTML Forms knowledge base](https://kb.htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-faq) where we cover a wide range of frequently asked questions.
 
 #### How to display a form in posts or pages?
 Use the `[hf_form]` shortcode.

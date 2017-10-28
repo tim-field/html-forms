@@ -59,4 +59,6 @@ $tabs = array(
         </div>
 
     </form>
+
+    <?php require __DIR__ . '/admin-footer.php'; ?>
 </div>
