@@ -13,7 +13,7 @@ Not just another contact form plugin.
 
 == Description ==
 
-With HTML Forms, you can easily add multi-purpose forms to your WordPress site.
+With [HTML Forms](https://htmlforms.io), you can easily add multi-purpose forms to your WordPress site.
 
 The idea behind HTML Forms is different than most other form builder plugins. **You manage the form HTML. The plugin manages the PHP and JavaScript**.
 
