@@ -45,7 +45,7 @@ class Form {
 
         $html = '';
         $html .= sprintf( '<!-- HTML Forms v%s - %s -->', HTML_FORMS_VERSION, 'https://wordpress.org/plugins/html-forms/' );
-        $html .= sprintf( '<form method="post" %s class="hf-form hf-form-%d %s">', $form_action_attr, $this->ID, $form_classes_attr );
+        $html .= sprintf( '<form method="post" %s class="hf-form hf-form-%d %s" data-title="%s" data-slug="%s">', $form_action_attr, $this->ID, esc_attr( $form_classes_attr ), esc_attr( $this->title ), esc_attr( $this->slug ) );
 
         $html .= '<div class="hf-fields-wrap">';
         $html .= sprintf( '<input type="hidden" name="_hf_form_id" value="%d" />', $this->ID );
