@@ -212,6 +212,9 @@ class Admin {
         // Fix for MultiSite stripping KSES for roles other than administrator
         remove_all_filters( 'content_save_pre' );
 
+        // strip <form> tag from markup
+        $data['markup'] = preg_replace( '/<\/?form(.|\s)*?>/i', $data['markup'] );
+
         $form_id = wp_insert_post( array(
             'ID' => $form_id,
             'post_type' => 'html-form',
@@ -261,7 +264,7 @@ class Admin {
 
     public function process_bulk_delete_submissions() {
         global $wpdb;
-        
+
         if( empty( $_POST['id'] ) ) {
             return;
         }
