@@ -602,7 +602,7 @@ var _preact = require('preact');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function htmlgenerate(conf) {
-    var label = conf.fieldLabel.length ? (0, _preact.h)("label", {}, conf.fieldLabel) : "";
+    var label = conf.fieldLabel.length && conf.fieldType !== 'submit' ? (0, _preact.h)("label", {}, conf.fieldLabel) : "";
     var fieldAttr = void 0,
         field = void 0;
 

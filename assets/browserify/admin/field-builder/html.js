@@ -4,7 +4,7 @@ import { h } from 'preact';
 
 
 function htmlgenerate(conf) {
-    const label = conf.fieldLabel.length ? h("label", {}, conf.fieldLabel ) : "";
+    const label = conf.fieldLabel.length && conf.fieldType !== 'submit' ? h("label", {}, conf.fieldLabel ) : "";
     let fieldAttr, field;
 
     switch(conf.fieldType) {
