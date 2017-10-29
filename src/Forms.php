@@ -56,13 +56,15 @@ class Forms
     public function assets()
     {
         $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-        wp_enqueue_script('html-forms', plugins_url('assets/js/public'. $suffix .'.js', $this->plugin_file), array(), HTML_FORMS_VERSION, true);
+        $assets_url = plugins_url( 'assets/', $this->plugin_file );
+
+        wp_enqueue_script('html-forms', $assets_url . "js/public{$suffix}.js", array(), HTML_FORMS_VERSION, true);
         wp_localize_script('html-forms', 'hf_js_vars', array(
             'ajax_url' => admin_url('admin-ajax.php'),
         ));
 
         if( $this->settings['load_stylesheet'] ) {
-            wp_enqueue_style( 'html-forms', plugins_url( 'assets/css/forms' . $suffix . '.css', $this->plugin_file ), array(), HTML_FORMS_VERSION );
+            wp_enqueue_style( 'html-forms', "css/forms{$suffix}.css", array(), HTML_FORMS_VERSION );
         }
     }
 
@@ -121,9 +123,11 @@ class Forms
 
             // convert &amp; back to &
             $value = html_entity_decode($value, ENT_NOQUOTES);
-        } elseif (is_array($value)) {
+        } elseif ( is_array($value) || is_object($value) ) {
             $new_value = array();
-            foreach($value as $key => $sub_value) {
+            $vars = is_array( $value ) ? $value : get_object_vars( $value );
+
+            foreach($vars as $key => $sub_value) {
                 // skip empty values
                 if(empty($sub_value)) {
                    continue;
@@ -135,24 +139,8 @@ class Forms
                 // sanitize sub value
                 $new_value[$key] = $this->sanitize($sub_value);
             }
-            $value = $new_value;
-        } elseif (is_object($value)) {
-            $vars = get_object_vars($value);
-            $new_value = new \StdClass();
-            foreach ($vars as $key => $sub_value) {
-                // skip empty values
-                if(empty($sub_value)) {
-                    continue;
-                }
-
-                // sanitize key
-                $key = trim(strip_tags($key));
-
-                // sanitize sub value
-                $new_value->{$key} = $this->sanitize($sub_value);
-            }
-            $value = $new_value;
-        }
+            $value = is_object( $value ) ? (object) $new_value : $new_value;
+        } 
 
         return $value;
     }
