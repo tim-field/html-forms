@@ -75,24 +75,15 @@ class Forms
      */
     private function validate_form(Form $form, array $data)
     {
+        // validate honeypot field
         $honeypot_key = sprintf( '_hf_h%d', $form->ID );
-        if( ! isset( $data[$honeypot_key] ) || $data[$honeypot_key] !== "" || count( $data ) > substr_count( strtolower( $form->get_html() ), 'name=' ) ) {
+        if( ! isset( $data[$honeypot_key] ) || $data[$honeypot_key] !== "" ) {
             return 'spam';
         }
 
-        /**
-         * This filter allows you to perform your own form validation.
-         *
-         * Return a non-empty string if you want to raise an error.
-         * Error codes with a specific error message are: "required_field_missing", "invalid_email", and "error"
-         *
-         * @param string $error_code
-         * @param Form $form
-         * @param array $data
-         */
-        $error = apply_filters( 'hf_validate_form', '', $form, $data );
-        if( ! empty( $error ) ) {
-            return $error;
+        // validate size of POST array
+        if( count( $data ) > substr_count( strtolower( $form->get_html() ), 'name=' ) && apply_filters( 'hf_validate_form_request_size', true ) ) {
+            return 'spam';
         }
 
         $required_fields = $form->get_required_fields();
@@ -109,6 +100,21 @@ class Forms
             if ( ! empty( $value ) && ! is_email( $value ) ) {
                 return 'invalid_email';
             }
+        }
+
+        /**
+         * This filter allows you to perform your own form validation.
+         *
+         * Return a non-empty string if you want to raise an error.
+         * Error codes with a specific error message are: "required_field_missing", "invalid_email", and "error"
+         *
+         * @param string $error_code
+         * @param Form $form
+         * @param array $data
+         */
+        $error = apply_filters( 'hf_validate_form', '', $form, $data );
+        if( ! empty( $error ) ) {
+            return $error;
         }
 
         // all good: no errors!
