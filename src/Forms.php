@@ -145,7 +145,8 @@ class Forms
         return $value;
     }
 
-    public function listen() {
+    public function listen() 
+    {
         // only respond to AJAX requests with _hf_form_id set.
         if (empty($_POST['_hf_form_id'])
             || empty( $_SERVER['HTTP_X_REQUESTED_WITH'] )
@@ -199,26 +200,7 @@ class Forms
              * @param Form $form
              */
             do_action( 'hf_form_success', $submission, $form );
-
-            $response = array(
-                'message' => array(
-                    'type' => 'success',
-                    'text' => $form->messages['success'],
-                ),
-                'hide_form' => (bool)$form->settings['hide_after_success'],
-            );
-
-            if (!empty($form->settings['redirect_url'])) {
-                $response['redirect_url'] = $form->settings['redirect_url'];
-            }
         } else {
-            $response = array(
-                'message' => array(
-                    'type' => 'warning',
-                    'text' => isset( $form->messages[ $error_code ] ) ? $form->messages[ $error_code ] : $form->messages['error'],
-                ),
-                'error' => $error_code,
-            );
 
             /**
              * General purpose hook for when a form error occurred
@@ -230,12 +212,43 @@ class Forms
             do_action( 'hf_form_error', $error_code, $form, $data );
         }
 
+        $response = $this->get_response_for_error_code( $error_code, $form );
+
         send_origin_headers();
         send_nosniff_header();
         nocache_headers();
 
         wp_send_json($response, 200);
         exit;
+    }
+
+    private function get_response_for_error_code( $error_code, Form $form ) 
+    {
+        // return success response for empty error code string or spam (to trick bots)
+        if( $error_code === "" || $error_code === "spam" ) {
+            $response = array(
+                'message' => array(
+                    'type' => 'success',
+                    'text' => $form->messages['success'],
+                ),
+                'hide_form' => (bool)$form->settings['hide_after_success'],
+            );
+
+            if (!empty($form->settings['redirect_url'])) {
+                $response['redirect_url'] = $form->settings['redirect_url'];
+            }
+
+            return $response;
+        }
+
+        // return error response
+        return  $response = array(
+            'message' => array(
+                'type' => 'warning',
+                'text' => isset( $form->messages[ $error_code ] ) ? $form->messages[ $error_code ] : $form->messages['error'],
+            ),
+            'error' => $error_code,
+        );
     }
 
     public function shortcode($attributes = array(), $content = '')
