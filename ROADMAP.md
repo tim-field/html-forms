@@ -17,7 +17,6 @@
 - Form widget.
 - Conditional logic.
 - Leave email message blank for an automagic email (see Statamic)
-- Silently fail when honeypot fails (trick bots).
 - Option to process form actions in background.
 - Better browser-compat field for [type="date"] fields.
 

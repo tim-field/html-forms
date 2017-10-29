@@ -16,14 +16,14 @@ class Form {
      *
      * @param $ID
      */
-    public function __construct( $ID ) {
+    public function __construct( $ID ) 
+    {
         $this->ID = $ID;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString() {
+    public function get_html() 
+    {
+        $form = $this;
         $form = $this;
 
         /**
@@ -67,9 +67,18 @@ class Form {
     }
 
     /**
+     * @return string
+     */
+    public function __toString() 
+    {
+        return $this->get_html();
+    }
+
+    /**
      * @return array
      */
-    public function get_required_fields() {
+    public function get_required_fields() 
+    {
         if( empty( $this->settings['required_fields'] ) ) {
             return array();
         }
@@ -81,7 +90,8 @@ class Form {
     /**
      * @return array
      */
-    public function get_email_fields() {
+    public function get_email_fields() 
+    {
         if( empty( $this->settings['email_fields'] ) ) {
             return array();
         }

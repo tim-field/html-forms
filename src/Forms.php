@@ -76,7 +76,7 @@ class Forms
     private function validate_form(Form $form, array $data)
     {
         $honeypot_key = sprintf( '_hf_h%d', $form->ID );
-        if( ! isset( $data[$honeypot_key] ) || $data[$honeypot_key] !== "" ) {
+        if( ! isset( $data[$honeypot_key] ) || $data[$honeypot_key] !== "" || count( $data ) > substr_count( strtolower( $form->get_html() ), 'name=' ) ) {
             return 'spam';
         }
 
