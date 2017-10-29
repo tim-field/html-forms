@@ -70,6 +70,10 @@ class Form {
      * @return array
      */
     public function get_required_fields() {
+        if( empty( $this->settings['required_fields'] ) ) {
+            return array();
+        }
+
         $required_fields = explode( ',', $this->settings['required_fields'] );
         return $required_fields;
     }
@@ -78,6 +82,10 @@ class Form {
      * @return array
      */
     public function get_email_fields() {
+        if( empty( $this->settings['email_fields'] ) ) {
+            return array();
+        }
+
         $email_fields = explode( ',', $this->settings['email_fields'] );
         return $email_fields;
     }
