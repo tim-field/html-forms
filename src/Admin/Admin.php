@@ -213,7 +213,7 @@ class Admin {
         remove_all_filters( 'content_save_pre' );
 
         // strip <form> tag from markup
-        $data['markup'] = preg_replace( '/<\/?form(.|\s)*?>/i', $data['markup'] );
+        $data['markup'] = preg_replace( '/<\/?form(.|\s)*?>/i', '', $data['markup'] ); 
 
         $form_id = wp_insert_post( array(
             'ID' => $form_id,
