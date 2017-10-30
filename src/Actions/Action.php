@@ -11,7 +11,7 @@ abstract class Action {
     public $label = '';
 
     public function hook() {
-        add_action( 'hf_available_form_actions', array( $this, 'register' ) );
+        add_filter( 'hf_available_form_actions', array( $this, 'register' ) );
         add_action( 'hf_render_form_action_' . $this->type . '_settings', array( $this, 'page_settings' ) );
         add_action( 'hf_process_form_action_' . $this->type, array( $this, 'process' ), 10, 3 );
     }
