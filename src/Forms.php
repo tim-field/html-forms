@@ -64,7 +64,7 @@ class Forms
         ));
 
         if( $this->settings['load_stylesheet'] ) {
-            wp_enqueue_style( 'html-forms', "css/forms{$suffix}.css", array(), HTML_FORMS_VERSION );
+            wp_enqueue_style( 'html-forms', $assets_url . "css/forms{$suffix}.css", array(), HTML_FORMS_VERSION );
         }
     }
 
