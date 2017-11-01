@@ -6,6 +6,7 @@ const Loader = require('./form-loading-indicator.js');
 const vars = window.hf_js_vars || { ajax_url: window.location.href };
 const EventEmitter = require('wolfy87-eventemitter');
 const events = new EventEmitter();
+import ConditionalElements from './conditional-elements.js';
 
 function cleanFormMessages(formEl) {
     let messageElements = formEl.querySelectorAll('.hf-message');
@@ -100,6 +101,7 @@ function createRequestHandler(formEl) {
 }
 
 document.addEventListener('submit', handleSubmitEvents, true );
+ConditionalElements.init();
 
 window.html_forms = {
     'on': events.on.bind(events),

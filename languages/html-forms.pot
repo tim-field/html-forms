@@ -53,7 +53,7 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:37, src/Admin/Admin.php:281
+#: src/Actions/Email.php:37, src/Admin/Admin.php:282
 msgid "Subject"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Your email subject"
 msgstr ""
 
-#: src/Actions/Email.php:43, src/Admin/Admin.php:282
+#: src/Actions/Email.php:43, src/Admin/Admin.php:283
 msgid "Message"
 msgstr ""
 
@@ -73,15 +73,15 @@ msgstr ""
 msgid "You can use the following variables: "
 msgstr ""
 
-#: src/Admin/Admin.php:279
+#: src/Admin/Admin.php:280
 msgid "Your name"
 msgstr ""
 
-#: src/Admin/Admin.php:280
+#: src/Admin/Admin.php:281
 msgid "Your email"
 msgstr ""
 
-#: src/Admin/Admin.php:283
+#: src/Admin/Admin.php:284
 msgid "Send"
 msgstr ""
 

@@ -1,6 +1,64 @@
 (function () { var require = undefined; var module = undefined; var exports = undefined; var define = undefined;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function toggleElement(el, expectedValue, show) {
+    return function (input) {
+        var value = input.value.trim();
+        var checked = input.getAttribute('type') !== 'radio' && input.getAttribute('type') !== 'checked' || input.checked;
+        var conditionMet = checked && (value === expectedValue && expectedValue !== "" || expectedValue === "" && value.length > 0);
+        if (show) {
+            el.style.display = conditionMet ? '' : 'none';
+        } else {
+            el.style.display = conditionMet ? 'none' : '';
+        }
+    };
+}
+
+function toggleDependents(input) {
+    var elements = input.form.querySelectorAll('[data-show-if], [data-hide-if]');
+    var inputName = (input.getAttribute('name') || '').toLowerCase();
+
+    [].forEach.call(elements, function (el) {
+        var show = !!el.getAttribute('data-show-if');
+        var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
+        var nameCondition = conditions[0];
+        var valueCondition = conditions[1] || "";
+
+        if (inputName !== nameCondition.toLowerCase()) {
+            return;
+        }
+
+        var callback = toggleElement(el, valueCondition, show);
+        callback(input);
+    });
+}
+
+function findInputsAndToggleDepepents() {
+    var inputElements = document.querySelectorAll('.hf-form input, .hf-form textarea, .hf-form select');
+    [].forEach.call(inputElements, toggleDependents);
+}
+
+function handleInputEvent(evt) {
+    if (evt.target && evt.target.form && evt.target.form.className.indexOf('hf-form') > -1) {
+        toggleDependents(evt.target);
+    }
+}
+
+exports.default = {
+    'init': function init() {
+        findInputsAndToggleDepepents();
+        document.addEventListener('keyup', handleInputEvent, true);
+        document.addEventListener('change', handleInputEvent, true);
+        window.addEventListener('load', findInputsAndToggleDepepents);
+    }
+};
+
+},{}],2:[function(require,module,exports){
+'use strict';
+
 function getButtonText(button) {
     return button.innerHTML ? button.innerHTML : button.value;
 }
@@ -63,8 +121,14 @@ Loader.prototype.stop = function () {
 
 module.exports = Loader;
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
+
+var _conditionalElements = require('./conditional-elements.js');
+
+var _conditionalElements2 = _interopRequireDefault(_conditionalElements);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var shim = require('es5-shim');
 var serialize = require('form-serialize');
@@ -72,6 +136,7 @@ var Loader = require('./form-loading-indicator.js');
 var vars = window.hf_js_vars || { ajax_url: window.location.href };
 var EventEmitter = require('wolfy87-eventemitter');
 var events = new EventEmitter();
+
 
 function cleanFormMessages(formEl) {
     var messageElements = formEl.querySelectorAll('.hf-message');
@@ -166,12 +231,13 @@ function createRequestHandler(formEl) {
 }
 
 document.addEventListener('submit', handleSubmitEvents, true);
+_conditionalElements2.default.init();
 
 window.html_forms = {
     'on': events.on.bind(events)
 };
 
-},{"./form-loading-indicator.js":1,"es5-shim":3,"form-serialize":4,"wolfy87-eventemitter":5}],3:[function(require,module,exports){
+},{"./conditional-elements.js":1,"./form-loading-indicator.js":2,"es5-shim":4,"form-serialize":5,"wolfy87-eventemitter":6}],4:[function(require,module,exports){
 /*!
  * https://github.com/es-shims/es5-shim
  * @license es5-shim Copyright 2009-2015 by contributors, MIT License
@@ -2238,7 +2304,7 @@ window.html_forms = {
     }
 }));
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 // get successful control from form and assemble into object
 // http://www.w3.org/TR/html401/interact/forms.html#h-17.13.2
 
@@ -2500,7 +2566,7 @@ function str_serialize(result, key, value) {
 
 module.exports = serialize;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /*!
  * EventEmitter v5.2.3 - git.io/ee
  * Unlicense - http://unlicense.org/
@@ -2988,5 +3054,5 @@ module.exports = serialize;
     }
 }(this || {}));
 
-},{}]},{},[2]);
+},{}]},{},[3]);
 ; })();
