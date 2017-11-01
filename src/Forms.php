@@ -259,8 +259,10 @@ class Forms
 
     public function shortcode($attributes = array(), $content = '')
     {
+        $slug_or_id = empty( $attributes['id'] ) ? $attributes['slug'] : $attributes['id'];
+
         try {
-            $form = hf_get_form($attributes['slug']);
+            $form = hf_get_form( $slug_or_id );
         } catch( \Exception $e ) {
             if ( ! current_user_can( 'manage_options' ) ) {
                 return $content;
