@@ -50,6 +50,7 @@ function handleInputEvent(evt) {
 exports.default = {
     'init': function init() {
         findInputsAndToggleDepepents();
+        document.addEventListener('click', handleInputEvent, true);
         document.addEventListener('keyup', handleInputEvent, true);
         document.addEventListener('change', handleInputEvent, true);
         window.addEventListener('load', findInputsAndToggleDepepents);
