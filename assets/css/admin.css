@@ -91,6 +91,10 @@
   .hf-column-menu:hover .submenu {
     display: block; }
 
+.hf-tiny-margin {
+  margin-top: 10px;
+  margin-bottom: 10px; }
+
 .hf-small-margin {
   margin-top: 20px;
   margin-bottom: 20px; }
