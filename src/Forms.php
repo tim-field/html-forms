@@ -259,7 +259,16 @@ class Forms
 
     public function shortcode($attributes = array(), $content = '')
     {
-        $form = hf_get_form($attributes['slug']);
+        try {
+            $form = hf_get_form($attributes['slug']);
+        } catch( \Exception $e ) {
+            if ( ! current_user_can( 'manage_options' ) ) {
+                return $content;
+            }
+
+            return sprintf( '<p><strong>%s</strong> %s</p>', __( 'Error:', 'html-forms' ), sprintf( __( 'No form found with slug %s', 'html-forms' ), $attributes['slug'] ) );
+        }
+
         return $form . $content;
     }
 }

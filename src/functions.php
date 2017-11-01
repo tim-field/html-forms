@@ -20,7 +20,8 @@ function hf_get_form( $form_id_or_slug ) {
         $posts = get_posts(
             array(
                 'post_type' => 'html-form',
-                'post_name' => $form_id_or_slug,
+                'name' => $form_id_or_slug,
+                'post_status' => 'publish',
                 'numberposts' => 1,
             )
         );
