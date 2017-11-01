@@ -219,8 +219,9 @@ class Admin {
             'ID' => $form_id,
             'post_type' => 'html-form',
             'post_status' => 'publish',
-            'post_title' => $data['title'],
+            'post_title' => sanitize_text_field( $data['title'] ),
             'post_content' => $data['markup'],
+            'post_name' => sanitize_title_with_dashes( $data['slug'] ),
         ) );
 
         if( ! empty( $data['settings'] ) ) {

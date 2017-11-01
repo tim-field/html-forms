@@ -31,8 +31,13 @@ $tabs = array(
                 <input type="text" name="form[title]" size="30" value="<?php echo esc_attr( $form->title ); ?>" id="title" spellcheck="true" autocomplete="off" placeholder="<?php echo __( "Enter the title of your form", 'html-forms' ); ?>" style="line-height: initial;" >
             </div>
             <div class="inside" style="margin-top: 3px;">
-                <label for="shortcode"><?php _e( 'Copy this shortcode and paste it into your post, page, or text widget content:', 'html-forms' ); ?></label><br />
-                <input id="shortcode" type="text" class="regular-text" value="<?php echo esc_attr( sprintf( '[hf_form slug="%s"]', $form->slug ) ); ?>" readonly onclick="this.select()">
+                <div class="hf-tiny-margin hide-if-no-js">
+                    <strong>Slug:</strong> <input type="text" id="form-slug-input" name="form[slug]" value="<?php echo esc_attr( $form->slug ); ?>" readonly /> &lrm;<button type="button" class="button button-small" onclick="document.getElementById('form-slug-input').removeAttribute('readonly');" aria-label="<?php _e( 'Edit slug', 'html-forms' ); ?>"><?php _e( 'Edit', 'html-forms' ); ?></button>
+                </div>
+                <div class="hf-tiny-margin">
+                    <label for="shortcode"><?php _e( 'Copy this shortcode and paste it into your post, page, or text widget content:', 'html-forms' ); ?></label><br />
+                    <input id="shortcode" type="text" class="regular-text" value="<?php echo esc_attr( sprintf( '[hf_form slug="%s"]', $form->slug ) ); ?>" readonly onclick="this.select()">
+                </div>
             </div>
         </div>
 

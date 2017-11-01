@@ -17,19 +17,27 @@ msgstr ""
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/functions.php:37
-msgid "Thank you! We will be in touch soon."
+#: src/Forms.php:271
+msgid "Error:"
+msgstr ""
+
+#: src/Forms.php:271
+msgid "No form found with slug %s"
 msgstr ""
 
 #: src/functions.php:38
-msgid "Sorry, that email address looks invalid."
+msgid "Thank you! We will be in touch soon."
 msgstr ""
 
 #: src/functions.php:39
-msgid "Please fill in the required fields."
+msgid "Sorry, that email address looks invalid."
 msgstr ""
 
 #: src/functions.php:40
+msgid "Please fill in the required fields."
+msgstr ""
+
+#: src/functions.php:41
 msgid "Oops. An error occurred."
 msgstr ""
 
@@ -141,7 +149,15 @@ msgstr ""
 msgid "Enter the title of your form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:34
+#: src/Admin/views/edit-form.php:35
+msgid "Edit slug"
+msgstr ""
+
+#: src/Admin/views/edit-form.php:35
+msgid "Edit"
+msgstr ""
+
+#: src/Admin/views/edit-form.php:38
 msgid "Copy this shortcode and paste it into your post, page, or text widget content:"
 msgstr ""
 

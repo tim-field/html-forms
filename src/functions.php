@@ -153,3 +153,4 @@ function hf_template( $template, array $data = array() ) {
     }, $template );
     return $template;
 }
+
