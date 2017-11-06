@@ -1,6 +1,24 @@
 Changelog
 =========
 
+#### 1.0.3 - November 6, 2017
+
+**Additions**
+
+- Added [support for conditional elements](https://kb.htmlforms.io/conditional-elements/) by using `data-show-if` and `data-hide-if` attributes.
+
+**Improvements**
+
+- Accept `id` argument in `[hf_form]` shortcode.
+- Catch errors in shortcode's `slug` attribute.
+- Allow changing form slug after initial form is saved.
+
+**Fixes**
+
+- Fixes stylesheet URL when option to load stylesheet is toggled.
+
+
+
 #### 1.0.2 - October 30, 2017
 
 **Fixes**
