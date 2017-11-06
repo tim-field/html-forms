@@ -53,7 +53,7 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:37, src/Admin/Admin.php:282
+#: src/Actions/Email.php:37, src/Admin/Admin.php:285
 msgid "Subject"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Your email subject"
 msgstr ""
 
-#: src/Actions/Email.php:43, src/Admin/Admin.php:283
+#: src/Actions/Email.php:43, src/Admin/Admin.php:286
 msgid "Message"
 msgstr ""
 
@@ -73,15 +73,15 @@ msgstr ""
 msgid "You can use the following variables: "
 msgstr ""
 
-#: src/Admin/Admin.php:280
+#: src/Admin/Admin.php:283
 msgid "Your name"
 msgstr ""
 
-#: src/Admin/Admin.php:281
+#: src/Admin/Admin.php:284
 msgid "Your email"
 msgstr ""
 
-#: src/Admin/Admin.php:284
+#: src/Admin/Admin.php:287
 msgid "Send"
 msgstr ""
 
@@ -141,31 +141,39 @@ msgstr ""
 msgid "Edit form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:30
+#: src/Admin/views/edit-form.php:24
+msgid "Form updated."
+msgstr ""
+
+#: src/Admin/views/edit-form.php:34
 msgid "Form title"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:31
+#: src/Admin/views/edit-form.php:35
 msgid "Enter the title of your form"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:35
+#: src/Admin/views/edit-form.php:39
 msgid "Edit slug"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:35
+#: src/Admin/views/edit-form.php:39
 msgid "Edit"
 msgstr ""
 
-#: src/Admin/views/edit-form.php:38
+#: src/Admin/views/edit-form.php:42
 msgid "Copy this shortcode and paste it into your post, page, or text widget content:"
 msgstr ""
 
-#: src/Admin/views/global-settings.php:18
+#: src/Admin/views/global-settings.php:14
+msgid "Settings updated."
+msgstr ""
+
+#: src/Admin/views/global-settings.php:22
 msgid "Load stylesheet?"
 msgstr ""
 
-#: src/Admin/views/global-settings.php:23
+#: src/Admin/views/global-settings.php:27
 msgid "Select \"yes\" to apply some basic form styles to all HTML Forms."
 msgstr ""
 

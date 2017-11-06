@@ -46,8 +46,7 @@ function getFieldVariableName(f) {
 
 function updateFieldVariables() {
     const fields = dom.querySelectorAll('input[name], select[name], textarea[name], button[name]');
-    const fieldVariables = [].map.call(fields, (f) => '[' +  getFieldVariableName(f) + ']');
-
+    const fieldVariables = uniq([].map.call(fields, (f) => '[' +  getFieldVariableName(f) + ']'));
 
     [].forEach.call( document.querySelectorAll('.hf-field-names'), (el) => {
         while (el.firstChild) {
@@ -105,6 +104,13 @@ function debounce(func, wait, immediate) {
         if (callNow) func.apply(context, args);
     };
 };
+
+function uniq(a) {
+    var seen = {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
 
 export default {
     'init': init,
