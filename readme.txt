@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.8.2
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -104,6 +104,24 @@ Yes! You can configure this by opening up the "Actions" tab when editing your fo
 6. Configurable form messages.
 
 == Changelog ==
+
+
+#### 1.0.3 - November 6, 2017
+
+**Additions**
+
+- Added [support for conditional elements](https://kb.htmlforms.io/conditional-elements/) by using `data-show-if` and `data-hide-if` attributes.
+
+**Improvements**
+
+- Accept `id` argument in `[hf_form]` shortcode.
+- Catch errors in shortcode's `slug` attribute.
+- Allow changing form slug after initial form is saved.
+
+**Fixes**
+
+- Fixes stylesheet URL when option to load stylesheet is toggled.
+
 
 
 #### 1.0.2 - October 30, 2017
