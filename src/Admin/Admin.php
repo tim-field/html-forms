@@ -200,7 +200,7 @@ class Admin {
             )
         );
 
-        wp_redirect( admin_url( 'admin.php?page=html-forms&view=edit&form_id=' . $form_id ));
+        wp_safe_redirect( admin_url( 'admin.php?page=html-forms&view=edit&form_id=' . $form_id ));
         exit;
     }
 
@@ -233,6 +233,9 @@ class Admin {
             update_post_meta( $form_id, 'hf_message_' . $key, $message );
         }
 
+        $redirect_url = add_query_arg( array( 'form_id' => $form_id, 'saved' => 1 ), admin_url ('admin.php?page=html-forms&view=edit' ) );
+        wp_safe_redirect( $redirect_url );
+        exit;
     }
 
     /**
