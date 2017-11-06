@@ -9,6 +9,10 @@
     </p>
 
     <h1 class="page-title"><?php _e( 'Settings', 'html-forms' ); ?></h1>
+    
+     <?php if ( ! empty( $_GET['settings-updated'] ) ) { 
+        echo '<div class="notice notice-success"><p>' . __( 'Settings updated.', 'html-forms' ) . '</p></div>';
+    } ?>
 
     <form method="post" action="<?php echo admin_url( 'options.php' ); ?>">
         <?php settings_fields( 'hf_settings' ); ?>
