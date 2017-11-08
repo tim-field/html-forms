@@ -220,6 +220,11 @@ class Forms
 
         $response = $this->get_response_for_error_code( $error_code, $form );
 
+        // clear output, some plugin or hooked code might have thrown errors by now.
+        if( ob_get_level() > 0 ) {
+            ob_end_clean();
+        }
+
         send_origin_headers();
         send_nosniff_header();
         nocache_headers();
