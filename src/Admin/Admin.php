@@ -164,6 +164,10 @@ class Admin {
         // create array of columns for submissions tab
         $columns = array();
         foreach( $submissions as $s ) {
+            if( ! is_array( $s->data ) ) {
+                continue;
+            }
+
             foreach( $s->data as $field => $value ) {
                 if (!array_key_exists($field, $columns)) {
                     $columns[$field] = true;

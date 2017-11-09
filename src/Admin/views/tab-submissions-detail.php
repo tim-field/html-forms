@@ -57,15 +57,18 @@ $datetime_format = sprintf('%s %s', get_option( 'date_format' ), get_option( 'ti
         <h3><?php _e( 'Fields', 'html-forms' ); ?></h3>
         <table class="hf-bordered">
             <tbody>
-            <?php foreach( $submission->data as $field => $value ) {
-                if( is_array( $value ) ) {
-                    $value = join( ', ', $value );
+            <?php 
+            if( is_array( $submission->data ) ) {
+                foreach( $submission->data as $field => $value ) {
+                    if( is_array( $value ) ) {
+                        $value = join( ', ', $value );
+                    }
+                    $value = esc_html( $value );
+                    echo '<tr>';
+                    echo sprintf( '<th>%s</th>', esc_html( ucfirst( strtolower( $field ) ) ) );
+                    echo sprintf( '<td>%s</td>', nl2br( $value ) );
+                    echo '</tr>';
                 }
-                $value = esc_html( $value );
-                echo '<tr>';
-                echo sprintf( '<th>%s</th>', esc_html( ucfirst( strtolower( $field ) ) ) );
-                echo sprintf( '<td>%s</td>', nl2br( $value ) );
-                echo '</tr>';
             } ?>
             </tbody>
         </table>
