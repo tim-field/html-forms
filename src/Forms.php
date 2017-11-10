@@ -121,6 +121,11 @@ class Forms
         return '';
     }
 
+    /**
+    * Sanitize array with values before saving. Can be called recursively.
+    *
+    * @param mixed $value
+    */
     public function sanitize( $value )
     {
         if (is_string($value)) {
@@ -240,7 +245,7 @@ class Forms
             $response = array(
                 'message' => array(
                     'type' => 'success',
-                    'text' => $form->messages['success'],
+                    'text' => $form->get_message( 'success' ),
                 ),
                 'hide_form' => (bool)$form->settings['hide_after_success'],
             );
@@ -252,11 +257,17 @@ class Forms
             return $response;
         }
 
+        // get error message
+        $message = $form->get_message( $error_code );
+        if( empty( $message ) ) {
+            $message = $form->get_message( 'error' );
+        }
+
         // return error response
         return  $response = array(
             'message' => array(
                 'type' => 'warning',
-                'text' => isset( $form->messages[ $error_code ] ) ? $form->messages[ $error_code ] : $form->messages['error'],
+                'text' => $message,
             ),
             'error' => $error_code,
         );

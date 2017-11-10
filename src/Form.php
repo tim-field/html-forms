@@ -24,7 +24,6 @@ class Form {
     public function get_html() 
     {
         $form = $this;
-        $form = $this;
 
         /**
          * Filters the CSS classes to be added to this form's class attribute.
@@ -98,6 +97,22 @@ class Form {
 
         $email_fields = explode( ',', $this->settings['email_fields'] );
         return $email_fields;
+    }
+
+    /**
+    * @param string $code
+    */
+    public function get_message( $code ) 
+    {
+        $form = $this;
+        $message = isset( $this->messages[ $code ] ) ? $this->messages[ $code ] : '';
+
+        /**
+        * @param string $message
+        * @param Form $form
+        */
+        $message = apply_filters( 'hf_form_message_' . $code, $message, $form );
+        return $message;
     }
 
 }

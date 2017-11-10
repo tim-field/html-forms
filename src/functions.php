@@ -55,6 +55,7 @@ function hf_get_form( $form_id_or_slug ) {
     if( ! empty( $post_meta['_hf_settings'][0] ) ) {
         $settings = (array) maybe_unserialize( $post_meta['_hf_settings'][0] );
     }
+    $settings = array_merge( $default_settings, $settings );
 
     $messages = array();
     foreach( $post_meta as $meta_key => $meta_values ) {
@@ -63,13 +64,14 @@ function hf_get_form( $form_id_or_slug ) {
             $messages[$message_key] = (string) $meta_values[0];
         }
     }
+    $messages = array_merge( $default_messages, $messages );
 
     $form = new Form( $post->ID );
     $form->title = $post->post_title;
     $form->slug = $post->post_name;
     $form->markup = $post->post_content;
-    $form->settings = array_merge( $default_settings, $settings );
-    $form->messages = array_merge( $default_messages, $messages );
+    $form->settings = $settings;
+    $form->messages = $messages;
     return $form;
 }
 
@@ -81,7 +83,7 @@ function hf_get_form( $form_id_or_slug ) {
 function hf_get_form_submissions( $form_id, array $args = array() ) {
     $default_args = array(
         'offset' => 0,
-        'limit' => 1000
+        'limit' => 1000,
     );
     $args = array_merge( $default_args, $args );
 
