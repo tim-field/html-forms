@@ -13,15 +13,15 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Form.php:54
+#: src/Form.php:53
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/Forms.php:271
+#: src/Forms.php:288
 msgid "Error:"
 msgstr ""
 
-#: src/Forms.php:271
+#: src/Forms.php:288
 msgid "No form found with slug %s"
 msgstr ""
 
@@ -53,7 +53,7 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:37, src/Admin/Admin.php:285
+#: src/Actions/Email.php:37, src/Admin/Admin.php:289
 msgid "Subject"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Your email subject"
 msgstr ""
 
-#: src/Actions/Email.php:43, src/Admin/Admin.php:286
+#: src/Actions/Email.php:43, src/Admin/Admin.php:290
 msgid "Message"
 msgstr ""
 
@@ -73,15 +73,15 @@ msgstr ""
 msgid "You can use the following variables: "
 msgstr ""
 
-#: src/Admin/Admin.php:283
+#: src/Admin/Admin.php:287
 msgid "Your name"
 msgstr ""
 
-#: src/Admin/Admin.php:284
+#: src/Admin/Admin.php:288
 msgid "Your email"
 msgstr ""
 
-#: src/Admin/Admin.php:287
+#: src/Admin/Admin.php:291
 msgid "Send"
 msgstr ""
 
@@ -285,11 +285,11 @@ msgstr ""
 msgid "Referrer URL"
 msgstr ""
 
-#: src/Admin/views/tab-submissions-detail.php:77
+#: src/Admin/views/tab-submissions-detail.php:80
 msgid "Raw"
 msgstr ""
 
-#: src/Admin/views/tab-submissions-detail.php:82
+#: src/Admin/views/tab-submissions-detail.php:85
 msgid "Back to submissions list"
 msgstr ""
 
