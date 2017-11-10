@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -104,6 +104,23 @@ Yes! You can configure this by opening up the "Actions" tab when editing your fo
 6. Configurable form messages.
 
 == Changelog ==
+
+
+#### 1.0.4 - November 10, 2017
+
+**Fixes**
+
+- Incompatibility with PHP versions before 5.6.
+- Data variables could not be placed on the same line.
+
+**Improvements**
+
+- Clear output buffer before sending AJAX response to prevent issues with response parsing.
+
+**Additions**
+
+- Added `hf_form_message_{$code}` filter hook.
+
 
 
 #### 1.0.3 - November 6, 2017
