@@ -147,7 +147,7 @@ function hf_array_get( $array, $key, $default = null ) {
  *
  * @return string
  */
-function hf_template( $template, array $data = array() ) {
+function hf_template( $template, $data = array() ) {
     $template = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function( $matches ) use ( $data ) {
         $key = $matches[1];
         $replacement = hf_array_get( $data, $key, '' );
