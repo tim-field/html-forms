@@ -43,10 +43,12 @@ class Submission {
      * @return Submission
      */
     public static function from_object( $object ) {
+        $data = empty( $object->data ) ? array() : (array) json_decode( $object->data, true );
+
         $submission = new Submission();
-        $submission->id = $object->id;
-        $submission->form_id = $object->form_id;
-        $submission->data = json_decode( $object->data, true );
+        $submission->id = (int) $object->id;
+        $submission->form_id = (int) $object->form_id;
+        $submission->data = $data;
         $submission->ip_address = (string) $object->ip_address;
         $submission->user_agent = (string) $object->user_agent;
         $submission->referer_url = (string) $object->referer_url;
