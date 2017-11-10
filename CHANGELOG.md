@@ -1,6 +1,23 @@
 Changelog
 =========
 
+#### 1.0.4 - November 10, 2017
+
+**Fixes**
+
+- Incompatibility with PHP versions before 5.6.
+- Data variables could not be placed on the same line.
+
+**Improvements**
+
+- Clear output buffer before sending AJAX response to prevent issues with response parsing.
+
+**Additions**
+
+- Added `hf_form_message_{$code}` filter hook.
+
+
+
 #### 1.0.3 - November 6, 2017
 
 **Additions**
