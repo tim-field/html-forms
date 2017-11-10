@@ -171,11 +171,12 @@ class Forms
         $error_code = $this->validate_form($form, $data);
 
         if (empty( $error_code ) ) {
-
             // filter out all field names starting with _
-            $data = array_filter( $data, function( $k ) {
-                return ! empty( $k ) && $k[0] !== '_';
-            }, ARRAY_FILTER_USE_KEY );
+            foreach( $data as $key => $value ) {
+                if( strpos( $key, '_' ) === 0 ) {
+                    unset( $data[$key] );
+                }
+            }
 
             // strip slashes
             $data = stripslashes_deep( $data );
