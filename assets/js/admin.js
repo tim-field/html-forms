@@ -776,7 +776,8 @@ function addAction(e) {
     var actionTemplate = actionTemplates.querySelector('#hf-action-type-' + actionType + '-template');
 
     // append HTML to actions wrapper
-    var wrap = createAccordion(el.value, actionTemplate.innerHTML);
+    var index = actions.querySelectorAll('div').length - 1;
+    var wrap = createAccordion(el.value, actionTemplate.innerHTML.replace(/\$index/g, index));
     actions.appendChild(wrap);
 
     // hide "no form actions" message

@@ -8,10 +8,11 @@ $available_actions = $this->get_available_form_actions();
     <div id="hf-form-actions">
         <?php
         if( ! empty( $form->settings['actions'] ) ) {
+            $index = 0;
             foreach ($form->settings['actions'] as $action_settings ) {
                 ?>
                    <div class="hf-action-settings" data-title="<?php echo esc_attr( $available_actions[ $action_settings['type'] ] ); ?>">
-                       <?php do_action( 'hf_render_form_action_' . $action_settings['type'] . '_settings', $action_settings ); ?>
+                       <?php do_action( 'hf_render_form_action_' . $action_settings['type'] . '_settings', $action_settings, $index++ ); ?>
                    </div>
                 <?php
             }
@@ -42,7 +43,7 @@ $available_actions = $this->get_available_form_actions();
     <?php
     foreach( $available_actions as $type => $label ) {
         echo sprintf( '<script type="text/x-template" id="hf-action-type-%s-template">', $type );
-        do_action( 'hf_render_form_action_' . $type . '_settings', array() );
+        do_action( 'hf_render_form_action_' . $type . '_settings', array(), '$index' );
         echo '</script>';
     }
     ?>

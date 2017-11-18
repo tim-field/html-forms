@@ -14,35 +14,35 @@ class Email extends Action {
        $this->label = __( 'Send Email', 'html-forms' );
    }
 
-   public function page_settings( $settings ) {
+   public function page_settings( $settings, $index ) {
        $defaults = array_fill_keys( array( 'from', 'to', 'subject', 'message' ), '' );
        $settings = array_merge( $defaults, $settings );
        ?>
        <span class="hf-action-summary"><?php printf( 'From %s. To %s.', $settings['from'], $settings['to']  ); ?></span>
-       <input type="hidden" name="form[settings][actions][0][type]" value="<?php echo $this->type; ?>" />
+       <input type="hidden" name="form[settings][actions][<?php echo $index; ?>][type]" value="<?php echo $this->type; ?>" />
        <table class="form-table">
            <tr>
                <th><label><?php echo __( 'From', 'html-forms' ); ?> <span class="hf-required">*</span></label></th>
                <td>
-                   <input name="form[settings][actions][0][from]" value="<?php echo esc_attr( $settings['from'] ); ?>" type="text" class="regular-text" placeholder="jane@email.com" required />
+                   <input name="form[settings][actions][<?php echo $index; ?>][from]" value="<?php echo esc_attr( $settings['from'] ); ?>" type="text" class="regular-text" placeholder="jane@email.com" required />
                </td>
            </tr>
            <tr>
                <th><label><?php echo __( 'To', 'html-forms' ); ?> <span class="hf-required">*</span></label></th>
                <td>
-                   <input name="form[settings][actions][0][to]" value="<?php echo esc_attr( $settings['to'] ); ?>" type="text" class="regular-text" placeholder="john@email.com" required />
+                   <input name="form[settings][actions][<?php echo $index; ?>][to]" value="<?php echo esc_attr( $settings['to'] ); ?>" type="text" class="regular-text" placeholder="john@email.com" required />
                </td>
            </tr>
            <tr>
                <th><label><?php echo __( 'Subject', 'html-forms' ); ?></label></th>
                <td>
-                   <input name="form[settings][actions][0][subject]" value="<?php echo esc_attr( $settings['subject'] ); ?>" type="text" class="regular-text" placeholder="<?php echo esc_attr( __( 'Your email subject', 'html-forms' ) ); ?>" />
+                   <input name="form[settings][actions][<?php echo $index; ?>][subject]" value="<?php echo esc_attr( $settings['subject'] ); ?>" type="text" class="regular-text" placeholder="<?php echo esc_attr( __( 'Your email subject', 'html-forms' ) ); ?>" />
                </td>
            </tr>
            <tr>
                <th><label><?php echo __( 'Message', 'html-forms' ); ?> <span class="hf-required">*</span></label></th>
                <td>
-                   <textarea name="form[settings][actions][0][message]" rows="8" class="widefat" placeholder="<?php echo esc_attr( __( 'Your email message', 'html-forms' ) ); ?>" required><?php echo esc_textarea( $settings['message'] ); ?></textarea>
+                   <textarea name="form[settings][actions][<?php echo $index; ?>][message]" rows="8" class="widefat" placeholder="<?php echo esc_attr( __( 'Your email message', 'html-forms' ) ); ?>" required><?php echo esc_textarea( $settings['message'] ); ?></textarea>
                     <p class="help"><?php _e( 'You can use the following variables: ', 'html-forms' ); ?><span class="hf-field-names"></span></p>
                </td>
            </tr>

@@ -185,15 +185,15 @@ msgstr ""
 msgid "Form Actions"
 msgstr ""
 
-#: src/Admin/views/tab-actions.php:20
+#: src/Admin/views/tab-actions.php:21
 msgid "No form actions configured for this form."
 msgstr ""
 
-#: src/Admin/views/tab-actions.php:26
+#: src/Admin/views/tab-actions.php:27
 msgid "Add form action"
 msgstr ""
 
-#: src/Admin/views/tab-actions.php:27
+#: src/Admin/views/tab-actions.php:28
 msgid "Use the below button(s) to configure and perform an action whenever this form is successfully submitted."
 msgstr ""
 
