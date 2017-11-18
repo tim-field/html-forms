@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### 1.0.5 - November 18, 2017
+
+**Fixes**
+
+- Could not save more than one "Email" action.
+
+
 #### 1.0.4 - November 10, 2017
 
 **Fixes**
