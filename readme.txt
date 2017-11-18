@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -104,6 +104,13 @@ Yes! You can configure this by opening up the "Actions" tab when editing your fo
 6. Configurable form messages.
 
 == Changelog ==
+
+
+#### 1.0.5 - November 18, 2017
+
+**Fixes**
+
+- Could not save more than one "Email" action.
 
 
 #### 1.0.4 - November 10, 2017
