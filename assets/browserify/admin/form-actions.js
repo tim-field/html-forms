@@ -60,11 +60,11 @@ function addAction(e) {
         return;
     }
 
-    let actionType = el.getAttribute('data-action-type');
-    let actionTemplate = actionTemplates.querySelector(`#hf-action-type-${actionType}-template`);
+    const actionType = el.getAttribute('data-action-type');
+    const actionTemplate = actionTemplates.querySelector(`#hf-action-type-${actionType}-template`);
 
     // append HTML to actions wrapper
-    let index = actions.querySelectorAll('div').length - 1;
+    const index = actions.querySelectorAll('div').length - 1;
     let wrap = createAccordion(el.value, actionTemplate.innerHTML.replace(/\$index/g, index));
     actions.appendChild(wrap);
 
@@ -84,12 +84,9 @@ function createDeleteActionHandler(wrap) {
 
 function createToggleActionHandler(wrap, content) {
     return function() {
-        let show = content.offsetParent === null;
-        wrap.className = wrap.className.replace('expanded', '');
-        if(show) {
-            wrap.className = wrap.className + " expanded";
-        }
-        content.style.display = show? 'block' : 'none';
+        const show = content.offsetParent === null;
+        wrap.className = wrap.className.replace('expanded', '') + ( show ? ' expanded' : '' );
+        content.style.display = show ? 'block' : 'none';
     }
 }
 
