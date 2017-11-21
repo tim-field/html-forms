@@ -89,7 +89,7 @@ function hf_get_form_submissions( $form_id, array $args = array() ) {
 
     global $wpdb;
     $table = $wpdb->prefix .'hf_submissions';
-    $results = $wpdb->get_results( $wpdb->prepare( "SELECT s.* FROM {$table} s WHERE s.form_id = %d ORDER BY s.submitted_at DESC LIMIT {$args['offset']}, {$args['limit']};", $form_id ), OBJECT_K );
+    $results = $wpdb->get_results( $wpdb->prepare( "SELECT s.* FROM {$table} s WHERE s.form_id = %d ORDER BY s.submitted_at DESC LIMIT %d, %d;", $form_id, $args['offset'], $args['limit'] ), OBJECT_K );
     $submissions = array();
     foreach( $results as $key => $object ) {
         $submission = Submission::from_object( $object );
