@@ -91,7 +91,9 @@ function createRequestHandler(formEl) {
                 }
 
                 // clear form
-                formEl.reset();
+                if (!response.error) {
+                    formEl.reset();
+                }
             } else {
                 // Server error :(
                 console.log(this.responseText);
