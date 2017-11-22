@@ -2,8 +2,8 @@ HTML Forms
 ======================
 [![Stable Version](https://poser.pugx.org/ibericode/html-forms/v/stable.svg)](https://packagist.org/packages/ibericode/html-forms)
 [![License](https://poser.pugx.org/ibericode/html-forms/license.svg)](https://packagist.org/packages/ibericode/html-forms)
-![Downloads](https://img.shields.io/wordpress/plugin/dt/html-forms.svg)
-![Rating](https://img.shields.io/wordpress/plugin/r/html-forms.svg)
+[![Downloads](https://img.shields.io/wordpress/plugin/dt/html-forms.svg)](https://wordpress.org/plugins/html-forms/advanced/)
+[![Rating](https://img.shields.io/wordpress/plugin/r/html-forms.svg)](https://wordpress.org/support/plugin/html-forms/reviews/)
 
 [HTML Forms](https://htmlforms.io/#utm_source=github&utm_medium=html-forms&utm_campaign=readme) allows you to add multi-purpose forms to your WordPress site. Your form fields can be defined using regular HTML5 code while the plugin takes care of submitting the form & processing the request. 
 
