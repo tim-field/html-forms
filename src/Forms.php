@@ -194,15 +194,17 @@ class Forms
             $submission->save();
 
             // process form actions
-            foreach( $form->settings['actions'] as $action_settings ) {
-                /**
-                 * Processes the specified form action and passes related data.
-                 *
-                 * @param array $action_settings
-                 * @param Submission $submission
-                 * @param Form $form
-                 */
-                do_action('hf_process_form_action_' . $action_settings['type'], $action_settings, $submission, $form );
+            if ( isset( $form->settings['actions'] ) ) {
+                foreach( $form->settings['actions'] as $action_settings ) {
+                    /**
+                     * Processes the specified form action and passes related data.
+                     *
+                     * @param array $action_settings
+                     * @param Submission $submission
+                     * @param Form $form
+                     */
+                    do_action('hf_process_form_action_' . $action_settings['type'], $action_settings, $submission, $form );
+                }
             }
 
             /**
