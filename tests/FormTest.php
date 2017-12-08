@@ -19,6 +19,14 @@ class FormTest extends TestCase {
 	}
 
 	/**
+	* @covers Forms::__construct
+	*/
+	public function test_constructor() {
+		$form = new Form(1);
+		self::assertEquals( 1, $form->ID );
+	}
+
+	/**
 	* @covers Forms::get_markup
 	*/
 	public function test_get_markup() {
