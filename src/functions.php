@@ -166,6 +166,15 @@ function hf_template( $template ) {
             $user = wp_get_current_user();
             return isset( $user->{$prop} ) ? $user->{$prop} : '';
          },
+         'post' => function( $prop ) {
+            global $post;
+
+            if( ! $post instanceof WP_Post || ! isset( $post->{$prop} ) ) {
+                return '';
+            }
+
+            return $post->{$prop};
+         },
     ); 
 
     /**
