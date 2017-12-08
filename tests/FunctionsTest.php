@@ -31,9 +31,11 @@ class FunctionsTest extends TestCase {
 
 		// whitespace variations
 		self::assertEquals( hf_template( 'Hello {{ user.name || visitor }}' ), "Hello visitor" );
-		self::assertEquals( hf_template( 'Hello {{user.name || visitor}}' ), "Hello visitor" );
 		self::assertEquals( hf_template( 'Hello {{ user.name   }}' ), "Hello " );
 		self::assertEquals( hf_template( 'Hello {{    user.name ||     visitor}}' ), "Hello visitor" );
+
+		// multiple replacements
+		self::assertEquals( hf_template( "Hello {{user.name || visitor}}. \nFrom {{user.location || Europe}}?" ), "Hello visitor. \nFrom Europe?" );
 
 		// unexisting replacer: dot in parameter, fallback value
 		self::assertEquals( hf_template( 'Hello {{ foobar }}' ), "Hello {{ foobar }}" );
