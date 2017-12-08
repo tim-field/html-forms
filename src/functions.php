@@ -181,11 +181,13 @@ function hf_replace_template_tags( $template ) {
         $default = empty( $matches[3] ) ? "" : $matches[3];
         $value = "";
 
-        if( isset( $replacers[ $replacer] ) ) {
-            $replacer = $replacers[$replacer];
-            $value = is_callable( $replacer ) ? call_user_func_array( $replacer, array( $param ) ) : $replacer;
+        // do not change anything if we have no replacer with that key, could be custom user logic or another plugin.
+        if( ! isset( $replacers[ $replacer] ) ) {
+            return $matches[0];
         }
 
+        $replacer = $replacers[$replacer];
+        $value = is_callable( $replacer ) ? call_user_func_array( $replacer, array( $param ) ) : $replacer;
         return ! empty( $value ) ? $value : $default;
     }, $template );
 
