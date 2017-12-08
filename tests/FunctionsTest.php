@@ -42,4 +42,13 @@ class FunctionsTest extends TestCase {
 		self::assertEquals( hf_template( 'Hello {{}}' ), "Hello {{}}" );
 	}
 
+	/**
+	 * @covers hf_replace_data_variables
+	 */
+	public function test_hf_replace_data_variables() {
+		self::assertEquals( 'Hi ', hf_replace_data_variables( 'Hi [NAME]' ) );
+		self::assertEquals( 'Hi John', hf_replace_data_variables( 'Hi [NAME]', array( 'NAME' => 'John' ) ) );
+		self::assertEquals( 'Hi John', hf_replace_data_variables( 'Hi [USER.NAME]', array( 'USER' => array( 'NAME' => 'John' ) ) ) );
+	}
+
 }

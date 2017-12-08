@@ -203,10 +203,10 @@ function hf_template( $template ) {
  * @return string
  */
 function hf_replace_data_variables( $string, $data = array() ) {
-    $template = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function( $matches ) use ( $data ) {
+    $string = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function( $matches ) use ( $data ) {
         $key = $matches[1];
         $replacement = hf_array_get( $data, $key, '' );
         return $replacement;
-    }, $template );
-    return $template;
+    }, $string );
+    return $string;
 }

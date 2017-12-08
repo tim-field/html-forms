@@ -73,6 +73,9 @@ class Form {
         return $this->get_html();
     }
 
+    /**
+    * @return string
+    */
     public function get_markup() {
         return apply_filters( 'hf_form_markup', $this->markup );
     }
