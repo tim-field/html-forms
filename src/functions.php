@@ -175,6 +175,13 @@ function hf_template( $template ) {
 
             return $post->{$prop};
          },
+         'url_params' => function( $key ) {
+            if( ! isset( $_GET[ $key] ) ) {
+                return '';
+            }
+
+            return esc_attr( strip_tags( $_GET[$key] ) );
+         }
     ); 
 
     /**
