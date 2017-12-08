@@ -22,9 +22,17 @@ class FunctionsTest extends TestCase {
 	 */
 	public function test_hf_replace_template_tags() {
 		Functions\when('is_user_logged_in')->justReturn(false);
-		$template = 'Hello {{user.name || visitor}}';
-		$result = hf_replace_template_tags( $template );
-		self::assertEquals( $result, "Hello visitor" );
+
+		// existing replacer, whitespace and fallback value.
+		self::assertEquals( hf_replace_template_tags( 'Hello {{user.name||visitor}}' ), "Hello visitor" );
+		self::assertEquals( hf_replace_template_tags( 'Hello {{user.name || visitor}}' ), "Hello visitor" );
+		self::assertEquals( hf_replace_template_tags( 'Hello {{ user.name   }}' ), "Hello " );
+		self::assertEquals( hf_replace_template_tags( 'Hello {{ user.name || visitor }}' ), "Hello visitor" );
+		self::assertEquals( hf_replace_template_tags( 'Hello {{    user.name ||     visitor}}' ), "Hello visitor" );
+
+		// unexisting replacer (with dot in param)
+		self::assertEquals( hf_replace_template_tags( 'Hello {{ foobar.foo.bar }}' ), "Hello " );
+		self::assertEquals( hf_replace_template_tags( 'Hello {{ foobar.foo.bar || visitor}}' ), "Hello visitor" );
 	}
 
 }

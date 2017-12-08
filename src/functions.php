@@ -151,7 +151,6 @@ function hf_array_get( $array, $key, $default = null ) {
 
 /**
  * @param string $template
- * @param array $data
  *
  * @return string
  */
