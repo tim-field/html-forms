@@ -32,6 +32,7 @@ class Forms
         add_action('init', array($this, 'register'));
         add_action('init', array($this, 'listen'));
         add_action('wp_enqueue_scripts', array($this, 'assets'));
+        add_filter('hf_form_markup', 'hf_template');
     }
 
     public function register()

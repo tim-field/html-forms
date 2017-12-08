@@ -150,11 +150,13 @@ function hf_array_get( $array, $key, $default = null ) {
 }
 
 /**
+ * Processes template tags like {{user.user_email}}
+ *
  * @param string $template
  *
  * @return string
  */
-function hf_replace_template_tags( $template ) {
+function hf_template( $template ) {
     $replacers = array(
         'user' => function( $prop ) {
             if( ! is_user_logged_in() ) {

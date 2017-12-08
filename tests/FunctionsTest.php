@@ -18,28 +18,28 @@ class FunctionsTest extends TestCase {
 	}
 
 	/**
-	 * @covers hf_replace_template_tags
+	 * @covers hf_template
 	 */
-	public function test_hf_replace_template_tags() {
+	public function test_hf_template() {
 		Functions\when('is_user_logged_in')->justReturn(false);
 
 		// existing replacer: no parameter, fallback value, parameter with dot
-		self::assertEquals( hf_replace_template_tags( 'Hello {{user}}' ), "Hello " );
-		self::assertEquals( hf_replace_template_tags( 'Hello {{user||visitor}}' ), "Hello visitor" );
-		self::assertEquals( hf_replace_template_tags( 'Hello {{user.name||visitor}}' ), "Hello visitor" );
-		self::assertEquals( hf_replace_template_tags( 'Hello {{user.nested.key||visitor}}' ), "Hello visitor" );
+		self::assertEquals( hf_template( 'Hello {{user}}' ), "Hello " );
+		self::assertEquals( hf_template( 'Hello {{user||visitor}}' ), "Hello visitor" );
+		self::assertEquals( hf_template( 'Hello {{user.name||visitor}}' ), "Hello visitor" );
+		self::assertEquals( hf_template( 'Hello {{user.nested.key||visitor}}' ), "Hello visitor" );
 
 		// whitespace variations
-		self::assertEquals( hf_replace_template_tags( 'Hello {{ user.name || visitor }}' ), "Hello visitor" );
-		self::assertEquals( hf_replace_template_tags( 'Hello {{user.name || visitor}}' ), "Hello visitor" );
-		self::assertEquals( hf_replace_template_tags( 'Hello {{ user.name   }}' ), "Hello " );
-		self::assertEquals( hf_replace_template_tags( 'Hello {{    user.name ||     visitor}}' ), "Hello visitor" );
+		self::assertEquals( hf_template( 'Hello {{ user.name || visitor }}' ), "Hello visitor" );
+		self::assertEquals( hf_template( 'Hello {{user.name || visitor}}' ), "Hello visitor" );
+		self::assertEquals( hf_template( 'Hello {{ user.name   }}' ), "Hello " );
+		self::assertEquals( hf_template( 'Hello {{    user.name ||     visitor}}' ), "Hello visitor" );
 
 		// unexisting replacer: dot in parameter, fallback value
-		self::assertEquals( hf_replace_template_tags( 'Hello {{ foobar }}' ), "Hello {{ foobar }}" );
-		self::assertEquals( hf_replace_template_tags( 'Hello {{ foobar.foo.bar }}' ), 'Hello {{ foobar.foo.bar }}' );
-		self::assertEquals( hf_replace_template_tags( 'Hello {{ foobar.foo.bar || visitor}}' ), 'Hello {{ foobar.foo.bar || visitor}}' );
-		self::assertEquals( hf_replace_template_tags( 'Hello {{}}' ), "Hello {{}}" );
+		self::assertEquals( hf_template( 'Hello {{ foobar }}' ), "Hello {{ foobar }}" );
+		self::assertEquals( hf_template( 'Hello {{ foobar.foo.bar }}' ), 'Hello {{ foobar.foo.bar }}' );
+		self::assertEquals( hf_template( 'Hello {{ foobar.foo.bar || visitor}}' ), 'Hello {{ foobar.foo.bar || visitor}}' );
+		self::assertEquals( hf_template( 'Hello {{}}' ), "Hello {{}}" );
 	}
 
 }

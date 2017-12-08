@@ -49,10 +49,7 @@ class Form {
         $html .= '<div class="hf-fields-wrap">';
         $html .= sprintf( '<input type="hidden" name="_hf_form_id" value="%d" />', $this->ID );
         $html .= sprintf( '<div style="display: none;"><input type="text" name="_hf_h%d" value="" /></div>', $this->ID );
-
-        $markup = apply_filters( 'hf_form_html_content', $this->markup );
-        $html .= hf_replace_template_tags( $markup );
-
+        $html .= $this->get_markup();
         $html .= '<noscript>' . __( "Please enable JavaScript for this form to work.", 'html-forms' ) . '</noscript>';
         $html .= '</div>'; // end field wrap
         $html .= '</form>';
@@ -74,6 +71,10 @@ class Form {
     public function __toString() 
     {
         return $this->get_html();
+    }
+
+    public function get_markup() {
+        return apply_filters( 'hf_form_markup', $this->markup );
     }
 
     /**
