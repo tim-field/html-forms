@@ -51,4 +51,14 @@ class FunctionsTest extends TestCase {
 		self::assertEquals( 'Hi John', hf_replace_data_variables( 'Hi [USER.NAME]', array( 'USER' => array( 'NAME' => 'John' ) ) ) );
 	}
 
+	/**
+	 * @covers hf_array_get
+	 */
+	public function test_hf_array_get() {
+		self::assertEquals( 'bar', hf_array_get( array( 'foo' => 'bar' ), 'foo' ) );
+		self::assertEquals( 'foobar', hf_array_get( array( 'foo' => array( 'bar' => 'foobar' ) ), 'foo.bar' ) );
+		self::assertEquals( 'default', hf_array_get( array( 'foo' => array( 'bar' => 'foobar' ) ), 'bar', 'default' ) );
+
+	}
+
 }

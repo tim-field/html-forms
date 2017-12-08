@@ -15,7 +15,6 @@ return array(
     'HTML_Forms\\Admin\\Table' => $baseDir . '/src/Admin/Table.php',
     'HTML_Forms\\Form' => $baseDir . '/src/Form.php',
     'HTML_Forms\\Forms' => $baseDir . '/src/Forms.php',
-    'HTML_Forms\\Replacer' => $baseDir . '/src/Replacer.php',
     'HTML_Forms\\Submission' => $baseDir . '/src/Admin/Submission.php',
     'Hamcrest\\Arrays\\IsArray' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArray.php',
     'Hamcrest\\Arrays\\IsArrayContaining' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArrayContaining.php',

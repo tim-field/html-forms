@@ -17,7 +17,7 @@
         "require": {
             "php": ">=5.6"
         },
-        "time": "2016-10-03T07:35:21+00:00",
+        "time": "2016-10-03 07:35:21",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -62,7 +62,7 @@
         "require": {
             "php": ">=5.6.0"
         },
-        "time": "2015-07-28T20:34:47+00:00",
+        "time": "2015-07-28 20:34:47",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -109,7 +109,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-03-03T06:23:57+00:00",
+        "time": "2017-03-03 06:23:57",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -164,7 +164,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-03-29T09:07:27+00:00",
+        "time": "2017-03-29 09:07:27",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -213,7 +213,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-08-03T12:35:26+00:00",
+        "time": "2017-08-03 12:35:26",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -263,7 +263,7 @@
         "suggest": {
             "ext-uopz": "*"
         },
-        "time": "2017-04-27T15:39:26+00:00",
+        "time": "2017-04-27 15:39:26",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -315,7 +315,7 @@
             "ext-mbstring": "*",
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-04-03T13:19:02+00:00",
+        "time": "2017-04-03 13:19:02",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -382,7 +382,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.1"
         },
-        "time": "2017-07-01T08:51:00+00:00",
+        "time": "2017-07-01 08:51:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -434,7 +434,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.2"
         },
-        "time": "2017-08-03T08:09:46+00:00",
+        "time": "2017-08-03 08:09:46",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -490,7 +490,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.4"
         },
-        "time": "2017-11-03T07:16:52+00:00",
+        "time": "2017-11-03 07:16:52",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -534,35 +534,78 @@
         ]
     },
     {
-        "name": "doctrine/instantiator",
-        "version": "1.1.0",
-        "version_normalized": "1.1.0.0",
+        "name": "phpunit/php-text-template",
+        "version": "1.2.1",
+        "version_normalized": "1.2.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/doctrine/instantiator.git",
-            "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda"
+            "url": "https://github.com/sebastianbergmann/php-text-template.git",
+            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/instantiator/zipball/185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
-            "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
+            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
             "shasum": ""
         },
         "require": {
-            "php": "^7.1"
+            "php": ">=5.3.3"
+        },
+        "time": "2015-06-21 13:50:34",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }
+        ],
+        "description": "Simple template engine.",
+        "homepage": "https://github.com/sebastianbergmann/php-text-template/",
+        "keywords": [
+            "template"
+        ]
+    },
+    {
+        "name": "doctrine/instantiator",
+        "version": "1.0.5",
+        "version_normalized": "1.0.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/instantiator.git",
+            "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/instantiator/zipball/8e884e78f9f0eb1329e445619e04456e64d8051d",
+            "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3,<8.0-DEV"
         },
         "require-dev": {
             "athletic/athletic": "~0.1.8",
             "ext-pdo": "*",
             "ext-phar": "*",
-            "phpunit/phpunit": "^6.2.3",
-            "squizlabs/php_codesniffer": "^3.0.2"
+            "phpunit/phpunit": "~4.0",
+            "squizlabs/php_codesniffer": "~2.0"
         },
-        "time": "2017-07-22T11:58:36+00:00",
+        "time": "2015-06-14 21:17:01",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.2.x-dev"
+                "dev-master": "1.0.x-dev"
             }
         },
         "installation-source": "dist",
@@ -587,49 +630,6 @@
         "keywords": [
             "constructor",
             "instantiate"
-        ]
-    },
-    {
-        "name": "phpunit/php-text-template",
-        "version": "1.2.1",
-        "version_normalized": "1.2.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/php-text-template.git",
-            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
-            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "time": "2015-06-21T13:50:34+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de",
-                "role": "lead"
-            }
-        ],
-        "description": "Simple template engine.",
-        "homepage": "https://github.com/sebastianbergmann/php-text-template/",
-        "keywords": [
-            "template"
         ]
     },
     {
@@ -662,7 +662,7 @@
         "suggest": {
             "ext-soap": "*"
         },
-        "time": "2017-12-02T05:31:19+00:00",
+        "time": "2017-12-02 05:31:19",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -714,7 +714,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
         },
-        "time": "2017-02-26T11:10:40+00:00",
+        "time": "2017-02-26 11:10:40",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -762,7 +762,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-11-27T13:52:08+00:00",
+        "time": "2017-11-27 13:52:08",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -814,7 +814,7 @@
             "ext-xmlwriter": "*",
             "php": "^7.0"
         },
-        "time": "2017-04-07T12:08:54+00:00",
+        "time": "2017-04-07 12:08:54",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -856,7 +856,7 @@
         "require-dev": {
             "phpunit/phpunit": "^5.7 || ^6.0"
         },
-        "time": "2017-03-04T06:30:41+00:00",
+        "time": "2017-03-04 06:30:41",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -904,7 +904,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.2.4"
         },
-        "time": "2017-11-27T05:48:46+00:00",
+        "time": "2017-11-27 05:48:46",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -966,7 +966,7 @@
         "suggest": {
             "ext-xdebug": "^2.5.5"
         },
-        "time": "2017-12-06T09:29:45+00:00",
+        "time": "2017-12-06 09:29:45",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1020,7 +1020,7 @@
             "phpunit/phpunit": "^4.6",
             "sebastian/version": "^1.0.1"
         },
-        "time": "2016-11-23T20:04:58+00:00",
+        "time": "2016-11-23 20:04:58",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1071,7 +1071,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.6"
         },
-        "time": "2017-09-11T18:02:19+00:00",
+        "time": "2017-09-11 18:02:19",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1129,7 +1129,7 @@
             "mockery/mockery": "^0.9.4",
             "phpunit/phpunit": "^5.2||^4.8.24"
         },
-        "time": "2017-07-14T14:27:02+00:00",
+        "time": "2017-07-14 14:27:02",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1181,7 +1181,7 @@
             "mockery/mockery": "^1.0",
             "phpunit/phpunit": "^6.4"
         },
-        "time": "2017-11-27T17:38:31+00:00",
+        "time": "2017-11-27 17:38:31",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1234,7 +1234,7 @@
             "phpspec/phpspec": "^2.5|^3.2",
             "phpunit/phpunit": "^4.8.35 || ^5.7"
         },
-        "time": "2017-11-24T13:59:53+00:00",
+        "time": "2017-11-24 13:59:53",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1291,7 +1291,7 @@
         "require": {
             "php": "^5.6 || ^7.0"
         },
-        "time": "2017-03-05T17:38:23+00:00",
+        "time": "2017-03-05 17:38:23",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1343,7 +1343,7 @@
             "phar-io/version": "^1.0.1",
             "php": "^5.6 || ^7.0"
         },
-        "time": "2017-03-05T18:14:27+00:00",
+        "time": "2017-03-05 18:14:27",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1402,7 +1402,7 @@
             "doctrine/common": "^2.6",
             "phpunit/phpunit": "^4.1"
         },
-        "time": "2017-10-19T19:58:43+00:00",
+        "time": "2017-10-19 19:58:43",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1477,7 +1477,7 @@
             "ext-xdebug": "*",
             "phpunit/php-invoker": "^1.1"
         },
-        "time": "2017-12-06T09:42:03+00:00",
+        "time": "2017-12-06 09:42:03",
         "bin": [
             "phpunit"
         ],
@@ -1530,7 +1530,7 @@
         "require": {
             "php": ">=5.4.0"
         },
-        "time": "2017-11-05T10:37:19+00:00",
+        "time": "2017-11-05 10:37:19",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -1583,7 +1583,7 @@
             "phpunit/phpunit": "~4.0",
             "satooshi/php-coveralls": "^1.0"
         },
-        "time": "2016-01-20T08:20:44+00:00",
+        "time": "2016-01-20 08:20:44",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1628,7 +1628,7 @@
         "require-dev": {
             "phpunit/phpunit": "~5.7|~6.1"
         },
-        "time": "2017-10-06T16:20:43+00:00",
+        "time": "2017-10-06 16:20:43",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1695,7 +1695,7 @@
         "require-dev": {
             "phpunit/phpunit": "~5.7.9"
         },
-        "time": "2017-12-01T16:32:09+00:00",
+        "time": "2017-12-01 16:32:09",
         "type": "library",
         "extra": {
             "branch-alias": {
