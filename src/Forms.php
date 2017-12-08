@@ -74,7 +74,7 @@ class Forms
      * @param array $data
      * @return string
      */
-    private function validate_form(Form $form, array $data)
+    public function validate_form(Form $form, array $data)
     {
         // validate honeypot field
         $honeypot_key = sprintf( '_hf_h%d', $form->ID );
@@ -83,7 +83,7 @@ class Forms
         }
 
         // validate size of POST array
-        if( count( $data ) > substr_count( strtolower( $form->get_html() ), 'name=' ) && apply_filters( 'hf_validate_form_request_size', true ) ) {
+        if( count( $data ) > substr_count( strtolower( $form->get_html() ), ' name=' ) && apply_filters( 'hf_validate_form_request_size', true ) ) {
             return 'spam';
         }
 
