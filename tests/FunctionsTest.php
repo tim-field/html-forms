@@ -8,14 +8,14 @@ use Brain\Monkey\Functions;
 class FunctionsTest extends TestCase {
 
 	protected function setUp() {
-        parent::setUp();
-        Monkey\setUp();
-    }
+		parent::setUp();
+		Monkey\setUp();
+	}
 
-    protected function tearDown() {
-        Monkey\tearDown();
-        parent::tearDown();
-    }
+	protected function tearDown() {
+		Monkey\tearDown();
+		parent::tearDown();
+	}
 
 	/**
 	 * @covers hf_replace_template_tags
