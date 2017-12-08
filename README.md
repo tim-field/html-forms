@@ -1,6 +1,7 @@
 HTML Forms
 ======================
 [![Stable Version](https://poser.pugx.org/ibericode/html-forms/v/stable.svg)](https://packagist.org/packages/ibericode/html-forms)
+[![Travis](https://img.shields.io/travis/ibericode/html-forms.svg)](https://travis-ci.org/ibericode/html-forms)
 [![License](https://poser.pugx.org/ibericode/html-forms/license.svg)](https://packagist.org/packages/ibericode/html-forms)
 [![Downloads](https://img.shields.io/wordpress/plugin/dt/html-forms.svg)](https://wordpress.org/plugins/html-forms/advanced/)
 [![Rating](https://img.shields.io/wordpress/plugin/r/html-forms.svg)](https://wordpress.org/support/plugin/html-forms/reviews/)
