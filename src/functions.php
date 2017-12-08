@@ -195,8 +195,8 @@ function hf_template( $template ) {
 
     $template = preg_replace_callback( '/\{\{ *(\w+)(?:\.([\w\.]+))? *(?:\|\| *(\w+))? *\}\}/', function( $matches ) use ( $replacers ) {
         $replacer = $matches[1];
-        $param = empty( $matches[2] ) ? "" : $matches[2];
-        $default = empty( $matches[3] ) ? "" : $matches[3];
+        $param = ! isset( $matches[2] ) ? "" : $matches[2];
+        $default = ! isset( $matches[3] ) ? "" : $matches[3];
         $value = "";
 
         // do not change anything if we have no replacer with that key, could be custom user logic or another plugin.
