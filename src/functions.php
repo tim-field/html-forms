@@ -121,6 +121,14 @@ function hf_get_settings() {
     return array_merge( $default_settings, $settings );
 }
 
+/**
+* Get element from array, allows for dot notation eg: "foo.bar"
+*
+* @param array $array
+* @param string $key
+* @param mixed $default
+* @return mixed
+*/
 function hf_array_get( $array, $key, $default = null ) {
     if ( is_null( $key ) ) {
         return $array;
@@ -147,7 +155,51 @@ function hf_array_get( $array, $key, $default = null ) {
  *
  * @return string
  */
-function hf_template( $template, $data = array() ) {
+function hf_replace_template_tags( $template ) {
+    $replacers = array(
+        'user' => function( $prop ) {
+            if( ! is_user_logged_in() ) {
+                return '';
+            }
+
+            $user = wp_get_current_user();
+            return isset( $user->{$prop} ) ? $user->{$prop} : '';
+         },
+    ); 
+
+    /**
+    * Filters the replacement logic applied to the form content.
+    *
+    * Can be used to add scalar replacement values or more advanced function replacers accepting a parameter.
+    *
+    * @param array $replacers
+    */
+    $replacers = apply_filters( 'hf_template_replacers', $replacers );
+
+    $template = preg_replace_callback( '/\{\{ *(\w+)(?:\.([\w\.]+))? *(?:\|\| *(\w+))? *\}\}/', function( $matches ) use ( $replacers ) {
+        $replacer = $matches[1];
+        $param = empty( $matches[2] ) ? "" : $matches[2];
+        $default = empty( $matches[3] ) ? "" : $matches[3];
+        $value = "";
+
+        if( isset( $replacers[ $replacer] ) ) {
+            $replacer = $replacers[$replacer];
+            $value = is_callable( $replacer ) ? call_user_func_array( $replacer, array( $param ) ) : $replacer;
+        }
+
+        return ! empty( $value ) ? $value : $default;
+    }, $template );
+
+    return $template;    
+}
+
+/**
+ * @param string $string
+ * @param array $data
+ *
+ * @return string
+ */
+function hf_replace_data_variables( $string, $data = array() ) {
     $template = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function( $matches ) use ( $data ) {
         $key = $matches[1];
         $replacement = hf_array_get( $data, $key, '' );
@@ -155,4 +207,3 @@ function hf_template( $template, $data = array() ) {
     }, $template );
     return $template;
 }
-

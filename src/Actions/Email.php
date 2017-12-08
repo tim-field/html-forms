@@ -100,9 +100,9 @@ class Email extends Action {
 
        $settings = array_merge( $this->get_default_settings(), $settings );
 
-       $to = hf_template( $settings['to'], $submission->data );
-       $subject = ! empty( $settings['subject'] ) ? hf_template( $settings['subject'], $submission->data ) : '';
-       $message = hf_template( $settings['message'], $submission->data );
+       $to = hf_replace_data_variables( $settings['to'], $submission->data );
+       $subject = ! empty( $settings['subject'] ) ? hf_replace_data_variables( $settings['subject'], $submission->data ) : '';
+       $message = hf_replace_data_variables( $settings['message'], $submission->data );
        $headers = explode( PHP_EOL, $settings['headers'] );
        $html_email = $settings['content_type'] === 'text/html';
 
@@ -112,7 +112,7 @@ class Email extends Action {
        }
 
        if( ! empty( $settings['from'] ) ) {
-           $from = hf_template($settings['from'], $submission->data);
+           $from = hf_replace_data_variables($settings['from'], $submission->data);
            $headers[] = sprintf( 'From: %s', $from );
        }
 

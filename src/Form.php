@@ -49,9 +49,12 @@ class Form {
         $html .= '<div class="hf-fields-wrap">';
         $html .= sprintf( '<input type="hidden" name="_hf_form_id" value="%d" />', $this->ID );
         $html .= sprintf( '<div style="display: none;"><input type="text" name="_hf_h%d" value="" /></div>', $this->ID );
-        $html .= $this->get_markup();
+
+        $markup = apply_filters( 'hf_form_html_content', $this->markup );
+        $html .= hf_replace_template_tags( $markup );
+
         $html .= '<noscript>' . __( "Please enable JavaScript for this form to work.", 'html-forms' ) . '</noscript>';
-        $html .= '</div>';
+        $html .= '</div>'; // end field wrap
         $html .= '</form>';
         $html .= '<!-- / HTML Forms -->';
 
@@ -114,63 +117,4 @@ class Form {
         $message = apply_filters( 'hf_form_message_' . $code, $message, $form );
         return $message;
     }
-
-    /**
-     * @return mixed|void
-     */
-    public function get_markup()
-    {
-        $markup = $this->markup_replace_variables( $this->markup );
-
-        return apply_filters( 'hf_form_markup', $markup, $this );
-    }
-
-    /**
-     * Replace variables.
-     *
-     * Replace variables in the form. For example you can set a default value in a email field like so:
-     * <input type="email" value="{{ user.email }}">
-     *
-     * Or if you want to pass on a default value:
-     * <input type="text" value="{{ user.name || John Doe }}">
-     *
-     * @param $markup
-     * @return mixed
-     */
-    private function markup_replace_variables( $markup ) {
-        $variable_replace = apply_filters( 'hf_form_markup_replace_variables', $variable_replace = $this->default_variable_replace(), $this );
-
-        $markup = preg_replace_callback( '/\{\{([^}]+)\}\}/', function( $matches ) use ( $variable_replace ) {
-            $default = '';
-            $variable = trim( $matches[1] );
-
-            if ( ( $default_pos = strpos( $variable, '||' ) ) !== false ) { // A fallback/default value has been set
-                $default = trim( substr( $variable, $default_pos +2 ) );
-                $variable = trim( substr( $variable, 0, $default_pos ) );
-            }
-
-            return isset( $variable_replace[ $variable ] ) ? $variable_replace[ $variable ] : $default;
-        }, $markup );
-
-        return $markup;
-    }
-
-    /**
-     * Default replaced variables.
-     *
-     * @return mixed
-     */
-    private function default_variable_replace() {
-        $variable_replace = array();
-        if ( is_user_logged_in() && $user = wp_get_current_user() ) {
-            $variable_replace['user.email'] = $user->user_email;
-            $variable_replace['user.first_name'] = $user->user_firstname;
-            $variable_replace['user.last_name'] = $user->user_lastname;
-            $variable_replace['user.login'] = $user->user_login;
-            $variable_replace['user.display_name'] = $user->display_name;
-        }
-
-        return $variable_replace;
-    }
-
 }
