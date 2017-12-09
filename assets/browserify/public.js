@@ -102,7 +102,8 @@ function createRequestHandler(formEl) {
     }
 }
 
-document.addEventListener('submit', handleSubmitEvents, true );
+
+document.addEventListener('submit', handleSubmitEvents, true);
 ConditionalElements.init();
 
 window.html_forms = {

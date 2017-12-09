@@ -39,4 +39,15 @@ class FormTest extends TestCase {
 		$form->settings['required_fields'] = 'EMAIL,NAME';
 		self::assertEquals( array( 'EMAIL', 'NAME' ), $form->get_required_fields() );
 	}
+
+	public function test_get_field_count() {
+		$form = new Form(1);
+		$form->markup = '<input type="hidden" name="foo" value="bar" />';
+		self::assertEquals(3, $form->get_field_count()); 
+
+		$form->markup = '<input type="email" name="EMAIL" />' . PHP_EOL;
+		$form->markup .= '<textarea></textarea>' . PHP_EOL;
+		$form->markup .= '<TEXTAREA NAME="MESSAGE"></textarea>';
+		self::assertEquals(4, $form->get_field_count()); 
+	}
 }

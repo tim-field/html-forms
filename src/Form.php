@@ -108,6 +108,7 @@ class Form {
 
     /**
     * @param string $code
+    * @return string
     */
     public function get_message( $code ) 
     {
@@ -120,5 +121,12 @@ class Form {
         */
         $message = apply_filters( 'hf_form_message_' . $code, $message, $form );
         return $message;
+    }
+
+    /**
+    * @return int The number of named fields in the form
+    */
+    public function get_field_count() {
+        return substr_count( strtolower( $this->get_html() ), ' name=' );
     }
 }
