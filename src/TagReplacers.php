@@ -2,6 +2,8 @@
 
 namespace HTML_Forms;
 
+use WP_Post;
+
 class TagReplacers {
 
 	/**
@@ -24,7 +26,7 @@ class TagReplacers {
 	public function post( $prop ) {
 		global $post;
 
-		if( ! $post || ! isset( $post->{$prop} ) ) {
+		if( ! $post instanceof WP_Post || ! isset( $post->{$prop} ) ) {
 		    return '';
 		}
 

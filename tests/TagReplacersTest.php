@@ -32,10 +32,20 @@ class TagReplacersTest extends TestCase {
 	public function test_post() {
 		$replacers = new TagReplacers();
 
+		// post not set
 		self::assertEquals('', $replacers->post('post_name'));
 
-		$GLOBALS['post'] = (object) array('post_name' => 'foobar');
+		// existing prop
+		$post = $this->getMockBuilder('\WP_Post')->getMock();
+		$post->post_name = 'foobar';
+		$GLOBALS['post'] = $post;
 		self::assertEquals('foobar', $replacers->post('post_name'));
+		unset($GLOBALS['post']);
+
+		// // unexisting prop
+		$post = $this->getMockBuilder('\WP_Post')->getMock();
+		$GLOBALS['post'] = $post;
+		self::assertEquals('', $replacers->post('unexisting_property'));
 		unset($GLOBALS['post']);
 	}
 
