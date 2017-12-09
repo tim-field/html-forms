@@ -157,55 +157,35 @@ function hf_array_get( $array, $key, $default = null ) {
  * @return string
  */
 function hf_template( $template ) {
-    $replacers = array(
-        'user' => function( $prop ) {
-            if( ! is_user_logged_in() ) {
-                return '';
-            }
-
-            $user = wp_get_current_user();
-            return isset( $user->{$prop} ) ? $user->{$prop} : '';
-         },
-         'post' => function( $prop ) {
-            global $post;
-
-            if( ! $post instanceof WP_Post || ! isset( $post->{$prop} ) ) {
-                return '';
-            }
-
-            return $post->{$prop};
-         },
-         'url_params' => function( $key ) {
-            if( ! isset( $_GET[ $key] ) ) {
-                return '';
-            }
-
-            return esc_attr( strip_tags( $_GET[$key] ) );
-         }
+    $replacers = new HTML_Forms\TagReplacers();
+    $tags = array(
+        'user'          => array( $replacers, 'user' ),
+        'post'          => array( $replacers, 'post'),
+        'url_params'    => array( $replacers, 'url_params' ),
     ); 
 
     /**
-    * Filters the replacement logic applied to the form content.
+    * Filters the available tags in HTML Forms templates, like {{user.user_email}}.
     *
-    * Can be used to add scalar replacement values or more advanced function replacers accepting a parameter.
+    * Can be used to add simple scalar replacements or more advanced replacement functions that accept a parameter.
     *
-    * @param array $replacers
+    * @param array $tags
     */
-    $replacers = apply_filters( 'hf_template_replacers', $replacers );
+    $tags = apply_filters( 'hf_template_tags', $tags );
 
-    $template = preg_replace_callback( '/\{\{ *(\w+)(?:\.([\w\.]+))? *(?:\|\| *(\w+))? *\}\}/', function( $matches ) use ( $replacers ) {
-        $replacer = $matches[1];
+    $template = preg_replace_callback( '/\{\{ *(\w+)(?:\.([\w\.]+))? *(?:\|\| *(\w+))? *\}\}/', function( $matches ) use ( $tags ) {
+        $tag = $matches[1];
         $param = ! isset( $matches[2] ) ? "" : $matches[2];
         $default = ! isset( $matches[3] ) ? "" : $matches[3];
         $value = "";
 
         // do not change anything if we have no replacer with that key, could be custom user logic or another plugin.
-        if( ! isset( $replacers[ $replacer] ) ) {
+        if( ! isset( $tags[ $tag] ) ) {
             return $matches[0];
         }
 
-        $replacer = $replacers[$replacer];
-        $value = is_callable( $replacer ) ? call_user_func_array( $replacer, array( $param ) ) : $replacer;
+        $replacement = $tags[$tag];
+        $value = is_callable( $replacement ) ? call_user_func_array( $replacement, array( $param ) ) : $replacement;
         return ! empty( $value ) ? $value : $default;
     }, $template );
 
