@@ -107,8 +107,9 @@ class Admin {
         if( ! empty( $_GET['view'] ) && $_GET['view'] === 'edit' ) {
             $this->page_edit_form();
             return;
-        }
+        }  
 
+        require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
         $table = new Table();
         $table->prepare_items();
 
