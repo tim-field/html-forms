@@ -1,4 +1,4 @@
-<?php defined( 'ABSPATH' ) or exit; ?>
+<?php  defined( 'ABSPATH' ) or exit; ?>
 
 <div class="wrap hf">
 

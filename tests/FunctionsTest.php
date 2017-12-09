@@ -18,7 +18,7 @@ class FunctionsTest extends TestCase {
 	}
 
 	/**
-	 * @covers hf_template
+	 * @covers \hf_template
 	 */
 	public function test_hf_template() {
 		Functions\when('is_user_logged_in')->justReturn(false);
@@ -45,7 +45,7 @@ class FunctionsTest extends TestCase {
 	}
 
 	/**
-	 * @covers hf_replace_data_variables
+	 * @covers \hf_replace_data_variables
 	 */
 	public function test_hf_replace_data_variables() {
 		self::assertEquals( 'Hi ', hf_replace_data_variables( 'Hi [NAME]' ) );
@@ -54,7 +54,7 @@ class FunctionsTest extends TestCase {
 	}
 
 	/**
-	 * @covers hf_array_get
+	 * @covers \hf_array_get
 	 */
 	public function test_hf_array_get() {
 		self::assertEquals( 'bar', hf_array_get( array( 'foo' => 'bar' ), 'foo' ) );

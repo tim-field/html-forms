@@ -18,34 +18,22 @@ class FormTest extends TestCase {
 		parent::tearDown();
 	}
 
-	/**
-	* @covers Forms::__construct
-	*/
 	public function test_constructor() {
 		$form = new Form(1);
 		self::assertEquals( 1, $form->ID );
 	}
 
-	/**
-	* @covers Forms::get_markup
-	*/
 	public function test_get_markup() {
 		$form = new Form(1);
 		self::assertEquals( '', $form->get_markup() );
 	}
 
-	/**
-	* @covers Forms::get_email_fields
-	*/
 	public function test_get_email_fields() {
 		$form = new Form(1);
 		$form->settings['email_fields'] = 'EMAIL,OTHER_EMAIL';
 		self::assertEquals( array( 'EMAIL', 'OTHER_EMAIL' ), $form->get_email_fields() );
 	}
 
-	/**
-	* @covers Forms::get_required_fields
-	*/
 	public function test_get_required_fields() {
 		$form = new Form(1);
 		$form->settings['required_fields'] = 'EMAIL,NAME';

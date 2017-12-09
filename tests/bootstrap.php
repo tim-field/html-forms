@@ -1,6 +1,6 @@
 <?php 
-
-define( 'HTML_FORMS_VERSION', '1.0' );
+define('ABSPATH', '../../../');
+define('HTML_FORMS_VERSION', '1.0');
 require __DIR__ . '/../vendor/autoload.php';
 
 // mocked functions

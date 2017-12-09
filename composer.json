@@ -25,6 +25,6 @@
     "brain/monkey": "^2.2"
   },
   "scripts": {
-     "test": "vendor/bin/phpunit"
+     "test": "vendor/bin/phpunit --coverage-text"
   }
 }

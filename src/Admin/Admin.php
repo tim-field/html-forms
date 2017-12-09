@@ -112,17 +112,17 @@ class Admin {
         $table = new Table();
         $table->prepare_items();
 
-        require __DIR__ . '/views/overview.php';
+        require dirname( $this->plugin_file ) . '/views/overview.php';
     }
 
     public function page_new_form() {
-        require __DIR__ . '/views/add-form.php';
+        require dirname( $this->plugin_file )  . '/views/add-form.php';
     }
 
 
     public function page_settings() {
         $settings = hf_get_settings();
-        require __DIR__ . '/views/global-settings.php';
+        require dirname( $this->plugin_file )  . '/views/global-settings.php';
     }
 
 
@@ -131,26 +131,26 @@ class Admin {
         $form_id = (int) $_GET['form_id'];
         $form = hf_get_form( $form_id );
 
-        require __DIR__ . '/views/edit-form.php';
+        require dirname( $this->plugin_file )  . '/views/edit-form.php';
     }
 
     public function tab_fields( Form $form ) {
-        require __DIR__ . '/views/tab-fields.php';
+        require dirname( $this->plugin_file )  . '/views/tab-fields.php';
     }
 
 
     public function tab_messages( Form $form ) {
-        require __DIR__ . '/views/tab-messages.php';
+        require dirname( $this->plugin_file )  . '/views/tab-messages.php';
     }
 
 
     public function tab_settings( Form $form ) {
-        require __DIR__ . '/views/tab-settings.php';
+        require dirname( $this->plugin_file )  . '/views/tab-settings.php';
     }
 
 
     public function tab_actions( Form $form ) {
-        require __DIR__ . '/views/tab-actions.php';
+        require dirname( $this->plugin_file )  . '/views/tab-actions.php';
     }
 
 
@@ -176,7 +176,7 @@ class Admin {
         }
         $columns = array_keys( $columns );
 
-        require __DIR__ . '/views/tab-submissions-list.php';
+        require dirname( $this->plugin_file )  . '/views/tab-submissions-list.php';
     }
 
     public function tab_submissions_detail( Form $form ) {
@@ -185,7 +185,7 @@ class Admin {
         }
 
         $submission = hf_get_form_submission( (int) $_GET['submission_id'] );
-        require __DIR__ . '/views/tab-submissions-detail.php';
+        require dirname( $this->plugin_file )  . '/views/tab-submissions-detail.php';
     }
 
 
