@@ -50,4 +50,14 @@ class FormTest extends TestCase {
 		$form->markup .= '<TEXTAREA NAME="MESSAGE"></textarea>';
 		self::assertEquals(4, $form->get_field_count()); 
 	}
+
+	public function test_get_message() {
+		$form = new Form(1);
+		$form->messages = $messages = array( 
+			'error' => 'Error!'
+		);
+
+		self::assertEquals('', $form->get_message('unexisting_message_code'));
+		self::assertEquals($messages['error'], $form->get_message('error'));
+	}
 }

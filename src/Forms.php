@@ -83,7 +83,7 @@ class Forms
         }
 
         // validate size of POST array
-        if( count( $data ) > $form->get_field_count() && apply_filters( 'hf_validate_form_request_size', true ) ) {
+        if( count($data) > $form->get_field_count() && apply_filters( 'hf_validate_form_request_size', true ) ) {
             return 'spam';
         }
 
