@@ -95,7 +95,7 @@ class Email extends Action {
      */
    public function process( array $settings, Submission $submission, Form $form ) {
        if( empty( $settings['to'] ) || empty( $settings['message'] ) ) {
-           return;
+           return false;
        }
 
        $settings = array_merge( $this->get_default_settings(), $settings );
@@ -116,6 +116,6 @@ class Email extends Action {
            $headers[] = sprintf( 'From: %s', $from );
        }
 
-       wp_mail( $to, $subject, $message, $headers );
+       return wp_mail( $to, $subject, $message, $headers );
    }
 }
