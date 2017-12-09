@@ -19,12 +19,8 @@ class FormsTest extends TestCase {
 		parent::tearDown();
 	}
 
-	private function getNewInstance() {
-		return new Forms( '', array() );
-	}
-
 	public function test_validate_form() {
-		$instance = $this->getNewInstance();
+		$instance = new Forms( '', array() );
 		$form = new Form(1);
 
 		// honeypot field missing
@@ -60,12 +56,10 @@ class FormsTest extends TestCase {
 	}
 
 	public function test_sanitize() {
-		$instance = $this->getNewInstance();
+		$instance = new Forms( '', array() );
 		
 		self::assertEquals( 'foo', $instance->sanitize( '<script>foo</script>' ) );
 		self::assertEquals( array( 'alert(1);' => 'alert(1);' ), $instance->sanitize( array( ' <script>alert(1);</script>' => '<script>alert(1); </script>' ) ) );
 		self::assertEquals( 'foo & bar', $instance->sanitize( '<script>foo &amp; bar</script>' ) );
-
-
 	}
 }

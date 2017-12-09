@@ -16,7 +16,7 @@ class Form {
      *
      * @param $ID
      */
-    public function __construct( $ID ) 
+    public function __construct($ID) 
     {
         $this->ID = $ID;
     }
