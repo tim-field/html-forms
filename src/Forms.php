@@ -103,6 +103,20 @@ class Forms
             }
         }
 
+        $error_code = '';
+
+        /**
+         * This filter allows you to perform your own form validation. The dynamic portion of the hook refers to the form slug.
+         *
+         * Return a non-empty string if you want to raise an error.
+         * Error codes with a specific error message are: "required_field_missing", "invalid_email", and "error"
+         *
+         * @param string $error_code
+         * @param Form $form
+         * @param array $data
+         */
+        $error_code = apply_filters( 'hf_validate_form_' . $form->slug, $error_code, $form, $data );
+
         /**
          * This filter allows you to perform your own form validation.
          *
@@ -113,9 +127,9 @@ class Forms
          * @param Form $form
          * @param array $data
          */
-        $error = apply_filters( 'hf_validate_form', '', $form, $data );
-        if( ! empty( $error ) ) {
-            return $error;
+        $error_code = apply_filters( 'hf_validate_form', $error_code, $form, $data );
+        if( ! empty( $error_code ) ) {
+            return $error_code;
         }
 
         // all good: no errors!
@@ -209,6 +223,14 @@ class Forms
             }
 
             /**
+             * General purpose hook after all form actions have been processed for this specific form. The dynamic portion of the hook refers to the form slug.
+             *
+             * @param Submission $submission
+             * @param Form $form
+             */
+            do_action( "hf_form_{$form->slug}_success", $submission, $form );
+
+            /**
              * General purpose hook after all form actions have been processed.
              *
              * @param Submission $submission
@@ -216,7 +238,6 @@ class Forms
              */
             do_action( 'hf_form_success', $submission, $form );
         } else {
-
             /**
              * General purpose hook for when a form error occurred
              *
