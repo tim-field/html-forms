@@ -1,6 +1,20 @@
 Changelog
 =========
 
+#### 1.0.6 - December 11, 2017
+
+**Fixes**
+
+- Array replacements in email message were showing "Array" instead of a comma separated list of values.
+- Don't reset form when there are errors. Thanks [Jeroen Sormani](https://github.com/JeroenSormani)!
+
+**Additions**
+
+- You can now use certain [template variables](https://kb.htmlforms.io/template-variables/) in the form content which will be dynamically replaced. 
+- Added `hf_validate_form_{$form_slug}` filter hook.
+- Added `hf_form_{$form_slug}_success` action hook.
+
+
 #### 1.0.5 - November 18, 2017
 
 **Fixes**
