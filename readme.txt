@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9.1
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -104,6 +104,20 @@ Yes! You can configure this by opening up the "Actions" tab when editing your fo
 6. Configurable form messages.
 
 == Changelog ==
+
+
+#### 1.0.6 - December 11, 2017
+
+**Fixes**
+
+- Array replacements in email message were showing "Array" instead of a comma separated list of values.
+- Don't reset form when there are errors. Thanks [Jeroen Sormani](https://github.com/JeroenSormani)!
+
+**Additions**
+
+- You can now use certain [template variables](https://kb.htmlforms.io/template-variables/) in the form content which will be dynamically replaced. 
+- Added `hf_validate_form_{$form_slug}` filter hook.
+- Added `hf_form_{$form_slug}_success` action hook.
 
 
 #### 1.0.5 - November 18, 2017
