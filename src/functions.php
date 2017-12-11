@@ -202,6 +202,7 @@ function hf_replace_data_variables( $string, $data = array() ) {
     $string = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function( $matches ) use ( $data ) {
         $key = $matches[1];
         $replacement = hf_array_get( $data, $key, '' );
+        $replacement = is_array( $replacement ) ? join( ', ', $replacement ) : $replacement;
         return $replacement;
     }, $string );
     return $string;

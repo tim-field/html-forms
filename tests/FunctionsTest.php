@@ -51,6 +51,8 @@ class FunctionsTest extends TestCase {
 		self::assertEquals( 'Hi ', hf_replace_data_variables( 'Hi [NAME]' ) );
 		self::assertEquals( 'Hi John', hf_replace_data_variables( 'Hi [NAME]', array( 'NAME' => 'John' ) ) );
 		self::assertEquals( 'Hi John', hf_replace_data_variables( 'Hi [USER.NAME]', array( 'USER' => array( 'NAME' => 'John' ) ) ) );
+
+		self::assertEquals( 'Hi John, Eric', hf_replace_data_variables( 'Hi [NAMES]', array( 'NAMES' => array( 'John', 'Eric' ) ) ) );
 	}
 
 	/**
