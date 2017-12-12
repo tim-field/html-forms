@@ -10,9 +10,15 @@ require('codemirror/addon/fold/xml-fold');
 require('codemirror/addon/edit/matchtags');
 require('codemirror/addon/edit/closetag.js');
 
-let editor, element, dom, requiredFieldsInput, emailFieldsInput;
+let editor, element, dom, requiredFieldsInput, emailFieldsInput, previewDom;
 
 function init() {
+    let previewFrame = document.getElementById('hf-form-preview');
+    previewDom = previewFrame.contentDocument || previewFrame.contentWindow.document;
+    previewFrame.addEventListener('load', function() {
+        previewDom = previewFrame.contentDocument || previewFrame.contentWindow.document;
+    });
+    
     element = document.getElementById('hf-form-editor');
     dom = document.createElement('form');
     requiredFieldsInput = document.getElementById('hf-required-fields');
@@ -71,6 +77,10 @@ function updateFieldVariables() {
 
 function updateShadowDOM() {
     dom.innerHTML = editor.getValue();
+
+    console.log(previewDom);
+    window.previewDom = previewDom;
+    previewDom.querySelector('.hf-fields-wrap').innerHTML = editor.getValue();
 }
 
 function updateRequiredFields() {

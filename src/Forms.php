@@ -30,7 +30,8 @@ class Forms
     public function hook()
     {
         add_action('init', array($this, 'register'));
-        add_action('init', array($this, 'listen'));
+        add_action('init', array($this, 'listen_for_submit'));
+        add_action('init', array($this, 'listen_for_preview'));
         add_action('wp_enqueue_scripts', array($this, 'assets'));
         add_filter('hf_form_markup', 'hf_template');
     }
@@ -171,7 +172,7 @@ class Forms
         return $value;
     }
 
-    public function listen() 
+    public function listen_for_submit() 
     {
         // only respond to AJAX requests with _hf_form_id set.
         if (empty($_POST['_hf_form_id'])
@@ -261,6 +262,15 @@ class Forms
 
         wp_send_json($response, 200);
         exit;
+    }
+
+    public function listen_for_preview() {
+        if( empty( $_GET['hf_preview_form'] ) || ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
+        $form = hf_get_form( $_GET['hf_preview_form'] );
+        require dirname( $this->plugin_file ) . '/views/form-preview.php';
     }
 
     private function get_response_for_error_code( $error_code, Form $form ) 

@@ -131,5 +131,14 @@
   }
 }
 
+
+#hf-form-preview {
+  border: 1px solid #ddd;
+  height: 520px;
+  width: 100%;
+  margin-top: 2px;
+  border-left: 0;
+}
+
 @import "admin_util";
 @import "codemirror";
