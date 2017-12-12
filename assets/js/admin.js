@@ -828,14 +828,13 @@ var editor = void 0,
     dom = void 0,
     requiredFieldsInput = void 0,
     emailFieldsInput = void 0,
+    previewFrame = void 0,
     previewDom = void 0;
 
 function init() {
-    var previewFrame = document.getElementById('hf-form-preview');
-    previewDom = previewFrame.contentDocument || previewFrame.contentWindow.document;
-    previewFrame.addEventListener('load', function () {
-        previewDom = previewFrame.contentDocument || previewFrame.contentWindow.document;
-    });
+    previewFrame = document.getElementById('hf-form-preview');
+    previewFrame.addEventListener('load', setPreviewDom);
+    setPreviewDom();
 
     element = document.getElementById('hf-form-editor');
     dom = document.createElement('form');
@@ -855,13 +854,21 @@ function init() {
         matchBrackets: true
     });
 
+    editor.on('changes', debounce(updatePreview, 500));
     editor.on('changes', debounce(updateShadowDOM, 100));
+    editor.on('blur', updatePreview);
     editor.on('blur', updateShadowDOM);
     editor.on('blur', updateFieldVariables);
     editor.on('blur', updateRequiredFields);
     editor.on('blur', updateEmailFields);
 
     document.getElementById('wpbody').addEventListener('click', updateFieldVariables);
+    updateFieldVariables();
+}
+
+function setPreviewDom() {
+    var frameContent = previewFrame.contentDocument || previewFrame.contentWindow.document;
+    previewDom = frameContent.querySelector('.hf-fields-wrap');
 }
 
 function getFieldVariableName(f) {
@@ -895,12 +902,12 @@ function updateFieldVariables() {
     });
 }
 
+function updatePreview() {
+    previewDom.innerHTML = editor.getValue();
+}
+
 function updateShadowDOM() {
     dom.innerHTML = editor.getValue();
-
-    console.log(previewDom);
-    window.previewDom = previewDom;
-    previewDom.querySelector('.hf-fields-wrap').innerHTML = editor.getValue();
 }
 
 function updateRequiredFields() {
