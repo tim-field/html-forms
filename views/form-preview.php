@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) or exit;
     <meta charset="utf-8" />
     <link type="text/css" rel="stylesheet" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 	<?php 
-	show_admin_bar(false);
 	wp_head(); ?>
 
     <style type="text/css">

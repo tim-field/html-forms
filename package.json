@@ -8,6 +8,7 @@
     "linkstate": "^1.1.0",
     "preact": "^8.2.5",
     "preact-render-to-string": "^3.6.3",
+    "tlite": "^0.1.6",
     "wolfy87-eventemitter": "^5.2.3"
   },
   "devDependencies": {

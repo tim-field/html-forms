@@ -11,6 +11,7 @@ require('codemirror/addon/edit/matchtags');
 require('codemirror/addon/edit/closetag.js');
 
 let editor, element, dom, requiredFieldsInput, emailFieldsInput, previewFrame, previewDom;
+const templateRegex = /\{\{ *(\w+)(?:\.([\w\.]+))? *(?:\|\| *(\w+))? *\}\}/g;
 
 function init() {
     previewFrame = document.getElementById('hf-form-preview');
@@ -23,7 +24,6 @@ function init() {
     emailFieldsInput = document.getElementById('hf-email-fields');
 
     dom.innerHTML = element.value;
-
     editor = CodeMirror.fromTextArea(element, {
         selectionPointer: true,
         matchTags: { bothTags: true },
@@ -82,7 +82,15 @@ function updateFieldVariables() {
 }
 
 function updatePreview() {
-    previewDom.innerHTML = editor.getValue();
+    let markup = editor.getValue();
+    markup = markup.replace(templateRegex, function(s, m) {
+        if(arguments[3]) {
+            return arguments[3];
+        }
+
+        return '';
+    });
+    previewDom.innerHTML = markup;
 }
 
 function updateShadowDOM() {

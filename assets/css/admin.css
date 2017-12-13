@@ -94,9 +94,13 @@
 #hf-form-preview {
   border: 1px solid #ddd;
   height: 520px;
+  /* codemirror + padding */
   width: 100%;
-  margin-top: 2px;
-  border-left: 0; }
+  border-left-width: 0; }
+
+@media (max-width: 1217px) {
+  #hf-form-preview {
+    border-left-width: 1px; } }
 
 .hf-tiny-margin {
   margin-top: 10px;
@@ -143,7 +147,12 @@
   color: #999; }
 
 .hf-row {
-  display: flex; }
+  display: flex;
+  flex-wrap: wrap; }
+
+.hf-col {
+  flex-basis: 0;
+  flex-grow: 1; }
 
 .hf-col-1 {
   width: 16.66667%; }
@@ -160,7 +169,6 @@
 /* BASICS */
 /* Codemirror */
 .CodeMirror {
-  /* Set height, width, borders, and global font properties here */
   font-family: monospace;
   color: black;
   border: 1px solid #ddd;
@@ -563,3 +571,75 @@ div.CodeMirror-dragcursors {
 /* Help users use markselection to safely style text background */
 span.CodeMirror-selectedtext {
   background: none; }
+
+.tlite {
+  background: #111;
+  color: white;
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  font-weight: normal;
+  text-decoration: none;
+  text-align: left;
+  padding: 0.6em 0.75rem;
+  border-radius: 4px;
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s;
+  white-space: nowrap;
+  box-shadow: 0 0.5rem 1rem -0.5rem black;
+  z-index: 1000;
+  -webkit-backface-visibility: hidden; }
+
+.tlite-table td,
+.tlite-table th {
+  position: relative; }
+
+.tlite-visible {
+  visibility: visible;
+  opacity: 0.9; }
+
+.tlite::before {
+  content: ' ';
+  display: block;
+  background: inherit;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  transform: rotate(45deg); }
+
+.tlite-n::before {
+  top: -3px;
+  left: 50%;
+  margin-left: -5px; }
+
+.tlite-nw::before {
+  top: -3px;
+  left: 10px; }
+
+.tlite-ne::before {
+  top: -3px;
+  right: 10px; }
+
+.tlite-s::before {
+  bottom: -3px;
+  left: 50%;
+  margin-left: -5px; }
+
+.tlite-se::before {
+  bottom: -3px;
+  right: 10px; }
+
+.tlite-sw::before {
+  bottom: -3px;
+  left: 10px; }
+
+.tlite-w::before {
+  left: -3px;
+  top: 50%;
+  margin-top: -5px; }
+
+.tlite-e::before {
+  right: -3px;
+  top: 50%;
+  margin-top: -5px; }

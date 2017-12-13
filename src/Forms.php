@@ -269,8 +269,17 @@ class Forms
             return;
         }
 
-        $form = hf_get_form( $_GET['hf_preview_form'] );
-        require dirname( $this->plugin_file ) . '/views/form-preview.php';
+        try {
+            $form = hf_get_form( $_GET['hf_preview_form'] );
+        } catch( \Exception $e ) {
+            return;
+        }  
+
+        show_admin_bar(false);
+        add_action( 'template_redirect', function() use($form) {
+            require dirname( $this->plugin_file ) . '/views/form-preview.php';
+            exit;
+        });
     }
 
     private function get_response_for_error_code( $error_code, Form $form ) 

@@ -49,6 +49,10 @@ var _actionConfirmations = require('./action-confirmations.js');
 
 var _actionConfirmations2 = _interopRequireDefault(_actionConfirmations);
 
+var _tlite = require('tlite');
+
+var _tlite2 = _interopRequireDefault(_tlite);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _tabs2.default.init();
@@ -61,7 +65,11 @@ if (document.getElementById('hf-form-editor')) {
     _fieldBuilder2.default.init(_formEditor2.default);
 }
 
-},{"./action-confirmations.js":1,"./field-builder.js":3,"./form-actions.js":6,"./form-editor.js":7,"./tabs.js":8}],3:[function(require,module,exports){
+(0, _tlite2.default)(function (el) {
+    return el.className.indexOf('hf-tooltip') > -1;
+});
+
+},{"./action-confirmations.js":1,"./field-builder.js":3,"./form-actions.js":6,"./form-editor.js":7,"./tabs.js":8,"tlite":22}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -830,6 +838,7 @@ var editor = void 0,
     emailFieldsInput = void 0,
     previewFrame = void 0,
     previewDom = void 0;
+var templateRegex = /\{\{ *(\w+)(?:\.([\w\.]+))? *(?:\|\| *(\w+))? *\}\}/g;
 
 function init() {
     previewFrame = document.getElementById('hf-form-preview');
@@ -842,7 +851,6 @@ function init() {
     emailFieldsInput = document.getElementById('hf-email-fields');
 
     dom.innerHTML = element.value;
-
     editor = CodeMirror.fromTextArea(element, {
         selectionPointer: true,
         matchTags: { bothTags: true },
@@ -854,7 +862,7 @@ function init() {
         matchBrackets: true
     });
 
-    editor.on('changes', debounce(updatePreview, 500));
+    editor.on('changes', debounce(updatePreview, 1000));
     editor.on('changes', debounce(updateShadowDOM, 100));
     editor.on('blur', updatePreview);
     editor.on('blur', updateShadowDOM);
@@ -903,7 +911,15 @@ function updateFieldVariables() {
 }
 
 function updatePreview() {
-    previewDom.innerHTML = editor.getValue();
+    var markup = editor.getValue();
+    markup = markup.replace(templateRegex, function (s, m) {
+        if (arguments[3]) {
+            return arguments[3];
+        }
+
+        return '';
+    });
+    previewDom.innerHTML = markup;
 }
 
 function updateShadowDOM() {
@@ -14588,6 +14604,142 @@ return renderToString;
     };
     if ('undefined' != typeof module) module.exports = preact; else self.preact = preact;
 }();
+
+},{}],22:[function(require,module,exports){
+function tlite(getTooltipOpts) {
+  document.addEventListener('mouseover', function (e) {
+    var el = e.target;
+    var opts = getTooltipOpts(el);
+
+    if (!opts) {
+      el = el.parentElement;
+      opts = el && getTooltipOpts(el);
+    }
+
+    opts && tlite.show(el, opts, true);
+  });
+}
+
+tlite.show = function (el, opts, isAuto) {
+  var fallbackAttrib = 'data-tlite';
+  opts = opts || {};
+
+  (el.tooltip || Tooltip(el, opts)).show();
+
+  function Tooltip(el, opts) {
+    var tooltipEl;
+    var showTimer;
+    var text;
+
+    el.addEventListener('mousedown', autoHide);
+    el.addEventListener('mouseleave', autoHide);
+
+    function show() {
+      text = el.title || el.getAttribute(fallbackAttrib) || text;
+      el.title = '';
+      el.setAttribute(fallbackAttrib, '');
+      text && !showTimer && (showTimer = setTimeout(fadeIn, isAuto ? 150 : 1))
+    }
+
+    function autoHide() {
+      tlite.hide(el, true);
+    }
+
+    function hide(isAutoHiding) {
+      if (isAuto === isAutoHiding) {
+        showTimer = clearTimeout(showTimer);
+        tooltipEl && el.removeChild(tooltipEl);
+
+        tooltipEl = undefined;
+      }
+    }
+
+    function fadeIn() {
+      if (!tooltipEl) {
+        tooltipEl = createTooltip(el, text, opts);
+      }
+    }
+
+    return el.tooltip = {
+      show: show,
+      hide: hide
+    };
+  }
+
+  function createTooltip(el, text, opts) {
+    var tooltipEl = document.createElement('span');
+    var grav = opts.grav || el.getAttribute('data-tlite') || 'n';
+
+    tooltipEl.innerHTML = text;
+
+    el.appendChild(tooltipEl);
+
+    var vertGrav = grav[0] || '';
+    var horzGrav = grav[1] || '';
+
+    function positionTooltip() {
+      tooltipEl.className = 'tlite ' + 'tlite-' + vertGrav + horzGrav;
+
+      var arrowSize = 10;
+      var top = el.offsetTop;
+      var left = el.offsetLeft;
+
+      if (tooltipEl.offsetParent === el) {
+        top = left = 0;
+      }
+
+      var width = el.offsetWidth;
+      var height = el.offsetHeight;
+      var tooltipHeight = tooltipEl.offsetHeight;
+      var tooltipWidth = tooltipEl.offsetWidth;
+      var centerEl = left + (width / 2);
+
+      tooltipEl.style.top = (
+        vertGrav === 's' ? (top - tooltipHeight - arrowSize) :
+        vertGrav === 'n' ? (top + height + arrowSize) :
+        (top + (height / 2) - (tooltipHeight / 2))
+      ) + 'px';
+
+      tooltipEl.style.left = (
+        horzGrav === 'w' ? left :
+        horzGrav === 'e' ? left + width - tooltipWidth :
+        vertGrav === 'w' ? (left + width + arrowSize) :
+        vertGrav === 'e' ? (left - tooltipWidth - arrowSize) :
+        (centerEl - tooltipWidth / 2)
+      ) + 'px';
+    }
+
+    positionTooltip();
+
+    var rect = tooltipEl.getBoundingClientRect();
+
+    if (vertGrav === 's' && rect.top < 0) {
+      vertGrav = 'n';
+      positionTooltip();
+    } else if (vertGrav === 'n' && rect.bottom > window.innerHeight) {
+      vertGrav = 's';
+      positionTooltip();
+    } else if (vertGrav === 'e' && rect.left < 0) {
+      vertGrav = 'w';
+      positionTooltip();
+    } else if (vertGrav === 'w' && rect.right > window.innerWidth) {
+      vertGrav = 'e';
+      positionTooltip();
+    }
+
+    tooltipEl.className += ' tlite-visible';
+
+    return tooltipEl;
+  }
+};
+
+tlite.hide = function (el, isAuto) {
+  el.tooltip && el.tooltip.hide(isAuto);
+};
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = tlite;
+}
 
 },{}]},{},[2]);
 ; })();

@@ -61,6 +61,11 @@
 
 .hf-row {
   display: flex;
+  flex-wrap: wrap;
+}
+.hf-col {
+  flex-basis: 0;
+  flex-grow: 1;
 }
 
 .hf-col-1 {
