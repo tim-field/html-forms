@@ -31,7 +31,7 @@ class Forms
     {
         add_action('init', array($this, 'register'));
         add_action('init', array($this, 'listen_for_submit'));
-        add_action('init', array($this, 'listen_for_preview'));
+        add_action('parse_request', array($this, 'listen_for_preview'));
         add_action('wp_enqueue_scripts', array($this, 'assets'));
         add_filter('hf_form_markup', 'hf_template');
     }
@@ -276,7 +276,14 @@ class Forms
         }  
 
         show_admin_bar(false);
+        add_filter( 'pre_handle_404', '__return_true' );
         add_action( 'template_redirect', function() use($form) {
+            // clear output, some plugin or hooked code might have thrown errors by now.
+            if( ob_get_level() > 0 ) {
+                ob_end_clean();
+            }
+
+            http_response_code(200);
             require dirname( $this->plugin_file ) . '/views/form-preview.php';
             exit;
         });
