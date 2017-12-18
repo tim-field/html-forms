@@ -30,7 +30,7 @@ class Forms
     public function hook()
     {
         add_action('init', array($this, 'register'));
-        add_action('init', array($this, 'listen_for_submit'));
+        add_action('init', array($this, 'listen_for_submit') );
         add_action('parse_request', array($this, 'listen_for_preview'));
         add_action('wp_enqueue_scripts', array($this, 'assets'));
         add_filter('hf_form_markup', 'hf_template');
@@ -249,19 +249,22 @@ class Forms
             do_action( 'hf_form_error', $error_code, $form, $data );
         }
 
-        $response = $this->get_response_for_error_code( $error_code, $form );
+        // Delay response until "wp_loaded" hook to give other plugins a chance to process stuff.
+        add_action( 'wp_loaded', function() use($error_code, $form) {
+            $response = $this->get_response_for_error_code( $error_code, $form );
 
-        // clear output, some plugin or hooked code might have thrown errors by now.
-        if( ob_get_level() > 0 ) {
-            ob_end_clean();
-        }
+            // clear output, some plugin or hooked code might have thrown errors by now.
+            if( ob_get_level() > 0 ) {
+                ob_end_clean();
+            }
 
-        send_origin_headers();
-        send_nosniff_header();
-        nocache_headers();
+            send_origin_headers();
+            send_nosniff_header();
+            nocache_headers();
 
-        wp_send_json($response, 200);
-        exit;
+            wp_send_json($response, 200);
+            exit;
+        });      
     }
 
     public function listen_for_preview() {
