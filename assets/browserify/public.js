@@ -10,9 +10,9 @@ import ConditionalElements from './conditional-elements.js';
 
 function cleanFormMessages(formEl) {
     let messageElements = formEl.querySelectorAll('.hf-message');
-    messageElements.forEach((el) => {
+    [].forEach.call(messageElements, (el) => {
         el.parentNode.removeChild(el);
-    })
+    });
 }
 
 function addFormMessage(formEl, message) {

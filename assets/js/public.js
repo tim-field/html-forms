@@ -141,7 +141,7 @@ var events = new EventEmitter();
 
 function cleanFormMessages(formEl) {
     var messageElements = formEl.querySelectorAll('.hf-message');
-    messageElements.forEach(function (el) {
+    [].forEach.call(messageElements, function (el) {
         el.parentNode.removeChild(el);
     });
 }

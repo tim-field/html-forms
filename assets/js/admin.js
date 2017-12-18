@@ -862,7 +862,7 @@ function init() {
         matchBrackets: true
     });
 
-    editor.on('changes', debounce(updatePreview, 1000));
+    editor.on('changes', debounce(updatePreview, 500));
     editor.on('changes', debounce(updateShadowDOM, 100));
     editor.on('blur', updatePreview);
     editor.on('blur', updateShadowDOM);
