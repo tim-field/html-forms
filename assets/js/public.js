@@ -14,6 +14,20 @@ function toggleElement(el, expectedValue, show) {
         } else {
             el.style.display = conditionMet ? 'none' : '';
         }
+
+        // find all input children and toggle [required] attr
+        var inputs = el.querySelectorAll('input, select, textarea');
+        [].forEach.call(inputs, function (el) {
+            if ((conditionMet || show) && el.getAttribute('data-was-required')) {
+                el.required = true;
+                el.removeAttribute('data-was-required');
+            }
+
+            if ((!conditionMet || !show) && el.required) {
+                el.setAttribute('data-was-required', "true");
+                el.required = false;
+            }
+        });
     };
 }
 

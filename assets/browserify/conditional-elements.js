@@ -7,9 +7,23 @@ function toggleElement(el, expectedValue, show ) {
         const conditionMet = checked && ( ( value === expectedValue && expectedValue !== "" ) || ( expectedValue === "" && value.length > 0 ) );
         if(show){
             el.style.display = ( conditionMet ) ? '' : 'none';
-        }else{
+        } else {
             el.style.display = ( conditionMet ) ? 'none' : '';
-        }
+        }  
+
+        // find all input children and toggle [required] attr
+        let inputs = el.querySelectorAll('input, select, textarea');
+        [].forEach.call(inputs, (el) => {
+            if(( conditionMet || show  ) && el.getAttribute('data-was-required')) {
+                el.required = true;
+                el.removeAttribute('data-was-required');
+            }
+
+            if(( !conditionMet || ! show ) && el.required) {
+               el.setAttribute('data-was-required', "true");
+               el.required = false;
+            }
+        });
     }
 }
 
