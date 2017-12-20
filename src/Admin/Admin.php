@@ -38,8 +38,6 @@ class Admin {
         add_action( 'hf_admin_output_form_tab_submissions', array( $this, 'tab_submissions_detail' ) );
     }
 
-
-
     public function register_settings() {
         // register settings
         register_setting( 'hf_settings', 'hf_settings', array( $this, 'sanitize_settings' ) );
@@ -60,7 +58,7 @@ class Admin {
         }
 
         // do nothing if logged in user is not of role administrator
-        if( ! current_user_can( 'manage_options' ) ) {
+        if( ! current_user_can( 'edit_forms' ) ) {
             return;
         }
 
@@ -96,11 +94,11 @@ class Admin {
     }
 
     public function menu() {
-        // add top menu item
-        add_menu_page( 'HTML Forms', 'HTML Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ), plugins_url('assets/img/icon.svg', $this->plugin_file ), '99.88491' );
-        add_submenu_page( 'html-forms', 'Forms', 'All Forms', 'manage_options', 'html-forms', array( $this, 'page_overview' ) );
-        add_submenu_page( 'html-forms', 'Add new form', 'Add New', 'manage_options', 'html-forms-add-form', array( $this, 'page_new_form' ) );
-        add_submenu_page( 'html-forms', 'Settings', 'Settings', 'manage_options', 'html-forms-settings', array( $this, 'page_settings' ) );
+        $capability = 'edit_forms';
+        add_menu_page( 'HTML Forms', 'HTML Forms', $capability, 'html-forms', array( $this, 'page_overview' ), plugins_url('assets/img/icon.svg', $this->plugin_file ), '99.88491' );
+        add_submenu_page( 'html-forms', 'Forms', 'All Forms', $capability, 'html-forms', array( $this, 'page_overview' ) );
+        add_submenu_page( 'html-forms', 'Add new form', 'Add New', $capability, 'html-forms-add-form', array( $this, 'page_new_form' ) );
+        add_submenu_page( 'html-forms', 'Settings', 'Settings', $capability, 'html-forms-settings', array( $this, 'page_settings' ) );
     }
 
     public function page_overview() {

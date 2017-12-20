@@ -207,3 +207,4 @@ function hf_replace_data_variables( $string, $data = array() ) {
     }, $string );
     return $string;
 }
+

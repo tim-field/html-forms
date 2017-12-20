@@ -44,7 +44,8 @@ class Forms
                     'name' => 'HTML Forms',
                     'singular_name' => 'HTML Form',
                 ),
-                'public' => false
+                'public' => false,
+                'capability_type' => 'form',
             )
         );
 
@@ -268,7 +269,7 @@ class Forms
     }
 
     public function listen_for_preview() {
-        if( empty( $_GET['hf_preview_form'] ) || ! current_user_can( 'manage_options' ) ) {
+        if( empty( $_GET['hf_preview_form'] ) || ! current_user_can( 'edit_forms' ) ) {
             return;
         }
 
