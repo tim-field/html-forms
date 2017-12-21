@@ -1,6 +1,23 @@
 Changelog
 =========
 
+#### 1.1 - December 21, 2017
+
+**Fixes**
+
+- JavaScript error in some older browser when submitting the form.
+
+**Improvements**
+
+- Use custom user capability base for editing & viewing forms.
+- Delay form response until a later hook so other plugins get a chance to hook in.
+- Disable client-side validation for conditional fields marked as required.
+
+**Additions**
+
+- Added live preview to the form editor.
+
+
 #### 1.0.6 - December 11, 2017
 
 **Fixes**
