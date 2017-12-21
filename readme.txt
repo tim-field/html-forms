@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9.1
-Stable tag: 1.0.6
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -104,6 +104,23 @@ Yes! You can configure this by opening up the "Actions" tab when editing your fo
 6. Configurable form messages.
 
 == Changelog ==
+
+
+#### 1.1 - December 21, 2017
+
+**Fixes**
+
+- JavaScript error in some older browser when submitting the form.
+
+**Improvements**
+
+- Use custom user capability base for editing & viewing forms.
+- Delay form response until a later hook so other plugins get a chance to hook in.
+- Disable client-side validation for conditional fields marked as required.
+
+**Additions**
+
+- Added live preview to the form editor.
 
 
 #### 1.0.6 - December 11, 2017
