@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### 1.1.1 - December 21, 2017
+
+**Fixes**
+
+- Incorrect role capability for administrators.
+
+
 #### 1.1 - December 21, 2017
 
 **Fixes**

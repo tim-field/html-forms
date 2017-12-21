@@ -25,6 +25,7 @@ class Admin {
         add_action( 'admin_menu', array( $this, 'menu' ) );
         add_action( 'init', array( $this, 'register_settings' ) );
         add_action( 'init', array( $this, 'listen' ) );
+        add_action( 'init', array( $this, 'run_migrations' ) );
         add_action( 'admin_print_styles', array( $this, 'assets' ) );
         add_action( 'hf_admin_action_create_form', array( $this, 'process_create_form' ) );
         add_action( 'hf_admin_action_save_form', array( $this, 'process_save_form' ) );
@@ -41,6 +42,19 @@ class Admin {
     public function register_settings() {
         // register settings
         register_setting( 'hf_settings', 'hf_settings', array( $this, 'sanitize_settings' ) );
+    }
+
+    public function run_migrations() {
+        $version_from = get_option( 'hf_version', '0.0' );
+        $version_to = HTML_FORMS_VERSION;
+
+        if( version_compare( $version_from, $version_to, '>=' ) ) {
+            return;
+        }
+
+        $migrations = new Migrations( $version_from, $version_to, dirname( $this->plugin_file ) . '/migrations' );
+        $migrations->run();
+        update_option( 'hf_version', HTML_FORMS_VERSION );
     }
 
     /**
