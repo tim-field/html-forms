@@ -50,7 +50,10 @@ function init() {
 function setPreviewDom() {
     let frameContent = previewFrame.contentDocument || previewFrame.contentWindow.document;
     previewDom = frameContent.querySelector('.hf-fields-wrap');
-    updatePreview();
+    
+    if(previewDom) { 
+        updatePreview();
+    }
 }
 
 function getFieldVariableName(f) {

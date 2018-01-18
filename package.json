@@ -1,14 +1,14 @@
 {
   "dependencies": {
-    "codemirror": "^5.29.0",
+    "codemirror": "^5.33.0",
     "decko": "^1.2.0",
-    "es5-shim": "^4.5.9",
+    "es5-shim": "^4.5.10",
     "form-serialize": "^0.7.2",
     "html": "^1.0.0",
     "linkstate": "^1.1.0",
     "preact": "^8.2.5",
     "preact-render-to-string": "^3.6.3",
-    "tlite": "^0.1.6",
+    "tlite": "^0.1.7",
     "wolfy87-eventemitter": "^5.2.3"
   },
   "devDependencies": {
@@ -17,7 +17,7 @@
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-es2015": "^6.22.0",
     "babelify": "^8.0.0",
-    "browserify": "^14.5.0",
+    "browserify": "^15.2.0",
     "event-stream": "^3.3.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
@@ -26,12 +26,12 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1",
     "gulp-sass": "^3.1.0",
-    "gulp-sourcemaps": "^2.6.1",
+    "gulp-sourcemaps": "^2.6.3",
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
-    "gulp-wp-pot": "^2.0.4",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "gulp-wp-pot": "^2.0.7",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   }
 }
