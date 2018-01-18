@@ -115,10 +115,22 @@ function hf_get_form_submission( $submission_id ) {
 function hf_get_settings() {
     static $default_settings = array(
         'load_stylesheet' => 0,
+        'save_submissions' => 1,
     );
 
     $settings = get_option( 'hf_settings', array() );
-    return array_merge( $default_settings, $settings );
+
+    // merge with default settings
+    $settings = array_merge( $default_settings, $settings );
+
+    /**
+    * Filters the global HTML Forms hf_settings
+    *
+    * @param array $settings
+    */
+    $settings = apply_filters( 'hf_settings', $settings );
+
+    return $settings;
 }
 
 /**
