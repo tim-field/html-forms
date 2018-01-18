@@ -55,4 +55,5 @@ class Submission {
         $submission->submitted_at = $object->submitted_at;
         return $submission;
     }
+
 }

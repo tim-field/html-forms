@@ -1,4 +1,4 @@
-# Copyright (C) 2017 html-forms
+# Copyright (C) 2018 html-forms
 # This file is distributed under the same license as the html-forms package.
 msgid ""
 msgstr ""
@@ -17,11 +17,11 @@ msgstr ""
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/Forms.php:342
+#: src/Forms.php:354
 msgid "Error:"
 msgstr ""
 
-#: src/Forms.php:342
+#: src/Forms.php:354
 msgid "No form found with slug %s"
 msgstr ""
 
@@ -53,7 +53,7 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:55, src/Admin/Admin.php:306
+#: src/Actions/Email.php:55, src/Admin/Admin.php:308
 msgid "Subject"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Your email subject"
 msgstr ""
 
-#: src/Actions/Email.php:62, src/Admin/Admin.php:307
+#: src/Actions/Email.php:62, src/Admin/Admin.php:309
 msgid "Message"
 msgstr ""
 
@@ -81,46 +81,46 @@ msgstr ""
 msgid "Additional headers"
 msgstr ""
 
-#: src/Admin/Admin.php:304
+#: src/Admin/Admin.php:306
 msgid "Your name"
 msgstr ""
 
-#: src/Admin/Admin.php:305
+#: src/Admin/Admin.php:307
 msgid "Your email"
 msgstr ""
 
-#: src/Admin/Admin.php:308
+#: src/Admin/Admin.php:310
 msgid "Send"
 msgstr ""
 
-#: src/Admin/Table.php:106
+#: src/Admin/Table.php:113
 msgid "Form"
 msgstr ""
 
-#: src/Admin/Table.php:107
+#: src/Admin/Table.php:114
 msgid "Shortcode"
 msgstr ""
 
-#: src/Admin/Table.php:173
+#: src/Admin/Table.php:180
 msgid "Fields"
 msgstr ""
 
-#: src/Admin/Table.php:174
+#: src/Admin/Table.php:181
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Table.php:175
+#: src/Admin/Table.php:182
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/Table.php:176
+#: src/Admin/Table.php:183
 msgid "Actions"
 msgstr ""
 
-#: src/Admin/Table.php:177
+#: src/Admin/Table.php:187
 msgid "Submissions"
 msgstr ""
 
-#: src/Admin/Table.php:203
+#: src/Admin/Table.php:214
 msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
 msgstr ""
