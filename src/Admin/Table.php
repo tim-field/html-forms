@@ -31,7 +31,6 @@ if( class_exists( 'WP_List_Table' ) ) {
             $hidden   = array();
             $this->_column_headers = array( $columns, $hidden, $sortable );
 
-
             $this->is_trash = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] === 'trash';
             $this->process_bulk_action();
             $this->prepare_items();

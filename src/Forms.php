@@ -205,9 +205,9 @@ class Forms
             $submission = new Submission();
             $submission->form_id = $form_id;
             $submission->data = $data;
-            $submission->ip_address = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
-            $submission->user_agent = sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] );
-            $submission->referer_url = sanitize_text_field( $_SERVER['HTTP_REFERER'] );
+            $submission->ip_address = ! empty( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( $_SERVER['REMOTE_ADDR'] ) : '';
+            $submission->user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : '';
+            $submission->referer_url = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( $_SERVER['HTTP_REFERER'] ) : '';
             $submission->save();
 
             // process form actions
