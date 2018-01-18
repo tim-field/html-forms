@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9.2
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -104,6 +104,26 @@ Yes! You can configure this by opening up the "Actions" tab when editing your fo
 6. Configurable form messages.
 
 == Changelog ==
+
+
+
+#### 1.1.2 - January 18, 2018
+
+**Fixes**
+
+- Conditional elements visible in form preview.
+- WP_List_Table issue on forms overview page.
+
+**Improvements**
+
+- Allow disabling submission storage through a global setting.
+- Hide submissions tab when submission storage is disabled.
+- Prevent PHP notice if `$_SERVER` global is missing properties.
+- Update JavaScript dependencies.
+
+**Additions**
+
+- Filter: `hf_ignored_field_names`
 
 
 #### 1.1.1 - December 21, 2017
