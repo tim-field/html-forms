@@ -842,9 +842,6 @@ var templateRegex = /\{\{ *(\w+)(?:\.([\w\.]+))? *(?:\|\| *(\w+))? *\}\}/g;
 
 function init() {
     previewFrame = document.getElementById('hf-form-preview');
-    previewFrame.addEventListener('load', setPreviewDom);
-    setPreviewDom();
-
     element = document.getElementById('hf-form-editor');
     dom = document.createElement('form');
     requiredFieldsInput = document.getElementById('hf-required-fields');
@@ -870,6 +867,9 @@ function init() {
     editor.on('blur', updateRequiredFields);
     editor.on('blur', updateEmailFields);
 
+    previewFrame.addEventListener('load', setPreviewDom);
+    setPreviewDom();
+
     document.getElementById('wpbody').addEventListener('click', updateFieldVariables);
     updateFieldVariables();
 }
@@ -877,6 +877,7 @@ function init() {
 function setPreviewDom() {
     var frameContent = previewFrame.contentDocument || previewFrame.contentWindow.document;
     previewDom = frameContent.querySelector('.hf-fields-wrap');
+    updatePreview();
 }
 
 function getFieldVariableName(f) {
@@ -912,6 +913,8 @@ function updateFieldVariables() {
 
 function updatePreview() {
     var markup = editor.getValue();
+
+    // replace template tags
     markup = markup.replace(templateRegex, function (s, m) {
         if (arguments[3]) {
             return arguments[3];
@@ -919,7 +922,10 @@ function updatePreview() {
 
         return '';
     });
+
+    // update dom
     previewDom.innerHTML = markup;
+    previewDom.dispatchEvent(new Event('hf-refresh'));
 }
 
 function updateShadowDOM() {

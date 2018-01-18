@@ -67,6 +67,7 @@ exports.default = {
         document.addEventListener('click', handleInputEvent, true);
         document.addEventListener('keyup', handleInputEvent, true);
         document.addEventListener('change', handleInputEvent, true);
+        document.addEventListener('hf-refresh', findInputsAndToggleDepepents, true);
         window.addEventListener('load', findInputsAndToggleDepepents);
     }
 };
