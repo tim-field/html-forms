@@ -188,9 +188,18 @@ class Forms
         $error_code = $this->validate_form($form, $data);
 
         if (empty( $error_code ) ) {
-            // filter out all field names starting with _
+
+            /**
+            * Filters the field names that should be ignored on the Submission object. 
+            * Fields starting with an underscore (_) are ignored by default.
+            *
+            * @param array $names
+            */
+            $ignored_field_names = apply_filters( 'hf_ignored_field_names', array() );
+
+            // filter out ignored field names
             foreach( $data as $key => $value ) {
-                if( strpos( $key, '_' ) === 0 ) {
+                if( $key[0] === '_' || in_array( $key, $ignored_field_names ) ) {
                     unset( $data[$key] );
                 }
             }
