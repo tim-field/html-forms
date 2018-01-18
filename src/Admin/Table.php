@@ -29,11 +29,12 @@ if( class_exists( 'WP_List_Table' ) ) {
             $columns  = $this->get_columns();
             $sortable = $this->get_sortable_columns();
             $hidden   = array();
-            $this->is_trash = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] === 'trash';
-
-            $this->process_bulk_action();
-
             $this->_column_headers = array( $columns, $hidden, $sortable );
+
+
+            $this->is_trash = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] === 'trash';
+            $this->process_bulk_action();
+            $this->prepare_items();
             $this->set_pagination_args(
                 array(
                     'per_page' => 50,

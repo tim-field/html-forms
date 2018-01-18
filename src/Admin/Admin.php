@@ -123,7 +123,6 @@ class Admin {
 
         require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
         $table = new Table();
-        $table->prepare_items();
 
         require dirname( $this->plugin_file ) . '/views/overview.php';
     }
