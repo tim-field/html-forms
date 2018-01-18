@@ -10,7 +10,7 @@ License: GPL v3
 Text Domain: html-forms
 
 HTML Forms Plus
-Copyright (C) 2017, Danny van Kooten, danny@ibericode.com
+Copyright (C) 2017-2018, Danny van Kooten, danny@ibericode.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -1,6 +1,26 @@
 Changelog
 =========
 
+
+#### 1.1.2 - January 18, 2018
+
+**Fixes**
+
+- Conditional elements visible in form preview.
+- WP_List_Table issue on forms overview page.
+
+**Improvements**
+
+- Allow disabling submission storage through a global setting.
+- Hide submissions tab when submission storage is disabled.
+- Prevent PHP notice if `$_SERVER` global is missing properties.
+- Update JavaScript dependencies.
+
+**Additions**
+
+- Filter: `hf_ignored_field_names`
+
+
 #### 1.1.1 - December 21, 2017
 
 **Fixes**
