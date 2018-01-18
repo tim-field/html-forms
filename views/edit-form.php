@@ -5,8 +5,11 @@ $tabs = array(
     'messages'      => __( 'Messages', 'html-forms' ),
     'settings'      => __( 'Settings', 'html-forms' ),
     'actions'       => __( 'Actions', 'html-forms' ),
-    'submissions'   => __( 'Submissions', 'html-forms' ),
 );
+
+if( $settings['save_submissions'] ) {
+    $tabs['submissions'] = __( 'Submissions', 'html-forms' );
+}
 
 ?>
 <script>document.title = 'Edit form' + ' - ' + document.title;</script>

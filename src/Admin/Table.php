@@ -15,9 +15,14 @@ if( class_exists( 'WP_List_Table' ) ) {
         public $is_trash = false;
 
         /**
+        * @var array
+        */
+        private $settings = array();
+
+        /**
          * Constructor
          */
-        public function __construct() {
+        public function __construct( array $settings ) {
             parent::__construct(
                 array(
                     'singular' => 'form',
@@ -25,6 +30,8 @@ if( class_exists( 'WP_List_Table' ) ) {
                     'ajax'     => false
                 )
             );
+
+            $this->settings = $settings;
 
             $columns  = $this->get_columns();
             $sortable = $this->get_sortable_columns();
@@ -174,8 +181,12 @@ if( class_exists( 'WP_List_Table' ) ) {
                 'messages'      => __( 'Messages', 'html-forms' ),
                 'settings'      => __( 'Settings', 'html-forms' ),
                 'actions'       => __( 'Actions', 'html-forms' ),
-                'submissions' => __( 'Submissions', 'html-forms' ),
             );
+
+            if( $this->settings['save_submissions'] ) {
+                $tabs['submissions'] = __( 'Submissions', 'html-forms' );
+            }
+
             foreach( $tabs as $tab_slug => $tab_title ) {
                 $actions[$tab_slug] = '<a href="'. esc_attr( add_query_arg( array( 'tab' => $tab_slug ), $edit_link ) ) .'">'. $tab_title . '</a>';
             }

@@ -121,8 +121,10 @@ class Admin {
             return;
         }  
 
+        $settings = hf_get_settings();
+
         require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
-        $table = new Table();
+        $table = new Table( $settings );
 
         require dirname( $this->plugin_file ) . '/views/overview.php';
     }
@@ -142,6 +144,7 @@ class Admin {
         $active_tab = ! empty( $_GET['tab'] ) ? $_GET['tab'] : 'fields';
         $form_id = (int) $_GET['form_id'];
         $form = hf_get_form( $form_id );
+        $settings = hf_get_settings();
 
         require dirname( $this->plugin_file )  . '/views/edit-form.php';
     }
