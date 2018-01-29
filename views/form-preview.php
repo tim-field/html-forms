@@ -30,13 +30,14 @@ defined( 'ABSPATH' ) or exit;
 	        width: 100%;
 	        height: 100%;
 	        padding: 20px;
+            border: 0;
         }
     </style>
 </head>
 <body <?php body_class(); ?>>
-	<div id="form-preview">
-		<?php echo $form; ?>
-	</div>
+    <div id="form-preview" <?php post_class('post-content'); ?>>
+    	<?php echo $form; ?>
+    </div>
 	<?php wp_footer(); ?>
 </body>
 </html>
