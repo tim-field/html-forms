@@ -18,7 +18,9 @@ defined( 'ABSPATH' ) or exit;
 	        text-align: left;
          }
 
-        /* hide other elements */
+        /* hide all other elements */
+        body::before,
+        body::after,
         body > *:not(#form-preview) { 
             display:none !important; 
         }
