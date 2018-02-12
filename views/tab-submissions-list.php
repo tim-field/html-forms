@@ -51,7 +51,7 @@ add_action( 'hf_admin_form_submissions_output_column_header', function( $column 
                </th>
                <td>
                    <abbr title="<?php echo date( $datetime_format, strtotime( $s->submitted_at ) ); ?>">
-                       <?php echo sprintf( '<a href="%s">%s</a>', esc_attr( add_query_arg( array( 'submission_id' => $s->id ) ) ), esc_html( $s->submitted_at ) ); ?>
+                       <?php echo sprintf( '<a href="%s">%s</a>', esc_attr( add_query_arg( array( 'tab' => 'submissions', 'submission_id' => $s->id ) ) ), esc_html( $s->submitted_at ) ); ?>
                    </abbr>
                </td>
 
