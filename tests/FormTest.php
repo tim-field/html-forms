@@ -60,4 +60,15 @@ class FormTest extends TestCase {
 		self::assertEquals('', $form->get_message('unexisting_message_code'));
 		self::assertEquals($messages['error'], $form->get_message('error'));
 	}
+
+	public function test_get_data_attributes() {
+		$form = new Form(1);
+		$form->title = 'Title';
+		$form->slug = 'slug';
+		$form->messages = $messages = array( 
+			'error' => 'Error!'
+		);
+
+		self::assertEquals('data-id="1" data-title="Title" data-slug="slug" data-message-error="Error!"', $form->get_data_attributes());
+	}
 }

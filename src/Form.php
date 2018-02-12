@@ -42,9 +42,11 @@ class Form {
         $form_action = apply_filters( 'hf_form_element_action_attr', null, $form );
         $form_action_attr = is_null( $form_action ) ? '' : sprintf('action="%s"', $form_action );
 
+        $data_attributes = $this->get_data_attributes();
+
         $html = '';
         $html .= sprintf( '<!-- HTML Forms v%s - %s -->', HTML_FORMS_VERSION, 'https://wordpress.org/plugins/html-forms/' );
-        $html .= sprintf( '<form method="post" %s class="hf-form hf-form-%d %s" data-title="%s" data-slug="%s">', $form_action_attr, $this->ID, esc_attr( $form_classes_attr ), esc_attr( $this->title ), esc_attr( $this->slug ) );
+        $html .= sprintf( '<form method="post" %s class="hf-form hf-form-%d %s" %s>', $form_action_attr, $this->ID, esc_attr( $form_classes_attr ), $data_attributes );
 
         $html .= '<div class="hf-fields-wrap">';
         $html .= sprintf( '<input type="hidden" name="_hf_form_id" value="%d" />', $this->ID );
@@ -64,6 +66,44 @@ class Form {
         $html = apply_filters( 'hf_form_html', $html, $form );
         return $html;
     }
+
+    public function get_data_attributes() {
+        $form = $this;
+        $attributes = array(
+            'id' => $this->ID,
+            'title' => $this->title,
+            'slug' => $this->slug, 
+        );
+
+        // add messages
+        foreach( $this->messages as $key => $message ) {
+            $key = str_replace( '_', '-', $key );
+            $attributes["message-".$key] = $message;
+        }
+
+        /**
+         * Filters the data attributes to be added to the form attribute.
+         *
+         * @param array $attributes
+         * @param Form $form
+         */
+        $attributes = apply_filters( 'hf_form_element_data_attributes', $attributes, $form );
+
+        // create string of attribute key-value pairs
+        $string = '';
+        foreach( $attributes as $attr => $value ) {
+            // prefix all attributes with data-
+            if( substr( $attr, 0, 5 ) !== 'data-' ) {
+                $attr = "data-" . $attr;
+            }
+
+            $string .= sprintf( '%s="%s" ', $attr, esc_attr( $value ) );
+        }
+        $string = rtrim( $string, ' ' );
+
+        return $string;
+    }
+
 
     /**
      * @return string
