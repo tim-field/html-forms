@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9.4
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -111,6 +111,22 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 == Changelog ==
 
+
+#### 1.1.3 - February 12, 2018
+
+**Fixes**
+
+- Form preview was not working when WPML was activated.
+
+**Improvements**
+
+- Improved theme compatibility for the form preview.
+- Print submission details as JSON instead of PHP object.
+- Form messages are now added to the element as data attributes, so they can be used in JavaScript event callbacks.
+
+**Additions**
+
+- [Conditional logic](https://kb.htmlforms.io/conditional-elements/) now accepts multiple values, separated by the |-character.
 
 
 #### 1.1.2 - January 18, 2018
