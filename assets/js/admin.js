@@ -1018,6 +1018,14 @@ Tabs.open = function (e) {
 
     document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + " ");
 
+    if (window.history) {
+        var newUrl = window.location.href;
+        newUrl = newUrl.replace(/\&tab\=\w+/, "");
+        newUrl += "&tab=" + tabTarget;
+
+        window.history.replaceState({ tab: tabTarget }, document.title, newUrl);
+    }
+
     e.preventDefault();
 };
 
