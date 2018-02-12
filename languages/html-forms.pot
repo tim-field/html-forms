@@ -13,15 +13,15 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Form.php:53
+#: src/Form.php:55
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/Forms.php:354
+#: src/Forms.php:355
 msgid "Error:"
 msgstr ""
 
-#: src/Forms.php:354
+#: src/Forms.php:355
 msgid "No form found with slug %s"
 msgstr ""
 
