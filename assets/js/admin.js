@@ -55,19 +55,25 @@ var _tlite2 = _interopRequireDefault(_tlite);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// init the various components
 _tabs2.default.init();
 _actionConfirmations2.default.init();
 
 if (document.getElementById('hf-form-editor')) {
     _formEditor2.default.init();
     _formActions2.default.init();
-
     _fieldBuilder2.default.init(_formEditor2.default);
 }
 
 (0, _tlite2.default)(function (el) {
     return el.className.indexOf('hf-tooltip') > -1;
 });
+
+// expose variables
+window.html_forms = {
+    'FieldBuilder': _fieldBuilder2.default,
+    'Editor': _formEditor2.default
+};
 
 },{"./action-confirmations.js":1,"./field-builder.js":3,"./form-actions.js":6,"./form-editor.js":7,"./tabs.js":8,"tlite":22}],3:[function(require,module,exports){
 'use strict';
