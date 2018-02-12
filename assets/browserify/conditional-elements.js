@@ -1,10 +1,10 @@
 'use strict';
 
-function toggleElement(el, expectedValue, show ) {
+function toggleElement(el, expectedValues, show ) {
     return function(input) {
         const value = input.value.trim();
         const checked = ( input.getAttribute('type') !== 'radio' && input.getAttribute('type') !== 'checked' ) || input.checked;
-        const conditionMet = checked && ( ( value === expectedValue && expectedValue !== "" ) || ( expectedValue === "" && value.length > 0 ) );
+        const conditionMet = checked && ( ( expectedValues.indexOf(value) > -1 && expectedValues.length > 0 ) || ( expectedValues.length === 0 && value.length > 0 ) );
         if(show){
             el.style.display = ( conditionMet ) ? '' : 'none';
         } else {
@@ -35,7 +35,7 @@ function toggleDependents(input) {
         const show = !!el.getAttribute('data-show-if');
         const conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
         const nameCondition = conditions[0];
-        const valueCondition = conditions[1] || "";
+        let valueCondition = (conditions[1] || "").split('|');
 
         if (inputName !== nameCondition.toLowerCase() ) {
             return;
