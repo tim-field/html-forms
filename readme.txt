@@ -3,7 +3,7 @@ Contributors: Ibericode, DvanKooten, hchouhan, lapzor
 Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=donate-link
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
-Tested up to: 4.9.3
+Tested up to: 4.9.4
 Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -93,6 +93,10 @@ We recommend the [Boxzilla pop-up plugin](https://wordpress.org/plugins/boxzilla
 
 Yes! You can configure this by opening up the "Actions" tab when editing your form and clicking the "Email" button under "Available actions".
 
+### Does the plugin include anti-spam measures?
+
+The plugin comes with built-in spam protection that should stop all automated attacks, unless specifically targeted at your site. When the built-in protection doesn't cut it, [WPBruiser](https://wordpress.org/plugins/goodbye-captcha/) surely will.
+
 
 == Screenshots ==
 
@@ -102,6 +106,8 @@ Yes! You can configure this by opening up the "Actions" tab when editing your fo
 4. Viewing saved form submissions.
 5. Hide form or redirect to URL after form submission.
 6. Configurable form messages.
+7. Details of a specific form submission.
+
 
 == Changelog ==
 
