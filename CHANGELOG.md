@@ -1,6 +1,22 @@
 Changelog
 =========
 
+#### 1.1.3 - February 12, 2018
+
+**Fixes**
+
+- Form preview was not working when WPML was activated.
+
+**Improvements**
+
+- Improved theme compatibility for the form preview.
+- Print submission details as JSON instead of PHP object.
+- Form messages are now added to the element as data attributes, so they can be used in JavaScript event callbacks.
+
+**Additions**
+
+- [Conditional logic](https://kb.htmlforms.io/conditional-elements/) now accepts multiple values, separated by the |-character.
+
 
 #### 1.1.2 - January 18, 2018
 
