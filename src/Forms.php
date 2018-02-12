@@ -293,6 +293,7 @@ class Forms
 
         show_admin_bar(false);
         add_filter( 'pre_handle_404', '__return_true' );
+        remove_all_actions( 'template_redirect' );
         add_action( 'template_redirect', function() use($form) {
             // clear output, some plugin or hooked code might have thrown errors by now.
             if( ob_get_level() > 0 ) {
