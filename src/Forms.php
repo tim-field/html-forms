@@ -217,6 +217,7 @@ class Forms
             $submission->ip_address = ! empty( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( $_SERVER['REMOTE_ADDR'] ) : '';
             $submission->user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : '';
             $submission->referer_url = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( $_SERVER['HTTP_REFERER'] ) : '';
+            $submission->submitted_at = gmdate();
 
             if( $this->settings['save_submissions'] ) {
                  $submission->save();
