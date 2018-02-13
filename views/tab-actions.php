@@ -29,7 +29,7 @@ $available_actions = $this->get_available_form_actions();
     <p id="hf-available-form-actions">
         <?php
         foreach( $available_actions as $type => $label ) {
-            echo sprintf( '<input type="button" value="%s" data-action-type="%s" class="button" />', esc_html( $label ), esc_attr( $type ) );
+            echo sprintf( '<input type="button" value="%s" data-action-type="%s" class="button" />', esc_html( $label ), esc_attr( $type ) ) . ' &nbsp;';
         };
         ?>
     </p>
