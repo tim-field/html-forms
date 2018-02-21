@@ -3,6 +3,7 @@ defined( 'ABSPATH' ) or exit;
 
 // fake post to prevent notices in wp_enqueue_scripts call
 $GLOBALS['post'] = new \WP_Post((object) array( 'filter' => 'raw' ));
+$GLOBALS['wp_query'] = new \WP_Query();
 
 // render simple page with form in it.
 ?><!DOCTYPE html>
