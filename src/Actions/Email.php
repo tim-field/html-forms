@@ -62,7 +62,7 @@ class Email extends Action {
                <th><label><?php echo __( 'Message', 'html-forms' ); ?> <span class="hf-required">*</span></label></th>
                <td>
                    <textarea name="form[settings][actions][<?php echo $index; ?>][message]" rows="8" class="widefat" placeholder="<?php echo esc_attr( __( 'Your email message', 'html-forms' ) ); ?>" required><?php echo esc_textarea( $settings['message'] ); ?></textarea>
-                   <p class="help"><?php _e( 'You can use the following variables (in all fields): ', 'html-forms' ); ?><span class="hf-field-names"></span></p>                 
+                   <p class="help"><?php _e( 'You can use the following variables (in all fields): ', 'html-forms' ); ?><br /><span class="hf-field-names"></span></p>                 
                </td>
            </tr>
 

@@ -34,6 +34,7 @@ function init() {
 
     editor.on('changes', debounce(updatePreview, 500));
     editor.on('changes', debounce(updateShadowDOM, 100));
+    editor.on('changes', debounce(updateFieldVariables, 500));
     editor.on('blur', updatePreview);
     editor.on('blur', updateShadowDOM);
     editor.on('blur', updateFieldVariables);
@@ -42,8 +43,6 @@ function init() {
 
     previewFrame.addEventListener('load', setPreviewDom);
     setPreviewDom();
-
-    document.getElementById('wpbody').addEventListener('click', updateFieldVariables);
     updateFieldVariables();
 }
 
@@ -63,24 +62,35 @@ function getFieldVariableName(f) {
 function updateFieldVariables() {
     const fields = dom.querySelectorAll('input[name], select[name], textarea[name], button[name]');
     const fieldVariables = uniq([].map.call(fields, (f) => '[' +  getFieldVariableName(f) + ']'));
+    let wpbody = document.getElementById('wpbody-content');
 
     [].forEach.call( document.querySelectorAll('.hf-field-names'), (el) => {
+        // remove existing variables
         while (el.firstChild) {
             el.removeChild(el.firstChild);
         }
 
         let variableElements = fieldVariables.map((n) => {
-            let el = document.createElement('code');
-            el.innerText = n;
+            // measure width of actual font size for prettiness
+            let sizeEl = document.createElement('span');
+            sizeEl.style.visibility = 'hidden';
+            sizeEl.innerText = n;
+            wpbody.appendChild(sizeEl);
+            let width = sizeEl.offsetWidth;
+            wpbody.removeChild(sizeEl);
+
+            // add input el
+            let el = document.createElement('input');
+            el.setAttribute('type', 'text');
+            el.style.maxWidth = ( ( width  * 1.1 ) + 14 ) + 'px';
+            el.setAttribute('value', n);
+            el.setAttribute('readonly', true);
+            el.setAttribute('onfocus', 'this.select()');
             return el;
         });
 
         variableElements.forEach((vel, i, arr) => {
             el.appendChild(vel);
-
-            if( i < ( arr.length - 1 ) ) {
-                el.appendChild(document.createTextNode(', '));
-            }
         })
     });
 }
