@@ -152,11 +152,9 @@ class Admin {
     public function tab_fields( Form $form ) {
         $form_preview_url = add_query_arg( array( 
             'hf_preview_form' => $form->ID,
-            'p' => $form->ID,
         ), get_option( 'home' ) );
         require dirname( $this->plugin_file )  . '/views/tab-fields.php';
     }
-
 
     public function tab_messages( Form $form ) {
         require dirname( $this->plugin_file )  . '/views/tab-messages.php';
