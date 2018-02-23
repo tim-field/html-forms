@@ -6,9 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 function toggleElement(el, expectedValues, show) {
     return function (input) {
+        var checked = input.getAttribute('type') !== 'radio' && input.getAttribute('type') !== 'checkbox' || input.checked;
         var value = input.value.trim();
-        var checked = input.getAttribute('type') !== 'radio' && input.getAttribute('type') !== 'checked' || input.checked;
         var conditionMet = checked && (expectedValues.indexOf(value) > -1 && expectedValues.length > 0 || expectedValues.length === 0 && value.length > 0);
+
         if (show) {
             el.style.display = conditionMet ? '' : 'none';
         } else {
@@ -32,13 +33,16 @@ function toggleElement(el, expectedValues, show) {
 }
 
 function toggleDependents(input) {
-    var elements = input.form.querySelectorAll('[data-show-if], [data-hide-if]');
+    var elements = input.form.querySelectorAll('[data-show-if],[data-hide-if]');
     var inputName = (input.getAttribute('name') || '').toLowerCase();
+
+    // strip square brackets from array-style inputs
+    inputName = inputName.replace(/\[\]$/, '');
 
     [].forEach.call(elements, function (el) {
         var show = !!el.getAttribute('data-show-if');
         var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
-        var nameCondition = conditions[0];
+        var nameCondition = conditions[0].replace(/\[\]$/, '');;
         var valueCondition = (conditions[1] || "").split('|');
 
         if (inputName !== nameCondition.toLowerCase()) {
@@ -64,7 +68,6 @@ function handleInputEvent(evt) {
 exports.default = {
     'init': function init() {
         findInputsAndToggleDepepents();
-        document.addEventListener('click', handleInputEvent, true);
         document.addEventListener('keyup', handleInputEvent, true);
         document.addEventListener('change', handleInputEvent, true);
         document.addEventListener('hf-refresh', findInputsAndToggleDepepents, true);
