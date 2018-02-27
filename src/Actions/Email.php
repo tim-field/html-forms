@@ -103,7 +103,7 @@ class Email extends Action {
        $to = hf_replace_data_variables( $settings['to'], $submission->data );
        $subject = ! empty( $settings['subject'] ) ? hf_replace_data_variables( $settings['subject'], $submission->data ) : '';
        $message = hf_replace_data_variables( $settings['message'], $submission->data );
-       $headers = explode( PHP_EOL, $settings['headers'] );
+       $headers = explode( PHP_EOL, hf_replace_data_variables( $settings['headers'], $submission->data ) );
        $html_email = $settings['content_type'] === 'text/html';
 
        if( $html_email ) {
