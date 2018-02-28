@@ -1,73 +1,103 @@
 'use strict';
 
-function toggleElement(el, expectedValues, show ) {
-    return function(input) {
-        const checked = ( input.getAttribute('type') !== 'radio' && input.getAttribute('type') !== 'checkbox' ) || input.checked;
-        const value = input.value.trim();
-        const conditionMet = checked && ( ( expectedValues.indexOf(value) > -1 && expectedValues.length > 0 ) || ( expectedValues.length === 0 && value.length > 0 ) );
-        
-        if(show){
-            el.style.display = ( conditionMet ) ? '' : 'none';
-        } else {
-            el.style.display = ( conditionMet ) ? 'none' : '';
-        }  
+function getFieldValues(form, fieldName) {
+    const inputs = form.querySelectorAll('input[name="'+fieldName+'"], select[name="'+fieldName+'"], textarea[name="'+fieldName+'"]');
+    let values = [];
 
-        // find all input children and toggle [required] attr
-        let inputs = el.querySelectorAll('input, select, textarea');
-        [].forEach.call(inputs, (el) => {
-            if(( conditionMet || show  ) && el.getAttribute('data-was-required')) {
-                el.required = true;
-                el.removeAttribute('data-was-required');
-            }
+    for(let i=0; i<inputs.length; i++) {
+        const input = inputs[i];
+        const type = input.getAttribute("type");
 
-            if(( !conditionMet || ! show ) && el.required) {
-               el.setAttribute('data-was-required', "true");
-               el.required = false;
-            }
-        });
-    }
-}
-
-function toggleDependents(input) {
-    const elements = input.form.querySelectorAll('[data-show-if],[data-hide-if]');
-    let inputName = (input.getAttribute('name') || '').toLowerCase()
-
-    // strip square brackets from array-style inputs
-    inputName = inputName.replace(/\[\]$/, '');
-
-    [].forEach.call(elements, function(el) {
-        const show = !!el.getAttribute('data-show-if');
-        const conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
-        const nameCondition = conditions[0].replace(/\[\]$/, '');;
-        let valueCondition = (conditions[1] || "").split('|');
-
-        if (inputName !== nameCondition.toLowerCase() ) {
-            return;
+        if( ( type === "radio" || type === "checkbox" ) && ! input.checked) {
+            continue;
         }
 
-        const callback = toggleElement(el, valueCondition, show);
-        callback(input);
+        values.push(input.value);
+    }
+
+    return values;
+}
+
+function findForm(element) {
+    let bubbleElement = element;
+
+    while(bubbleElement.parentElement) {
+        bubbleElement = bubbleElement.parentElement;
+
+        if(bubbleElement.tagName === 'FORM') {
+            return bubbleElement;
+        }
+    }
+
+    return null;
+}
+
+function toggleElement(el) {
+    const show = !!el.getAttribute('data-show-if');
+    const conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
+    const fieldName = conditions[0];
+    const expectedValues = ((conditions[1] || "").split('|'));
+    const form = findForm(el);
+    const values = getFieldValues(form, fieldName);
+
+    // determine whether condition is met
+    let conditionMet = false;
+    for(let i=0; i<values.length; i++) {
+        const value = values[i];
+
+        // condition is met when value is in array of expected values OR expected values is empty (accepts anything) and value is not empty
+        conditionMet = expectedValues.indexOf(value) > -1 || ( expectedValues.length === 0 && value.length > 0 );
+
+        if(conditionMet) { 
+            break;
+        }
+    }
+
+    // toggle element display
+    if(show){
+        el.style.display = ( conditionMet ) ? '' : 'none';
+    } else {
+        el.style.display = ( conditionMet ) ? 'none' : '';
+    }  
+
+    // find all inputs inside this element and toggle [required] attr (to prevent HTML5 validation on hidden elements)
+    let inputs = el.querySelectorAll('input, select, textarea');
+    [].forEach.call(inputs, (el) => {
+        if(( conditionMet || show  ) && el.getAttribute('data-was-required')) {
+            el.required = true;
+            el.removeAttribute('data-was-required');
+        }
+
+        if(( !conditionMet || ! show ) && el.required) {
+           el.setAttribute('data-was-required', "true");
+           el.required = false;
+        }
     });
 }
 
-function findInputsAndToggleDepepents() {
-    const inputElements = document.querySelectorAll('.hf-form input, .hf-form textarea, .hf-form select');
-    [].forEach.call(inputElements, toggleDependents);
+// evaluate conditional elements globally
+function evaluate() {
+    const elements = document.querySelectorAll('.hf-form [data-show-if], .hf-form [data-hide-if]');
+    [].forEach.call(elements, toggleElement);
 }
 
+// re-evaluate conditional elements for change events on forms
 function handleInputEvent(evt) {
-    if( evt.target && evt.target.form && evt.target.form.className.indexOf('hf-form') > -1 ) {
-        toggleDependents(evt.target);
+    if( ! evt.target || ! evt.target.form || evt.target.form.className.indexOf('hf-form') < 0 ) {
+        return;
     }
-}
 
+    const form = evt.target.form;
+    const elements = form.querySelectorAll('[data-show-if], [data-hide-if]');
+    [].forEach.call(elements, toggleElement);
+}
 
 export default {
     'init': function() {
-        findInputsAndToggleDepepents();
         document.addEventListener('keyup', handleInputEvent, true);
         document.addEventListener('change', handleInputEvent, true);
-        document.addEventListener('hf-refresh', findInputsAndToggleDepepents, true);
-        window.addEventListener('load', findInputsAndToggleDepepents);
+        document.addEventListener('hf-refresh', evaluate, true);
+        window.addEventListener('load', evaluate);
+        evaluate();
     }
 }

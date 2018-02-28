@@ -4,74 +4,105 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-function toggleElement(el, expectedValues, show) {
-    return function (input) {
-        var checked = input.getAttribute('type') !== 'radio' && input.getAttribute('type') !== 'checkbox' || input.checked;
-        var value = input.value.trim();
-        var conditionMet = checked && (expectedValues.indexOf(value) > -1 && expectedValues.length > 0 || expectedValues.length === 0 && value.length > 0);
+function getFieldValues(form, fieldName) {
+    var inputs = form.querySelectorAll('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"]');
+    var values = [];
 
-        if (show) {
-            el.style.display = conditionMet ? '' : 'none';
-        } else {
-            el.style.display = conditionMet ? 'none' : '';
+    for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        var type = input.getAttribute("type");
+
+        if ((type === "radio" || type === "checkbox") && !input.checked) {
+            continue;
         }
 
-        // find all input children and toggle [required] attr
-        var inputs = el.querySelectorAll('input, select, textarea');
-        [].forEach.call(inputs, function (el) {
-            if ((conditionMet || show) && el.getAttribute('data-was-required')) {
-                el.required = true;
-                el.removeAttribute('data-was-required');
-            }
+        values.push(input.value);
+    }
 
-            if ((!conditionMet || !show) && el.required) {
-                el.setAttribute('data-was-required', "true");
-                el.required = false;
-            }
-        });
-    };
+    return values;
 }
 
-function toggleDependents(input) {
-    var elements = input.form.querySelectorAll('[data-show-if],[data-hide-if]');
-    var inputName = (input.getAttribute('name') || '').toLowerCase();
+function findForm(element) {
+    var bubbleElement = element;
 
-    // strip square brackets from array-style inputs
-    inputName = inputName.replace(/\[\]$/, '');
+    while (bubbleElement.parentElement) {
+        bubbleElement = bubbleElement.parentElement;
 
-    [].forEach.call(elements, function (el) {
-        var show = !!el.getAttribute('data-show-if');
-        var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
-        var nameCondition = conditions[0].replace(/\[\]$/, '');;
-        var valueCondition = (conditions[1] || "").split('|');
+        if (bubbleElement.tagName === 'FORM') {
+            return bubbleElement;
+        }
+    }
 
-        if (inputName !== nameCondition.toLowerCase()) {
-            return;
+    return null;
+}
+
+function toggleElement(el) {
+    var show = !!el.getAttribute('data-show-if');
+    var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
+    var fieldName = conditions[0];
+    var expectedValues = (conditions[1] || "").split('|');
+    var form = findForm(el);
+    var values = getFieldValues(form, fieldName);
+
+    // determine whether condition is met
+    var conditionMet = false;
+    for (var i = 0; i < values.length; i++) {
+        var value = values[i];
+
+        // condition is met when value is in array of expected values OR expected values is empty (accepts anything) and value is not empty
+        conditionMet = expectedValues.indexOf(value) > -1 || expectedValues.length === 0 && value.length > 0;
+
+        if (conditionMet) {
+            break;
+        }
+    }
+
+    // toggle element display
+    if (show) {
+        el.style.display = conditionMet ? '' : 'none';
+    } else {
+        el.style.display = conditionMet ? 'none' : '';
+    }
+
+    // find all inputs inside this element and toggle [required] attr (to prevent HTML5 validation on hidden elements)
+    var inputs = el.querySelectorAll('input, select, textarea');
+    [].forEach.call(inputs, function (el) {
+        if ((conditionMet || show) && el.getAttribute('data-was-required')) {
+            el.required = true;
+            el.removeAttribute('data-was-required');
         }
 
-        var callback = toggleElement(el, valueCondition, show);
-        callback(input);
+        if ((!conditionMet || !show) && el.required) {
+            el.setAttribute('data-was-required', "true");
+            el.required = false;
+        }
     });
 }
 
-function findInputsAndToggleDepepents() {
-    var inputElements = document.querySelectorAll('.hf-form input, .hf-form textarea, .hf-form select');
-    [].forEach.call(inputElements, toggleDependents);
+// evaluate conditional elements globally
+function evaluate() {
+    var elements = document.querySelectorAll('.hf-form [data-show-if], .hf-form [data-hide-if]');
+    [].forEach.call(elements, toggleElement);
 }
 
+// re-evaluate conditional elements for change events on forms
 function handleInputEvent(evt) {
-    if (evt.target && evt.target.form && evt.target.form.className.indexOf('hf-form') > -1) {
-        toggleDependents(evt.target);
+    if (!evt.target || !evt.target.form || evt.target.form.className.indexOf('hf-form') < 0) {
+        return;
     }
+
+    var form = evt.target.form;
+    var elements = form.querySelectorAll('[data-show-if], [data-hide-if]');
+    [].forEach.call(elements, toggleElement);
 }
 
 exports.default = {
     'init': function init() {
-        findInputsAndToggleDepepents();
         document.addEventListener('keyup', handleInputEvent, true);
         document.addEventListener('change', handleInputEvent, true);
-        document.addEventListener('hf-refresh', findInputsAndToggleDepepents, true);
-        window.addEventListener('load', findInputsAndToggleDepepents);
+        document.addEventListener('hf-refresh', evaluate, true);
+        window.addEventListener('load', evaluate);
+        evaluate();
     }
 };
 
