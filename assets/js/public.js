@@ -16,9 +16,7 @@ function getFieldValues(form, fieldName) {
             continue;
         }
 
-        if (input.value !== '') {
-            values.push(input.value);
-        }
+        values.push(input.value);
     }
 
     return values;
@@ -42,14 +40,9 @@ function toggleElement(el) {
     var show = !!el.getAttribute('data-show-if');
     var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
     var fieldName = conditions[0];
-    var expectedValues = (conditions[1] || "*").split('|').filter(function (v) {
-        return v.length > 0;
-    });
+    var expectedValues = (conditions[1] || "*").split('|');
     var form = findForm(el);
     var values = getFieldValues(form, fieldName);
-
-    console.log("Expected: ", expectedValues);
-    console.log("Values: ", values);
 
     // determine whether condition is met
     var conditionMet = false;

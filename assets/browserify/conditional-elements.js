@@ -12,9 +12,7 @@ function getFieldValues(form, fieldName) {
             continue;
         }
 
-        if(input.value !== '') {
-            values.push(input.value);
-        }
+        values.push(input.value);
     }
 
     return values;
@@ -38,12 +36,9 @@ function toggleElement(el) {
     const show = !!el.getAttribute('data-show-if');
     const conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
     const fieldName = conditions[0];
-    const expectedValues = ((conditions[1] || "*").split('|')).filter((v) => (v.length > 0));
+    const expectedValues = ((conditions[1] || "*").split('|'));
     const form = findForm(el);
     const values = getFieldValues(form, fieldName);
-
-    console.log("Expected: ", expectedValues);
-    console.log("Values: ", values);
 
     // determine whether condition is met
     let conditionMet = false;
