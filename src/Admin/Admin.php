@@ -24,8 +24,8 @@ class Admin {
     public function hook() {
         add_action( 'admin_menu', array( $this, 'menu' ) );
         add_action( 'init', array( $this, 'register_settings' ) );
-        add_action( 'init', array( $this, 'listen' ) );
-        add_action( 'init', array( $this, 'run_migrations' ) );
+        add_action( 'admin_init', array( $this, 'run_migrations' ) );
+        add_action( 'admin_init', array( $this, 'listen' ) );
         add_action( 'admin_print_styles', array( $this, 'assets' ) );
         add_action( 'hf_admin_action_create_form', array( $this, 'process_create_form' ) );
         add_action( 'hf_admin_action_save_form', array( $this, 'process_save_form' ) );
