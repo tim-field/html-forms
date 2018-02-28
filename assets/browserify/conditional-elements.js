@@ -12,7 +12,9 @@ function getFieldValues(form, fieldName) {
             continue;
         }
 
-        values.push(input.value);
+        if(input.value !== '') {
+            values.push(input.value);
+        }
     }
 
     return values;
@@ -36,17 +38,20 @@ function toggleElement(el) {
     const show = !!el.getAttribute('data-show-if');
     const conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
     const fieldName = conditions[0];
-    const expectedValues = ((conditions[1] || "").split('|'));
+    const expectedValues = ((conditions[1] || "*").split('|')).filter((v) => (v.length > 0));
     const form = findForm(el);
     const values = getFieldValues(form, fieldName);
+
+    console.log("Expected: ", expectedValues);
+    console.log("Values: ", values);
 
     // determine whether condition is met
     let conditionMet = false;
     for(let i=0; i<values.length; i++) {
         const value = values[i];
 
-        // condition is met when value is in array of expected values OR expected values is empty (accepts anything) and value is not empty
-        conditionMet = expectedValues.indexOf(value) > -1 || ( expectedValues.length === 0 && value.length > 0 );
+        // condition is met when value is in array of expected values OR expected values contains a wildcard and value is not empty
+        conditionMet = expectedValues.indexOf(value) > -1 || ( expectedValues.indexOf('*') > -1 && value.length > 0 );
 
         if(conditionMet) { 
             break;
