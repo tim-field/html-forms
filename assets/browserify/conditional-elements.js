@@ -1,8 +1,8 @@
 'use strict';
 
 function getFieldValues(form, fieldName) {
-    const inputs = form.querySelectorAll('input[name="'+fieldName+'"], select[name="'+fieldName+'"], textarea[name="'+fieldName+'"]');
     let values = [];
+    let inputs = form.querySelectorAll('input[name="'+fieldName+'"], select[name="'+fieldName+'"], textarea[name="'+fieldName+'"]');
 
     for(let i=0; i<inputs.length; i++) {
         const input = inputs[i];
@@ -36,7 +36,7 @@ function toggleElement(el) {
     const show = !!el.getAttribute('data-show-if');
     const conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
     const fieldName = conditions[0];
-    const expectedValues = ((conditions[1] || "*").split('|'));
+    const expectedValues = ((conditions.length > 1 ? conditions[1] : "*").split('|'));
     const form = findForm(el);
     const values = getFieldValues(form, fieldName);
 

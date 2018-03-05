@@ -5,8 +5,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 function getFieldValues(form, fieldName) {
-    var inputs = form.querySelectorAll('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"]');
     var values = [];
+    var inputs = form.querySelectorAll('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"]');
 
     for (var i = 0; i < inputs.length; i++) {
         var input = inputs[i];
@@ -40,7 +40,7 @@ function toggleElement(el) {
     var show = !!el.getAttribute('data-show-if');
     var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
     var fieldName = conditions[0];
-    var expectedValues = (conditions[1] || "*").split('|');
+    var expectedValues = (conditions.length > 1 ? conditions[1] : "*").split('|');
     var form = findForm(el);
     var values = getFieldValues(form, fieldName);
 
