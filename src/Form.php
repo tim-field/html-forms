@@ -21,6 +21,17 @@ class Form {
         $this->ID = $ID;
     }
 
+    /**
+    * Magic method for accessing unexisting properties, eg lowercase "id".
+    *
+    * @return mixed
+    */ 
+    public function __get( $property ) {
+        if( $property === 'id' ) {
+            return $this->ID;
+        }
+    }
+
     public function get_html() 
     {
         $form = $this;
@@ -48,9 +59,9 @@ class Form {
         $html .= sprintf( '<!-- HTML Forms v%s - %s -->', HTML_FORMS_VERSION, 'https://wordpress.org/plugins/html-forms/' );
         $html .= sprintf( '<form method="post" %s class="hf-form hf-form-%d %s" %s>', $form_action_attr, $this->ID, esc_attr( $form_classes_attr ), $data_attributes );
 
-        $html .= '<div class="hf-fields-wrap">';
         $html .= sprintf( '<input type="hidden" name="_hf_form_id" value="%d" />', $this->ID );
         $html .= sprintf( '<div style="display: none;"><input type="text" name="_hf_h%d" value="" /></div>', $this->ID );
+        $html .= '<div class="hf-fields-wrap">';
         $html .= $this->get_markup();
         $html .= '<noscript>' . __( "Please enable JavaScript for this form to work.", 'html-forms' ) . '</noscript>';
         $html .= '</div>'; // end field wrap
