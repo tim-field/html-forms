@@ -39,10 +39,12 @@ $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
         <thead>
             <tr>
                 <td id="cb" class="manage-column column-cb check-column"><input type="checkbox" /></td>
-                <th scope="col" class="hf-column manage-column" style="width: 160px;"><?php _e( 'Timestamp', 'html-forms' ); ?></th>
+                <th scope="col" class="hf-column manage-column column-primary" style="width: 160px;">
+                  <?php _e( 'Timestamp', 'html-forms' ); ?>
+                </th>
                 <?php foreach( $columns as $column ) {
                     echo sprintf( '<th scope="col" class="hf-column manage-column hf-column-%s">', esc_attr( $column ) );
-                    do_action( 'hf_admin_form_submissions_output_column_header', $column );
+                    do_action( 'hf_admin_form_submissions_table_output_column_header', $column );
                     echo '</th>';
                 } ?>
             </tr>
@@ -54,10 +56,13 @@ $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
                <th scope="row" class="check-column">
                    <input type="checkbox" name="id[]" value="<?php echo esc_attr( $s->id ); ?>"/>
                </th>
-               <td>
-                   <abbr title="<?php echo date( $datetime_format, strtotime( $s->submitted_at ) ); ?>">
+               <td class="has-row-actions column-primary">
+                   <strong><abbr title="<?php echo date( $datetime_format, strtotime( $s->submitted_at ) ); ?>">
                        <?php echo sprintf( '<a href="%s">%s</a>', esc_attr( add_query_arg( array( 'tab' => 'submissions', 'submission_id' => $s->id ) ) ), esc_html( $s->submitted_at ) ); ?>
-                   </abbr>
+                   </abbr></strong>
+                  <div class="row-actions">
+                    <?php do_action( 'hf_admin_form_submissions_table_output_row_actions', $s ); ?>
+                  </div>
                </td>
 
                <?php foreach( $columns as $column ) {
