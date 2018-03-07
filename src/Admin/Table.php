@@ -63,12 +63,10 @@ if( class_exists( 'WP_List_Table' ) ) {
          * @return array
          */
         public function get_views() {
-
             $counts = wp_count_posts( 'html-form' );
             $current = isset( $_GET['post_status'] ) ? $_GET['post_status'] : '';
-
             $count_any = $counts->publish + $counts->draft + $counts->future + $counts->pending;
-
+            
             return array(
                 '' => sprintf( '<a href="%s" class="%s">%s</a> (%d)', remove_query_arg( 'post_status' ), $current == '' ? 'current' : '', __( 'All' ), $count_any ),
                 'trash' => sprintf( '<a href="%s" class="%s">%s</a> (%d)', add_query_arg( array( 'post_status' => 'trash' ) ), $current == 'trash' ? 'current' : '', __( 'Trash' ), $counts->trash ),
@@ -128,7 +126,8 @@ if( class_exists( 'WP_List_Table' ) ) {
         public function get_items() {
             $args = array(
                 'post_type' => 'html-form',
-                'post_status' =>  array( 'publish', 'draft', 'pending', 'future' )
+                'post_status' =>  array( 'publish', 'draft', 'pending', 'future' ),
+                'numberposts' => -1,
             );
 
             if( ! empty( $_GET['s'] ) ) {
