@@ -45,7 +45,7 @@ add_action( 'hf_admin_form_submissions_output_column_header', function( $column 
         <tbody>
 
         <?php foreach( $submissions as $s ) { ?>
-           <tr>
+           <tr id="hf-submissions-item-<?php echo $s->id; ?>">
                <th scope="row" class="check-column">
                    <input type="checkbox" name="id[]" value="<?php echo esc_attr( $s->id ); ?>"/>
                </th>
