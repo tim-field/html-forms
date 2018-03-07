@@ -7,6 +7,9 @@ add_action( 'hf_admin_form_submissions_output_column_header', function( $column 
    echo esc_html( ucfirst( strtolower( $column ) ) );
 });
 
+$bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
+  'bulk_delete_submissions' => __( 'Move to Trash' ),
+));
 ?>
 
 <h2><?php _e( 'Form Submissions', 'html-forms' ); ?></h2>
@@ -18,7 +21,9 @@ add_action( 'hf_admin_form_submissions_output_column_header', function( $column 
             <label for="bulk-action-selector-top" class="screen-reader-text"><?php _e( 'Select bulk action' ); ?></label>
             <select name="_hf_admin_action" id="bulk-action-selector-top">
                 <option value=""><?php _e( 'Bulk Actions' ); ?></option>
-                <option value="bulk_delete_submissions"><?php _e( 'Move to Trash' ); ?></option>
+                <?php foreach( $bulk_actions as $key => $label ) { 
+                  echo sprintf( '<option value="%s">%s</option>', esc_attr( $key ), $label );
+                } ?>
             </select>
             <input type="submit" class="button action" value="<?php _e( 'Apply' ); ?>">
         </div>
