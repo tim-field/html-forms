@@ -113,7 +113,7 @@ function hf_get_form_submission( $submission_id ) {
  * @return array
  */
 function hf_get_settings() {
-    static $default_settings = array(
+    $default_settings = array(
         'load_stylesheet' => 0,
         'save_submissions' => 1,
     );
