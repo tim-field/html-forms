@@ -32,31 +32,30 @@ function hf_get_form( $form_id_or_slug ) {
         $post = $posts[0];
     }
 
-    static $default_messages;
-    if( $default_messages === null ) {
-        $default_messages = array(
-            'success' => __('Thank you! We will be in touch soon.', 'html-forms'),
-            'invalid_email' => __( 'Sorry, that email address looks invalid.', 'html-forms' ),
-            'required_field_missing' => __( "Please fill in the required fields.", "html-forms" ),
-            'error' => __( 'Oops. An error occurred.', 'html-forms' ),
-        );
-    }
+    // get all post meta in a single call for performance
+    $post_meta = get_post_meta( $post->ID );
 
-    static $default_settings = array(
+    // grab & merge form settings
+    $default_settings = array(
         'hide_after_success' => 0,
         'redirect_url' => '',
         'required_fields' =>'',
         'email_fields' => '',
     );
-
-    $post_meta = get_post_meta( $post->ID );
-
+    $default_settings = apply_filters( 'hf_form_default_settings', $default_settings );
     $settings = array();
     if( ! empty( $post_meta['_hf_settings'][0] ) ) {
         $settings = (array) maybe_unserialize( $post_meta['_hf_settings'][0] );
     }
     $settings = array_merge( $default_settings, $settings );
 
+    // grab & merge form messages
+    $default_messages = array(
+        'success' => __('Thank you! We will be in touch soon.', 'html-forms'),
+        'invalid_email' => __( 'Sorry, that email address looks invalid.', 'html-forms' ),
+        'required_field_missing' => __( "Please fill in the required fields.", "html-forms" ),
+        'error' => __( 'Oops. An error occurred.', 'html-forms' ),
+    );
     $messages = array();
     foreach( $post_meta as $meta_key => $meta_values ) {
         if( strpos( $meta_key, 'hf_message_' ) === 0 ) {
@@ -66,6 +65,7 @@ function hf_get_form( $form_id_or_slug ) {
     }
     $messages = array_merge( $default_messages, $messages );
 
+    // finally, create form instance
     $form = new Form( $post->ID );
     $form->title = $post->post_title;
     $form->slug = $post->post_name;
