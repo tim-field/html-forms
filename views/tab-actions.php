@@ -12,7 +12,20 @@ $available_actions = $this->get_available_form_actions();
             foreach ($form->settings['actions'] as $action_settings ) {
                 ?>
                    <div class="hf-action-settings" data-title="<?php echo esc_attr( $available_actions[ $action_settings['type'] ] ); ?>">
-                       <?php do_action( 'hf_render_form_action_' . $action_settings['type'] . '_settings', $action_settings, $index++ ); ?>
+                        <?php
+
+                        /**
+                        * Output setting fields for a registered action
+                        *
+                        * @param array $action_settings
+                        * @param int $index
+                        */
+                        do_action( 'hf_output_form_action_' . $action_settings['type'] . '_settings', $action_settings, $index++ ); 
+
+                        /**
+                        * Deprecated action hook. Use the above action (hf_output_form_action_...) instead.
+                        */
+                        do_action( 'hf_render_form_action_' . $action_settings['type'] . '_settings', $action_settings, $index++ ); ?>
                    </div>
                 <?php
             }
@@ -43,7 +56,7 @@ $available_actions = $this->get_available_form_actions();
     <?php
     foreach( $available_actions as $type => $label ) {
         echo sprintf( '<script type="text/x-template" id="hf-action-type-%s-template">', $type );
-        do_action( 'hf_render_form_action_' . $type . '_settings', array(), '$index' );
+        do_action( 'hf_output_form_action_' . $type . '_settings', array(), '$index' );
         echo '</script>';
     }
     ?>
