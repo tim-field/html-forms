@@ -26,6 +26,15 @@
             <p class="help"><?php _e( 'Leave empty or enter <code>0</code> for no redirect. Otherwise, use complete (absolute) URLs, including <code>http://</code>.', 'html-forms' ); ?></p>
         </td>
     </tr>
+
+    <?php 
+    /**
+    * Runs after the form settings are printed.
+    * 
+    * @param $form
+    */
+    do_action( 'hf_output_form_settings', $form ); ?>
+    
 </table>
 
 <?php submit_button(); ?>
