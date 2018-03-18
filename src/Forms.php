@@ -61,14 +61,12 @@ class Forms
         $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         $assets_url = plugins_url( 'assets/', $this->plugin_file );
 
-        wp_enqueue_script('html-forms', $assets_url . "js/public{$suffix}.js", array(), HTML_FORMS_VERSION, true);
+        wp_register_script('html-forms', $assets_url . "js/public{$suffix}.js", array(), HTML_FORMS_VERSION, true);
         wp_localize_script('html-forms', 'hf_js_vars', array(
             'ajax_url' => admin_url('admin-ajax.php'),
         ));
 
-        if( $this->settings['load_stylesheet'] ) {
-            wp_enqueue_style( 'html-forms', $assets_url . "css/forms{$suffix}.css", array(), HTML_FORMS_VERSION );
-        }
+        wp_register_style( 'html-forms', $assets_url . "css/forms{$suffix}.css", array(), HTML_FORMS_VERSION );
     }
 
     /**
@@ -168,14 +166,14 @@ class Forms
                 $new_value[$key] = $this->sanitize($sub_value);
             }
             $value = is_object( $value ) ? (object) $new_value : $new_value;
-        } 
+        }
 
         return $value;
     }
 
-    public function listen_for_submit() 
+    public function listen_for_submit()
     {
-        
+
         // only respond to AJAX requests with _hf_form_id set.
         if (empty($_POST['_hf_form_id'])
             || empty( $_SERVER['HTTP_X_REQUESTED_WITH'] )
@@ -191,7 +189,7 @@ class Forms
         if (empty( $error_code ) ) {
 
             /**
-            * Filters the field names that should be ignored on the Submission object. 
+            * Filters the field names that should be ignored on the Submission object.
             * Fields starting with an underscore (_) are ignored by default.
             *
             * @param array $names
@@ -279,7 +277,7 @@ class Forms
 
             wp_send_json($response, 200);
             exit;
-        });      
+        });
     }
 
     public function listen_for_preview() {
@@ -291,7 +289,7 @@ class Forms
             $form = hf_get_form( $_GET['hf_preview_form'] );
         } catch( \Exception $e ) {
             return;
-        }  
+        }
 
         show_admin_bar(false);
         add_filter( 'pre_handle_404', '__return_true' );
@@ -308,7 +306,7 @@ class Forms
         });
     }
 
-    private function get_response_for_error_code( $error_code, Form $form ) 
+    private function get_response_for_error_code( $error_code, Form $form )
     {
         // return success response for empty error code string or spam (to trick bots)
         if( $error_code === "" || $error_code === "spam" ) {
@@ -345,6 +343,12 @@ class Forms
 
     public function shortcode($attributes = array(), $content = '')
     {
+        // Load resources
+        wp_enqueue_script('html-forms');
+        if( $this->settings['load_stylesheet'] ) {
+            wp_enqueue_style('html-forms');
+        }
+
         $slug_or_id = empty( $attributes['id'] ) ? $attributes['slug'] : $attributes['id'];
 
         try {
