@@ -343,12 +343,6 @@ class Forms
 
     public function shortcode($attributes = array(), $content = '')
     {
-        // Load resources
-        wp_enqueue_script('html-forms');
-        if( $this->settings['load_stylesheet'] ) {
-            wp_enqueue_style('html-forms');
-        }
-
         $slug_or_id = empty( $attributes['id'] ) ? $attributes['slug'] : $attributes['id'];
 
         try {
@@ -359,6 +353,12 @@ class Forms
             }
 
             return sprintf( '<p><strong>%s</strong> %s</p>', __( 'Error:', 'html-forms' ), sprintf( __( 'No form found with slug %s', 'html-forms' ), $attributes['slug'] ) );
+        }
+
+        // Load resources
+        wp_enqueue_script('html-forms');
+        if( $this->settings['load_stylesheet'] ) {
+            wp_enqueue_style('html-forms');
         }
 
         return $form . $content;
