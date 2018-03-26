@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) or exit;
 $datetime_format = sprintf('%s %s', get_option( 'date_format' ), get_option( 'time_format' ) );
 
-add_action( 'hf_admin_form_submissions_output_column_header', function( $column ) {
+add_action( 'hf_admin_form_submissions_table_output_column_header', function( $column ) {
    echo esc_html( ucfirst( strtolower( $column ) ) );
 });
 
