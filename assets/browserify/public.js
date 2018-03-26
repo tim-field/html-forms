@@ -6,7 +6,9 @@ const Loader = require('./form-loading-indicator.js');
 const vars = window.hf_js_vars || { ajax_url: window.location.href };
 const EventEmitter = require('wolfy87-eventemitter');
 const events = new EventEmitter();
+
 import ConditionalElements from './conditional-elements.js';
+import './polyfills/custom-event.js';
 
 function cleanFormMessages(formEl) {
     let messageElements = formEl.querySelectorAll('.hf-message');
@@ -35,7 +37,7 @@ function handleSubmitEvents(e) {
 }
 
 function submitForm(formEl) {
-    events.emit('submit', [formEl]);
+    emitEvent('submit', formEl);
 
     const data = serialize(formEl, { "hash": false, "empty": true });
     let request = new XMLHttpRequest();
@@ -47,6 +49,14 @@ function submitForm(formEl) {
     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     request.send(data);
     request = null;
+}
+
+function emitEvent(eventName, element) {
+    // browser event API: formElement.on('hf-success', ..)
+    element.dispatchEvent(new CustomEvent("hf-"+eventName));
+
+    // custom events API: html_forms.on('success', ..)
+    events.emit(eventName, [element]);
 }
 
 function createRequestHandler(formEl) {
@@ -67,12 +77,12 @@ function createRequestHandler(formEl) {
                     return;
                 }
 
-                events.emit('submitted', [formEl]);
+                emitEvent('submitted', formEl);
 
                 if( response.error ) {
-                    events.emit('error', [formEl]);
+                    emitEvent('error', formEl);
                 } else {
-                    events.emit('success', [formEl]);
+                    emitEvent('success', formEl);
                 }
 
                 // Show form message
@@ -101,7 +111,6 @@ function createRequestHandler(formEl) {
         }
     }
 }
-
 
 document.addEventListener('submit', handleSubmitEvents, true);
 ConditionalElements.init();

@@ -174,9 +174,30 @@ module.exports = Loader;
 },{}],3:[function(require,module,exports){
 "use strict";
 
+/* window.CustomEvent polyfill for IE */
+(function () {
+  if (typeof window.CustomEvent === "function") return false;
+
+  function CustomEvent(event, params) {
+    params = params || { bubbles: false, cancelable: false, detail: undefined };
+    var evt = document.createEvent('CustomEvent');
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return evt;
+  }
+
+  CustomEvent.prototype = window.Event.prototype;
+
+  window.CustomEvent = CustomEvent;
+})();
+
+},{}],4:[function(require,module,exports){
+"use strict";
+
 var _conditionalElements = require('./conditional-elements.js');
 
 var _conditionalElements2 = _interopRequireDefault(_conditionalElements);
+
+require('./polyfills/custom-event.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -186,7 +207,6 @@ var Loader = require('./form-loading-indicator.js');
 var vars = window.hf_js_vars || { ajax_url: window.location.href };
 var EventEmitter = require('wolfy87-eventemitter');
 var events = new EventEmitter();
-
 
 function cleanFormMessages(formEl) {
     var messageElements = formEl.querySelectorAll('.hf-message');
@@ -215,7 +235,7 @@ function handleSubmitEvents(e) {
 }
 
 function submitForm(formEl) {
-    events.emit('submit', [formEl]);
+    emitEvent('submit', formEl);
 
     var data = serialize(formEl, { "hash": false, "empty": true });
     var request = new XMLHttpRequest();
@@ -227,6 +247,14 @@ function submitForm(formEl) {
     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     request.send(data);
     request = null;
+}
+
+function emitEvent(eventName, element) {
+    // browser event API: formElement.on('hf-success', ..)
+    element.dispatchEvent(new CustomEvent("hf-" + eventName));
+
+    // custom events API: html_forms.on('success', ..)
+    events.emit(eventName, [element]);
 }
 
 function createRequestHandler(formEl) {
@@ -247,12 +275,12 @@ function createRequestHandler(formEl) {
                     return;
                 }
 
-                events.emit('submitted', [formEl]);
+                emitEvent('submitted', formEl);
 
                 if (response.error) {
-                    events.emit('error', [formEl]);
+                    emitEvent('error', formEl);
                 } else {
-                    events.emit('success', [formEl]);
+                    emitEvent('success', formEl);
                 }
 
                 // Show form message
@@ -289,7 +317,7 @@ window.html_forms = {
     'on': events.on.bind(events)
 };
 
-},{"./conditional-elements.js":1,"./form-loading-indicator.js":2,"es5-shim":4,"form-serialize":5,"wolfy87-eventemitter":6}],4:[function(require,module,exports){
+},{"./conditional-elements.js":1,"./form-loading-indicator.js":2,"./polyfills/custom-event.js":3,"es5-shim":5,"form-serialize":6,"wolfy87-eventemitter":7}],5:[function(require,module,exports){
 /*!
  * https://github.com/es-shims/es5-shim
  * @license es5-shim Copyright 2009-2015 by contributors, MIT License
@@ -2389,7 +2417,7 @@ window.html_forms = {
     }
 }));
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // get successful control from form and assemble into object
 // http://www.w3.org/TR/html401/interact/forms.html#h-17.13.2
 
@@ -2651,7 +2679,7 @@ function str_serialize(result, key, value) {
 
 module.exports = serialize;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*!
  * EventEmitter v5.2.4 - git.io/ee
  * Unlicense - http://unlicense.org/
@@ -3139,5 +3167,5 @@ module.exports = serialize;
     }
 }(this || {}));
 
-},{}]},{},[3]);
+},{}]},{},[4]);
 ; })();
