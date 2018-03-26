@@ -274,7 +274,6 @@ var FieldConfigurator = (_class2 = function (_Component2) {
         key: 'addToForm',
         value: function addToForm() {
             var html = (0, _html.htmlgenerate)(this.state);
-            console.log(html);
             Editor.replaceSelection(html);
         }
     }, {
