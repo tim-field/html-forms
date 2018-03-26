@@ -116,6 +116,7 @@ class FieldConfigurator extends Component {
     @bind
     addToForm() {
         const html = htmlgenerate(this.state);
+        console.log(html);
         Editor.replaceSelection(html);
     }
 

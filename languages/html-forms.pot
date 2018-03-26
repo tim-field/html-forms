@@ -13,31 +13,31 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Form.php:55
+#: src/Form.php:66
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/Forms.php:356
+#: src/Forms.php:357
 msgid "Error:"
 msgstr ""
 
-#: src/Forms.php:356
+#: src/Forms.php:357
 msgid "No form found with slug %s"
 msgstr ""
 
-#: src/functions.php:38
+#: src/functions.php:54
 msgid "Thank you! We will be in touch soon."
 msgstr ""
 
-#: src/functions.php:39
+#: src/functions.php:55
 msgid "Sorry, that email address looks invalid."
 msgstr ""
 
-#: src/functions.php:40
+#: src/functions.php:56
 msgid "Please fill in the required fields."
 msgstr ""
 
-#: src/functions.php:41
+#: src/functions.php:57
 msgid "Oops. An error occurred."
 msgstr ""
 
@@ -101,26 +101,26 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: src/Admin/Table.php:180
+#: src/Admin/Table.php:181
 msgid "Fields"
 msgstr ""
 
-#: src/Admin/Table.php:181
+#: src/Admin/Table.php:182
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Table.php:182
+#: src/Admin/Table.php:183
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/Table.php:183
+#: src/Admin/Table.php:184
 msgid "Actions"
 msgstr ""
 
-#: src/Admin/Table.php:187
+#: src/Admin/Table.php:188
 msgid "Submissions"
 msgstr ""
 
-#: src/Admin/Table.php:214
+#: src/Admin/Table.php:215
 msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
 msgstr ""

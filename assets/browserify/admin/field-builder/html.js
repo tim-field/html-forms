@@ -1,4 +1,3 @@
-import htmlutil from 'html';
 import renderToString from 'preact-render-to-string';
 import { h } from 'preact';
 
@@ -85,13 +84,12 @@ function htmlgenerate(conf) {
     let str = "";
     if( conf.wrap ) {
         let tmpl = h("p", {}, [label, field]);
-        str = renderToString(tmpl);
+        str = renderToString(tmpl, null, { pretty: true });
     } else {
-        str += renderToString(label);
-        str += renderToString(field);
+        str += renderToString(label, null, { pretty: true });
+        str += "\n";
+        str += renderToString(field, null, { pretty: true });
     }
-
-    str = htmlutil.prettyPrint(str);
 
     return str;
 }
