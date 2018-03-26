@@ -66,7 +66,9 @@ class Forms
             'ajax_url' => admin_url('admin-ajax.php'),
         ));
 
-        wp_register_style( 'html-forms', $assets_url . "css/forms{$suffix}.css", array(), HTML_FORMS_VERSION );
+        if( $this->settings['load_stylesheet'] ) {
+            wp_enqueue_style( 'html-forms', $assets_url . "css/forms{$suffix}.css", array(), HTML_FORMS_VERSION );
+        }
     }
 
     /**
@@ -353,12 +355,6 @@ class Forms
             }
 
             return sprintf( '<p><strong>%s</strong> %s</p>', __( 'Error:', 'html-forms' ), sprintf( __( 'No form found with slug %s', 'html-forms' ), $attributes['slug'] ) );
-        }
-
-        // Load resources
-        wp_enqueue_script('html-forms');
-        if( $this->settings['load_stylesheet'] ) {
-            wp_enqueue_style('html-forms');
         }
 
         return $form . $content;

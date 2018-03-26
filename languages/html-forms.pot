@@ -17,11 +17,11 @@ msgstr ""
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/Forms.php:357
+#: src/Forms.php:355
 msgid "Error:"
 msgstr ""
 
-#: src/Forms.php:357
+#: src/Forms.php:355
 msgid "No form found with slug %s"
 msgstr ""
 
