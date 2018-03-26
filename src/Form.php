@@ -69,7 +69,9 @@ class Form {
         $html .= '<!-- / HTML Forms -->';
 
         // ensure JS script is enqueued whenever this function is called
-        wp_enqueue_script('html-forms');
+        if( function_exists( 'wp_enqueue_script' ) ) {
+            wp_enqueue_script('html-forms');
+        }
 
         /**
          * Filters the resulting HTML for this form.
