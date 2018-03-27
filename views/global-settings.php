@@ -37,9 +37,13 @@
                         <p class="help"><?php _e( 'Select "yes" to store all successful form submissions.', 'html-forms' ); ?></p>
                     </td>
                 </tr>
+
             </table>
         <?php submit_button(); ?>
     </form>
+
+
+    <?php do_action( 'hf_admin_output_misc_settings' ); ?>
 
     <?php require __DIR__ . '/admin-footer.php'; ?>
 </div>

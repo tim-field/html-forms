@@ -6,9 +6,6 @@ use WP_List_Table, WP_Post;
 // Check if WP Core class exists so that we can keep testing rest of HTML Forms in isolation..
 if( class_exists( 'WP_List_Table' ) ) {
 
-    /**
-     * Class MC4WP_Forms_Table
-     */
     class Table extends WP_List_Table {
 
         /**
