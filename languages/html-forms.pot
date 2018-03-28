@@ -17,11 +17,11 @@ msgstr ""
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/Forms.php:355
+#: src/Forms.php:357
 msgid "Error:"
 msgstr ""
 
-#: src/Forms.php:355
+#: src/Forms.php:357
 msgid "No form found with slug %s"
 msgstr ""
 
@@ -93,34 +93,34 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-#: src/Admin/Table.php:113
+#: src/Admin/Table.php:110
 msgid "Form"
 msgstr ""
 
-#: src/Admin/Table.php:114
+#: src/Admin/Table.php:111
 msgid "Shortcode"
 msgstr ""
 
-#: src/Admin/Table.php:181
+#: src/Admin/Table.php:178
 msgid "Fields"
 msgstr ""
 
-#: src/Admin/Table.php:182
+#: src/Admin/Table.php:179
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Table.php:183
+#: src/Admin/Table.php:180
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/Table.php:184
+#: src/Admin/Table.php:181
 msgid "Actions"
 msgstr ""
 
-#: src/Admin/Table.php:188
+#: src/Admin/Table.php:185
 msgid "Submissions"
 msgstr ""
 
-#: src/Admin/Table.php:215
+#: src/Admin/Table.php:212
 msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
 msgstr ""
