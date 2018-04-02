@@ -39,15 +39,18 @@ function handleSubmitEvents(e) {
 function submitForm(formEl) {
     emitEvent('submit', formEl);
 
-    const data = serialize(formEl, { "hash": false, "empty": true });
-    let request = new XMLHttpRequest();
+    let formData = new FormData(formEl);
+    formEl.querySelectorAll('[data-was-required=true]').forEach(function(el) {
+        formData.append('was_required[]', el.getAttribute('name'))
+    });
 
     cleanFormMessages(formEl);
+
+    let request = new XMLHttpRequest();
     request.onreadystatechange = createRequestHandler(formEl);
     request.open('POST', vars.ajax_url, true);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    request.send(data);
+    request.send(formData);
     request = null;
 }
 

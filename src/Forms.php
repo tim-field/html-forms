@@ -89,10 +89,11 @@ class Forms
             return 'spam';
         }
 
+        $was_required = (array) hf_array_get( $data, 'was_required' );
         $required_fields = $form->get_required_fields();
         foreach ($required_fields as $field_name) {
             $value = hf_array_get( $data, $field_name );
-            if ( empty( $value ) ) {
+            if ( ! in_array( $field_name, $was_required ) && empty( $value ) ) {
                 return 'required_field_missing';
             }
         }
