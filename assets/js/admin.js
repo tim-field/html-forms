@@ -55,6 +55,8 @@ var _tlite2 = _interopRequireDefault(_tlite);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+window.html_forms = {};
+
 // init the various components
 _tabs2.default.init();
 _actionConfirmations2.default.init();
@@ -69,11 +71,8 @@ if (document.getElementById('hf-form-editor')) {
     return el.className.indexOf('hf-tooltip') > -1;
 });
 
-// expose variables
-window.html_forms = {
-    'FieldBuilder': _fieldBuilder2.default,
-    'Editor': _formEditor2.default
-};
+window.html_forms.FieldBuilder = _fieldBuilder2.default;
+window.html_forms.Editor = _formEditor2.default;
 
 },{"./action-confirmations.js":1,"./field-builder.js":3,"./form-actions.js":6,"./form-editor.js":7,"./tabs.js":8,"tlite":21}],3:[function(require,module,exports){
 'use strict';
@@ -135,32 +134,35 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
     return desc;
 }
 
+function Field(key, label, configRows) {
+    this.key = key;
+    this.label = label;
+    this.configRows = configRows || [];
+}
+
 var Editor = void 0;
+var fields = [new Field("text", "Text", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("email", "Email", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("url", "URL", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("number", "Number", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("date", "Date", ["label", "default-value", "required", "wrap", "add-to-form"]), new Field("textarea", "Textarea", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("dropdown", "Dropdown", ["label", "choices", "required", "wrap", "add-to-form"]), new Field("checkboxes", "Checkboxes", ["label", "choices", "wrap", "add-to-form"]), new Field("radio-buttons", "Radio buttons", ["label", "choices", "wrap", "add-to-form"]), new Field("submit", "Submit button", ["button-text", "wrap", "add-to-form"])];
 
+function getField(key) {
+    for (var i = 0; i < fields.length; i++) {
+        if (fields[i].key === key) {
+            return fields[i];
+        }
+    }
 
-var fields = {
-    "text": "Text",
-    "email": "Email",
-    "url": "URL",
-    "number": "Number",
-    "date": "Date",
-    "textarea": "Textarea",
-    "dropdown": "Dropdown",
-    "checkboxes": "Checkboxes",
-    "radio-buttons": "Radio buttons",
-    "submit": "Submit button"
-};
+    return undefined;
+}
 
 var FieldBuilder = (_class = function (_Component) {
     _inherits(FieldBuilder, _Component);
 
-    function FieldBuilder() {
+    function FieldBuilder(props) {
         _classCallCheck(this, FieldBuilder);
 
-        var _this = _possibleConstructorReturn(this, (FieldBuilder.__proto__ || Object.getPrototypeOf(FieldBuilder)).call(this));
+        var _this = _possibleConstructorReturn(this, (FieldBuilder.__proto__ || Object.getPrototypeOf(FieldBuilder)).call(this, props));
 
         _this.state = {
-            fieldType: ""
+            activeField: null
         };
         return _this;
     }
@@ -169,18 +171,19 @@ var FieldBuilder = (_class = function (_Component) {
         key: 'handleCancel',
         value: function handleCancel() {
             this.setState({
-                fieldType: ""
+                activeField: null
             });
         }
     }, {
         key: 'openFieldConfig',
         value: function openFieldConfig(e) {
-            var newFieldType = e.target.value;
+            var newFieldKey = e.target.value;
+            var field = getField(newFieldKey);
 
-            if (this.state.fieldType === newFieldType) {
-                this.setState({ fieldType: "" });
+            if (this.state.activeField === field) {
+                this.setState({ activeField: null });
             } else {
-                this.setState({ fieldType: newFieldType });
+                this.setState({ activeField: field });
             }
         }
     }, {
@@ -188,14 +191,15 @@ var FieldBuilder = (_class = function (_Component) {
         value: function render(props, state) {
             var _this2 = this;
 
-            var fieldButtons = Object.keys(fields).map(function (key) {
-                var label = fields[key];
+            var fieldButtons = props.fields.map(function (f) {
                 return (0, _preact.h)(
                     'button',
-                    { type: 'button', value: key, className: "button " + (state.fieldType === key ? "active" : ""), onClick: _this2.openFieldConfig },
-                    label
+                    { type: 'button', value: f.key, className: "button " + (state.activeField === f ? "active" : ""), onClick: _this2.openFieldConfig },
+                    f.label
                 );
             });
+            var fieldType = state.activeField ? state.activeField.key : "";
+            var rows = state.activeField ? state.activeField.configRows : [];
 
             return (0, _preact.h)(
                 'div',
@@ -213,9 +217,9 @@ var FieldBuilder = (_class = function (_Component) {
                 (0, _preact.h)(
                     'div',
                     { style: 'max-width: 480px;' },
-                    (0, _preact.h)(FieldConfigurator, { fieldType: state.fieldType, onCancel: this.handleCancel })
+                    (0, _preact.h)(FieldConfigurator, { fieldType: fieldType, rows: rows, onCancel: this.handleCancel })
                 ),
-                state.fieldType === "" ? (0, _preact.h)(
+                state.activeField === null ? (0, _preact.h)(
                     'p',
                     { 'class': 'help', style: 'margin-bottom: 0;' },
                     'Use the buttons above to generate your field HTML, or manually modify your form below.'
@@ -248,7 +252,7 @@ var FieldConfigurator = (_class2 = function (_Component2) {
         key: 'getInitialState',
         value: function getInitialState() {
             return {
-                fieldType: this.props.fieldType,
+                fieldType: "",
                 fieldLabel: "",
                 placeholder: "",
                 value: "",
@@ -266,9 +270,7 @@ var FieldConfigurator = (_class2 = function (_Component2) {
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(props) {
-            this.setState({
-                fieldType: props.fieldType
-            });
+            this.setState({ fieldType: props.fieldType });
         }
     }, {
         key: 'addToForm',
@@ -317,73 +319,47 @@ var FieldConfigurator = (_class2 = function (_Component2) {
     }, {
         key: 'render',
         value: function render(props, state) {
-            if (state.fieldType === "") {
+            if (props.rows.length == 0) {
                 return "";
             }
 
-            var formFields = void 0;
+            var formFields = [];
 
-            switch (state.fieldType) {
-                case "text":
-                case "email":
-                case "url":
-                case "number":
-                case "textarea":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
-                        (0, _preact.h)(_configFields.Placeholder, { value: state.placeholder, onChange: (0, _linkstate2.default)(this, 'placeholder') }),
-                        (0, _preact.h)(_configFields.DefaultValue, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }),
-                        (0, _preact.h)(_configFields.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
-                case "submit":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.ButtonText, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
+            for (var i = 0; i < props.rows.length; i++) {
+                switch (props.rows[i]) {
+                    case "label":
+                        formFields.push((0, _preact.h)(_configFields.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }));
+                        break;
 
-                case "date":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
-                        (0, _preact.h)(_configFields.DefaultValue, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }),
-                        (0, _preact.h)(_configFields.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
-                case "dropdown":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
-                        (0, _preact.h)(_configFields.Choices, { multiple: false, choices: state.choices, handlers: this.choiceHandlers }),
-                        (0, _preact.h)(_configFields.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
+                    case "placeholder":
+                        formFields.push((0, _preact.h)(_configFields.Placeholder, { value: state.placeholder, onChange: (0, _linkstate2.default)(this, 'placeholder') }));
+                        break;
 
-                case "radio-buttons":
-                case "checkboxes":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
-                        (0, _preact.h)(_configFields.Choices, { multiple: state.fieldType === "checkboxes", choices: state.choices, handlers: this.choiceHandlers }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
+                    case "default-value":
+                        formFields.push((0, _preact.h)(_configFields.DefaultValue, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }));
+                        break;
+
+                    case "required":
+                        formFields.push((0, _preact.h)(_configFields.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }));
+                        break;
+
+                    case "wrap":
+                        formFields.push((0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }));
+                        break;
+
+                    case "add-to-form":
+                        formFields.push((0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel }));
+                        break;
+
+                    case "choices":
+                        formFields.push((0, _preact.h)(_configFields.Choices, { multiple: false, choices: state.choices, handlers: this.choiceHandlers }));
+                        break;
+
+                    case "button-text":
+                        formFields.push((0, _preact.h)(_configFields.ButtonText, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }));
+                        break;
+
+                }
             }
 
             return (0, _preact.h)(
@@ -404,11 +380,22 @@ var FieldConfigurator = (_class2 = function (_Component2) {
 
     return FieldConfigurator;
 }(_preact.Component), (_applyDecoratedDescriptor(_class2.prototype, 'addToForm', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'addToForm'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'addChoice', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'addChoice'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteChoice', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteChoice'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'changeChoiceLabel', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'changeChoiceLabel'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'toggleChoiceChecked', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'toggleChoiceChecked'), _class2.prototype), _applyDecoratedDescriptor(_class2, 'handleKeyPress', [_decko.bind], Object.getOwnPropertyDescriptor(_class2, 'handleKeyPress'), _class2), _applyDecoratedDescriptor(_class2.prototype, 'handleCancel', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'handleCancel'), _class2.prototype)), _class2);
+
+
+var el = void 0;
+function mount() {
+    el = (0, _preact.render)((0, _preact.h)(FieldBuilder, { fields: fields }), document.getElementById('hf-field-builder'), el);
+}
+
 exports.default = {
     init: function init(editor) {
         Editor = editor;
+        mount();
+    },
 
-        (0, _preact.render)((0, _preact.h)(FieldBuilder, null), document.getElementById('hf-field-builder'));
+    registerField: function registerField(key, label, configRows) {
+        fields.push(new Field(key, label, configRows));
+        mount();
     }
 };
 
@@ -643,7 +630,7 @@ function htmlgenerate(conf) {
                 required: conf.required
             };
             var opts = conf.choices.map(function (choice) {
-                return html("option", { defaultChecked: choice.checked }, choice.label);
+                return html("option", { selected: choice.checked }, choice.label);
             });
             field = html("select", fieldAttr, opts);
             break;

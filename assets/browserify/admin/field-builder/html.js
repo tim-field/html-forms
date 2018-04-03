@@ -33,7 +33,7 @@ function htmlgenerate(conf) {
                 required: conf.required,
             };
             const opts = conf.choices.map((choice) => (
-                html("option", { defaultChecked: choice.checked }, choice.label )
+                html("option", { selected: choice.checked }, choice.label )
             ));
             field = html("select", fieldAttr, opts);
             break;

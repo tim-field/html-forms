@@ -4,57 +4,75 @@ import { h, Component, render } from 'preact';
 import linkState from 'linkstate';
 import { AddToForm, Required, DefaultValue, Placeholder, Label, Wrap, Choices, ButtonText } from './field-builder/config-fields.js';
 import { htmlgenerate } from './field-builder/html.js';
-let Editor;
 import { bind } from 'decko';
 
-const fields = {
-    "text": "Text",
-    "email": "Email",
-    "url": "URL",
-    "number": "Number",
-    "date": "Date",
-    "textarea": "Textarea",
-    "dropdown": "Dropdown",
-    "checkboxes": "Checkboxes",
-    "radio-buttons": "Radio buttons",
-    "submit": "Submit button",
-};
+function Field(key, label, configRows) {
+    this.key = key;
+    this.label = label;
+    this.configRows = configRows || [];
+}
+
+let Editor;
+let fields = [
+    new Field("text", "Text", [ "label", "placeholder", "default-value", "required", "wrap", "add-to-form" ]),
+    new Field("email", "Email", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]),
+    new Field("url", "URL", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]),
+    new Field("number", "Number", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]),
+    new Field("date", "Date", [ "label", "default-value", "required", "wrap", "add-to-form" ]),
+    new Field("textarea", "Textarea", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]),
+    new Field("dropdown", "Dropdown", [ "label", "choices", "required", "wrap" ,"add-to-form" ]),
+    new Field("checkboxes", "Checkboxes", [ "label", "choices", "wrap" ,"add-to-form" ]),
+    new Field("radio-buttons", "Radio buttons", [ "label", "choices", "wrap" ,"add-to-form" ]),
+    new Field("submit", "Submit button", [ "button-text", "wrap", "add-to-form" ]),
+];
+
+function getField(key) {
+    for(let i=0; i<fields.length; i++) {
+        if(fields[i].key === key) {
+            return fields[i];
+        }
+    }
+
+    return undefined;
+}
 
 class FieldBuilder extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            fieldType: "",
+            activeField: null,
         };
     }
 
     @bind
     handleCancel() {
         this.setState({
-            fieldType: "",
+            activeField: null,
         });
     }
 
     @bind
     openFieldConfig(e) {
-        let newFieldType = e.target.value;
+        let newFieldKey = e.target.value;
+        let field = getField(newFieldKey);
 
-        if( this.state.fieldType === newFieldType ) {
-            this.setState({ fieldType: "" });
+        if( this.state.activeField === field ) {
+            this.setState({ activeField: null });
         } else {
-            this.setState({ fieldType: newFieldType });
+            this.setState({ activeField: field });
         }
     }
 
     render(props, state) {
-        const fieldButtons = Object.keys(fields).map((key) => {
-                let label = fields[key];
+        const fieldButtons = props.fields.map((f) => {
                 return (
-                    <button type="button" value={key} className={"button " + ( state.fieldType === key ? "active" : "")} onClick={this.openFieldConfig}>{label}</button>
+                    <button type="button" value={f.key} className={"button " + ( state.activeField === f ? "active" : "")} onClick={this.openFieldConfig}>{f.label}</button>
                 )
             }
         );
+        const fieldType = state.activeField ? state.activeField.key : "";
+        const rows = state.activeField ? state.activeField.configRows : [];
 
         return (
             <div class="hf-field-builder">
@@ -65,9 +83,9 @@ class FieldBuilder extends Component {
                     {fieldButtons}
                 </div>
                 <div style="max-width: 480px;">
-                    <FieldConfigurator fieldType={state.fieldType} onCancel={this.handleCancel} />
+                    <FieldConfigurator fieldType={fieldType} rows={rows} onCancel={this.handleCancel} />
                 </div>
-                {state.fieldType === "" ? <p class="help" style="margin-bottom: 0;">Use the buttons above to generate your field HTML, or manually modify your form below.</p> : ""}
+                {state.activeField === null ? <p class="help" style="margin-bottom: 0;">Use the buttons above to generate your field HTML, or manually modify your form below.</p> : ""}
             </div>
         );
     }
@@ -88,7 +106,7 @@ class FieldConfigurator extends Component {
 
     getInitialState() {
        return {
-            fieldType: this.props.fieldType,
+            fieldType: "",
             fieldLabel: "",
             placeholder: "",
             value: "",
@@ -107,10 +125,8 @@ class FieldConfigurator extends Component {
        };
     }
 
-    componentWillReceiveProps(props) {
-        this.setState({
-            fieldType: props.fieldType,
-        });
+    componentWillReceiveProps(props) { 
+        this.setState({ fieldType: props.fieldType })
     }
 
     @bind
@@ -166,73 +182,47 @@ class FieldConfigurator extends Component {
     }
 
     render(props, state) {
-        if(state.fieldType === "") {
+        if(props.rows.length == 0) {
             return "";
         }
 
-        let formFields;
+        let formFields = [];
 
-        switch(state.fieldType) {
-            case "text":
-            case "email":
-            case "url":
-            case "number":
-            case "textarea":
-                formFields = (
-                    <div>
-                        <Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
-                        <Placeholder value={state.placeholder} onChange={linkState(this, 'placeholder')}/>
-                        <DefaultValue value={state.value} onChange={linkState(this, 'value')}/>
-                        <Required checked={state.required} onChange={linkState(this, 'required')}/>
-                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')}/>
-                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
-                    </div>
-                );
-                break;
-            case "submit":
-                formFields = (
-                    <div>
-                        <ButtonText value={state.value} onChange={linkState(this, 'value')}/>
-                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')}/>
-                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
-                    </div>
-                );
+        for(let i=0; i < props.rows.length; i++) {
+            switch(props.rows[i]) {
+                case "label":
+                    formFields.push(<Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>);
                 break;
 
-            case "date":
-                formFields = (
-                    <div>
-                        <Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
-                        <DefaultValue value={state.value} onChange={linkState(this, 'value')}/>
-                        <Required checked={state.required} onChange={linkState(this, 'required')}/>
-                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')}/>
-                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
-                    </div>
-                );
-                break;
-            case "dropdown":
-                formFields = (
-                    <div>
-                        <Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')} />
-                        <Choices multiple={false} choices={state.choices} handlers={this.choiceHandlers} />
-                        <Required checked={state.required} onChange={linkState(this, 'required')}/>
-                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')} />
-                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
-                    </div>
-                );
+                case "placeholder":
+                    formFields.push(<Placeholder value={state.placeholder} onChange={linkState(this, 'placeholder')}/>);
                 break;
 
-            case "radio-buttons":
-            case "checkboxes":
-                formFields = (
-                    <div>
-                        <Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>
-                        <Choices multiple={state.fieldType === "checkboxes"} choices={state.choices} handlers={this.choiceHandlers} />
-                        <Wrap checked={state.wrap} onChange={linkState(this, 'wrap')} />
-                        <AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />
-                    </div>
-                );
+                case "default-value":
+                    formFields.push(<DefaultValue value={state.value} onChange={linkState(this, 'value')}/>);
                 break;
+
+                case "required":
+                    formFields.push(<Required checked={state.required} onChange={linkState(this, 'required')}/>);
+                break;
+
+                case "wrap":
+                    formFields.push(<Wrap checked={state.wrap} onChange={linkState(this, 'wrap')}/>);
+                break;
+
+                case "add-to-form":
+                    formFields.push(<AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />);
+                break;
+
+                case "choices":
+                    formFields.push(<Choices multiple={false} choices={state.choices} handlers={this.choiceHandlers} />);
+                break;
+
+                case "button-text":
+                    formFields.push(<ButtonText value={state.value} onChange={linkState(this, 'value')}/>);
+                break;
+
+            }
         }
 
         return (
@@ -243,14 +233,19 @@ class FieldConfigurator extends Component {
     }
 }
 
-
+let el;
+function mount() {
+    el = render(<FieldBuilder fields={fields} />, document.getElementById('hf-field-builder'), el);     
+}
 
 export default {
     init: function(editor) {
         Editor = editor;
+        mount();
+    },
 
-        render((
-            <FieldBuilder />
-        ), document.getElementById('hf-field-builder'));
+    registerField: function(key, label, configRows) {
+        fields.push(new Field(key, label, configRows));
+        mount();
     }
 }
