@@ -5,7 +5,6 @@
     "codemirror": "^5.34.0",
     "decko": "^1.2.0",
     "es5-shim": "^4.5.10",
-    "form-serialize": "^0.7.2",
     "linkstate": "^1.1.1",
     "preact": "^8.2.7",
     "preact-render-to-string": "^3.7.0",

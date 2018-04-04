@@ -1,7 +1,6 @@
 "use strict";
 
 const shim = require('es5-shim');
-const serialize = require('form-serialize');
 const Loader = require('./form-loading-indicator.js');
 const vars = window.hf_js_vars || { ajax_url: window.location.href };
 const EventEmitter = require('wolfy87-eventemitter');
@@ -37,17 +36,15 @@ function handleSubmitEvents(e) {
 }
 
 function submitForm(formEl) {
+    cleanFormMessages(formEl);
     emitEvent('submit', formEl);
 
-    const data = serialize(formEl, { "hash": false, "empty": true });
+    let formData = new FormData(formEl);
     let request = new XMLHttpRequest();
-
-    cleanFormMessages(formEl);
     request.onreadystatechange = createRequestHandler(formEl);
     request.open('POST', vars.ajax_url, true);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    request.send(data);
+    request.send(formData);
     request = null;
 }
 
