@@ -1,6 +1,7 @@
+'use strict';
+
 import renderToString from 'preact-render-to-string';
 import { h } from 'preact';
-
 
 function htmlgenerate(conf) {
     const label = conf.fieldLabel.length && conf.fieldType !== 'submit' ? h("label", {}, conf.fieldLabel ) : "";

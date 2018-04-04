@@ -1,3 +1,5 @@
+'use strict';
+
 import { h } from 'preact';
 
 function AddToForm(props){
