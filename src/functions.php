@@ -220,3 +220,12 @@ function hf_replace_data_variables( $string, $data = array() ) {
     return $string;
 }
 
+/**
+* Poor man's file object, compatible with serialization..
+*
+* @return bool
+*/
+function hf_is_file( $file ) {
+    return isset( $file['name'] ) && isset( $file['size'] ) && isset( $file['type'] );
+}
+

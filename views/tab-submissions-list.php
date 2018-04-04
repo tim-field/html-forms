@@ -71,7 +71,6 @@ $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
                        $value = join( ', ', $value );
                    }
                    $value = esc_html( $value );
-
                    echo sprintf( '<td>%s%s</td>', substr( $value, 0, 100 ), strlen( $value ) > 100 ? '...' : '' );
                } ?>
             </tr>
