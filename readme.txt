@@ -41,7 +41,8 @@ You define your form fields in HTML and the plugin takes care of submitting the 
 - Hide form or redirect to URL after a successful submission.
 - Configurable & translatable form messages.
 - Field validation.
-- Developer friendly. HTML Forms comes with a myriad of JavaScript events and WordPress hooks that allow you to modify or extend the plugin's default behavior.
+- Developer friendly. HTML Forms comes with a myriad of [JavaScript events](https://kb.htmlforms.io/javascript-events/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description) and WordPress hooks that allow you to modify or extend the plugin's default behavior.
+- Advanced features are bundled in [HTML Forms Premium](https://www.htmlforms.io/premium-features/https://kb.htmlforms.io/javascript-events/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description).
 
 ## Who is this for?
 
