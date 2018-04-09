@@ -40,6 +40,10 @@ function submitForm(formEl) {
     emitEvent('submit', formEl);
 
     let formData = new FormData(formEl);
+    [].forEach.call(formEl.querySelectorAll('[data-was-required=true]'), function(el) {
+        formData.append('was_required[]', el.getAttribute('name'))
+    });
+
     let request = new XMLHttpRequest();
     request.onreadystatechange = createRequestHandler(formEl);
     request.open('POST', vars.ajax_url, true);

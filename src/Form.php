@@ -16,7 +16,7 @@ class Form {
      *
      * @param $ID
      */
-    public function __construct($ID) 
+    public function __construct($ID)
     {
         $this->ID = $ID;
     }
@@ -25,14 +25,14 @@ class Form {
     * Magic method for accessing unexisting properties, eg lowercase "id".
     *
     * @return mixed
-    */ 
+    */
     public function __get( $property ) {
         if( $property === 'id' ) {
             return $this->ID;
         }
     }
 
-    public function get_html() 
+    public function get_html()
     {
         $form = $this;
 
@@ -88,7 +88,7 @@ class Form {
         $attributes = array(
             'id' => $this->ID,
             'title' => $this->title,
-            'slug' => $this->slug, 
+            'slug' => $this->slug,
         );
 
         // add messages
@@ -124,7 +124,7 @@ class Form {
     /**
      * @return string
      */
-    public function __toString() 
+    public function __toString()
     {
         return $this->get_html();
     }
@@ -139,7 +139,7 @@ class Form {
     /**
      * @return array
      */
-    public function get_required_fields() 
+    public function get_required_fields()
     {
         if( empty( $this->settings['required_fields'] ) ) {
             return array();
@@ -152,7 +152,7 @@ class Form {
     /**
      * @return array
      */
-    public function get_email_fields() 
+    public function get_email_fields()
     {
         if( empty( $this->settings['email_fields'] ) ) {
             return array();
@@ -166,7 +166,7 @@ class Form {
     * @param string $code
     * @return string
     */
-    public function get_message( $code ) 
+    public function get_message( $code )
     {
         $form = $this;
         $message = isset( $this->messages[ $code ] ) ? $this->messages[ $code ] : '';
@@ -183,6 +183,8 @@ class Form {
     * @return int The number of named fields in the form
     */
     public function get_field_count() {
-        return substr_count( strtolower( $this->get_html() ), ' name=' );
+        $count = substr_count( strtolower( $this->get_html() ), ' name=' );
+        $count++; // Add one for 'was-required'
+        return $count;
     }
 }
