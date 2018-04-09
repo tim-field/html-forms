@@ -240,14 +240,14 @@ class Forms
             $submission->referer_url = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( $_SERVER['HTTP_REFERER'] ) : '';
             $submission->submitted_at = gmdate( 'Y-m-d H:i:s' );
 
-            /**
-            * General purpose hook before the submission is saved, so we can still modify data that is (maybe) stored.
-            */
-            do_action( 'hf_process_form', $form, $submission );
-
             if( $this->settings['save_submissions'] ) {
                  $submission->save();
             }
+
+            /**
+            * General purpose hook that runs before all form actions, so we can still modify the submission object that is passed to actions.
+            */
+            do_action( 'hf_process_form', $form, $submission );
 
             // process form actions
             if ( isset( $form->settings['actions'] ) ) {
