@@ -40,7 +40,7 @@ function submitForm(formEl) {
     emitEvent('submit', formEl);
 
     let formData = new FormData(formEl);
-    formEl.querySelectorAll('[data-was-required=true]').forEach(function(el) {
+    [].forEach.call(formEl.querySelectorAll('[data-was-required=true]'), function(el) {
         formData.append('was_required[]', el.getAttribute('name'))
     });
 
