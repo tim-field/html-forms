@@ -225,11 +225,15 @@ var _html = require('../field-builder/html.js');
 
 var _fieldSettings = require('./field-settings.js');
 
+var FS = _interopRequireWildcard(_fieldSettings);
+
 var _linkstate = require('linkstate');
 
 var _linkstate2 = _interopRequireDefault(_linkstate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -300,7 +304,8 @@ var FieldConfigurator = (_class = function (_Component) {
                 }, {
                     checked: false,
                     label: "Two"
-                }]
+                }],
+                accept: ''
             };
         }
     }, {
@@ -364,35 +369,39 @@ var FieldConfigurator = (_class = function (_Component) {
             for (var i = 0; i < props.rows.length; i++) {
                 switch (props.rows[i]) {
                     case "label":
-                        formFields.push((0, _preact.h)(_fieldSettings.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }));
+                        formFields.push((0, _preact.h)(FS.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }));
                         break;
 
                     case "placeholder":
-                        formFields.push((0, _preact.h)(_fieldSettings.Placeholder, { value: state.placeholder, onChange: (0, _linkstate2.default)(this, 'placeholder') }));
+                        formFields.push((0, _preact.h)(FS.Placeholder, { value: state.placeholder, onChange: (0, _linkstate2.default)(this, 'placeholder') }));
                         break;
 
                     case "default-value":
-                        formFields.push((0, _preact.h)(_fieldSettings.DefaultValue, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }));
+                        formFields.push((0, _preact.h)(FS.DefaultValue, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }));
                         break;
 
                     case "required":
-                        formFields.push((0, _preact.h)(_fieldSettings.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }));
+                        formFields.push((0, _preact.h)(FS.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }));
                         break;
 
                     case "wrap":
-                        formFields.push((0, _preact.h)(_fieldSettings.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }));
+                        formFields.push((0, _preact.h)(FS.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }));
                         break;
 
                     case "add-to-form":
-                        formFields.push((0, _preact.h)(_fieldSettings.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel }));
+                        formFields.push((0, _preact.h)(FS.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel }));
                         break;
 
                     case "choices":
-                        formFields.push((0, _preact.h)(_fieldSettings.Choices, { multiple: false, choices: state.choices, handlers: this.choiceHandlers }));
+                        formFields.push((0, _preact.h)(FS.Choices, { multiple: false, choices: state.choices, handlers: this.choiceHandlers }));
                         break;
 
                     case "button-text":
-                        formFields.push((0, _preact.h)(_fieldSettings.ButtonText, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }));
+                        formFields.push((0, _preact.h)(FS.ButtonText, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }));
+                        break;
+
+                    case "accept":
+                        formFields.push((0, _preact.h)(FS.Accept, { value: state.accept, onChange: (0, _linkstate2.default)(this, 'accept') }));
                         break;
 
                 }
@@ -424,7 +433,7 @@ exports.FieldConfigurator = FieldConfigurator;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ButtonText = exports.Choices = exports.Required = exports.Wrap = exports.DefaultValue = exports.Placeholder = exports.Label = exports.AddToForm = undefined;
+exports.Accept = exports.ButtonText = exports.Choices = exports.Required = exports.Wrap = exports.DefaultValue = exports.Placeholder = exports.Label = exports.AddToForm = undefined;
 
 var _preact = require('preact');
 
@@ -592,6 +601,32 @@ function Choices(props) {
     );
 }
 
+function Accept(props) {
+    return (0, _preact.h)(
+        'div',
+        { 'class': 'hf-small-margin' },
+        (0, _preact.h)(
+            'label',
+            null,
+            'Accepted file types'
+        ),
+        (0, _preact.h)('input', { type: 'text', value: props.value, onChange: props.onChange }),
+        (0, _preact.h)(
+            'p',
+            { 'class': 'help' },
+            'Use a comma-separated list of accepted file extensions, eg ',
+            (0, _preact.h)(
+                'code',
+                null,
+                '.pdf'
+            ),
+            '. ',
+            (0, _preact.h)('br', null),
+            'Leave empty to accept any file type.'
+        )
+    );
+}
+
 exports.AddToForm = AddToForm;
 exports.Label = Label;
 exports.Placeholder = Placeholder;
@@ -600,6 +635,7 @@ exports.Wrap = Wrap;
 exports.Required = Required;
 exports.Choices = Choices;
 exports.ButtonText = ButtonText;
+exports.Accept = Accept;
 
 },{"preact":22}],6:[function(require,module,exports){
 'use strict';
@@ -717,6 +753,20 @@ function htmlgenerate(conf) {
                     checked: choice.checked
                 }), " ", html("span", {}, choice.label)]);
             });
+            break;
+
+        case "file":
+            fieldAttr = {
+                type: "file",
+                name: namify(conf.fieldLabel),
+                required: conf.required
+            };
+
+            if (conf['accept']) {
+                fieldAttr['accept'] = conf['accept'];
+            }
+
+            field = html("input", fieldAttr);
             break;
 
         case "submit":

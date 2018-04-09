@@ -3,7 +3,7 @@
 import { h, Component, render } from 'preact';
 import { bind } from 'decko';
 import { htmlgenerate } from '../field-builder/html.js';
-import { AddToForm, Required, DefaultValue, Placeholder, Label, Wrap, Choices, ButtonText } from './field-settings.js';
+import * as FS from './field-settings.js';
 import linkState from 'linkstate';
 
 class FieldConfigurator extends Component {
@@ -28,15 +28,16 @@ class FieldConfigurator extends Component {
             wrap: true,
             required: false,
             choices: [
-            {
-                checked: false,
-                label: "One",
-            },
-            {
-                checked: false,
-                label: "Two",
-            },
-        ],
+                {
+                    checked: false,
+                    label: "One",
+                },
+                {
+                    checked: false,
+                    label: "Two",
+                },
+            ],
+            accept: '',
        };
     }
 
@@ -106,35 +107,39 @@ class FieldConfigurator extends Component {
         for(let i=0; i < props.rows.length; i++) {
             switch(props.rows[i]) {
                 case "label":
-                    formFields.push(<Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>);
+                    formFields.push(<FS.Label value={state.fieldLabel} onChange={linkState(this, 'fieldLabel')}/>);
                 break;
 
                 case "placeholder":
-                    formFields.push(<Placeholder value={state.placeholder} onChange={linkState(this, 'placeholder')}/>);
+                    formFields.push(<FS.Placeholder value={state.placeholder} onChange={linkState(this, 'placeholder')}/>);
                 break;
 
                 case "default-value":
-                    formFields.push(<DefaultValue value={state.value} onChange={linkState(this, 'value')}/>);
+                    formFields.push(<FS.DefaultValue value={state.value} onChange={linkState(this, 'value')}/>);
                 break;
 
                 case "required":
-                    formFields.push(<Required checked={state.required} onChange={linkState(this, 'required')}/>);
+                    formFields.push(<FS.Required checked={state.required} onChange={linkState(this, 'required')}/>);
                 break;
 
                 case "wrap":
-                    formFields.push(<Wrap checked={state.wrap} onChange={linkState(this, 'wrap')}/>);
+                    formFields.push(<FS.Wrap checked={state.wrap} onChange={linkState(this, 'wrap')}/>);
                 break;
 
                 case "add-to-form":
-                    formFields.push(<AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />);
+                    formFields.push(<FS.AddToForm onSubmit={this.addToForm} onCancel={this.handleCancel} />);
                 break;
 
                 case "choices":
-                    formFields.push(<Choices multiple={false} choices={state.choices} handlers={this.choiceHandlers} />);
+                    formFields.push(<FS.Choices multiple={false} choices={state.choices} handlers={this.choiceHandlers} />);
                 break;
 
                 case "button-text":
-                    formFields.push(<ButtonText value={state.value} onChange={linkState(this, 'value')}/>);
+                    formFields.push(<FS.ButtonText value={state.value} onChange={linkState(this, 'value')}/>);
+                break;
+
+                case "accept":
+                    formFields.push(<FS.Accept value={state.accept} onChange={linkState(this, 'accept')}/>);
                 break;
 
             }

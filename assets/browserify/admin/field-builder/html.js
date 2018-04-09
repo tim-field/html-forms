@@ -69,6 +69,21 @@ function htmlgenerate(conf) {
             ));
             break;
 
+        case "file":
+            fieldAttr = {
+                type: "file",
+                name: namify(conf.fieldLabel),
+                required: conf.required
+            };
+
+            if(conf['accept']) {
+                fieldAttr['accept'] = conf['accept'];
+            }
+
+            field = html("input", fieldAttr);
+            break;    
+
+
         case "submit":
             fieldAttr = {
                 type: "submit",
