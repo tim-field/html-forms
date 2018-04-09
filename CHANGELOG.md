@@ -1,6 +1,21 @@
 Changelog
 =========
 
+#### 1.1.5 - April 9, 2018
+
+**Fixes**
+
+- Conditionally hidden fields are now ignored in server-side required field validation too. Thanks [Jeroen Sormani](https://github.com/JeroenSormani)!
+
+**Improvements**
+
+- Added foundational stuff for being able to handle file uploads.
+
+**Additions**
+
+- Added `hf_process_form` action to execute code before the form actions run.
+
+
 #### 1.1.4 - March 28, 2018
 
 **Fixes**
