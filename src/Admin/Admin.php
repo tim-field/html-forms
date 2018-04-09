@@ -110,9 +110,13 @@ class Admin {
     public function menu() {
         $capability = 'edit_forms';
         add_menu_page( 'HTML Forms', 'HTML Forms', $capability, 'html-forms', array( $this, 'page_overview' ), plugins_url('assets/img/icon.svg', $this->plugin_file ), '99.88491' );
-        add_submenu_page( 'html-forms', 'Forms', 'All Forms', $capability, 'html-forms', array( $this, 'page_overview' ) );
-        add_submenu_page( 'html-forms', 'Add new form', 'Add New', $capability, 'html-forms-add-form', array( $this, 'page_new_form' ) );
-        add_submenu_page( 'html-forms', 'Settings', 'Settings', $capability, 'html-forms-settings', array( $this, 'page_settings' ) );
+        add_submenu_page( 'html-forms', __( 'Forms', 'html-forms' ), __( 'All Forms', 'html-forms' ), $capability, 'html-forms', array( $this, 'page_overview' ) );
+        add_submenu_page( 'html-forms', __( 'Add new form', 'html-forms' ), __( 'Add New', 'html-forms' ), $capability, 'html-forms-add-form', array( $this, 'page_new_form' ) );
+        add_submenu_page( 'html-forms', __( 'Settings', 'html-forms' ), __( 'Settings', 'html-forms' ), $capability, 'html-forms-settings', array( $this, 'page_settings' ) );
+
+        if( ! defined( 'HF_PREMIUM_VERSION' ) ) {
+            add_submenu_page( 'html-forms', 'Premium', '<span style="color: #ea6ea6;">Premium</span>', $capability, 'html-forms-premium', array( $this, 'page_premium' ) );
+        }
     }
 
     public function page_overview() {
@@ -126,19 +130,21 @@ class Admin {
         require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
         $table = new Table( $settings );
 
-        require dirname( $this->plugin_file ) . '/views/overview.php';
+        require dirname( $this->plugin_file ) . '/views/page-overview.php';
     }
 
     public function page_new_form() {
-        require dirname( $this->plugin_file )  . '/views/add-form.php';
+        require dirname( $this->plugin_file )  . '/views/page-add-form.php';
     }
-
 
     public function page_settings() {
         $settings = hf_get_settings();
-        require dirname( $this->plugin_file )  . '/views/global-settings.php';
+        require dirname( $this->plugin_file )  . '/views/page-global-settings.php';
     }
 
+    public function page_premium() {
+        require dirname( $this->plugin_file ) . '/views/page-premium.php';
+    }
 
     public function page_edit_form() {
         $active_tab = ! empty( $_GET['tab'] ) ? $_GET['tab'] : 'fields';
@@ -146,7 +152,7 @@ class Admin {
         $form = hf_get_form( $form_id );
         $settings = hf_get_settings();
 
-        require dirname( $this->plugin_file )  . '/views/edit-form.php';
+        require dirname( $this->plugin_file )  . '/views/page-edit-form.php';
     }
 
     public function tab_fields( Form $form ) {
