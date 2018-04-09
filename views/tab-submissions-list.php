@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or exit;
 $datetime_format = sprintf('%s %s', get_option( 'date_format' ), get_option( 'time_format' ) );
 
 add_action( 'hf_admin_form_submissions_table_output_column_header', function( $column ) {
-   echo esc_html( ucfirst( strtolower( $column ) ) );
+   echo esc_html( str_replace( '_', ' ', ucfirst( strtolower( $column ) ) ) );
 });
 
 $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
@@ -66,14 +66,27 @@ $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
                </td>
 
                <?php foreach( $columns as $column ) {
+                   echo "<td>";
                    $value = isset( $s->data[ $column ] ) ? $s->data[ $column ] : '';
-                   if( is_array( $value ) ) {
-                       $value = join( ', ', $value );
-                   }
-                   $value = esc_html( $value );
 
-                   echo sprintf( '<td>%s%s</td>', substr( $value, 0, 100 ), strlen( $value ) > 100 ? '...' : '' );
-               } ?>
+                   if( hf_is_file( $value ) ) {
+                      $file_url = isset( $value['url'] ) ? $value['url'] : '';
+                      if( isset( $value['attachment_id'] ) ) {
+                        $file_url = admin_url( 'post.php?action=edit&post=' . $value['attachment_id'] );
+                      }
+                      $short_name = substr( $value['name'], 0, 20 );
+                      $suffix = strlen( $value['name'] ) > 20 ? '...' : '';
+                      echo sprintf( '<a href="%s">%s%s</a> (%s)', $file_url, $short_name, $suffix, hf_human_filesize( $value['size'] ) );
+                   } else {
+                     // regular (scalar) values
+                     if( is_array( $value ) ) {
+                        $value = join( ', ', $value );
+                     }
+                     $value = esc_html( $value );
+                     echo sprintf( '%s%s', substr( $value, 0, 100 ), strlen( $value ) > 100 ? '...' : '' );
+                   }
+                   echo '</td>';
+                  } ?>
             </tr>
         <?php } ?>
         <?php if ( empty( $submissions ) ) {

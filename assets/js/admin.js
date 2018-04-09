@@ -55,6 +55,8 @@ var _tlite2 = _interopRequireDefault(_tlite);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+window.html_forms = {};
+
 // init the various components
 _tabs2.default.init();
 _actionConfirmations2.default.init();
@@ -69,34 +71,163 @@ if (document.getElementById('hf-form-editor')) {
     return el.className.indexOf('hf-tooltip') > -1;
 });
 
-// expose variables
-window.html_forms = {
-    'FieldBuilder': _fieldBuilder2.default,
-    'Editor': _formEditor2.default
-};
+window.html_forms.FieldBuilder = _fieldBuilder2.default;
+window.html_forms.Editor = _formEditor2.default;
 
-},{"./action-confirmations.js":1,"./field-builder.js":3,"./form-actions.js":6,"./form-editor.js":7,"./tabs.js":8,"tlite":21}],3:[function(require,module,exports){
+},{"./action-confirmations.js":1,"./field-builder.js":6,"./form-actions.js":8,"./form-editor.js":9,"./tabs.js":10,"tlite":23}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.FieldBuilder = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _desc, _value, _class, _desc2, _value2, _class2;
+var _desc, _value, _class;
 
 var _preact = require('preact');
+
+var _decko = require('decko');
+
+var _fieldConfigurator = require('./field-configurator.js');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+    var desc = {};
+    Object['ke' + 'ys'](descriptor).forEach(function (key) {
+        desc[key] = descriptor[key];
+    });
+    desc.enumerable = !!desc.enumerable;
+    desc.configurable = !!desc.configurable;
+
+    if ('value' in desc || desc.initializer) {
+        desc.writable = true;
+    }
+
+    desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+        return decorator(target, property, desc) || desc;
+    }, desc);
+
+    if (context && desc.initializer !== void 0) {
+        desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+        desc.initializer = undefined;
+    }
+
+    if (desc.initializer === void 0) {
+        Object['define' + 'Property'](target, property, desc);
+        desc = null;
+    }
+
+    return desc;
+}
+
+var FieldBuilder = (_class = function (_Component) {
+    _inherits(FieldBuilder, _Component);
+
+    function FieldBuilder(props) {
+        _classCallCheck(this, FieldBuilder);
+
+        var _this = _possibleConstructorReturn(this, (FieldBuilder.__proto__ || Object.getPrototypeOf(FieldBuilder)).call(this, props));
+
+        _this.state = {
+            activeField: null
+        };
+        return _this;
+    }
+
+    _createClass(FieldBuilder, [{
+        key: 'handleCancel',
+        value: function handleCancel() {
+            this.setState({
+                activeField: null
+            });
+        }
+    }, {
+        key: 'openFieldConfig',
+        value: function openFieldConfig(e) {
+            var field = this.props.fields[e.target.value];
+
+            if (this.state.activeField === field) {
+                this.setState({ activeField: null });
+            } else {
+                this.setState({ activeField: field });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render(props, state) {
+            var _this2 = this;
+
+            var fieldButtons = props.fields.map(function (f, i) {
+                return (0, _preact.h)(
+                    'button',
+                    { type: 'button', value: i, className: "button " + (state.activeField === f ? "active" : ""), onClick: _this2.openFieldConfig },
+                    f.label
+                );
+            });
+            var fieldType = state.activeField ? state.activeField.key : "";
+            var rows = state.activeField ? state.activeField.configRows : [];
+
+            return (0, _preact.h)(
+                'div',
+                { 'class': 'hf-field-builder' },
+                (0, _preact.h)(
+                    'h4',
+                    null,
+                    'Add field'
+                ),
+                (0, _preact.h)(
+                    'div',
+                    { 'class': 'available-fields' },
+                    fieldButtons
+                ),
+                (0, _preact.h)(
+                    'div',
+                    { style: 'max-width: 480px;' },
+                    (0, _preact.h)(_fieldConfigurator.FieldConfigurator, { fieldType: fieldType, rows: rows, onCancel: this.handleCancel })
+                ),
+                state.activeField === null ? (0, _preact.h)(
+                    'p',
+                    { 'class': 'help', style: 'margin-bottom: 0;' },
+                    'Use the buttons above to generate your field HTML, or manually modify your form below.'
+                ) : ""
+            );
+        }
+    }]);
+
+    return FieldBuilder;
+}(_preact.Component), (_applyDecoratedDescriptor(_class.prototype, 'handleCancel', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleCancel'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'openFieldConfig', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'openFieldConfig'), _class.prototype)), _class);
+exports.FieldBuilder = FieldBuilder;
+
+},{"./field-configurator.js":4,"decko":19,"preact":22}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.FieldConfigurator = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _desc, _value, _class;
+
+var _preact = require('preact');
+
+var _decko = require('decko');
+
+var _html = require('../field-builder/html.js');
+
+var _fieldSettings = require('./field-settings.js');
 
 var _linkstate = require('linkstate');
 
 var _linkstate2 = _interopRequireDefault(_linkstate);
-
-var _configFields = require('./field-builder/config-fields.js');
-
-var _html = require('./field-builder/html.js');
-
-var _decko = require('decko');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -135,120 +266,29 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
     return desc;
 }
 
-var Editor = void 0;
-
-
-var fields = {
-    "text": "Text",
-    "email": "Email",
-    "url": "URL",
-    "number": "Number",
-    "date": "Date",
-    "textarea": "Textarea",
-    "dropdown": "Dropdown",
-    "checkboxes": "Checkboxes",
-    "radio-buttons": "Radio buttons",
-    "submit": "Submit button"
-};
-
-var FieldBuilder = (_class = function (_Component) {
-    _inherits(FieldBuilder, _Component);
-
-    function FieldBuilder() {
-        _classCallCheck(this, FieldBuilder);
-
-        var _this = _possibleConstructorReturn(this, (FieldBuilder.__proto__ || Object.getPrototypeOf(FieldBuilder)).call(this));
-
-        _this.state = {
-            fieldType: ""
-        };
-        return _this;
-    }
-
-    _createClass(FieldBuilder, [{
-        key: 'handleCancel',
-        value: function handleCancel() {
-            this.setState({
-                fieldType: ""
-            });
-        }
-    }, {
-        key: 'openFieldConfig',
-        value: function openFieldConfig(e) {
-            var newFieldType = e.target.value;
-
-            if (this.state.fieldType === newFieldType) {
-                this.setState({ fieldType: "" });
-            } else {
-                this.setState({ fieldType: newFieldType });
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render(props, state) {
-            var _this2 = this;
-
-            var fieldButtons = Object.keys(fields).map(function (key) {
-                var label = fields[key];
-                return (0, _preact.h)(
-                    'button',
-                    { type: 'button', value: key, className: "button " + (state.fieldType === key ? "active" : ""), onClick: _this2.openFieldConfig },
-                    label
-                );
-            });
-
-            return (0, _preact.h)(
-                'div',
-                { 'class': 'hf-field-builder' },
-                (0, _preact.h)(
-                    'h4',
-                    null,
-                    'Add field'
-                ),
-                (0, _preact.h)(
-                    'div',
-                    { 'class': 'available-fields' },
-                    fieldButtons
-                ),
-                (0, _preact.h)(
-                    'div',
-                    { style: 'max-width: 480px;' },
-                    (0, _preact.h)(FieldConfigurator, { fieldType: state.fieldType, onCancel: this.handleCancel })
-                ),
-                state.fieldType === "" ? (0, _preact.h)(
-                    'p',
-                    { 'class': 'help', style: 'margin-bottom: 0;' },
-                    'Use the buttons above to generate your field HTML, or manually modify your form below.'
-                ) : ""
-            );
-        }
-    }]);
-
-    return FieldBuilder;
-}(_preact.Component), (_applyDecoratedDescriptor(_class.prototype, 'handleCancel', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleCancel'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'openFieldConfig', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'openFieldConfig'), _class.prototype)), _class);
-var FieldConfigurator = (_class2 = function (_Component2) {
-    _inherits(FieldConfigurator, _Component2);
+var FieldConfigurator = (_class = function (_Component) {
+    _inherits(FieldConfigurator, _Component);
 
     function FieldConfigurator(props) {
         _classCallCheck(this, FieldConfigurator);
 
-        var _this3 = _possibleConstructorReturn(this, (FieldConfigurator.__proto__ || Object.getPrototypeOf(FieldConfigurator)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (FieldConfigurator.__proto__ || Object.getPrototypeOf(FieldConfigurator)).call(this, props));
 
-        _this3.state = _this3.getInitialState();
-        _this3.choiceHandlers = {
-            "add": _this3.addChoice,
-            "delete": _this3.deleteChoice,
-            "changeLabel": _this3.changeChoiceLabel,
-            "toggleChecked": _this3.toggleChoiceChecked
+        _this.state = _this.getInitialState();
+        _this.choiceHandlers = {
+            "add": _this.addChoice,
+            "delete": _this.deleteChoice,
+            "changeLabel": _this.changeChoiceLabel,
+            "toggleChecked": _this.toggleChoiceChecked
         };
-        return _this3;
+        return _this;
     }
 
     _createClass(FieldConfigurator, [{
         key: 'getInitialState',
         value: function getInitialState() {
             return {
-                fieldType: this.props.fieldType,
+                fieldType: "",
                 fieldLabel: "",
                 placeholder: "",
                 value: "",
@@ -266,15 +306,13 @@ var FieldConfigurator = (_class2 = function (_Component2) {
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(props) {
-            this.setState({
-                fieldType: props.fieldType
-            });
+            this.setState({ fieldType: props.fieldType });
         }
     }, {
         key: 'addToForm',
         value: function addToForm() {
             var html = (0, _html.htmlgenerate)(this.state);
-            Editor.replaceSelection(html);
+            html_forms.Editor.replaceSelection(html);
         }
     }, {
         key: 'addChoice',
@@ -317,73 +355,47 @@ var FieldConfigurator = (_class2 = function (_Component2) {
     }, {
         key: 'render',
         value: function render(props, state) {
-            if (state.fieldType === "") {
+            if (props.rows.length == 0) {
                 return "";
             }
 
-            var formFields = void 0;
+            var formFields = [];
 
-            switch (state.fieldType) {
-                case "text":
-                case "email":
-                case "url":
-                case "number":
-                case "textarea":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
-                        (0, _preact.h)(_configFields.Placeholder, { value: state.placeholder, onChange: (0, _linkstate2.default)(this, 'placeholder') }),
-                        (0, _preact.h)(_configFields.DefaultValue, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }),
-                        (0, _preact.h)(_configFields.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
-                case "submit":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.ButtonText, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
+            for (var i = 0; i < props.rows.length; i++) {
+                switch (props.rows[i]) {
+                    case "label":
+                        formFields.push((0, _preact.h)(_fieldSettings.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }));
+                        break;
 
-                case "date":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
-                        (0, _preact.h)(_configFields.DefaultValue, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }),
-                        (0, _preact.h)(_configFields.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
-                case "dropdown":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
-                        (0, _preact.h)(_configFields.Choices, { multiple: false, choices: state.choices, handlers: this.choiceHandlers }),
-                        (0, _preact.h)(_configFields.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
+                    case "placeholder":
+                        formFields.push((0, _preact.h)(_fieldSettings.Placeholder, { value: state.placeholder, onChange: (0, _linkstate2.default)(this, 'placeholder') }));
+                        break;
 
-                case "radio-buttons":
-                case "checkboxes":
-                    formFields = (0, _preact.h)(
-                        'div',
-                        null,
-                        (0, _preact.h)(_configFields.Label, { value: state.fieldLabel, onChange: (0, _linkstate2.default)(this, 'fieldLabel') }),
-                        (0, _preact.h)(_configFields.Choices, { multiple: state.fieldType === "checkboxes", choices: state.choices, handlers: this.choiceHandlers }),
-                        (0, _preact.h)(_configFields.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }),
-                        (0, _preact.h)(_configFields.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel })
-                    );
-                    break;
+                    case "default-value":
+                        formFields.push((0, _preact.h)(_fieldSettings.DefaultValue, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }));
+                        break;
+
+                    case "required":
+                        formFields.push((0, _preact.h)(_fieldSettings.Required, { checked: state.required, onChange: (0, _linkstate2.default)(this, 'required') }));
+                        break;
+
+                    case "wrap":
+                        formFields.push((0, _preact.h)(_fieldSettings.Wrap, { checked: state.wrap, onChange: (0, _linkstate2.default)(this, 'wrap') }));
+                        break;
+
+                    case "add-to-form":
+                        formFields.push((0, _preact.h)(_fieldSettings.AddToForm, { onSubmit: this.addToForm, onCancel: this.handleCancel }));
+                        break;
+
+                    case "choices":
+                        formFields.push((0, _preact.h)(_fieldSettings.Choices, { multiple: false, choices: state.choices, handlers: this.choiceHandlers }));
+                        break;
+
+                    case "button-text":
+                        formFields.push((0, _preact.h)(_fieldSettings.ButtonText, { value: state.value, onChange: (0, _linkstate2.default)(this, 'value') }));
+                        break;
+
+                }
             }
 
             return (0, _preact.h)(
@@ -403,152 +415,146 @@ var FieldConfigurator = (_class2 = function (_Component2) {
     }]);
 
     return FieldConfigurator;
-}(_preact.Component), (_applyDecoratedDescriptor(_class2.prototype, 'addToForm', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'addToForm'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'addChoice', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'addChoice'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'deleteChoice', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'deleteChoice'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'changeChoiceLabel', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'changeChoiceLabel'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'toggleChoiceChecked', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'toggleChoiceChecked'), _class2.prototype), _applyDecoratedDescriptor(_class2, 'handleKeyPress', [_decko.bind], Object.getOwnPropertyDescriptor(_class2, 'handleKeyPress'), _class2), _applyDecoratedDescriptor(_class2.prototype, 'handleCancel', [_decko.bind], Object.getOwnPropertyDescriptor(_class2.prototype, 'handleCancel'), _class2.prototype)), _class2);
-exports.default = {
-    init: function init(editor) {
-        Editor = editor;
+}(_preact.Component), (_applyDecoratedDescriptor(_class.prototype, 'addToForm', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'addToForm'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'addChoice', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'addChoice'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'deleteChoice', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'deleteChoice'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'changeChoiceLabel', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'changeChoiceLabel'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleChoiceChecked', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleChoiceChecked'), _class.prototype), _applyDecoratedDescriptor(_class, 'handleKeyPress', [_decko.bind], Object.getOwnPropertyDescriptor(_class, 'handleKeyPress'), _class), _applyDecoratedDescriptor(_class.prototype, 'handleCancel', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleCancel'), _class.prototype)), _class);
+exports.FieldConfigurator = FieldConfigurator;
 
-        (0, _preact.render)((0, _preact.h)(FieldBuilder, null), document.getElementById('hf-field-builder'));
-    }
-};
-
-},{"./field-builder/config-fields.js":4,"./field-builder/html.js":5,"decko":17,"linkstate":18,"preact":20}],4:[function(require,module,exports){
-"use strict";
+},{"../field-builder/html.js":7,"./field-settings.js":5,"decko":19,"linkstate":20,"preact":22}],5:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.ButtonText = exports.Choices = exports.Required = exports.Wrap = exports.DefaultValue = exports.Placeholder = exports.Label = exports.AddToForm = undefined;
 
-var _preact = require("preact");
+var _preact = require('preact');
 
 function AddToForm(props) {
     return (0, _preact.h)(
-        "div",
-        { "class": "hf-small-margin" },
+        'div',
+        { 'class': 'hf-small-margin' },
         (0, _preact.h)(
-            "button",
-            { "class": "button", type: "button", onClick: props.onSubmit },
-            "Add field to form"
+            'button',
+            { 'class': 'button', type: 'button', onClick: props.onSubmit },
+            'Add field to form'
         ),
-        " \xA0 ",
+        ' \xA0 ',
         (0, _preact.h)(
-            "a",
-            { href: "javascript:void(0);", "class": "hf-small", style: "vertical-align: middle;", onClick: props.onCancel },
-            "or close field helper"
+            'a',
+            { href: 'javascript:void(0);', 'class': 'hf-small', style: 'vertical-align: middle;', onClick: props.onCancel },
+            'or close field helper'
         )
     );
 }
 
 function Label(props) {
     return (0, _preact.h)(
-        "div",
-        { "class": "hf-small-margin" },
+        'div',
+        { 'class': 'hf-small-margin' },
         (0, _preact.h)(
-            "label",
-            { "for": "hf-fg-field-label" },
-            "Field label ",
+            'label',
+            { 'for': 'hf-fg-field-label' },
+            'Field label ',
             (0, _preact.h)(
-                "span",
-                { "class": "hf-required" },
-                "*"
+                'span',
+                { 'class': 'hf-required' },
+                '*'
             )
         ),
-        (0, _preact.h)("input", { id: "hf-fg-field-label", type: "text", value: props.value, onChange: props.onChange })
+        (0, _preact.h)('input', { id: 'hf-fg-field-label', type: 'text', value: props.value, onChange: props.onChange })
     );
 }
 
 function Placeholder(props) {
     return (0, _preact.h)(
-        "div",
-        { "class": "hf-small-margin" },
+        'div',
+        { 'class': 'hf-small-margin' },
         (0, _preact.h)(
-            "label",
-            { "for": "hf-fg-placeholder" },
-            "Placeholder ",
+            'label',
+            { 'for': 'hf-fg-placeholder' },
+            'Placeholder ',
             (0, _preact.h)(
-                "span",
-                { "class": "hf-italic hf-pull-right" },
-                "Optional"
+                'span',
+                { 'class': 'hf-italic hf-pull-right' },
+                'Optional'
             )
         ),
-        (0, _preact.h)("input", { id: "hf-fg-placeholder", type: "text", value: props.value, onChange: props.onChange }),
+        (0, _preact.h)('input', { id: 'hf-fg-placeholder', type: 'text', value: props.value, onChange: props.onChange }),
         (0, _preact.h)(
-            "p",
-            { "class": "help" },
-            "Text to show when field has no value."
+            'p',
+            { 'class': 'help' },
+            'Text to show when field has no value.'
         )
     );
 }
 
 function ButtonText(props) {
     return (0, _preact.h)(
-        "div",
-        { "class": "hf-small-margin" },
+        'div',
+        { 'class': 'hf-small-margin' },
         (0, _preact.h)(
-            "label",
-            { "for": "hf-fg-default-value" },
-            "Button text ",
+            'label',
+            { 'for': 'hf-fg-default-value' },
+            'Button text ',
             (0, _preact.h)(
-                "span",
-                { "class": "hf-required" },
-                "*"
+                'span',
+                { 'class': 'hf-required' },
+                '*'
             )
         ),
-        (0, _preact.h)("input", { id: "hf-fg-default-value", type: "text", value: props.value, onChange: props.onChange }),
+        (0, _preact.h)('input', { id: 'hf-fg-default-value', type: 'text', value: props.value, onChange: props.onChange }),
         (0, _preact.h)(
-            "p",
-            { "class": "help" },
-            "Text to show on the button."
+            'p',
+            { 'class': 'help' },
+            'Text to show on the button.'
         )
     );
 }
 
 function DefaultValue(props) {
     return (0, _preact.h)(
-        "div",
-        { "class": "hf-small-margin" },
+        'div',
+        { 'class': 'hf-small-margin' },
         (0, _preact.h)(
-            "label",
-            { "for": "hf-fg-default-value" },
-            "Default value ",
+            'label',
+            { 'for': 'hf-fg-default-value' },
+            'Default value ',
             (0, _preact.h)(
-                "span",
-                { "class": "hf-italic hf-pull-right" },
-                "Optional"
+                'span',
+                { 'class': 'hf-italic hf-pull-right' },
+                'Optional'
             )
         ),
-        (0, _preact.h)("input", { id: "hf-fg-default-value", type: "text", value: props.value, onChange: props.onChange }),
+        (0, _preact.h)('input', { id: 'hf-fg-default-value', type: 'text', value: props.value, onChange: props.onChange }),
         (0, _preact.h)(
-            "p",
-            { "class": "help" },
-            "Text to pre-fill this field with."
+            'p',
+            { 'class': 'help' },
+            'Text to pre-fill this field with.'
         )
     );
 }
 
 function Wrap(props) {
     return (0, _preact.h)(
-        "div",
-        { "class": "hf-small-margin" },
+        'div',
+        { 'class': 'hf-small-margin' },
         (0, _preact.h)(
-            "label",
-            { "class": "inline" },
-            (0, _preact.h)("input", { type: "checkbox", value: "1", defaultChecked: props.checked, onChange: props.onChange }),
-            "Wrap this field in paragraph tags."
+            'label',
+            { 'class': 'inline' },
+            (0, _preact.h)('input', { type: 'checkbox', value: '1', defaultChecked: props.checked, onChange: props.onChange }),
+            'Wrap this field in paragraph tags.'
         )
     );
 }
 
 function Required(props) {
     return (0, _preact.h)(
-        "div",
-        { "class": "hf-small-margin" },
+        'div',
+        { 'class': 'hf-small-margin' },
         (0, _preact.h)(
-            "label",
-            { "class": "inline" },
-            (0, _preact.h)("input", { type: "checkbox", value: "1", defaultChecked: props.checked, onChange: props.onChange }),
-            "This field is required."
+            'label',
+            { 'class': 'inline' },
+            (0, _preact.h)('input', { type: 'checkbox', value: '1', defaultChecked: props.checked, onChange: props.onChange }),
+            'This field is required.'
         )
     );
 }
@@ -556,32 +562,32 @@ function Required(props) {
 function Choices(props) {
     var choiceFields = props.choices.map(function (choice, k) {
         return (0, _preact.h)(
-            "div",
-            { "data-key": k },
-            (0, _preact.h)("input", { type: props.multiple ? "checkbox" : "radio", name: "selected", defaultChecked: choice.checked, onChange: props.handlers.toggleChecked, title: "Pre-select this choice?" }),
-            (0, _preact.h)("input", { type: "text", value: choice.label, placeholder: "Choice label", style: "width: 80%;", onChange: props.handlers.changeLabel }),
+            'div',
+            { 'data-key': k },
+            (0, _preact.h)('input', { type: props.multiple ? "checkbox" : "radio", name: 'selected', defaultChecked: choice.checked, onChange: props.handlers.toggleChecked, title: 'Pre-select this choice?' }),
+            (0, _preact.h)('input', { type: 'text', value: choice.label, placeholder: 'Choice label', style: 'width: 80%;', onChange: props.handlers.changeLabel }),
             (0, _preact.h)(
-                "a",
-                { href: "javascript:void(0);", onClick: props.handlers.delete, style: "text-decoration: none;", title: "Delete choice" },
-                "\u2715"
+                'a',
+                { href: 'javascript:void(0);', onClick: props.handlers.delete, style: 'text-decoration: none;', title: 'Delete choice' },
+                '\u2715'
             )
         );
     });
 
     return (0, _preact.h)(
-        "div",
-        { "class": "hf-small-margin" },
+        'div',
+        { 'class': 'hf-small-margin' },
         (0, _preact.h)(
-            "label",
+            'label',
             null,
-            "Choices"
+            'Choices'
         ),
         choiceFields,
-        (0, _preact.h)("input", { type: props.multiple ? "checkbox" : "radio", style: "visibility: hidden;" }),
+        (0, _preact.h)('input', { type: props.multiple ? "checkbox" : "radio", style: 'visibility: hidden;' }),
         (0, _preact.h)(
-            "a",
-            { href: "javascript:void(0);", onClick: props.handlers.add },
-            "Add choice"
+            'a',
+            { href: 'javascript:void(0);', onClick: props.handlers.add },
+            'Add choice'
         )
     );
 }
@@ -595,7 +601,50 @@ exports.Required = Required;
 exports.Choices = Choices;
 exports.ButtonText = ButtonText;
 
-},{"preact":20}],5:[function(require,module,exports){
+},{"preact":22}],6:[function(require,module,exports){
+'use strict';
+
+// imports
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _preact = require('preact');
+
+var _fieldBuilder = require('./components/field-builder.js');
+
+// vars
+var rootElement = void 0;
+var Editor = void 0;
+var fields = void 0;
+
+// functions
+function Field(key, label, configRows) {
+    this.key = key;
+    this.label = label;
+    this.configRows = configRows || [];
+}
+
+function mount() {
+    rootElement = (0, _preact.render)((0, _preact.h)(_fieldBuilder.FieldBuilder, { fields: fields }), document.getElementById('hf-field-builder'), rootElement);
+}
+
+// bootstrap
+fields = [new Field("text", "Text", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("email", "Email", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("url", "URL", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("number", "Number", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("date", "Date", ["label", "default-value", "required", "wrap", "add-to-form"]), new Field("textarea", "Textarea", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("dropdown", "Dropdown", ["label", "choices", "required", "wrap", "add-to-form"]), new Field("checkboxes", "Checkboxes", ["label", "choices", "wrap", "add-to-form"]), new Field("radio-buttons", "Radio buttons", ["label", "choices", "wrap", "add-to-form"]), new Field("submit", "Submit button", ["button-text", "wrap", "add-to-form"])];
+
+exports.default = {
+    init: function init() {
+        mount();
+    },
+
+    registerField: function registerField(key, label, configRows) {
+        fields.push(new Field(key, label, configRows));
+        mount();
+    }
+};
+
+},{"./components/field-builder.js":3,"preact":22}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -643,7 +692,7 @@ function htmlgenerate(conf) {
                 required: conf.required
             };
             var opts = conf.choices.map(function (choice) {
-                return html("option", { defaultChecked: choice.checked }, choice.label);
+                return html("option", { selected: choice.checked }, choice.label);
             });
             field = html("select", fieldAttr, opts);
             break;
@@ -713,7 +762,7 @@ function filterEmptyObjectValues(obj) {
 
 exports.htmlgenerate = htmlgenerate;
 
-},{"preact":20,"preact-render-to-string":19}],6:[function(require,module,exports){
+},{"preact":22,"preact-render-to-string":21}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -813,7 +862,7 @@ function createToggleActionHandler(wrap, content) {
 
 exports.default = { init: init };
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 // load CodeMirror & plugins
@@ -989,7 +1038,7 @@ exports.default = {
     replaceSelection: replaceSelection
 };
 
-},{"codemirror":12,"codemirror/addon/edit/closetag.js":9,"codemirror/addon/edit/matchtags":10,"codemirror/addon/fold/xml-fold":11,"codemirror/mode/css/css":13,"codemirror/mode/htmlmixed/htmlmixed":14,"codemirror/mode/javascript/javascript":15,"codemirror/mode/xml/xml":16}],8:[function(require,module,exports){
+},{"codemirror":14,"codemirror/addon/edit/closetag.js":11,"codemirror/addon/edit/matchtags":12,"codemirror/addon/fold/xml-fold":13,"codemirror/mode/css/css":15,"codemirror/mode/htmlmixed/htmlmixed":16,"codemirror/mode/javascript/javascript":17,"codemirror/mode/xml/xml":18}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1036,7 +1085,7 @@ exports.default = {
     open: open
 };
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -1213,7 +1262,7 @@ exports.default = {
   }
 });
 
-},{"../../lib/codemirror":12,"../fold/xml-fold":11}],10:[function(require,module,exports){
+},{"../../lib/codemirror":14,"../fold/xml-fold":13}],12:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -1281,7 +1330,7 @@ exports.default = {
   };
 });
 
-},{"../../lib/codemirror":12,"../fold/xml-fold":11}],11:[function(require,module,exports){
+},{"../../lib/codemirror":14,"../fold/xml-fold":13}],13:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -1465,7 +1514,7 @@ exports.default = {
   };
 });
 
-},{"../../lib/codemirror":12}],12:[function(require,module,exports){
+},{"../../lib/codemirror":14}],14:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -11136,7 +11185,7 @@ return CodeMirror$1;
 
 })));
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -11970,7 +12019,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
 
 });
 
-},{"../../lib/codemirror":12}],14:[function(require,module,exports){
+},{"../../lib/codemirror":14}],16:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -12124,7 +12173,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
   CodeMirror.defineMIME("text/html", "htmlmixed");
 });
 
-},{"../../lib/codemirror":12,"../css/css":13,"../javascript/javascript":15,"../xml/xml":16}],15:[function(require,module,exports){
+},{"../../lib/codemirror":14,"../css/css":15,"../javascript/javascript":17,"../xml/xml":18}],17:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -12991,7 +13040,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 
 });
 
-},{"../../lib/codemirror":12}],16:[function(require,module,exports){
+},{"../../lib/codemirror":14}],18:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -13394,15 +13443,15 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 
 });
 
-},{"../../lib/codemirror":12}],17:[function(require,module,exports){
+},{"../../lib/codemirror":14}],19:[function(require,module,exports){
 (function(global,factory){if(typeof define === 'function' && define.amd){define(['exports'],factory);}else if(typeof exports !== 'undefined'){factory(exports);}else {var mod={exports:{}};factory(mod.exports);global.decko = mod.exports;}})(this,function(exports){'use strict';exports.__esModule = true;var EMPTY={};var HOP=Object.prototype.hasOwnProperty;var fns={memoize:function memoize(fn){var opt=arguments.length <= 1 || arguments[1] === undefined?EMPTY:arguments[1];var cache=opt.cache || {};return function(){for(var _len=arguments.length,a=Array(_len),_key=0;_key < _len;_key++) {a[_key] = arguments[_key];}var k=String(a[0]);if(opt.caseSensitive === false)k = k.toLowerCase();return HOP.call(cache,k)?cache[k]:cache[k] = fn.apply(this,a);};},debounce:function debounce(fn,opts){if(typeof opts === 'function'){var p=fn;fn = opts;opts = p;}var delay=opts && opts.delay || opts || 0,args=undefined,context=undefined,timer=undefined;return function(){for(var _len2=arguments.length,a=Array(_len2),_key2=0;_key2 < _len2;_key2++) {a[_key2] = arguments[_key2];}args = a;context = this;if(!timer)timer = setTimeout(function(){fn.apply(context,args);args = context = timer = null;},delay);};},bind:function bind(target,key,_ref){var fn=_ref.value;return {configurable:true,get:function get(){var value=fn.bind(this);Object.defineProperty(this,key,{value:value,configurable:true,writable:true});return value;}};}};var memoize=multiMethod(fns.memoize),debounce=multiMethod(fns.debounce),bind=multiMethod(function(f,c){return f.bind(c);},function(){return fns.bind;});exports.memoize = memoize;exports.debounce = debounce;exports.bind = bind;exports['default'] = {memoize:memoize,debounce:debounce,bind:bind};function multiMethod(inner,deco){deco = deco || inner.decorate || decorator(inner);var d=deco();return function(){for(var _len3=arguments.length,args=Array(_len3),_key3=0;_key3 < _len3;_key3++) {args[_key3] = arguments[_key3];}var l=args.length;return (l < 2?deco:l > 2?d:inner).apply(undefined,args);};}function decorator(fn){return function(opt){return typeof opt === 'function'?fn(opt):function(target,key,desc){desc.value = fn(desc.value,opt,target,key,desc);};};}});
 
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]];return void 0===t?n:t}function linkState(t,e,n){var l=e.split("."),r=t.__lsc||(t.__lsc={});return r[e+n]||(r[e+n]=function(e){for(var r=e&&e.target||this,a={},i=a,o="string"==typeof n?dlv(e,n):r.nodeName?r.type.match(/^che|rad/)?r.checked:r.value:e,s=0;s<l.length-1;s++)i=i[l[s]]||(i[l[s]]=!s&&t.state[l[s]]||{});i[l[s]]=o,t.setState(a)})}module.exports=linkState;
 
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
@@ -13694,7 +13743,7 @@ return renderToString;
 })));
 
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 !function() {
     'use strict';
     function VNode() {}
@@ -14103,7 +14152,7 @@ return renderToString;
     if ('undefined' != typeof module) module.exports = preact; else self.preact = preact;
 }();
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 function tlite(getTooltipOpts) {
   document.addEventListener('mouseover', function (e) {
     var el = e.target;

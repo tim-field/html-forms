@@ -220,3 +220,19 @@ function hf_replace_data_variables( $string, $data = array() ) {
     return $string;
 }
 
+/**
+* Poor man's file object, compatible with serialization..
+*
+* @return bool
+*/
+function hf_is_file( $file ) {
+    return isset( $file['name'] ) && isset( $file['size'] ) && isset( $file['type'] );
+}
+
+/** 
+* @return string
+*/
+function hf_human_filesize($size, $precision = 2) {
+    for($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {}
+    return round($size, $precision).['B','kB','MB','GB','TB','PB','EB','ZB','YB'][$i];
+}

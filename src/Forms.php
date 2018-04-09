@@ -147,6 +147,9 @@ class Forms
     public function sanitize( $value )
     {
         if (is_string($value)) {
+            // strip slashes
+            $value = stripslashes( $value );
+
             // strip all HTML tags & whitespace
             $value = trim(strip_tags($value));
 
@@ -174,6 +177,25 @@ class Forms
         return $value;
     }
 
+    /**
+    * @return array
+    */ 
+    public function get_request_data() {
+        $data = $_POST;
+
+        if( ! empty( $_FILES ) ) {
+            foreach( $_FILES as $field_name => $file ) {
+                // only add non-empty files so that required field validation works as expected
+                // upload could still have errored at this point
+                if( $file['error'] !== UPLOAD_ERR_NO_FILE ) {
+                    $data[$field_name] = $file;
+                }
+            }
+        }
+
+        return $data;
+    }
+
     public function listen_for_submit()
     {
 
@@ -184,7 +206,7 @@ class Forms
             return;
         }
 
-        $data = $_POST;
+        $data = $this->get_request_data();
         $form_id = (int) $data['_hf_form_id'];
         $form = hf_get_form($form_id);
         $error_code = $this->validate_form($form, $data);
@@ -206,9 +228,6 @@ class Forms
                 }
             }
 
-            // strip slashes
-            $data = stripslashes_deep( $data );
-
             // sanitize data: strip tags etc.
             $data = $this->sanitize( $data );
 
@@ -220,6 +239,11 @@ class Forms
             $submission->user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : '';
             $submission->referer_url = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( $_SERVER['HTTP_REFERER'] ) : '';
             $submission->submitted_at = gmdate( 'Y-m-d H:i:s' );
+
+            /**
+            * General purpose hook before the submission is saved, so we can still modify data that is (maybe) stored.
+            */
+            do_action( 'hf_process_form', $form, $submission );
 
             if( $this->settings['save_submissions'] ) {
                  $submission->save();

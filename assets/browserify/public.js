@@ -1,7 +1,6 @@
 "use strict";
 
 const shim = require('es5-shim');
-const serialize = require('form-serialize');
 const Loader = require('./form-loading-indicator.js');
 const vars = window.hf_js_vars || { ajax_url: window.location.href };
 const EventEmitter = require('wolfy87-eventemitter');
@@ -37,14 +36,13 @@ function handleSubmitEvents(e) {
 }
 
 function submitForm(formEl) {
+    cleanFormMessages(formEl);
     emitEvent('submit', formEl);
 
     let formData = new FormData(formEl);
     formEl.querySelectorAll('[data-was-required=true]').forEach(function(el) {
         formData.append('was_required[]', el.getAttribute('name'))
     });
-
-    cleanFormMessages(formEl);
 
     let request = new XMLHttpRequest();
     request.onreadystatechange = createRequestHandler(formEl);
