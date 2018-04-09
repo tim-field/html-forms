@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9.5
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -110,6 +110,21 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 
 == Changelog ==
+
+
+#### 1.1.5 - April 9, 2018
+
+**Fixes**
+
+- Conditionally hidden fields are now ignored in server-side required field validation too. Thanks [Jeroen Sormani](https://github.com/JeroenSormani)!
+
+**Improvements**
+
+- Added foundational stuff for being able to handle file uploads.
+
+**Additions**
+
+- Added `hf_process_form` action to execute code before the form actions run.
 
 
 #### 1.1.4 - March 28, 2018
