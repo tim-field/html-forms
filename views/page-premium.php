@@ -9,8 +9,8 @@
 		<ul class="ul-square">
 			<li><strong>Export to CSV</strong> - with a single click</li>
 			<li><strong>File uploads</strong> - safely allow your visitors to upload files</li>
-			<li><strong>Webhooks</strong> - notify other serves whenever a form is submitted</li>
-			<li><strong>Notifications</strong> - don't lose track of new form submissions</li>
+			<li><strong>Webhooks</strong> - notify other services whenever a form is submitted</li>
+			<li><strong>Notifications</strong> - never lose track of new form submissions again</li>
 		</ul>
 
 		<p>Additionally, you'll be eligible for premium support - instant access to our experienced support team.</p>
