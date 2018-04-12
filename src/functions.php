@@ -233,6 +233,9 @@ function hf_is_file( $file ) {
 * @return string
 */
 function hf_human_filesize($size, $precision = 2) {
-    for($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {}
-    return round($size, $precision).['B','kB','MB','GB','TB','PB','EB','ZB','YB'][$i];
+    for( $i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024 ) {
+        // nothing, loop logic contains everything
+    }
+    $steps = array( 'B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' );
+    return round($size, $precision) . $steps[$i];
 }
