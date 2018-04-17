@@ -6,7 +6,8 @@ const vars = window.hf_js_vars || { ajax_url: window.location.href };
 const EventEmitter = require('wolfy87-eventemitter');
 const events = new EventEmitter();
 
-import ConditionalElements from './conditional-elements.js';
+import prefiller from './form-prefiller.js';
+import conditionality from './conditionality.js';
 import './polyfills/custom-event.js';
 
 function cleanFormMessages(formEl) {
@@ -114,7 +115,8 @@ function createRequestHandler(formEl) {
 }
 
 document.addEventListener('submit', handleSubmitEvents, true);
-ConditionalElements.init();
+conditionality.init();
+prefiller.init();
 
 window.html_forms = {
     'on': events.on.bind(events),

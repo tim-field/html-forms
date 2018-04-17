@@ -172,6 +172,75 @@ Loader.prototype.stop = function () {
 module.exports = Loader;
 
 },{}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var populate = require('populate.js');
+
+// parse ?query=string with array support. no nesting.
+function parseUrlParams(q) {
+	var params = new URLSearchParams(q);
+	var obj = {};
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+		for (var _iterator = params.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var _step$value = _slicedToArray(_step.value, 2),
+			    name = _step$value[0],
+			    value = _step$value[1];
+
+			if (name.substr(name.length - 2) === "[]") {
+				var arrName = name.substr(0, name.length - 2);
+				obj[arrName] = obj[arrName] || [];
+				obj[arrName].push(value);
+			} else {
+				obj[name] = value;
+			}
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
+	}
+
+	return obj;
+}
+
+function init() {
+	// only act on form elements outputted by HTML Forms
+	var forms = [].filter.call(document.forms, function (f) {
+		return f.className.indexOf('hf-form') > -1;
+	});
+	if (!forms) {
+		return;
+	}
+
+	// fill each form with data from URL params
+	var data = parseUrlParams(window.location.search);
+	forms.forEach(function (f) {
+		populate(f, data);
+	});
+}
+
+exports.default = { init: init };
+
+},{"populate.js":7}],4:[function(require,module,exports){
 "use strict";
 
 /* window.CustomEvent polyfill for IE */
@@ -190,12 +259,16 @@ module.exports = Loader;
   window.CustomEvent = CustomEvent;
 })();
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
-var _conditionalElements = require('./conditional-elements.js');
+var _formPrefiller = require('./form-prefiller.js');
 
-var _conditionalElements2 = _interopRequireDefault(_conditionalElements);
+var _formPrefiller2 = _interopRequireDefault(_formPrefiller);
+
+var _conditionality = require('./conditionality.js');
+
+var _conditionality2 = _interopRequireDefault(_conditionality);
 
 require('./polyfills/custom-event.js');
 
@@ -312,13 +385,14 @@ function createRequestHandler(formEl) {
 }
 
 document.addEventListener('submit', handleSubmitEvents, true);
-_conditionalElements2.default.init();
+_conditionality2.default.init();
+_formPrefiller2.default.init();
 
 window.html_forms = {
     'on': events.on.bind(events)
 };
 
-},{"./conditional-elements.js":1,"./form-loading-indicator.js":2,"./polyfills/custom-event.js":3,"es5-shim":5,"wolfy87-eventemitter":6}],5:[function(require,module,exports){
+},{"./conditionality.js":1,"./form-loading-indicator.js":2,"./form-prefiller.js":3,"./polyfills/custom-event.js":4,"es5-shim":6,"wolfy87-eventemitter":8}],6:[function(require,module,exports){
 /*!
  * https://github.com/es-shims/es5-shim
  * @license es5-shim Copyright 2009-2015 by contributors, MIT License
@@ -2418,7 +2492,97 @@ window.html_forms = {
     }
 }));
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+/*! populate.js v1.0.2 by @dannyvankooten | MIT license */
+;(function(root) {
+
+	/**
+	 * Populate form fields from a JSON object.
+	 *
+	 * @param form object The form element containing your input fields.
+	 * @param data array JSON data to populate the fields with.
+	 * @param basename string Optional basename which is added to `name` attributes
+	 */
+	var populate = function( form, data, basename) {
+		for(var key in data) {
+			var name = key;
+			var value = data[key];
+
+                        if ('undefined' === typeof value) {
+                            value = '';
+                        }
+
+                        if (null === value) {
+                            value = '';
+                        }
+
+			// handle array name attributes
+			if(typeof(basename) !== "undefined") {
+				name = basename + "[" + key + "]";
+			}
+
+			if(value.constructor === Array) {
+				name += '[]';
+			} else if(typeof value == "object") {
+				populate( form, value, name);
+				continue;
+			}
+
+			// only proceed if element is set
+			var element = form.elements.namedItem( name );
+			if( ! element ) {
+				continue;
+			}
+
+			var type = element.type || element[0].type;
+
+			switch(type ) {
+				default:
+					element.value = value;
+					break;
+
+				case 'radio':
+				case 'checkbox':
+					for( var j=0; j < element.length; j++ ) {
+						element[j].checked = ( value.indexOf(element[j].value) > -1 );
+					}
+					break;
+
+				case 'select-multiple':
+					var values = value.constructor == Array ? value : [value];
+
+					for(var k = 0; k < element.options.length; k++) {
+						element.options[k].selected |= (values.indexOf(element.options[k].value) > -1 );
+					}
+					break;
+
+				case 'select':
+				case 'select-one':
+					element.value = value.toString() || value;
+					break;
+				case 'date':
+          				element.value = new Date(value).toISOString().split('T')[0];	
+					break;
+			}
+
+		}
+
+	};
+
+	// Play nice with AMD, CommonJS or a plain global object.
+	if ( typeof define == 'function' && typeof define.amd == 'object' && define.amd ) {
+		define(function() {
+			return populate;
+		});
+	}	else if ( typeof module !== 'undefined' && module.exports ) {
+		module.exports = populate;
+	} else {
+		root.populate = populate;
+	}
+
+}(this));
+
+},{}],8:[function(require,module,exports){
 /*!
  * EventEmitter v5.2.4 - git.io/ee
  * Unlicense - http://unlicense.org/
@@ -2906,5 +3070,5 @@ window.html_forms = {
     }
 }(this || {}));
 
-},{}]},{},[4]);
+},{}]},{},[5]);
 ; })();
