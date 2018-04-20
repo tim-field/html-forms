@@ -2,15 +2,16 @@
 
 use HTML_Forms\Form;
 use HTML_Forms\Submission;
+use WP_Post;
 
 /**
- * @param $form_id_or_slug int|string
+ * @param $form_id_or_slug int|string|WP_Post
  * @return Form
  * @throws Exception
  */
 function hf_get_form( $form_id_or_slug ) {
 
-    if( is_numeric( $form_id_or_slug ) ) {
+    if( is_numeric( $form_id_or_slug ) || $form_id_or_slug instanceof WP_Post ) {
         $post = get_post( $form_id_or_slug );
 
         if( ! $post || $post->post_type !== 'html-form' ) {
