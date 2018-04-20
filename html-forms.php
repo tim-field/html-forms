@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: HTML Forms
-Plugin URI: https://htmlformsplus.com/#utm_source=wp-plugin&utm_medium=html-forms&utm_campaign=plugins-page
+Plugin URI: https://www.htmlforms.io/#utm_source=wp-plugin&utm_medium=html-forms&utm_campaign=plugins-page
 Description: Not just another forms plugin. Simple and flexible.
 Version: 1.1.5
 Author: ibericode
@@ -9,7 +9,7 @@ Author URI: https://ibericode.com/
 License: GPL v3
 Text Domain: html-forms
 
-HTML Forms Plus
+HTML Forms 
 Copyright (C) 2017-2018, Danny van Kooten, danny@ibericode.com
 
 This program is free software: you can redistribute it and/or modify
