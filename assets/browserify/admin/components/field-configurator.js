@@ -42,7 +42,16 @@ class FieldConfigurator extends Component {
     }
 
     componentWillReceiveProps(props) { 
-        this.setState({ fieldType: props.fieldType })
+        let newState = { fieldType: props.fieldType };
+
+        // when changing from field that accepts multiple values to single-value field, reset all pre-selections 
+        if(this.state.fieldType === 'checkbox' && props.fieldType !== 'checkbox' ) {
+            newState.choices = this.state.choices.map((c, i) => {
+                c.checked = false; 
+                return c; 
+            });
+        }
+        this.setState(newState)
     }
 
     @bind
