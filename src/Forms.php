@@ -241,7 +241,7 @@ class Forms
             $submission->submitted_at = gmdate( 'Y-m-d H:i:s' );
 
             // save submission object so that other form processor have an insert ID to work with (eg file upload)
-            if( $this->settings['save_submissions'] ) {
+            if( $form->settings['save_submissions'] ) {
                  $submission->save();
             }
 
@@ -251,7 +251,7 @@ class Forms
             do_action( 'hf_process_form', $form, $submission );
 
             // re-save submission object for convenience in form processors hooked into hf_process_form
-            if( $this->settings['save_submissions'] ) {
+            if( $form->settings['save_submissions'] ) {
                  $submission->save();
             }
 

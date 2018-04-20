@@ -38,6 +38,7 @@ function hf_get_form( $form_id_or_slug ) {
 
     // grab & merge form settings
     $default_settings = array(
+        'save_submissions' => 1,
         'hide_after_success' => 0,
         'redirect_url' => '',
         'required_fields' =>'',
@@ -116,7 +117,6 @@ function hf_get_form_submission( $submission_id ) {
 function hf_get_settings() {
     $default_settings = array(
         'load_stylesheet' => 0,
-        'save_submissions' => 1,
     );
 
     $settings = get_option( 'hf_settings', array() );
