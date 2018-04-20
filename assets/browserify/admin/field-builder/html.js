@@ -39,7 +39,7 @@ function htmlgenerate(conf) {
             field = html("select", fieldAttr, opts);
             break;
 
-        case "radio-buttons":
+        case "radio":
             field = conf.choices.map((choice) => (
                 html("label", {}, [
                     html("input", {
@@ -54,7 +54,7 @@ function htmlgenerate(conf) {
             ));
             break;
 
-        case "checkboxes":
+        case "checkbox":
             field = conf.choices.map((choice) => (
                 html("label", {}, [
                     html("input", {

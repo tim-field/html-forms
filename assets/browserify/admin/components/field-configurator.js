@@ -131,7 +131,7 @@ class FieldConfigurator extends Component {
                 break;
 
                 case "choices":
-                    formFields.push(<FS.Choices multiple={false} choices={state.choices} handlers={this.choiceHandlers} />);
+                    formFields.push(<FS.Choices multiple={state.fieldType === 'checkbox'} choices={state.choices} handlers={this.choiceHandlers} />);
                 break;
 
                 case "button-text":

@@ -393,7 +393,7 @@ var FieldConfigurator = (_class = function (_Component) {
                         break;
 
                     case "choices":
-                        formFields.push((0, _preact.h)(FS.Choices, { multiple: false, choices: state.choices, handlers: this.choiceHandlers }));
+                        formFields.push((0, _preact.h)(FS.Choices, { multiple: state.fieldType === 'checkbox', choices: state.choices, handlers: this.choiceHandlers }));
                         break;
 
                     case "button-text":
@@ -667,7 +667,7 @@ function mount() {
 }
 
 // bootstrap
-fields = [new Field("text", "Text", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("email", "Email", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("url", "URL", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("number", "Number", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("date", "Date", ["label", "default-value", "required", "wrap", "add-to-form"]), new Field("textarea", "Textarea", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("dropdown", "Dropdown", ["label", "choices", "required", "wrap", "add-to-form"]), new Field("checkboxes", "Checkboxes", ["label", "choices", "wrap", "add-to-form"]), new Field("radio-buttons", "Radio buttons", ["label", "choices", "wrap", "add-to-form"]), new Field("submit", "Submit button", ["button-text", "wrap", "add-to-form"])];
+fields = [new Field("text", "Text", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("email", "Email", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("url", "URL", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("number", "Number", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("date", "Date", ["label", "default-value", "required", "wrap", "add-to-form"]), new Field("textarea", "Textarea", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("dropdown", "Dropdown", ["label", "choices", "required", "wrap", "add-to-form"]), new Field("checkbox", "Checkboxes", ["label", "choices", "wrap", "add-to-form"]), new Field("radio", "Radio buttons", ["label", "choices", "wrap", "add-to-form"]), new Field("submit", "Submit button", ["button-text", "wrap", "add-to-form"])];
 
 exports.default = {
     init: function init() {
@@ -733,7 +733,7 @@ function htmlgenerate(conf) {
             field = html("select", fieldAttr, opts);
             break;
 
-        case "radio-buttons":
+        case "radio":
             field = conf.choices.map(function (choice) {
                 return html("label", {}, [html("input", {
                     type: "radio",
@@ -744,7 +744,7 @@ function htmlgenerate(conf) {
             });
             break;
 
-        case "checkboxes":
+        case "checkbox":
             field = conf.choices.map(function (choice) {
                 return html("label", {}, [html("input", {
                     type: "checkbox",
