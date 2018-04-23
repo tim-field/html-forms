@@ -128,15 +128,18 @@ fill="#000000" stroke="none"><path d="M0 1280 l0 -1280 1280 0 1280 0 0 1280 0 12
     }
 
     public function add_screen_options() {
-        if( empty( $_GET['page'] ) || $_GET['page'] !== 'html-forms' || empty( $_GET['view'] ) || $_GET['view'] !== 'edit' || empty( $_GET['form_id'] ) ) {
+        // only run on the submissions overview page (not detail)
+        if( empty( $_GET['page'] ) || $_GET['page'] !== 'html-forms' || empty( $_GET['view'] ) || $_GET['view'] !== 'edit' || empty( $_GET['form_id'] ) || ! empty( $_GET['submission_id'] ) ) {
             return; 
         }
 
+        // don't run if form does not have submissions enabled
         $form = hf_get_form( $_GET['form_id'] );
         if( ! $form->settings['save_submissions'] ) {
             return;
         }
 
+        // tell screen options to show columns option
         $submissions = hf_get_form_submissions( $_GET['form_id'] );
         $columns = $this->get_submission_columns( $submissions );
         add_filter( 'manage_toplevel_page_html-forms_columns', function( $unused ) use( $columns ) {
