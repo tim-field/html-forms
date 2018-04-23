@@ -74,6 +74,10 @@ if (document.getElementById('hf-form-editor')) {
 window.html_forms.FieldBuilder = _fieldBuilder2.default;
 window.html_forms.Editor = _formEditor2.default;
 
+if (hf_options.view === 'edit') {
+    window.columns.useCheckboxesForHidden();
+}
+
 },{"./action-confirmations.js":1,"./field-builder.js":6,"./form-actions.js":8,"./form-editor.js":9,"./tabs.js":10,"tlite":23}],3:[function(require,module,exports){
 'use strict';
 

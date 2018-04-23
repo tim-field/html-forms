@@ -3,9 +3,9 @@
 defined( 'ABSPATH' ) or exit;
 $datetime_format = sprintf('%s %s', get_option( 'date_format' ), get_option( 'time_format' ) );
 
-add_action( 'hf_admin_form_submissions_table_output_column_header', function( $column ) {
-   echo esc_html( str_replace( '_', ' ', ucfirst( strtolower( $column ) ) ) );
-});
+add_action( 'hf_admin_form_submissions_table_output_column_header', function( $field, $column ) {
+   echo $column;
+}, 10, 2 );
 
 $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
   'bulk_delete_submissions' => __( 'Move to Trash' ),
@@ -42,9 +42,10 @@ $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
                 <th scope="col" class="hf-column manage-column column-primary" style="width: 160px;">
                   <?php _e( 'Timestamp', 'html-forms' ); ?>
                 </th>
-                <?php foreach( $columns as $column ) {
-                    echo sprintf( '<th scope="col" class="hf-column manage-column hf-column-%s">', esc_attr( $column ) );
-                    do_action( 'hf_admin_form_submissions_table_output_column_header', $column );
+                <?php foreach( $columns as $field => $column ) {
+                    $hidden_class = in_array( $field, $hidden_columns ) ? 'hidden' : '';
+                    echo sprintf( '<th scope="col" class="hf-column hf-column-%s manage-column column-%s %s">', esc_attr( $field ), esc_attr( $field ), $hidden_class );
+                    do_action( 'hf_admin_form_submissions_table_output_column_header', $field, $column );
                     echo '</th>';
                 } ?>
             </tr>
@@ -65,9 +66,10 @@ $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
                   </div>
                </td>
 
-               <?php foreach( $columns as $column ) {
-                   echo "<td>";
-                   $value = isset( $s->data[ $column ] ) ? $s->data[ $column ] : '';
+               <?php foreach( $columns as $field => $column ) {
+                   $hidden_class = in_array( $field, $hidden_columns ) ? 'hidden' : '';
+                   echo sprintf( '<td class="column-%s %s">', esc_attr( $field ), $hidden_class );
+                   $value = isset( $s->data[ $field ] ) ? $s->data[ $field ] : '';
 
                    if( hf_is_file( $value ) ) {
                       $file_url = isset( $value['url'] ) ? $value['url'] : '';
