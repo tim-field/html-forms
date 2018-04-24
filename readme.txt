@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9.5
-Stable tag: 1.1.5
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -111,6 +111,25 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 
 == Changelog ==
+
+
+#### 1.2.0 - April 24, 2018
+
+**Fixes**
+
+- Remove use of short-array syntax, which is only available in PHP 5.4 or later.
+
+**Improvements**
+
+- You can now hide columns on the submissions tab using screen options (in the top right corner).
+- You can now disable saving submissions on a per-form basis.
+- Allow pre-checking multiple checkboxes when using the field helper
+- Fields with matching URL parameter names will automatically be prefilled.
+- Use SVG icon in admin menu.
+
+**Additions**
+
+- Add simple action for subscribing to MailChimp. Requires [MailChimp for WordPress](https://wordpress.org/plugins/mailchimp-for-wp/).
 
 
 #### 1.1.5 - April 9, 2018
