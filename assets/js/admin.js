@@ -74,6 +74,7 @@ if (document.getElementById('hf-form-editor')) {
 window.html_forms.FieldBuilder = _fieldBuilder2.default;
 window.html_forms.Editor = _formEditor2.default;
 
+// tell WP common.js to override the method used for determining hidden columns (screen options)
 if (hf_options.view === 'edit') {
     window.columns.useCheckboxesForHidden();
 }
