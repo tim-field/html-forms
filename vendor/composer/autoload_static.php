@@ -13,6 +13,7 @@ class ComposerStaticInit6624e64b43d8b10f84ff63c345cfa51d
     public static $classMap = array (
         'HTML_Forms\\Actions\\Action' => __DIR__ . '/../..' . '/src/Actions/Action.php',
         'HTML_Forms\\Actions\\Email' => __DIR__ . '/../..' . '/src/Actions/Email.php',
+        'HTML_Forms\\Actions\\MailChimp' => __DIR__ . '/../..' . '/src/Actions/MailChimp.php',
         'HTML_Forms\\Admin\\Admin' => __DIR__ . '/../..' . '/src/Admin/Admin.php',
         'HTML_Forms\\Admin\\Migrations' => __DIR__ . '/../..' . '/src/Admin/Migrations.php',
         'HTML_Forms\\Admin\\Table' => __DIR__ . '/../..' . '/src/Admin/Table.php',
