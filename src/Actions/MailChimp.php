@@ -47,6 +47,7 @@ class MailChimp extends Action {
 			<td>
 				<?php if( ! empty( $lists ) ) { ?>
 					<select name="form[settings][actions][<?php echo $index; ?>][list_id]">
+						<option value="" style="color: #AAA;" readonly><?php _e( 'Select MailChimp list', 'html-forms' ); ?></option>
 						<?php foreach( $lists as $list ) { 
 							$selected = $settings['list_id'] === $list->id ? 'selected': '';
 							echo sprintf( '<option value="%s" %s>%s</option>', $list->id, $selected, $list->name );
