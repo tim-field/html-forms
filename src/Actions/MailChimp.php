@@ -83,8 +83,14 @@ class MailChimp extends Action {
 		return;
 	}
 
+	$merge_fields = array();
+	$merge_fields = apply_filters( 'hf_mailchimp_action_merge_fields', $merge_fields, $submission, $form );
+
 	// subscribe the email address to the selected list
 	$mailchimp = new \MC4WP_MailChimp();
-	$mailchimp->list_subscribe( $mailchimp_list_id, $email_address );
+	$mailchimp->list_subscribe( $mailchimp_list_id, $email_address, array( 
+		'merge_fields' => $merge_fields,
+		'status' => 'pending',
+	) );
    }
 }
