@@ -1,6 +1,25 @@
 Changelog
 =========
 
+#### 1.2.0 - April 24, 2018
+
+**Fixes**
+
+- Remove use of short-array syntax, which is only available in PHP 5.4 or later.
+
+**Improvements**
+
+- You can now hide columns on the submissions tab using screen options (in the top right corner).
+- You can now disable saving submissions on a per-form basis.
+- Allow pre-checking multiple checkboxes when using the field helper
+- Fields with matching URL parameter names will automatically be prefilled.
+- Use SVG icon in admin menu.
+
+**Additions**
+
+- Add simple action for subscribing to MailChimp. Requires [MailChimp for WordPress](https://wordpress.org/plugins/mailchimp-for-wp/).
+
+
 #### 1.1.5 - April 9, 2018
 
 **Fixes**
