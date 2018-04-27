@@ -2,7 +2,6 @@
 
 use HTML_Forms\Form;
 use HTML_Forms\Submission;
-use WP_Post;
 
 /**
  * @param $form_id_or_slug int|string|WP_Post
