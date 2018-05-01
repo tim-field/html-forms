@@ -297,6 +297,8 @@ var FieldConfigurator = (_class = function (_Component) {
         key: 'getInitialState',
         value: function getInitialState() {
             return {
+                formId: document.querySelector('input[name="form_id"]').value,
+                formSlug: document.querySelector('input[name="form[slug]"]').value,
                 fieldType: "",
                 fieldLabel: "",
                 placeholder: "",
@@ -711,7 +713,11 @@ var _preact = require('preact');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function htmlgenerate(conf) {
-    var label = conf.fieldLabel.length && conf.fieldType !== 'submit' ? (0, _preact.h)("label", {}, conf.fieldLabel) : "";
+    var fieldName = namify(conf.fieldLabel);
+    var fieldId = conf.formSlug + '-' + fieldName;
+    var label = conf.fieldLabel.length && conf.fieldType !== 'submit' ? (0, _preact.h)("label", {
+        "for": fieldId
+    }, conf.fieldLabel) : "";
     var fieldAttr = void 0,
         field = void 0;
 
@@ -720,26 +726,29 @@ function htmlgenerate(conf) {
         default:
             fieldAttr = {
                 type: conf.fieldType,
-                name: namify(conf.fieldLabel),
+                name: fieldName,
                 value: conf.value,
                 placeholder: conf.placeholder,
-                required: conf.required
+                required: conf.required,
+                id: fieldId
             };
             field = html("input", fieldAttr);
             break;
         case "textarea":
             fieldAttr = {
-                name: namify(conf.fieldLabel),
+                name: fieldName,
                 placeholder: conf.placeholder,
-                required: conf.required
+                required: conf.required,
+                id: fieldId
             };
             field = html("textarea", fieldAttr, conf.value);
             break;
 
         case "dropdown":
             fieldAttr = {
-                name: namify(conf.fieldLabel),
-                required: conf.required
+                name: fieldName,
+                required: conf.required,
+                id: fieldId
             };
             var opts = conf.choices.map(function (choice) {
                 return html("option", { selected: choice.checked }, choice.label);
@@ -751,7 +760,7 @@ function htmlgenerate(conf) {
             field = conf.choices.map(function (choice) {
                 return html("label", {}, [html("input", {
                     type: "radio",
-                    name: namify(conf.fieldLabel),
+                    name: fieldName,
                     value: choice.label,
                     selected: choice.checked
                 }), " ", html("span", {}, choice.label)]);
@@ -762,7 +771,7 @@ function htmlgenerate(conf) {
             field = conf.choices.map(function (choice) {
                 return html("label", {}, [html("input", {
                     type: "checkbox",
-                    name: namify(conf.fieldLabel) + "[]",
+                    name: fieldName + "[]",
                     value: choice.label,
                     checked: choice.checked
                 }), " ", html("span", {}, choice.label)]);
@@ -772,8 +781,9 @@ function htmlgenerate(conf) {
         case "file":
             fieldAttr = {
                 type: "file",
-                name: namify(conf.fieldLabel),
-                required: conf.required
+                name: fieldName,
+                required: conf.required,
+                id: fieldId
             };
 
             if (conf['accept']) {

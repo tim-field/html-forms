@@ -21,6 +21,8 @@ class FieldConfigurator extends Component {
 
     getInitialState() {
        return {
+            formId: document.querySelector('input[name="form_id"]').value,
+            formSlug: document.querySelector('input[name="form[slug]"]').value,
             fieldType: "",
             fieldLabel: "",
             placeholder: "",
