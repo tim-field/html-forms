@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 function getFieldValues(form, fieldName, evt) {
     var values = [];
-    var inputs = form.querySelectorAll('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"]');
+    var inputs = form.querySelectorAll('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"], button[name="' + fieldName + '"]');
 
     for (var i = 0; i < inputs.length; i++) {
         var input = inputs[i];
@@ -16,7 +16,7 @@ function getFieldValues(form, fieldName, evt) {
             continue;
         }
 
-        if (type === 'button' && (!evt || evt.target !== input)) {
+        if ((type === 'button' || input.tagName === 'BUTTON') && (!evt || evt.target !== input)) {
             continue;
         }
 

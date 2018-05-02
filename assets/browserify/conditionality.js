@@ -2,7 +2,7 @@
 
 function getFieldValues(form, fieldName, evt) {
     let values = [];
-    let inputs = form.querySelectorAll('input[name="'+fieldName+'"], select[name="'+fieldName+'"], textarea[name="'+fieldName+'"]');
+    let inputs = form.querySelectorAll('input[name="'+fieldName+'"], select[name="'+fieldName+'"], textarea[name="'+fieldName+'"], button[name="'+fieldName+'"]');
 
     for(let i=0; i<inputs.length; i++) {
         const input = inputs[i];
