@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-function getFieldValues(form, fieldName) {
+function getFieldValues(form, fieldName, evt) {
     var values = [];
     var inputs = form.querySelectorAll('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"]');
 
@@ -13,6 +13,10 @@ function getFieldValues(form, fieldName) {
         var type = input.getAttribute("type");
 
         if ((type === "radio" || type === "checkbox") && !input.checked) {
+            continue;
+        }
+
+        if (type === 'button' && (!evt || evt.target !== input)) {
             continue;
         }
 
@@ -36,13 +40,13 @@ function findForm(element) {
     return null;
 }
 
-function toggleElement(el) {
+function toggleElement(el, evt) {
     var show = !!el.getAttribute('data-show-if');
     var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
     var fieldName = conditions[0];
     var expectedValues = (conditions.length > 1 ? conditions[1] : "*").split('|');
     var form = findForm(el);
-    var values = getFieldValues(form, fieldName);
+    var values = getFieldValues(form, fieldName, evt);
 
     // determine whether condition is met
     var conditionMet = false;
@@ -93,11 +97,14 @@ function handleInputEvent(evt) {
 
     var form = evt.target.form;
     var elements = form.querySelectorAll('[data-show-if], [data-hide-if]');
-    [].forEach.call(elements, toggleElement);
+    [].forEach.call(elements, function (el) {
+        return toggleElement(el, evt);
+    });
 }
 
 exports.default = {
     'init': function init() {
+        document.addEventListener('click', handleInputEvent, true);
         document.addEventListener('keyup', handleInputEvent, true);
         document.addEventListener('change', handleInputEvent, true);
         document.addEventListener('hf-refresh', evaluate, true);
