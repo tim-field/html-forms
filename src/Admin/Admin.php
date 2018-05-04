@@ -186,7 +186,7 @@ fill="#000000" stroke="none"><path d="M0 1280 l0 -1280 1280 0 1280 0 0 1280 0 12
     public function tab_fields( Form $form ) {
         $form_preview_url = add_query_arg( array( 
             'hf_preview_form' => $form->ID,
-        ), get_option( 'home' ) );
+        ), site_url( '/', 'admin' ) );
         require dirname( $this->plugin_file )  . '/views/tab-fields.php';
     }
 
