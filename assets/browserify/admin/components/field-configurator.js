@@ -1,6 +1,6 @@
 'use strict';
 
-import { h, Component, render } from 'preact';
+import { h, Component } from 'preact';
 import { bind } from 'decko';
 import { htmlgenerate } from '../field-builder/html.js';
 import * as FS from './field-settings.js';
