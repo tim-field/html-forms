@@ -12,7 +12,7 @@ function getFieldValues(form, fieldName, evt) {
             continue;
         }
 
-        if( ( type === 'button' || input.tagName === 'BUTTON' ) && ( ! evt || evt.target !== input ) ) {
+        if( ( type === 'button' || type === 'submit' || input.tagName === 'BUTTON' ) && ( ! evt || evt.target !== input ) ) {
             continue;
         }
 
