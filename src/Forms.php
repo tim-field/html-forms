@@ -333,7 +333,7 @@ class Forms
                 ob_end_clean();
             }
 
-            http_response_code(200);
+            status_header(200);
             require dirname( $this->plugin_file ) . '/views/form-preview.php';
             exit;
         });
