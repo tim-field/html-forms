@@ -133,6 +133,10 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
+#: src/Admin/GDPR.php:36
+msgid "Form submissions"
+msgstr ""
+
 #: src/Admin/Table.php:110
 msgid "Form"
 msgstr ""

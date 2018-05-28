@@ -16,8 +16,12 @@ function getFieldValues(form, fieldName, evt) {
             continue;
         }
 
-        if ((type === 'button' || type === 'submit' || input.tagName === 'BUTTON') && (!evt || evt.target !== input)) {
-            continue;
+        if (type === 'button' || type === 'submit' || input.tagName === 'BUTTON') {
+            if ((!evt || evt.target !== input) && form.dataset[fieldName] !== input.value) {
+                continue;
+            }
+
+            form.dataset[fieldName] = input.value;
         }
 
         values.push(input.value);
