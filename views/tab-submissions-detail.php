@@ -37,14 +37,21 @@ $datetime_format = sprintf('%s %s', get_option( 'date_format' ), get_option( 'ti
                 <th><?php _e( 'Timestamp', 'html-forms' ); ?></th>
                 <td><?php echo date( $datetime_format, strtotime( $submission->submitted_at ) ); ?></td>
             </tr>
+            
+            <?php if ( ! empty( $submission->user_agent ) ) { ?>
             <tr>
                 <th><?php _e( 'User Agent', 'html-forms' ); ?></th>
                 <td><?php echo esc_html( $submission->user_agent ); ?></td>
             </tr>
+            <?php } // end if user_agent ?>
+
+            <?php if ( ! empty( $submission->ip_address ) ) { ?>
             <tr>
                 <th><?php _e( 'IP Address', 'html-forms' ); ?></th>
                 <td><?php echo esc_html( $submission->ip_address ); ?></td>
             </tr>
+            <?php } // end if ip_address ?>
+
             <tr>
                 <th><?php _e( 'Referrer URL', 'html-forms' ); ?></th>
                 <td><?php echo sprintf( '<a href="%s">%s</a>', esc_attr( $submission->referer_url ), esc_html( $submission->referer_url ) ); ?></td>
