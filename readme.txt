@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9.6
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -111,6 +111,26 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 
 == Changelog ==
+
+
+#### 1.3.0 - May 28, 2018
+
+**Fixes**
+
+- PHP notice because of namespace import outside of any namespace.
+- Removed usage of PHP 5.4+ feature.
+- Enforce HTTPS in form preview iframe when WP Admin uses HTTPS but public site does not.
+
+**Improvements**
+
+- Hook into GDPR Personal Data Export & Erase functionality. Requires WP 4.9.6.
+- Allow updating stored Submissions with empty values. [Allows clearing out IP address & user agents](https://github.com/ibericode/html-forms-code-snippets/blob/master/do-not-store-ip-address-and-user-agent.php).
+- Internal field should start with underscore to hide it in column view.
+- Add for attribute to generated label element. Allows for simple [multi-step forms](https://github.com/ibericode/html-forms-code-snippets/blob/master/multi-step-form.html).
+
+**Additions**
+
+- Add support for button clicks in conditional element logic.
 
 
 #### 1.2.0 - April 24, 2018
