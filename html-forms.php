@@ -52,6 +52,9 @@ function _bootstrap() {
             $admin = new Admin\Admin( __FILE__ );
             $admin->hook();
         }
+
+        $gdpr = new Admin\GDPR();
+        $gdpr->hook();
     }
 }
 
