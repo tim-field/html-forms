@@ -307,12 +307,11 @@ function addFormMessage(formEl, message) {
 
 function handleSubmitEvents(e) {
     var formEl = e.target;
-
-    // only act on html-forms
     if (formEl.className.indexOf('hf-form') < 0) {
         return;
     }
 
+    // always prevent default (because regular submit doesn't work for HTML Forms)
     e.preventDefault();
     submitForm(formEl);
 }
@@ -395,12 +394,13 @@ function createRequestHandler(formEl) {
     };
 }
 
-document.addEventListener('submit', handleSubmitEvents, true);
+document.addEventListener('submit', handleSubmitEvents, false); // useCapture=false to ensure we bubble upwards (and thus can cancel propagation)
 _conditionality2.default.init();
 _formPrefiller2.default.init();
 
 window.html_forms = {
-    'on': events.on.bind(events)
+    'on': events.on.bind(events),
+    'submit': submitForm
 };
 
 },{"./conditionality.js":1,"./form-loading-indicator.js":2,"./form-prefiller.js":3,"./polyfills/custom-event.js":4,"es5-shim":6,"wolfy87-eventemitter":8}],6:[function(require,module,exports){

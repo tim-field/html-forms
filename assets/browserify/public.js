@@ -26,14 +26,13 @@ function addFormMessage(formEl, message) {
 
 function handleSubmitEvents(e) {
     const formEl = e.target;
-
-    // only act on html-forms
     if( formEl.className.indexOf('hf-form') < 0 ) {
         return;
-    }
+    }   
 
+    // always prevent default (because regular submit doesn't work for HTML Forms)
     e.preventDefault();
-    submitForm(formEl);
+    submitForm(formEl);       
 }
 
 function submitForm(formEl) {
@@ -114,10 +113,11 @@ function createRequestHandler(formEl) {
     }
 }
 
-document.addEventListener('submit', handleSubmitEvents, true);
+document.addEventListener('submit', handleSubmitEvents, false); // useCapture=false to ensure we bubble upwards (and thus can cancel propagation)
 conditionality.init();
 prefiller.init();
 
 window.html_forms = {
     'on': events.on.bind(events),
+    'submit': submitForm,
 };
