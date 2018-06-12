@@ -1,7 +1,8 @@
 <?php
 
 defined( 'ABSPATH' ) or exit;
-$datetime_format = sprintf('%s %s', get_option( 'date_format' ), get_option( 'time_format' ) );
+$date_format = get_option( 'date_format' );
+$datetime_format = sprintf('%s %s', $date_format, get_option( 'time_format' ) );
 
 add_action( 'hf_admin_form_submissions_table_output_column_header', function( $field, $column ) {
    echo $column;
@@ -79,6 +80,8 @@ $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
                       $short_name = substr( $value['name'], 0, 20 );
                       $suffix = strlen( $value['name'] ) > 20 ? '...' : '';
                       echo sprintf( '<a href="%s">%s%s</a> (%s)', $file_url, $short_name, $suffix, hf_human_filesize( $value['size'] ) );
+                   } elseif( hf_is_date( $value ) ) {
+                      echo date( $date_format, strtotime( $value ) );
                    } else {
                      // regular (scalar) values
                      if( is_array( $value ) ) {
