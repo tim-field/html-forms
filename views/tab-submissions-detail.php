@@ -73,23 +73,7 @@ $datetime_format = sprintf('%s %s', $date_format, get_option( 'time_format' ) );
                     echo sprintf( '<th>%s</th>', esc_html( str_replace( '_', ' ', ucfirst( strtolower( $field ) ) ) ) );
 
                     echo '<td>';
-                    if( hf_is_file( $value ) ) {
-                      $file_url = isset( $value['url'] ) ? $value['url'] : '';
-                      if( isset( $value['attachment_id'] ) ) {
-                        $file_url = admin_url( 'post.php?action=edit&post=' . $value['attachment_id'] );
-                      }
-                      $short_name = substr( $value['name'], 0, 20 );
-                      $suffix = strlen( $value['name'] ) > 20 ? '...' : '';
-                      echo sprintf( '<a href="%s">%s%s</a> (%s)', $file_url, $short_name, $suffix, hf_human_filesize( $value['size'] ) );
-                   } elseif( hf_is_date( $value ) ) {
-                      echo date( $date_format, strtotime( $value ) );
-                   } else {
-                        if( is_array( $value ) ) {
-                            $value = join( ', ', $value );
-                        }
-                        $value = esc_html( $value );
-                        echo nl2br( $value );
-                    }
+                    echo hf_field_value( $value );
                     echo '</td>';
                     echo '</tr>';
                 }

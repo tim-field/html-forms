@@ -214,10 +214,54 @@ function hf_replace_data_variables( $string, $data = array() ) {
     $string = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function( $matches ) use ( $data ) {
         $key = $matches[1];
         $replacement = hf_array_get( $data, $key, '' );
-        $replacement = is_array( $replacement ) ? join( ', ', $replacement ) : $replacement;
+        $replacement = hf_field_value( $replacement );
         return $replacement;
     }, $string );
     return $string;
+} 
+
+/**
+* Returns an escaped and formatted field value. Detects file-, array- and date-types.
+*
+* Caveat: if value is a file, an HTML string is returned (which means email action should use "Content-Type: html" when it includes a file field).
+*
+* @param string $value
+* @param int $limit 
+* @return string
+* @since 1.3.1
+*/
+function hf_field_value( $value, $limit = 0 ) {
+    if( $value === '' ) {
+        return $value;
+    }
+
+    if( hf_is_file( $value ) ) {
+        $file_url = isset( $value['url'] ) ? $value['url'] : '';
+        if( isset( $value['attachment_id'] ) ) {
+            $file_url = admin_url( sprintf( 'post.php?action=edit&post=%d', $value['attachment_id'] ) );
+        }
+        $short_name = substr( $value['name'], 0, 20 );
+        $suffix = strlen( $value['name'] ) > 20 ? '...' : '';
+        return sprintf( '<a href="%s">%s%s</a> (%s)', esc_attr( $file_url ), esc_html( $short_name ), esc_html( $suffix ), hf_human_filesize( $value['size'] ) ); 
+    }
+
+    if( hf_is_date( $value ) ) {
+        $date_format = get_option( 'date_format' );
+        return date( $date_format, strtotime( $value ) );
+    } 
+
+    // join array-values with comma
+    if( is_array( $value ) ) {
+        $value = join( ', ', $value );
+    }
+
+    // limit string to certain length
+    $value = esc_html( $value );
+    if( $limit > 0 ) {
+        return sprintf( '%s%s', substr( $value, 0, $limit ), strlen( $value ) > $limit ? '...' : '' );
+    }
+
+    return $value;
 }
 
 /**
@@ -226,20 +270,21 @@ function hf_replace_data_variables( $string, $data = array() ) {
 */
 function hf_is_file( $value ) {
     return is_array( $value ) 
-        && isset( $value['name'] ) 
-        && isset( $value['size'] ) 
-        && isset( $value['type'] );
+    && isset( $value['name'] ) 
+    && isset( $value['size'] ) 
+    && isset( $value['type'] );
 }
 
 /**
 * Returns true if value looks like a date-string submitted from a <input type="date">
 * @return bool
+* @since 1.3.1
 */
 function hf_is_date( $value ) {
     return strlen( $value ) === 10 
-        && preg_match( '/\d{2,4}[-\/]\d{2}[-\/]\d{2,4}/', $value ) > 0 
-        && ( $timestamp = strtotime($value) ) 
-        && $timestamp != false;
+    && preg_match( '/\d{2,4}[-\/]\d{2}[-\/]\d{2,4}/', $value ) > 0 
+    && ( $timestamp = strtotime($value) ) 
+    && $timestamp != false;
 }
 
 /** 
