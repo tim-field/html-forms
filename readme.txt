@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9.6
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -111,6 +111,15 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 
 == Changelog ==
+
+
+#### 1.3.1 - June 12, 2018
+
+**Improvements**
+
+- Format dates, files and arrays when using data variables.
+- Format dates, files and arrays on the submissions overview and submissions details pages.
+- Allow cancelling a form's submit event in JavaScript (with `event.stopPropagation()`) to prevent form submission.
 
 
 #### 1.3.0 - May 28, 2018
