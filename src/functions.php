@@ -270,9 +270,9 @@ function hf_field_value( $value, $limit = 0 ) {
 */
 function hf_is_file( $value ) {
     return is_array( $value ) 
-    && isset( $value['name'] ) 
-    && isset( $value['size'] ) 
-    && isset( $value['type'] );
+        && isset( $value['name'] ) 
+        && isset( $value['size'] ) 
+        && isset( $value['type'] );
 }
 
 /**
@@ -281,10 +281,11 @@ function hf_is_file( $value ) {
 * @since 1.3.1
 */
 function hf_is_date( $value ) {
-    return strlen( $value ) === 10 
-    && preg_match( '/\d{2,4}[-\/]\d{2}[-\/]\d{2,4}/', $value ) > 0 
-    && ( $timestamp = strtotime($value) ) 
-    && $timestamp != false;
+    return is_string( $value ) 
+        && strlen( $value ) === 10 
+        && preg_match( '/\d{2,4}[-\/]\d{2}[-\/]\d{2,4}/', $value ) > 0 
+        && ( $timestamp = strtotime($value) ) 
+        && $timestamp != false;
 }
 
 /** 

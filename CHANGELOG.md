@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### 1.3.1 - June 12, 2018
+
+**Improvements**
+
+
+
+
 #### 1.3.0 - May 28, 2018
 
 **Fixes**
