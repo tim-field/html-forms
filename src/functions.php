@@ -221,12 +221,25 @@ function hf_replace_data_variables( $string, $data = array() ) {
 }
 
 /**
-* Poor man's file object, compatible with serialization..
-*
+* Returns true if value is a "file"
 * @return bool
 */
-function hf_is_file( $file ) {
-    return isset( $file['name'] ) && isset( $file['size'] ) && isset( $file['type'] );
+function hf_is_file( $value ) {
+    return is_array( $value ) 
+        && isset( $value['name'] ) 
+        && isset( $value['size'] ) 
+        && isset( $value['type'] );
+}
+
+/**
+* Returns true if value looks like a date-string submitted from a <input type="date">
+* @return bool
+*/
+function hf_is_date( $value ) {
+    return strlen( $value ) === 10 
+        && preg_match( '/\d{2,4}[-\/]\d{2}[-\/]\d{2,4}/', $value ) > 0 
+        && ( $timestamp = strtotime($value) ) 
+        && $timestamp != false;
 }
 
 /** 
