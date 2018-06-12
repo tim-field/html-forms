@@ -5,7 +5,9 @@ Changelog
 
 **Improvements**
 
-
+- Format dates, files and arrays when using data variables.
+- Format dates, files and arrays on the submissions overview and submissions details pages.
+- Allow cancelling a form's submit event in JavaScript (with `event.stopPropagation()`) to prevent form submission.
 
 
 #### 1.3.0 - May 28, 2018
