@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### 1.3.2 - Aug 6, 2018
+
+**Improvements**
+
+- Default to an empty string value in conditional fields logic. This allows you to show or hide elements when a field is empty or has not been set yet.
+
+
 #### 1.3.1 - June 12, 2018
 
 **Improvements**
