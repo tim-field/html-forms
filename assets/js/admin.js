@@ -1,4 +1,4 @@
-(function () { var require = undefined; var module = undefined; var exports = undefined; var define = undefined;(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
+(function () { var require = undefined; var module = undefined; var exports = undefined; var define = undefined;(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1544,12 +1544,14 @@ exports.default = {
   CodeMirror.registerHelper("fold", "xml", function(cm, start) {
     var iter = new Iter(cm, start.line, 0);
     for (;;) {
-      var openTag = toNextTag(iter), end;
-      if (!openTag || !(end = toTagEnd(iter)) || iter.line != start.line) return;
+      var openTag = toNextTag(iter)
+      if (!openTag || iter.line != start.line) return
+      var end = toTagEnd(iter)
+      if (!end) return
       if (!openTag[1] && end != "selfClose") {
         var startPos = Pos(iter.line, iter.ch);
         var endPos = findMatchingClose(iter, openTag[2]);
-        return endPos && {from: startPos, to: endPos.from};
+        return endPos && cmp(endPos.from, startPos) > 0 ? {from: startPos, to: endPos.from} : null
       }
     }
   });
@@ -2336,6 +2338,16 @@ function collapsedSpanAtSide(line, start) {
 }
 function collapsedSpanAtStart(line) { return collapsedSpanAtSide(line, true) }
 function collapsedSpanAtEnd(line) { return collapsedSpanAtSide(line, false) }
+
+function collapsedSpanAround(line, ch) {
+  var sps = sawCollapsedSpans && line.markedSpans, found;
+  if (sps) { for (var i = 0; i < sps.length; ++i) {
+    var sp = sps[i];
+    if (sp.marker.collapsed && (sp.from == null || sp.from < ch) && (sp.to == null || sp.to > ch) &&
+        (!found || compareCollapsedMarkers(found, sp.marker) < 0)) { found = sp.marker; }
+  } }
+  return found
+}
 
 // Test whether there exists a collapsed span that partially
 // overlaps (covers the start or end, but not both) of a new span.
@@ -4371,12 +4383,11 @@ function coordsChar(cm, x, y) {
   var lineObj = getLine(doc, lineN);
   for (;;) {
     var found = coordsCharInner(cm, lineObj, lineN, x, y);
-    var merged = collapsedSpanAtEnd(lineObj);
-    var mergedPos = merged && merged.find(0, true);
-    if (merged && (found.ch > mergedPos.from.ch || found.ch == mergedPos.from.ch && found.xRel > 0))
-      { lineN = lineNo(lineObj = mergedPos.to.line); }
-    else
-      { return found }
+    var collapsed = collapsedSpanAround(lineObj, found.ch + (found.xRel > 0 ? 1 : 0));
+    if (!collapsed) { return found }
+    var rangeEnd = collapsed.find(1);
+    if (rangeEnd.line == lineN) { return rangeEnd }
+    lineObj = getLine(doc, lineN = rangeEnd.line);
   }
 }
 
@@ -5136,6 +5147,7 @@ var NativeScrollbars = function(place, scroll, cm) {
   this.cm = cm;
   var vert = this.vert = elt("div", [elt("div", null, null, "min-width: 1px")], "CodeMirror-vscrollbar");
   var horiz = this.horiz = elt("div", [elt("div", null, null, "height: 100%; min-height: 1px")], "CodeMirror-hscrollbar");
+  vert.tabIndex = horiz.tabIndex = -1;
   place(vert); place(horiz);
 
   on(vert, "scroll", function () {
@@ -6387,7 +6399,7 @@ function addChangeToHistory(doc, change, selAfter, opId) {
 
   if ((hist.lastOp == opId ||
        hist.lastOrigin == change.origin && change.origin &&
-       ((change.origin.charAt(0) == "+" && doc.cm && hist.lastModTime > time - doc.cm.options.historyEventDelay) ||
+       ((change.origin.charAt(0) == "+" && hist.lastModTime > time - (doc.cm ? doc.cm.options.historyEventDelay : 500)) ||
         change.origin.charAt(0) == "*")) &&
       (cur = lastChangeEvent(hist, hist.lastOp == opId))) {
     // Merge this change into the last event
@@ -6816,7 +6828,8 @@ function makeChangeInner(doc, change) {
 
 // Revert a change stored in a document's history.
 function makeChangeFromHistory(doc, type, allowSelectionOnly) {
-  if (doc.cm && doc.cm.state.suppressEdits && !allowSelectionOnly) { return }
+  var suppress = doc.cm && doc.cm.state.suppressEdits;
+  if (suppress && !allowSelectionOnly) { return }
 
   var hist = doc.history, event, selAfter = doc.sel;
   var source = type == "undo" ? hist.done : hist.undone, dest = type == "undo" ? hist.undone : hist.done;
@@ -6841,8 +6854,10 @@ function makeChangeFromHistory(doc, type, allowSelectionOnly) {
         return
       }
       selAfter = event;
-    }
-    else { break }
+    } else if (suppress) {
+      source.push(event);
+      return
+    } else { break }
   }
 
   // Build up a reverse change object to add to the opposite history
@@ -6998,7 +7013,7 @@ function makeChangeSingleDocInEditor(cm, change, spans) {
 function replaceRange(doc, code, from, to, origin) {
   if (!to) { to = from; }
   if (cmp(to, from) < 0) { var assign;
-    (assign = [to, from], from = assign[0], to = assign[1], assign); }
+    (assign = [to, from], from = assign[0], to = assign[1]); }
   if (typeof code == "string") { code = doc.splitLines(code); }
   makeChange(doc, {from: from, to: to, text: code, origin: origin});
 }
@@ -7094,10 +7109,10 @@ function LeafChunk(lines) {
 }
 
 LeafChunk.prototype = {
-  chunkSize: function chunkSize() { return this.lines.length },
+  chunkSize: function() { return this.lines.length },
 
   // Remove the n lines at offset 'at'.
-  removeInner: function removeInner(at, n) {
+  removeInner: function(at, n) {
     var this$1 = this;
 
     for (var i = at, e = at + n; i < e; ++i) {
@@ -7110,13 +7125,13 @@ LeafChunk.prototype = {
   },
 
   // Helper used to collapse a small branch into a single leaf.
-  collapse: function collapse(lines) {
+  collapse: function(lines) {
     lines.push.apply(lines, this.lines);
   },
 
   // Insert the given array of lines at offset 'at', count them as
   // having the given height.
-  insertInner: function insertInner(at, lines, height) {
+  insertInner: function(at, lines, height) {
     var this$1 = this;
 
     this.height += height;
@@ -7125,7 +7140,7 @@ LeafChunk.prototype = {
   },
 
   // Used to iterate over a part of the tree.
-  iterN: function iterN(at, n, op) {
+  iterN: function(at, n, op) {
     var this$1 = this;
 
     for (var e = at + n; at < e; ++at)
@@ -7149,9 +7164,9 @@ function BranchChunk(children) {
 }
 
 BranchChunk.prototype = {
-  chunkSize: function chunkSize() { return this.size },
+  chunkSize: function() { return this.size },
 
-  removeInner: function removeInner(at, n) {
+  removeInner: function(at, n) {
     var this$1 = this;
 
     this.size -= n;
@@ -7177,13 +7192,13 @@ BranchChunk.prototype = {
     }
   },
 
-  collapse: function collapse(lines) {
+  collapse: function(lines) {
     var this$1 = this;
 
     for (var i = 0; i < this.children.length; ++i) { this$1.children[i].collapse(lines); }
   },
 
-  insertInner: function insertInner(at, lines, height) {
+  insertInner: function(at, lines, height) {
     var this$1 = this;
 
     this.size += lines.length;
@@ -7212,7 +7227,7 @@ BranchChunk.prototype = {
   },
 
   // When a node has grown, check whether it should be split.
-  maybeSpill: function maybeSpill() {
+  maybeSpill: function() {
     if (this.children.length <= 10) { return }
     var me = this;
     do {
@@ -7234,7 +7249,7 @@ BranchChunk.prototype = {
     me.parent.maybeSpill();
   },
 
-  iterN: function iterN(at, n, op) {
+  iterN: function(at, n, op) {
     var this$1 = this;
 
     for (var i = 0; i < this.children.length; ++i) {
@@ -7285,7 +7300,7 @@ LineWidget.prototype.changed = function () {
   this.height = null;
   var diff = widgetHeight(this) - oldH;
   if (!diff) { return }
-  updateLineHeight(line, line.height + diff);
+  if (!lineIsHidden(this.doc, line)) { updateLineHeight(line, line.height + diff); }
   if (cm) {
     runInOp(cm, function () {
       cm.curOp.forceUpdate = true;
@@ -7318,7 +7333,7 @@ function addLineWidget(doc, handle, node, options) {
     }
     return true
   });
-  signalLater(cm, "lineWidgetAdded", cm, widget, typeof handle == "number" ? handle : lineNo(handle));
+  if (cm) { signalLater(cm, "lineWidgetAdded", cm, widget, typeof handle == "number" ? handle : lineNo(handle)); }
   return widget
 }
 
@@ -8167,8 +8182,6 @@ function registerGlobalHandlers() {
 // Called when the window resizes
 function onResize(cm) {
   var d = cm.display;
-  if (d.lastWrapHeight == d.wrapper.clientHeight && d.lastWrapWidth == d.wrapper.clientWidth)
-    { return }
   // Might be a text scaling operation, clear size caches.
   d.cachedCharWidth = d.cachedTextHeight = d.cachedPaddingH = null;
   d.scrollbarsClipped = false;
@@ -8214,7 +8227,7 @@ keyMap.pcDefault = {
   "Ctrl-G": "findNext", "Shift-Ctrl-G": "findPrev", "Shift-Ctrl-F": "replace", "Shift-Ctrl-R": "replaceAll",
   "Ctrl-[": "indentLess", "Ctrl-]": "indentMore",
   "Ctrl-U": "undoSelection", "Shift-Ctrl-U": "redoSelection", "Alt-U": "redoSelection",
-  fallthrough: "basic"
+  "fallthrough": "basic"
 };
 // Very basic readline/emacs-style bindings, which are standard on Mac.
 keyMap.emacsy = {
@@ -8232,7 +8245,7 @@ keyMap.macDefault = {
   "Cmd-G": "findNext", "Shift-Cmd-G": "findPrev", "Cmd-Alt-F": "replace", "Shift-Cmd-Alt-F": "replaceAll",
   "Cmd-[": "indentLess", "Cmd-]": "indentMore", "Cmd-Backspace": "delWrappedLineLeft", "Cmd-Delete": "delWrappedLineRight",
   "Cmd-U": "undoSelection", "Shift-Cmd-U": "redoSelection", "Ctrl-Up": "goDocStart", "Ctrl-Down": "goDocEnd",
-  fallthrough: ["basic", "emacsy"]
+  "fallthrough": ["basic", "emacsy"]
 };
 keyMap["default"] = mac ? keyMap.macDefault : keyMap.pcDefault;
 
@@ -8912,8 +8925,8 @@ function leftButtonStartDrag(cm, event, pos, behavior) {
   var dragEnd = operation(cm, function (e) {
     if (webkit) { display.scroller.draggable = false; }
     cm.state.draggingText = false;
-    off(document, "mouseup", dragEnd);
-    off(document, "mousemove", mouseMove);
+    off(display.wrapper.ownerDocument, "mouseup", dragEnd);
+    off(display.wrapper.ownerDocument, "mousemove", mouseMove);
     off(display.scroller, "dragstart", dragStart);
     off(display.scroller, "drop", dragEnd);
     if (!moved) {
@@ -8922,7 +8935,7 @@ function leftButtonStartDrag(cm, event, pos, behavior) {
         { extendSelection(cm.doc, pos, null, null, behavior.extend); }
       // Work around unexplainable focus problem in IE9 (#2127) and Chrome (#3081)
       if (webkit || ie && ie_version == 9)
-        { setTimeout(function () {document.body.focus(); display.input.focus();}, 20); }
+        { setTimeout(function () {display.wrapper.ownerDocument.body.focus(); display.input.focus();}, 20); }
       else
         { display.input.focus(); }
     }
@@ -8937,8 +8950,8 @@ function leftButtonStartDrag(cm, event, pos, behavior) {
   dragEnd.copy = !behavior.moveOnDrag;
   // IE's approach to draggable
   if (display.scroller.dragDrop) { display.scroller.dragDrop(); }
-  on(document, "mouseup", dragEnd);
-  on(document, "mousemove", mouseMove);
+  on(display.wrapper.ownerDocument, "mouseup", dragEnd);
+  on(display.wrapper.ownerDocument, "mousemove", mouseMove);
   on(display.scroller, "dragstart", dragStart);
   on(display.scroller, "drop", dragEnd);
 
@@ -9070,19 +9083,19 @@ function leftButtonSelect(cm, event, start, behavior) {
     counter = Infinity;
     e_preventDefault(e);
     display.input.focus();
-    off(document, "mousemove", move);
-    off(document, "mouseup", up);
+    off(display.wrapper.ownerDocument, "mousemove", move);
+    off(display.wrapper.ownerDocument, "mouseup", up);
     doc.history.lastSelOrigin = null;
   }
 
   var move = operation(cm, function (e) {
-    if (!e_button(e)) { done(e); }
+    if (e.buttons === 0 || !e_button(e)) { done(e); }
     else { extend(e); }
   });
   var up = operation(cm, done);
   cm.state.selectingText = up;
-  on(document, "mousemove", move);
-  on(document, "mouseup", up);
+  on(display.wrapper.ownerDocument, "mousemove", move);
+  on(display.wrapper.ownerDocument, "mouseup", up);
 }
 
 // Used when mouse-selecting to adjust the anchor to the proper side
@@ -9365,6 +9378,7 @@ function CodeMirror$1(place, options) {
 
   var doc = options.value;
   if (typeof doc == "string") { doc = new Doc(doc, options.mode, null, options.lineSeparator, options.direction); }
+  else if (options.mode) { doc.modeOption = options.mode; }
   this.doc = doc;
 
   var input = new CodeMirror$1.inputStyles[options.inputStyle](this);
@@ -10355,8 +10369,12 @@ ContentEditableInput.prototype.showSelection = function (info, takeFocus) {
   this.showMultipleSelections(info);
 };
 
+ContentEditableInput.prototype.getSelection = function () {
+  return this.cm.display.wrapper.ownerDocument.getSelection()
+};
+
 ContentEditableInput.prototype.showPrimarySelection = function () {
-  var sel = window.getSelection(), cm = this.cm, prim = cm.doc.sel.primary();
+  var sel = this.getSelection(), cm = this.cm, prim = cm.doc.sel.primary();
   var from = prim.from(), to = prim.to();
 
   if (cm.display.viewTo == cm.display.viewFrom || from.line >= cm.display.viewTo || to.line < cm.display.viewFrom) {
@@ -10423,13 +10441,13 @@ ContentEditableInput.prototype.showMultipleSelections = function (info) {
 };
 
 ContentEditableInput.prototype.rememberSelection = function () {
-  var sel = window.getSelection();
+  var sel = this.getSelection();
   this.lastAnchorNode = sel.anchorNode; this.lastAnchorOffset = sel.anchorOffset;
   this.lastFocusNode = sel.focusNode; this.lastFocusOffset = sel.focusOffset;
 };
 
 ContentEditableInput.prototype.selectionInEditor = function () {
-  var sel = window.getSelection();
+  var sel = this.getSelection();
   if (!sel.rangeCount) { return false }
   var node = sel.getRangeAt(0).commonAncestorContainer;
   return contains(this.div, node)
@@ -10464,14 +10482,14 @@ ContentEditableInput.prototype.receivedFocus = function () {
 };
 
 ContentEditableInput.prototype.selectionChanged = function () {
-  var sel = window.getSelection();
+  var sel = this.getSelection();
   return sel.anchorNode != this.lastAnchorNode || sel.anchorOffset != this.lastAnchorOffset ||
     sel.focusNode != this.lastFocusNode || sel.focusOffset != this.lastFocusOffset
 };
 
 ContentEditableInput.prototype.pollSelection = function () {
   if (this.readDOMTimeout != null || this.gracePeriod || !this.selectionChanged()) { return }
-  var sel = window.getSelection(), cm = this.cm;
+  var sel = this.getSelection(), cm = this.cm;
   // On Android Chrome (version 56, at least), backspacing into an
   // uneditable block element will put the cursor in that element,
   // and then, because it's not editable, hide the virtual keyboard.
@@ -10605,7 +10623,7 @@ ContentEditableInput.prototype.setUneditable = function (node) {
 };
 
 ContentEditableInput.prototype.onKeyPress = function (e) {
-  if (e.charCode == 0) { return }
+  if (e.charCode == 0 || this.composing) { return }
   e.preventDefault();
   if (!this.cm.isReadOnly())
     { operation(this.cm, applyTextInput)(this.cm, String.fromCharCode(e.charCode == null ? e.keyCode : e.charCode), 0); }
@@ -10645,12 +10663,13 @@ function isInGutter(node) {
 function badPos(pos, bad) { if (bad) { pos.bad = true; } return pos }
 
 function domTextBetween(cm, from, to, fromLine, toLine) {
-  var text = "", closing = false, lineSep = cm.doc.lineSeparator();
+  var text = "", closing = false, lineSep = cm.doc.lineSeparator(), extraLinebreak = false;
   function recognizeMarker(id) { return function (marker) { return marker.id == id; } }
   function close() {
     if (closing) {
       text += lineSep;
-      closing = false;
+      if (extraLinebreak) { text += lineSep; }
+      closing = extraLinebreak = false;
     }
   }
   function addText(str) {
@@ -10662,8 +10681,8 @@ function domTextBetween(cm, from, to, fromLine, toLine) {
   function walk(node) {
     if (node.nodeType == 1) {
       var cmText = node.getAttribute("cm-text");
-      if (cmText != null) {
-        addText(cmText || node.textContent.replace(/\u200b/g, ""));
+      if (cmText) {
+        addText(cmText);
         return
       }
       var markerID = node.getAttribute("cm-marker"), range$$1;
@@ -10674,19 +10693,24 @@ function domTextBetween(cm, from, to, fromLine, toLine) {
         return
       }
       if (node.getAttribute("contenteditable") == "false") { return }
-      var isBlock = /^(pre|div|p)$/i.test(node.nodeName);
+      var isBlock = /^(pre|div|p|li|table|br)$/i.test(node.nodeName);
+      if (!/^br$/i.test(node.nodeName) && node.textContent.length == 0) { return }
+
       if (isBlock) { close(); }
       for (var i = 0; i < node.childNodes.length; i++)
         { walk(node.childNodes[i]); }
+
+      if (/^(pre|p)$/i.test(node.nodeName)) { extraLinebreak = true; }
       if (isBlock) { closing = true; }
     } else if (node.nodeType == 3) {
-      addText(node.nodeValue);
+      addText(node.nodeValue.replace(/\u200b/g, "").replace(/\u00a0/g, " "));
     }
   }
   for (;;) {
     walk(from);
     if (from == to) { break }
     from = from.nextSibling;
+    extraLinebreak = false;
   }
   return text
 }
@@ -10787,13 +10811,10 @@ TextareaInput.prototype.init = function (display) {
     var this$1 = this;
 
   var input = this, cm = this.cm;
+  this.createField(display);
+  var te = this.textarea;
 
-  // Wraps and hides input textarea
-  var div = this.wrapper = hiddenTextarea();
-  // The semihidden textarea that is focused when the editor is
-  // focused, and receives input.
-  var te = this.textarea = div.firstChild;
-  display.wrapper.insertBefore(div, display.wrapper.firstChild);
+  display.wrapper.insertBefore(this.wrapper, display.wrapper.firstChild);
 
   // Needed to hide big blue blinking cursor on Mobile Safari (doesn't seem to work in iOS 8 anymore)
   if (ios) { te.style.width = "0px"; }
@@ -10858,6 +10879,14 @@ TextareaInput.prototype.init = function (display) {
       input.composing = null;
     }
   });
+};
+
+TextareaInput.prototype.createField = function (_display) {
+  // Wraps and hides input textarea
+  this.wrapper = hiddenTextarea();
+  // The semihidden textarea that is focused when the editor is
+  // focused, and receives input.
+  this.textarea = this.wrapper.firstChild;
 };
 
 TextareaInput.prototype.prepareSelection = function () {
@@ -11253,7 +11282,7 @@ CodeMirror$1.fromTextArea = fromTextArea;
 
 addLegacyProps(CodeMirror$1);
 
-CodeMirror$1.version = "5.34.0";
+CodeMirror$1.version = "5.39.2";
 
 return CodeMirror$1;
 
@@ -12325,17 +12354,10 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return ret(ch);
     } else if (ch == "=" && stream.eat(">")) {
       return ret("=>", "operator");
-    } else if (ch == "0" && stream.eat(/x/i)) {
-      stream.eatWhile(/[\da-f]/i);
-      return ret("number", "number");
-    } else if (ch == "0" && stream.eat(/o/i)) {
-      stream.eatWhile(/[0-7]/i);
-      return ret("number", "number");
-    } else if (ch == "0" && stream.eat(/b/i)) {
-      stream.eatWhile(/[01]/i);
+    } else if (ch == "0" && stream.match(/^(?:x[\da-f]+|o[0-7]+|b[01]+)n?/i)) {
       return ret("number", "number");
     } else if (/\d/.test(ch)) {
-      stream.match(/^\d*(?:\.\d*)?(?:[eE][+\-]?\d+)?/);
+      stream.match(/^\d*(?:n|(?:\.\d*)?(?:[eE][+\-]?\d+)?)?/);
       return ret("number", "number");
     } else if (ch == "/") {
       if (stream.eat("*")) {
@@ -12346,7 +12368,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         return ret("comment", "comment");
       } else if (expressionAllowed(stream, state, 1)) {
         readRegexp(stream);
-        stream.match(/^\b(([gimyu])(?![gimyu]*\2))+\b/);
+        stream.match(/^\b(([gimyus])(?![gimyus]*\2))+\b/);
         return ret("regexp", "string-2");
       } else {
         stream.eat("=");
@@ -12376,7 +12398,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
           var kw = keywords[word]
           return ret(kw.type, kw.style, word)
         }
-        if (word == "async" && stream.match(/^(\s|\/\*.*?\*\/)*[\(\w]/, false))
+        if (word == "async" && stream.match(/^(\s|\/\*.*?\*\/)*[\[\(\w]/, false))
           return ret("async", "keyword", word)
       }
       return ret("variable", "variable", word)
@@ -12515,21 +12537,42 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     pass.apply(null, arguments);
     return true;
   }
+  function inList(name, list) {
+    for (var v = list; v; v = v.next) if (v.name == name) return true
+    return false;
+  }
   function register(varname) {
-    function inList(list) {
-      for (var v = list; v; v = v.next)
-        if (v.name == varname) return true;
-      return false;
-    }
     var state = cx.state;
     cx.marked = "def";
     if (state.context) {
-      if (inList(state.localVars)) return;
-      state.localVars = {name: varname, next: state.localVars};
+      if (state.lexical.info == "var" && state.context && state.context.block) {
+        // FIXME function decls are also not block scoped
+        var newContext = registerVarScoped(varname, state.context)
+        if (newContext != null) {
+          state.context = newContext
+          return
+        }
+      } else if (!inList(varname, state.localVars)) {
+        state.localVars = new Var(varname, state.localVars)
+        return
+      }
+    }
+    // Fall through means this is global
+    if (parserConfig.globalVars && !inList(varname, state.globalVars))
+      state.globalVars = new Var(varname, state.globalVars)
+  }
+  function registerVarScoped(varname, context) {
+    if (!context) {
+      return null
+    } else if (context.block) {
+      var inner = registerVarScoped(varname, context.prev)
+      if (!inner) return null
+      if (inner == context.prev) return context
+      return new Context(inner, context.vars, true)
+    } else if (inList(varname, context.vars)) {
+      return context
     } else {
-      if (inList(state.globalVars)) return;
-      if (parserConfig.globalVars)
-        state.globalVars = {name: varname, next: state.globalVars};
+      return new Context(context.prev, new Var(varname, context.vars), false)
     }
   }
 
@@ -12539,15 +12582,23 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
 
   // Combinators
 
-  var defaultVars = {name: "this", next: {name: "arguments"}};
+  function Context(prev, vars, block) { this.prev = prev; this.vars = vars; this.block = block }
+  function Var(name, next) { this.name = name; this.next = next }
+
+  var defaultVars = new Var("this", new Var("arguments", null))
   function pushcontext() {
-    cx.state.context = {prev: cx.state.context, vars: cx.state.localVars};
-    cx.state.localVars = defaultVars;
+    cx.state.context = new Context(cx.state.context, cx.state.localVars, false)
+    cx.state.localVars = defaultVars
+  }
+  function pushblockcontext() {
+    cx.state.context = new Context(cx.state.context, cx.state.localVars, true)
+    cx.state.localVars = null
   }
   function popcontext() {
-    cx.state.localVars = cx.state.context.vars;
-    cx.state.context = cx.state.context.prev;
+    cx.state.localVars = cx.state.context.vars
+    cx.state.context = cx.state.context.prev
   }
+  popcontext.lex = true
   function pushlex(type, info) {
     var result = function() {
       var state = cx.state, indent = state.indented;
@@ -12572,19 +12623,19 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   function expect(wanted) {
     function exp(type) {
       if (type == wanted) return cont();
-      else if (wanted == ";") return pass();
+      else if (wanted == ";" || type == "}" || type == ")" || type == "]") return pass();
       else return cont(exp);
     };
     return exp;
   }
 
   function statement(type, value) {
-    if (type == "var") return cont(pushlex("vardef", value.length), vardef, expect(";"), poplex);
+    if (type == "var") return cont(pushlex("vardef", value), vardef, expect(";"), poplex);
     if (type == "keyword a") return cont(pushlex("form"), parenExpr, statement, poplex);
     if (type == "keyword b") return cont(pushlex("form"), statement, poplex);
     if (type == "keyword d") return cx.stream.match(/^\s*$/, false) ? cont() : cont(pushlex("stat"), maybeexpression, expect(";"), poplex);
     if (type == "debugger") return cont(expect(";"));
-    if (type == "{") return cont(pushlex("}"), block, poplex);
+    if (type == "{") return cont(pushlex("}"), pushblockcontext, block, poplex, popcontext);
     if (type == ";") return cont();
     if (type == "if") {
       if (cx.state.lexical.info == "else" && cx.state.cc[cx.state.cc.length - 1] == poplex)
@@ -12606,21 +12657,26 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       } else if (isTS && value == "namespace") {
         cx.marked = "keyword"
         return cont(pushlex("form"), expression, block, poplex)
+      } else if (isTS && value == "abstract") {
+        cx.marked = "keyword"
+        return cont(statement)
       } else {
         return cont(pushlex("stat"), maybelabel);
       }
     }
-    if (type == "switch") return cont(pushlex("form"), parenExpr, expect("{"), pushlex("}", "switch"),
-                                      block, poplex, poplex);
+    if (type == "switch") return cont(pushlex("form"), parenExpr, expect("{"), pushlex("}", "switch"), pushblockcontext,
+                                      block, poplex, poplex, popcontext);
     if (type == "case") return cont(expression, expect(":"));
     if (type == "default") return cont(expect(":"));
-    if (type == "catch") return cont(pushlex("form"), pushcontext, expect("("), funarg, expect(")"),
-                                     statement, poplex, popcontext);
+    if (type == "catch") return cont(pushlex("form"), pushcontext, maybeCatchBinding, statement, poplex, popcontext);
     if (type == "export") return cont(pushlex("stat"), afterExport, poplex);
     if (type == "import") return cont(pushlex("stat"), afterImport, poplex);
     if (type == "async") return cont(statement)
     if (value == "@") return cont(expression, statement)
     return pass(pushlex("stat"), expression, expect(";"), poplex);
+  }
+  function maybeCatchBinding(type) {
+    if (type == "(") return cont(funarg, expect(")"))
   }
   function expression(type, value) {
     return expressionInner(type, value, false);
@@ -12650,6 +12706,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "{") return contCommasep(objprop, "}", null, maybeop);
     if (type == "quasi") return pass(quasi, maybeop);
     if (type == "new") return cont(maybeTarget(noComma));
+    if (type == "import") return cont(expression);
     return cont();
   }
   function maybeexpression(type) {
@@ -12809,19 +12866,19 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     }
   }
   function typeexpr(type, value) {
+    if (value == "keyof" || value == "typeof") {
+      cx.marked = "keyword"
+      return cont(value == "keyof" ? typeexpr : expressionNoComma)
+    }
     if (type == "variable" || value == "void") {
-      if (value == "keyof") {
-        cx.marked = "keyword"
-        return cont(typeexpr)
-      } else {
-        cx.marked = "type"
-        return cont(afterType)
-      }
+      cx.marked = "type"
+      return cont(afterType)
     }
     if (type == "string" || type == "number" || type == "atom") return cont(afterType);
     if (type == "[") return cont(pushlex("]"), commasep(typeexpr, "]", ","), poplex, afterType)
     if (type == "{") return cont(pushlex("}"), commasep(typeprop, "}", ",;"), poplex, afterType)
     if (type == "(") return cont(commasep(typearg, ")"), maybeReturnType)
+    if (type == "<") return cont(commasep(typeexpr, ">"), typeexpr)
   }
   function maybeReturnType(type) {
     if (type == "=>") return cont(typeexpr)
@@ -12838,13 +12895,14 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return cont(expression, maybetype, expect("]"), typeprop)
     }
   }
-  function typearg(type) {
-    if (type == "variable") return cont(typearg)
-    else if (type == ":") return cont(typeexpr)
+  function typearg(type, value) {
+    if (type == "variable" && cx.stream.match(/^\s*[?:]/, false) || value == "?") return cont(typearg)
+    if (type == ":") return cont(typeexpr)
+    return pass(typeexpr)
   }
   function afterType(type, value) {
     if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, afterType)
-    if (value == "|" || type == ".") return cont(typeexpr)
+    if (value == "|" || type == "." || value == "&") return cont(typeexpr)
     if (type == "[") return cont(expect("]"), afterType)
     if (value == "extends" || value == "implements") { cx.marked = "keyword"; return cont(typeexpr) }
   }
@@ -12887,7 +12945,8 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   function maybeelse(type, value) {
     if (type == "keyword b" && value == "else") return cont(pushlex("form", "else"), statement, poplex);
   }
-  function forspec(type) {
+  function forspec(type, value) {
+    if (value == "await") return cont(forspec);
     if (type == "(") return cont(pushlex(")"), forspec1, expect(")"), poplex);
   }
   function forspec1(type) {
@@ -12976,6 +13035,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function afterImport(type) {
     if (type == "string") return cont();
+    if (type == "(") return pass(expression);
     return pass(importSpec, maybeMoreImports, maybeFrom);
   }
   function importSpec(type, value) {
@@ -13026,7 +13086,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         cc: [],
         lexical: new JSLexical((basecolumn || 0) - indentUnit, 0, "block", false),
         localVars: parserConfig.localVars,
-        context: parserConfig.localVars && {vars: parserConfig.localVars},
+        context: parserConfig.localVars && new Context(null, null, false),
         indented: basecolumn || 0
       };
       if (parserConfig.globalVars && typeof parserConfig.globalVars == "object")
@@ -13067,7 +13127,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         lexical = lexical.prev;
       var type = lexical.type, closing = firstChar == type;
 
-      if (type == "vardef") return lexical.indented + (state.lastType == "operator" || state.lastType == "," ? lexical.info + 1 : 0);
+      if (type == "vardef") return lexical.indented + (state.lastType == "operator" || state.lastType == "," ? lexical.info.length + 1 : 0);
       else if (type == "form" && firstChar == "{") return lexical.indented;
       else if (type == "form") return lexical.indented + indentUnit;
       else if (type == "stat")
@@ -13280,8 +13340,9 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
         stream.next();
       }
       return style;
-    };
+    }
   }
+
   function doctype(depth) {
     return function(stream, state) {
       var ch;
@@ -13526,301 +13587,12 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
 
 
 },{}],21:[function(require,module,exports){
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.preactRenderToString = factory());
-}(this, (function () {
-
-var NON_DIMENSION_PROPS = {
-	boxFlex: 1, boxFlexGroup: 1, columnCount: 1, fillOpacity: 1, flex: 1, flexGrow: 1,
-	flexPositive: 1, flexShrink: 1, flexNegative: 1, fontWeight: 1, lineClamp: 1, lineHeight: 1,
-	opacity: 1, order: 1, orphans: 1, strokeOpacity: 1, widows: 1, zIndex: 1, zoom: 1
-};
-
-var ESC = {
-	'<': '&lt;',
-	'>': '&gt;',
-	'"': '&quot;',
-	'&': '&amp;'
-};
-
-var objectKeys = Object.keys || function (obj) {
-	var keys = [];
-	for (var i in obj) {
-		if (obj.hasOwnProperty(i)) keys.push(i);
-	}return keys;
-};
-
-var encodeEntities = function encodeEntities(s) {
-	return String(s).replace(/[<>"&]/g, escapeChar);
-};
-
-var escapeChar = function escapeChar(a) {
-	return ESC[a] || a;
-};
-
-var falsey = function falsey(v) {
-	return v == null || v === false;
-};
-
-var memoize = function memoize(fn) {
-	var mem = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-	return function (v) {
-		return mem[v] || (mem[v] = fn(v));
-	};
-};
-
-var indent = function indent(s, char) {
-	return String(s).replace(/(\n+)/g, '$1' + (char || '\t'));
-};
-
-var isLargeString = function isLargeString(s, length, ignoreLines) {
-	return String(s).length > (length || 40) || !ignoreLines && String(s).indexOf('\n') !== -1 || String(s).indexOf('<') !== -1;
-};
-
-function styleObjToCss(s) {
-	var str = '';
-	for (var prop in s) {
-		var val = s[prop];
-		if (val != null) {
-			if (str) str += ' ';
-			str += jsToCss(prop);
-			str += ': ';
-			str += val;
-			if (typeof val === 'number' && !NON_DIMENSION_PROPS[prop]) {
-				str += 'px';
-			}
-			str += ';';
-		}
-	}
-	return str || undefined;
-}
-
-function hashToClassName(c) {
-	var str = '';
-	for (var prop in c) {
-		if (c[prop]) {
-			if (str) str += ' ';
-			str += prop;
-		}
-	}
-	return str;
-}
-
-var jsToCss = memoize(function (s) {
-	return s.replace(/([A-Z])/g, '-$1').toLowerCase();
-});
-
-function assign(obj, props) {
-	for (var i in props) {
-		obj[i] = props[i];
-	}return obj;
-}
-
-function getNodeProps(vnode) {
-	var defaultProps = vnode.nodeName.defaultProps,
-	    props = assign({}, defaultProps || vnode.attributes);
-	if (defaultProps) assign(props, vnode.attributes);
-	if (vnode.children) props.children = vnode.children;
-	return props;
-}
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var SHALLOW = { shallow: true };
-
-var UNNAMED = [];
-
-var EMPTY = {};
-
-var VOID_ELEMENTS = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
-
-renderToString.render = renderToString;
-
-var shallowRender = function shallowRender(vnode, context) {
-	return renderToString(vnode, context, SHALLOW);
-};
-
-function renderToString(vnode, context, opts, inner, isSvgMode) {
-	var _ref = vnode || EMPTY,
-	    nodeName = _ref.nodeName,
-	    attributes = _ref.attributes,
-	    children = _ref.children,
-	    isComponent = false;
-
-	context = context || {};
-	opts = opts || {};
-
-	var pretty = opts.pretty,
-	    indentChar = typeof pretty === 'string' ? pretty : '\t';
-
-	if (vnode == null || typeof vnode === 'boolean') {
-		return '';
-	}
-
-	if ((typeof vnode === 'undefined' ? 'undefined' : _typeof(vnode)) !== 'object' && !nodeName) {
-		return encodeEntities(vnode);
-	}
-
-	if (typeof nodeName === 'function') {
-		isComponent = true;
-		if (opts.shallow && (inner || opts.renderRootComponent === false)) {
-			nodeName = getComponentName(nodeName);
-		} else {
-			var props = getNodeProps(vnode),
-			    rendered = void 0;
-
-			if (!nodeName.prototype || typeof nodeName.prototype.render !== 'function') {
-				rendered = nodeName(props, context);
-			} else {
-				var c = new nodeName(props, context);
-
-				c._disable = c.__x = true;
-				c.props = props;
-				c.context = context;
-				if (c.componentWillMount) c.componentWillMount();
-				rendered = c.render(c.props, c.state, c.context);
-
-				if (c.getChildContext) {
-					context = assign(assign({}, context), c.getChildContext());
-				}
-			}
-
-			return renderToString(rendered, context, opts, opts.shallowHighOrder !== false);
-		}
-	}
-
-	var s = '',
-	    html = void 0;
-
-	if (attributes) {
-		var attrs = objectKeys(attributes);
-
-		if (opts && opts.sortAttributes === true) attrs.sort();
-
-		for (var i = 0; i < attrs.length; i++) {
-			var name = attrs[i],
-			    v = attributes[name];
-			if (name === 'children') continue;
-			if (!(opts && opts.allAttributes) && (name === 'key' || name === 'ref')) continue;
-
-			if (name === 'className') {
-				if (attributes['class']) continue;
-				name = 'class';
-			} else if (isSvgMode && name.match(/^xlink\:?(.+)/)) {
-				name = name.toLowerCase().replace(/^xlink\:?(.+)/, 'xlink:$1');
-			}
-
-			if (name === 'class' && v && (typeof v === 'undefined' ? 'undefined' : _typeof(v)) === 'object') {
-				v = hashToClassName(v);
-			} else if (name === 'style' && v && (typeof v === 'undefined' ? 'undefined' : _typeof(v)) === 'object') {
-				v = styleObjToCss(v);
-			}
-
-			var hooked = opts.attributeHook && opts.attributeHook(name, v, context, opts, isComponent);
-			if (hooked || hooked === '') {
-				s += hooked;
-				continue;
-			}
-
-			if (name === 'dangerouslySetInnerHTML') {
-				html = v && v.__html;
-			} else if ((v || v === 0 || v === '') && typeof v !== 'function') {
-				if (v === true || v === '') {
-					v = name;
-
-					if (!opts || !opts.xml) {
-						s += ' ' + name;
-						continue;
-					}
-				}
-				s += ' ' + name + '="' + encodeEntities(v) + '"';
-			}
-		}
-	}
-
-	var sub = s.replace(/^\n\s*/, ' ');
-	if (sub !== s && !~sub.indexOf('\n')) s = sub;else if (pretty && ~s.indexOf('\n')) s += '\n';
-
-	s = '<' + nodeName + s + '>';
-
-	if (VOID_ELEMENTS.indexOf(nodeName) > -1) {
-		s = s.replace(/>$/, ' />');
-	}
-
-	if (html) {
-		if (pretty && isLargeString(html)) {
-			html = '\n' + indentChar + indent(html, indentChar);
-		}
-		s += html;
-	} else {
-		var len = children && children.length,
-		    pieces = [],
-		    hasLarge = ~s.indexOf('\n');
-		for (var _i = 0; _i < len; _i++) {
-			var child = children[_i];
-			if (!falsey(child)) {
-				var childSvgMode = nodeName === 'svg' ? true : nodeName === 'foreignObject' ? false : isSvgMode,
-				    ret = renderToString(child, context, opts, true, childSvgMode);
-				if (!hasLarge && pretty && isLargeString(ret)) hasLarge = true;
-				if (ret) pieces.push(ret);
-			}
-		}
-		if (pretty && hasLarge) {
-			for (var _i2 = pieces.length; _i2--;) {
-				pieces[_i2] = '\n' + indentChar + indent(pieces[_i2], indentChar);
-			}
-		}
-		if (pieces.length) {
-			s += pieces.join('');
-		} else if (opts && opts.xml) {
-			return s.substring(0, s.length - 1) + ' />';
-		}
-	}
-
-	if (VOID_ELEMENTS.indexOf(nodeName) === -1) {
-		if (pretty && ~s.indexOf('\n')) s += '\n';
-		s += '</' + nodeName + '>';
-	}
-
-	return s;
-}
-
-function getComponentName(component) {
-	return component.displayName || component !== Function && component.name || getFallbackComponentName(component);
-}
-
-function getFallbackComponentName(component) {
-	var str = Function.prototype.toString.call(component),
-	    name = (str.match(/^\s*function\s+([^\( ]+)/) || EMPTY)[1];
-	if (!name) {
-		var index = -1;
-		for (var i = UNNAMED.length; i--;) {
-			if (UNNAMED[i] === component) {
-				index = i;
-				break;
-			}
-		}
-
-		if (index < 0) {
-			index = UNNAMED.push(component) - 1;
-		}
-		name = 'UnnamedComponent' + index;
-	}
-	return name;
-}
-renderToString.shallowRender = shallowRender;
-
-return renderToString;
-
-})));
+!function(e,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):e.preactRenderToString=n()}(this,function(){var e=/acit|ex(?:s|g|n|p|$)|rph|ows|mnc|ntw|ine[ch]|zoo|^ord/i,n=Object.keys||function(e){var n=[];for(var t in e)e.hasOwnProperty(t)&&n.push(t);return n},t=function(e){return String(e).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")},r=function(e,n){return String(e).replace(/(\n+)/g,"$1"+(n||"\t"))},o=function(e,n,t){return String(e).length>(n||40)||!t&&-1!==String(e).indexOf("\n")||-1!==String(e).indexOf("<")},i={};function a(n){var t="";for(var r in n){var o=n[r];null!=o&&(t&&(t+=" "),t+=i[r]||(i[r]=r.replace(/([A-Z])/g,"-$1").toLowerCase()),t+=": ",t+=o,"number"==typeof o&&!1===e.test(r)&&(t+="px"),t+=";")}return t||void 0}function l(e,n){for(var t in n)e[t]=n[t];return e}var f={shallow:!0},c=[],u=/^(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/;s.render=s;function s(e,i,f,p,d){if(null==e||"boolean"==typeof e)return"";var h=e.nodeName,g=e.attributes,v=!1;i=i||{};var m,b=(f=f||{}).pretty,y="string"==typeof b?b:"\t";if("object"!=typeof e&&!h)return t(e);if("function"==typeof h){if(v=!0,!f.shallow||!p&&!1!==f.renderRootComponent){var x,w=function(e){var n=e.nodeName.defaultProps,t=l({},n||e.attributes);return n&&l(t,e.attributes),e.children&&(t.children=e.children),t}(e);if(h.prototype&&"function"==typeof h.prototype.render){var k=new h(w,i);k._disable=k.__x=!0,k.props=w,k.context=i,k.componentWillMount&&k.componentWillMount(),x=k.render(k.props,k.state,k.context),k.getChildContext&&(i=l(l({},i),k.getChildContext()))}else x=h(w,i);return s(x,i,f,!1!==f.shallowHighOrder)}h=(m=h).displayName||m!==Function&&m.name||function(e){var n=(Function.prototype.toString.call(e).match(/^\s*function\s+([^( ]+)/)||"")[1];if(!n){for(var t=-1,r=c.length;r--;)if(c[r]===e){t=r;break}t<0&&(t=c.push(e)-1),n="UnnamedComponent"+t}return n}(m)}var O,C="";if(g){var S=n(g);f&&!0===f.sortAttributes&&S.sort();for(var j=0;j<S.length;j++){var $=S[j],_=g[$];if("children"!==$&&(!$.match(/[\s\n\\/='"\0<>]/)&&(f&&f.allAttributes||"key"!==$&&"ref"!==$))){if("className"===$){if(g.class)continue;$="class"}else d&&$.match(/^xlink:?./)&&($=$.toLowerCase().replace(/^xlink:?/,"xlink:"));"style"===$&&_&&"object"==typeof _&&(_=a(_));var H=f.attributeHook&&f.attributeHook($,_,i,f,v);if(H||""===H)C+=H;else if("dangerouslySetInnerHTML"===$)O=_&&_.__html;else if((_||0===_||""===_)&&"function"!=typeof _){if(!(!0!==_&&""!==_||(_=$,f&&f.xml))){C+=" "+$;continue}C+=" "+$+'="'+t(_)+'"'}}}}var N=C.replace(/^\n\s*/," ");if(N===C||~N.indexOf("\n")?b&&~C.indexOf("\n")&&(C+="\n"):C=N,C="<"+h+C+">",h.match(/[\s\n\\/='"\0<>]/))throw C;var A=h.match(u);A&&(C=C.replace(/>$/," />"));var L=[];if(O)b&&o(O)&&(O="\n"+y+r(O,y)),C+=O;else if(e.children){for(var M=~C.indexOf("\n"),R=0;R<e.children.length;R++){var F=e.children[R];if(null!=F&&!1!==F){var P=s(F,i,f,!0,"svg"===h||"foreignObject"!==h&&d);!M&&b&&o(P)&&(M=!0),P&&L.push(P)}}if(b&&M)for(var T=L.length;T--;)L[T]="\n"+y+r(L[T],y)}if(L.length)C+=L.join("");else if(f&&f.xml)return C.substring(0,C.length-1)+" />";return A||(b&&~C.indexOf("\n")&&(C+="\n"),C+="</"+h+">"),C}return s.shallowRender=function(e,n){return s(e,n,f)},s});
 
 
 },{}],22:[function(require,module,exports){
 !function() {
     'use strict';
-    function VNode() {}
     function h(nodeName, attributes) {
         var lastSimple, child, simple, i, children = EMPTY_CHILDREN;
         for (i = arguments.length; i-- > 2; ) stack.push(arguments[i]);
@@ -13901,17 +13673,14 @@ return renderToString;
             } else node.removeEventListener(name, eventProxy, useCapture);
             (node.__l || (node.__l = {}))[name] = value;
         } else if ('list' !== name && 'type' !== name && !isSvg && name in node) {
-            setProperty(node, name, null == value ? '' : value);
-            if (null == value || !1 === value) node.removeAttribute(name);
+            try {
+                node[name] = null == value ? '' : value;
+            } catch (e) {}
+            if ((null == value || !1 === value) && 'spellcheck' != name) node.removeAttribute(name);
         } else {
-            var ns = isSvg && name !== (name = name.replace(/^xlink\:?/, ''));
+            var ns = isSvg && name !== (name = name.replace(/^xlink:?/, ''));
             if (null == value || !1 === value) if (ns) node.removeAttributeNS('http://www.w3.org/1999/xlink', name.toLowerCase()); else node.removeAttribute(name); else if ('function' != typeof value) if (ns) node.setAttributeNS('http://www.w3.org/1999/xlink', name.toLowerCase(), value); else node.setAttribute(name, value);
         }
-    }
-    function setProperty(node, name, value) {
-        try {
-            node[name] = value;
-        } catch (e) {}
     }
     function eventProxy(e) {
         return this.__l[e.type](options.event && options.event(e) || e);
@@ -13995,7 +13764,7 @@ return renderToString;
                     keyed[key] = void 0;
                     keyedLen--;
                 }
-            } else if (!child && min < childrenLen) for (j = min; j < childrenLen; j++) if (void 0 !== children[j] && isSameNodeType(c = children[j], vchild, isHydrating)) {
+            } else if (min < childrenLen) for (j = min; j < childrenLen; j++) if (void 0 !== children[j] && isSameNodeType(c = children[j], vchild, isHydrating)) {
                 child = c;
                 children[j] = void 0;
                 if (j === childrenLen - 1) childrenLen--;
@@ -14030,12 +13799,8 @@ return renderToString;
         for (name in old) if ((!attrs || null == attrs[name]) && null != old[name]) setAccessor(dom, name, old[name], old[name] = void 0, isSvgMode);
         for (name in attrs) if (!('children' === name || 'innerHTML' === name || name in old && attrs[name] === ('value' === name || 'checked' === name ? dom[name] : old[name]))) setAccessor(dom, name, old[name], old[name] = attrs[name], isSvgMode);
     }
-    function collectComponent(component) {
-        var name = component.constructor.name;
-        (components[name] || (components[name] = [])).push(component);
-    }
     function createComponent(Ctor, props, context) {
-        var inst, list = components[Ctor.name];
+        var inst, i = recyclerComponents.length;
         if (Ctor.prototype && Ctor.prototype.render) {
             inst = new Ctor(props, context);
             Component.call(inst, props, context);
@@ -14044,22 +13809,24 @@ return renderToString;
             inst.constructor = Ctor;
             inst.render = doRender;
         }
-        if (list) for (var i = list.length; i--; ) if (list[i].constructor === Ctor) {
-            inst.__b = list[i].__b;
-            list.splice(i, 1);
-            break;
+        while (i--) if (recyclerComponents[i].constructor === Ctor) {
+            inst.__b = recyclerComponents[i].__b;
+            recyclerComponents.splice(i, 1);
+            return inst;
         }
         return inst;
     }
     function doRender(props, state, context) {
         return this.constructor(props, context);
     }
-    function setComponentProps(component, props, opts, context, mountAll) {
+    function setComponentProps(component, props, renderMode, context, mountAll) {
         if (!component.__x) {
             component.__x = !0;
-            if (component.__r = props.ref) delete props.ref;
-            if (component.__k = props.key) delete props.key;
-            if (!component.base || mountAll) {
+            component.__r = props.ref;
+            component.__k = props.key;
+            delete props.ref;
+            delete props.key;
+            if (void 0 === component.constructor.getDerivedStateFromProps) if (!component.base || mountAll) {
                 if (component.componentWillMount) component.componentWillMount();
             } else if (component.componentWillReceiveProps) component.componentWillReceiveProps(props, context);
             if (context && context !== component.context) {
@@ -14069,18 +13836,22 @@ return renderToString;
             if (!component.__p) component.__p = component.props;
             component.props = props;
             component.__x = !1;
-            if (0 !== opts) if (1 === opts || !1 !== options.syncComponentUpdates || !component.base) renderComponent(component, 1, mountAll); else enqueueRender(component);
+            if (0 !== renderMode) if (1 === renderMode || !1 !== options.syncComponentUpdates || !component.base) renderComponent(component, 1, mountAll); else enqueueRender(component);
             if (component.__r) component.__r(component);
         }
     }
-    function renderComponent(component, opts, mountAll, isChild) {
+    function renderComponent(component, renderMode, mountAll, isChild) {
         if (!component.__x) {
-            var rendered, inst, cbase, props = component.props, state = component.state, context = component.context, previousProps = component.__p || props, previousState = component.__s || state, previousContext = component.__c || context, isUpdate = component.base, nextBase = component.__b, initialBase = isUpdate || nextBase, initialChildComponent = component._component, skip = !1;
+            var rendered, inst, cbase, props = component.props, state = component.state, context = component.context, previousProps = component.__p || props, previousState = component.__s || state, previousContext = component.__c || context, isUpdate = component.base, nextBase = component.__b, initialBase = isUpdate || nextBase, initialChildComponent = component._component, skip = !1, snapshot = previousContext;
+            if (component.constructor.getDerivedStateFromProps) {
+                state = extend(extend({}, state), component.constructor.getDerivedStateFromProps(props, state));
+                component.state = state;
+            }
             if (isUpdate) {
                 component.props = previousProps;
                 component.state = previousState;
                 component.context = previousContext;
-                if (2 !== opts && component.shouldComponentUpdate && !1 === component.shouldComponentUpdate(props, state, context)) skip = !0; else if (component.componentWillUpdate) component.componentWillUpdate(props, state, context);
+                if (2 !== renderMode && component.shouldComponentUpdate && !1 === component.shouldComponentUpdate(props, state, context)) skip = !0; else if (component.componentWillUpdate) component.componentWillUpdate(props, state, context);
                 component.props = props;
                 component.state = state;
                 component.context = context;
@@ -14090,6 +13861,7 @@ return renderToString;
             if (!skip) {
                 rendered = component.render(props, state, context);
                 if (component.getChildContext) context = extend(extend({}, context), component.getChildContext());
+                if (isUpdate && component.getSnapshotBeforeUpdate) snapshot = component.getSnapshotBeforeUpdate(previousProps, previousState);
                 var toUnmount, base, childComponent = rendered && rendered.nodeName;
                 if ('function' == typeof childComponent) {
                     var childProps = getNodeProps(rendered);
@@ -14107,7 +13879,7 @@ return renderToString;
                     cbase = initialBase;
                     toUnmount = initialChildComponent;
                     if (toUnmount) cbase = component._component = null;
-                    if (initialBase || 1 === opts) {
+                    if (initialBase || 1 === renderMode) {
                         if (cbase) cbase._component = null;
                         base = diff(cbase, rendered, context, mountAll || !isUpdate, initialBase && initialBase.parentNode, !0);
                     }
@@ -14132,10 +13904,10 @@ return renderToString;
                 }
             }
             if (!isUpdate || mountAll) mounts.unshift(component); else if (!skip) {
-                if (component.componentDidUpdate) component.componentDidUpdate(previousProps, previousState, previousContext);
+                if (component.componentDidUpdate) component.componentDidUpdate(previousProps, previousState, snapshot);
                 if (options.afterUpdate) options.afterUpdate(component);
             }
-            if (null != component.__h) while (component.__h.length) component.__h.pop().call(component);
+            while (component.__h.length) component.__h.pop().call(component);
             if (!diffLevel && !isChild) flushMounts();
         }
     }
@@ -14175,7 +13947,7 @@ return renderToString;
             if (base.__preactattr_ && base.__preactattr_.ref) base.__preactattr_.ref(null);
             component.__b = base;
             removeNode(base);
-            collectComponent(component);
+            recyclerComponents.push(component);
             removeChildren(base);
         }
         if (component.__r) component.__r(null);
@@ -14185,10 +13957,12 @@ return renderToString;
         this.context = context;
         this.props = props;
         this.state = this.state || {};
+        this.__h = [];
     }
     function render(vnode, parent, merge) {
         return diff(merge, vnode, {}, !1, parent, !1);
     }
+    var VNode = function() {};
     var options = {};
     var stack = [];
     var EMPTY_CHILDREN = [];
@@ -14199,17 +13973,17 @@ return renderToString;
     var diffLevel = 0;
     var isSvgMode = !1;
     var hydrating = !1;
-    var components = {};
+    var recyclerComponents = [];
     extend(Component.prototype, {
         setState: function(state, callback) {
-            var s = this.state;
-            if (!this.__s) this.__s = extend({}, s);
-            extend(s, 'function' == typeof state ? state(s, this.props) : state);
-            if (callback) (this.__h = this.__h || []).push(callback);
+            var prev = this.__s = this.state;
+            if ('function' == typeof state) state = state(prev, this.props);
+            this.state = extend(extend({}, prev), state);
+            if (callback) this.__h.push(callback);
             enqueueRender(this);
         },
         forceUpdate: function(callback) {
-            if (callback) (this.__h = this.__h || []).push(callback);
+            if (callback) this.__h.push(callback);
             renderComponent(this, 2);
         },
         render: function() {}
