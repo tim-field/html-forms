@@ -73,10 +73,6 @@ function toggleElement(el, evt) {
         }
     }
 
-    console.log("Expected values: ", expectedValues);
-    console.log("Actual values: ", values);
-    console.log("Condition met: ", conditionMet);
-
     // toggle element display
     if (show) {
         el.style.display = conditionMet ? '' : 'none';
