@@ -113,7 +113,6 @@ class Email extends Action {
     $html_email = $settings['content_type'] === 'text/html';
     if( $html_email ) {
       $headers[] = 'Content-Type: text/html';
-      $message = nl2br( $message );
     } 
 
     if( ! empty( $settings['from'] ) ) {
