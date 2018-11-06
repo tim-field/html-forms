@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 4.9.8
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -111,6 +111,19 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 
 == Changelog ==
+
+
+#### 1.3.3 - November 6, 2018
+
+**Fixes**
+
+- Fix selected state of email content type.
+
+**Improvements**
+
+- Add filter & action hook for extending forms with custom messages & message settings.
+- Don't add line-breaks automatically when using HTML emails.
+- Delete all related postmeta when deleting a submission.
 
 
 #### 1.3.2 - Aug 6, 2018
