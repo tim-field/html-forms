@@ -235,7 +235,7 @@ function hf_field_value( $value, $limit = 0 ) {
         return $value;
     }
 
-    if( hf_is_file( $value ) ) {
+	if( hf_is_file( $value ) ) {
         $file_url = isset( $value['url'] ) ? $value['url'] : '';
         if( isset( $value['attachment_id'] ) ) {
             $file_url = admin_url( sprintf( 'post.php?action=edit&post=%d', $value['attachment_id'] ) );

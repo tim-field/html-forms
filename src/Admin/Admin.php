@@ -329,11 +329,13 @@ fill="#000000" stroke="none"><path d="M0 1280 l0 -1280 1280 0 1280 0 0 1280 0 12
 
         if( empty( $_POST['id'] ) ) {
             return;
-        }
+		}
 
+		$ids = $_POST['id'];
         $table = $wpdb->prefix .'hf_submissions';
-        $ids = join( ',', array_map( 'esc_sql', $_POST['id'] ) );
-        $wpdb->query( sprintf( "DELETE FROM {$table} WHERE id IN( %s );", $ids ) );
+        $ids = join( ',', array_map( 'esc_sql', $ids ) );
+		$wpdb->query( sprintf( "DELETE FROM {$table} WHERE id IN( %s );", $ids ) );
+		$wpdb->query( sprintf( "DELETE FROM {$wpdb->postmeta} WHERE post_id IN ( %s ) AND meta_key LIKE '_hf_%%';", $ids ) );
     }
 
     private function get_default_form_content() {
