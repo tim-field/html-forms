@@ -2,190 +2,193 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports.default = void 0;
+
 function getFieldValues(form, fieldName, evt) {
-    var values = [];
-    var inputs = form.querySelectorAll('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"], button[name="' + fieldName + '"]');
+  var values = [];
+  var inputs = form.querySelectorAll('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"], button[name="' + fieldName + '"]');
 
-    for (var i = 0; i < inputs.length; i++) {
-        var input = inputs[i];
-        var type = input.getAttribute("type").toLowerCase();
+  for (var i = 0; i < inputs.length; i++) {
+    var input = inputs[i];
+    var type = input.getAttribute("type").toLowerCase();
 
-        if ((type === "radio" || type === "checkbox") && !input.checked) {
-            continue;
-        }
+    if ((type === "radio" || type === "checkbox") && !input.checked) {
+      continue;
+    } // ignore buttons which are not clicked (in case there's more than one button with same name)
 
-        // ignore buttons which are not clicked (in case there's more than one button with same name)
-        if (type === 'button' || type === 'submit' || input.tagName === 'BUTTON') {
-            if ((!evt || evt.target !== input) && form.dataset[fieldName] !== input.value) {
-                continue;
-            }
 
-            form.dataset[fieldName] = input.value;
-        }
+    if (type === 'button' || type === 'submit' || input.tagName === 'BUTTON') {
+      if ((!evt || evt.target !== input) && form.dataset[fieldName] !== input.value) {
+        continue;
+      }
 
-        values.push(input.value);
+      form.dataset[fieldName] = input.value;
     }
 
-    // default to an empty string
-    // can be used to show or hide an element when a field is empty or has not been set 
-    // Usage: data-show-if="FIELDNAME:"
-    if (values.length == 0) {
-        values.push("");
-    }
+    values.push(input.value);
+  } // default to an empty string
+  // can be used to show or hide an element when a field is empty or has not been set 
+  // Usage: data-show-if="FIELDNAME:"
 
-    return values;
+
+  if (values.length == 0) {
+    values.push("");
+  }
+
+  return values;
 }
 
 function findForm(element) {
-    var bubbleElement = element;
+  var bubbleElement = element;
 
-    while (bubbleElement.parentElement) {
-        bubbleElement = bubbleElement.parentElement;
+  while (bubbleElement.parentElement) {
+    bubbleElement = bubbleElement.parentElement;
 
-        if (bubbleElement.tagName === 'FORM') {
-            return bubbleElement;
-        }
+    if (bubbleElement.tagName === 'FORM') {
+      return bubbleElement;
     }
+  }
 
-    return null;
+  return null;
 }
 
 function toggleElement(el, evt) {
-    var show = !!el.getAttribute('data-show-if');
-    var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
-    var fieldName = conditions[0];
-    var expectedValues = (conditions.length > 1 ? conditions[1] : "*").split('|');
-    var form = findForm(el);
-    var values = getFieldValues(form, fieldName, evt);
+  var show = !!el.getAttribute('data-show-if');
+  var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
+  var fieldName = conditions[0];
+  var expectedValues = (conditions.length > 1 ? conditions[1] : "*").split('|');
+  var form = findForm(el);
+  var values = getFieldValues(form, fieldName, evt); // determine whether condition is met
 
-    // determine whether condition is met
-    var conditionMet = false;
-    for (var i = 0; i < values.length; i++) {
-        var value = values[i];
+  var conditionMet = false;
 
-        // condition is met when value is in array of expected values OR expected values contains a wildcard and value is not empty
-        conditionMet = expectedValues.indexOf(value) > -1 || expectedValues.indexOf('*') > -1 && value.length > 0;
+  for (var i = 0; i < values.length; i++) {
+    var value = values[i]; // condition is met when value is in array of expected values OR expected values contains a wildcard and value is not empty
 
-        if (conditionMet) {
-            break;
-        }
+    conditionMet = expectedValues.indexOf(value) > -1 || expectedValues.indexOf('*') > -1 && value.length > 0;
+
+    if (conditionMet) {
+      break;
+    }
+  } // toggle element display
+
+
+  if (show) {
+    el.style.display = conditionMet ? '' : 'none';
+  } else {
+    el.style.display = conditionMet ? 'none' : '';
+  } // find all inputs inside this element and toggle [required] attr (to prevent HTML5 validation on hidden elements)
+
+
+  var inputs = el.querySelectorAll('input, select, textarea');
+  [].forEach.call(inputs, function (el) {
+    if ((conditionMet || show) && el.getAttribute('data-was-required')) {
+      el.required = true;
+      el.removeAttribute('data-was-required');
     }
 
-    // toggle element display
-    if (show) {
-        el.style.display = conditionMet ? '' : 'none';
-    } else {
-        el.style.display = conditionMet ? 'none' : '';
+    if ((!conditionMet || !show) && el.required) {
+      el.setAttribute('data-was-required', "true");
+      el.required = false;
     }
+  });
+} // evaluate conditional elements globally
 
-    // find all inputs inside this element and toggle [required] attr (to prevent HTML5 validation on hidden elements)
-    var inputs = el.querySelectorAll('input, select, textarea');
-    [].forEach.call(inputs, function (el) {
-        if ((conditionMet || show) && el.getAttribute('data-was-required')) {
-            el.required = true;
-            el.removeAttribute('data-was-required');
-        }
 
-        if ((!conditionMet || !show) && el.required) {
-            el.setAttribute('data-was-required', "true");
-            el.required = false;
-        }
-    });
-}
-
-// evaluate conditional elements globally
 function evaluate() {
-    var elements = document.querySelectorAll('.hf-form [data-show-if], .hf-form [data-hide-if]');
-    [].forEach.call(elements, toggleElement);
-}
+  var elements = document.querySelectorAll('.hf-form [data-show-if], .hf-form [data-hide-if]');
+  [].forEach.call(elements, toggleElement);
+} // re-evaluate conditional elements for change events on forms
 
-// re-evaluate conditional elements for change events on forms
+
 function handleInputEvent(evt) {
-    if (!evt.target || !evt.target.form || evt.target.form.className.indexOf('hf-form') < 0) {
-        return;
-    }
+  if (!evt.target || !evt.target.form || evt.target.form.className.indexOf('hf-form') < 0) {
+    return;
+  }
 
-    var form = evt.target.form;
-    var elements = form.querySelectorAll('[data-show-if], [data-hide-if]');
-    [].forEach.call(elements, function (el) {
-        return toggleElement(el, evt);
-    });
+  var form = evt.target.form;
+  var elements = form.querySelectorAll('[data-show-if], [data-hide-if]');
+  [].forEach.call(elements, function (el) {
+    return toggleElement(el, evt);
+  });
 }
 
-exports.default = {
-    'init': function init() {
-        document.addEventListener('click', handleInputEvent, true);
-        document.addEventListener('keyup', handleInputEvent, true);
-        document.addEventListener('change', handleInputEvent, true);
-        document.addEventListener('hf-refresh', evaluate, true);
-        window.addEventListener('load', evaluate);
-        evaluate();
-    }
+var _default = {
+  'init': function init() {
+    document.addEventListener('click', handleInputEvent, true);
+    document.addEventListener('keyup', handleInputEvent, true);
+    document.addEventListener('change', handleInputEvent, true);
+    document.addEventListener('hf-refresh', evaluate, true);
+    window.addEventListener('load', evaluate);
+    evaluate();
+  }
 };
+exports.default = _default;
 
 },{}],2:[function(require,module,exports){
 'use strict';
 
 function getButtonText(button) {
-    return button.innerHTML ? button.innerHTML : button.value;
+  return button.innerHTML ? button.innerHTML : button.value;
 }
 
 function setButtonText(button, text) {
-    button.innerHTML ? button.innerHTML = text : button.value = text;
+  button.innerHTML ? button.innerHTML = text : button.value = text;
 }
 
 function Loader(formElement) {
-    this.form = formElement;
-    this.button = formElement.querySelector('input[type="submit"], button[type="submit"]');
-    this.loadingInterval = 0;
-    this.character = '\xB7';
+  this.form = formElement;
+  this.button = formElement.querySelector('input[type="submit"], button[type="submit"]');
+  this.loadingInterval = 0;
+  this.character = "\xB7";
 
-    if (this.button) {
-        this.originalButton = this.button.cloneNode(true);
-    }
+  if (this.button) {
+    this.originalButton = this.button.cloneNode(true);
+  }
 }
 
 Loader.prototype.setCharacter = function (c) {
-    this.character = c;
+  this.character = c;
 };
 
 Loader.prototype.start = function () {
-    if (this.button) {
-        // loading text
-        var loadingText = this.button.getAttribute('data-loading-text');
-        if (loadingText) {
-            setButtonText(this.button, loadingText);
-            return;
-        }
+  if (this.button) {
+    // loading text
+    var loadingText = this.button.getAttribute('data-loading-text');
 
-        // Show AJAX loader
-        var styles = window.getComputedStyle(this.button);
-        this.button.style.width = styles.width;
-        setButtonText(this.button, this.character);
-        this.loadingInterval = window.setInterval(this.tick.bind(this), 500);
-    } else {
-        this.form.style.opacity = '0.5';
-    }
+    if (loadingText) {
+      setButtonText(this.button, loadingText);
+      return;
+    } // Show AJAX loader
+
+
+    var styles = window.getComputedStyle(this.button);
+    this.button.style.width = styles.width;
+    setButtonText(this.button, this.character);
+    this.loadingInterval = window.setInterval(this.tick.bind(this), 500);
+  } else {
+    this.form.style.opacity = '0.5';
+  }
 };
 
 Loader.prototype.tick = function () {
-    // count chars, start over at 5
-    var text = getButtonText(this.button);
-    var loadingChar = this.character;
-    setButtonText(this.button, text.length >= 5 ? loadingChar : text + " " + loadingChar);
+  // count chars, start over at 5
+  var text = getButtonText(this.button);
+  var loadingChar = this.character;
+  setButtonText(this.button, text.length >= 5 ? loadingChar : text + " " + loadingChar);
 };
 
 Loader.prototype.stop = function () {
-    if (this.button) {
-        this.button.style.width = this.originalButton.style.width;
-        var text = getButtonText(this.originalButton);
-        setButtonText(this.button, text);
-        window.clearInterval(this.loadingInterval);
-    } else {
-        this.form.style.opacity = '';
-    }
+  if (this.button) {
+    this.button.style.width = this.originalButton.style.width;
+    var text = getButtonText(this.originalButton);
+    setButtonText(this.button, text);
+    window.clearInterval(this.loadingInterval);
+  } else {
+    this.form.style.opacity = '';
+  }
 };
 
 module.exports = Loader;
@@ -194,70 +197,81 @@ module.exports = Loader;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
+exports.default = void 0;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
-var populate = require('populate.js');
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-// parse ?query=string with array support. no nesting.
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var populate = require('populate.js'); // parse ?query=string with array support. no nesting.
+
+
 function parseUrlParams(q) {
-	var params = new URLSearchParams(q);
-	var obj = {};
-	var _iteratorNormalCompletion = true;
-	var _didIteratorError = false;
-	var _iteratorError = undefined;
+  var params = new URLSearchParams(q);
+  var obj = {};
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
 
-	try {
-		for (var _iterator = params.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-			var _step$value = _slicedToArray(_step.value, 2),
-			    name = _step$value[0],
-			    value = _step$value[1];
+  try {
+    for (var _iterator = params.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var _step$value = _slicedToArray(_step.value, 2),
+          name = _step$value[0],
+          value = _step$value[1];
 
-			if (name.substr(name.length - 2) === "[]") {
-				var arrName = name.substr(0, name.length - 2);
-				obj[arrName] = obj[arrName] || [];
-				obj[arrName].push(value);
-			} else {
-				obj[name] = value;
-			}
-		}
-	} catch (err) {
-		_didIteratorError = true;
-		_iteratorError = err;
-	} finally {
-		try {
-			if (!_iteratorNormalCompletion && _iterator.return) {
-				_iterator.return();
-			}
-		} finally {
-			if (_didIteratorError) {
-				throw _iteratorError;
-			}
-		}
-	}
+      if (name.substr(name.length - 2) === "[]") {
+        var arrName = name.substr(0, name.length - 2);
+        obj[arrName] = obj[arrName] || [];
+        obj[arrName].push(value);
+      } else {
+        obj[name] = value;
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return != null) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
 
-	return obj;
+  return obj;
 }
 
 function init() {
-	// only act on form elements outputted by HTML Forms
-	var forms = [].filter.call(document.forms, function (f) {
-		return f.className.indexOf('hf-form') > -1;
-	});
-	if (!forms) {
-		return;
-	}
+  // only act on form elements outputted by HTML Forms
+  var forms = [].filter.call(document.forms, function (f) {
+    return f.className.indexOf('hf-form') > -1;
+  });
 
-	// fill each form with data from URL params
-	var data = parseUrlParams(window.location.search);
-	forms.forEach(function (f) {
-		populate(f, data);
-	});
+  if (!forms) {
+    return;
+  } // fill each form with data from URL params
+
+
+  var data = parseUrlParams(window.location.search);
+  forms.forEach(function (f) {
+    populate(f, data);
+  });
 }
 
-exports.default = { init: init };
+var _default = {
+  init: init
+};
+exports.default = _default;
 
 },{"populate.js":7}],4:[function(require,module,exports){
 "use strict";
@@ -267,148 +281,152 @@ exports.default = { init: init };
   if (typeof window.CustomEvent === "function") return false;
 
   function CustomEvent(event, params) {
-    params = params || { bubbles: false, cancelable: false, detail: undefined };
+    params = params || {
+      bubbles: false,
+      cancelable: false,
+      detail: undefined
+    };
     var evt = document.createEvent('CustomEvent');
     evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
     return evt;
   }
 
   CustomEvent.prototype = window.Event.prototype;
-
   window.CustomEvent = CustomEvent;
 })();
 
 },{}],5:[function(require,module,exports){
 "use strict";
 
-var _formPrefiller = require('./form-prefiller.js');
+var _formPrefiller = _interopRequireDefault(require("./form-prefiller.js"));
 
-var _formPrefiller2 = _interopRequireDefault(_formPrefiller);
+var _conditionality = _interopRequireDefault(require("./conditionality.js"));
 
-var _conditionality = require('./conditionality.js');
-
-var _conditionality2 = _interopRequireDefault(_conditionality);
-
-require('./polyfills/custom-event.js');
+require("./polyfills/custom-event.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var shim = require('es5-shim');
+
 var Loader = require('./form-loading-indicator.js');
-var vars = window.hf_js_vars || { ajax_url: window.location.href };
+
+var vars = window.hf_js_vars || {
+  ajax_url: window.location.href
+};
+
 var EventEmitter = require('wolfy87-eventemitter');
+
 var events = new EventEmitter();
 
 function cleanFormMessages(formEl) {
-    var messageElements = formEl.querySelectorAll('.hf-message');
-    [].forEach.call(messageElements, function (el) {
-        el.parentNode.removeChild(el);
-    });
+  var messageElements = formEl.querySelectorAll('.hf-message');
+  [].forEach.call(messageElements, function (el) {
+    el.parentNode.removeChild(el);
+  });
 }
 
 function addFormMessage(formEl, message) {
-    var txtElement = document.createElement('p');
-    txtElement.className = 'hf-message hf-message-' + message.type;
-    txtElement.innerHTML = message.text;
-    formEl.insertBefore(txtElement, formEl.lastElementChild.nextElementSibling);
+  var txtElement = document.createElement('p');
+  txtElement.className = 'hf-message hf-message-' + message.type;
+  txtElement.innerHTML = message.text;
+  formEl.insertBefore(txtElement, formEl.lastElementChild.nextElementSibling);
 }
 
 function handleSubmitEvents(e) {
-    var formEl = e.target;
-    if (formEl.className.indexOf('hf-form') < 0) {
-        return;
-    }
+  var formEl = e.target;
 
-    // always prevent default (because regular submit doesn't work for HTML Forms)
-    e.preventDefault();
-    submitForm(formEl);
+  if (formEl.className.indexOf('hf-form') < 0) {
+    return;
+  } // always prevent default (because regular submit doesn't work for HTML Forms)
+
+
+  e.preventDefault();
+  submitForm(formEl);
 }
 
 function submitForm(formEl) {
-    cleanFormMessages(formEl);
-    emitEvent('submit', formEl);
-
-    var formData = new FormData(formEl);
-    [].forEach.call(formEl.querySelectorAll('[data-was-required=true]'), function (el) {
-        formData.append('_was_required[]', el.getAttribute('name'));
-    });
-
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = createRequestHandler(formEl);
-    request.open('POST', vars.ajax_url, true);
-    request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    request.send(formData);
-    request = null;
+  cleanFormMessages(formEl);
+  emitEvent('submit', formEl);
+  var formData = new FormData(formEl);
+  [].forEach.call(formEl.querySelectorAll('[data-was-required=true]'), function (el) {
+    formData.append('_was_required[]', el.getAttribute('name'));
+  });
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = createRequestHandler(formEl);
+  request.open('POST', vars.ajax_url, true);
+  request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  request.send(formData);
+  request = null;
 }
 
 function emitEvent(eventName, element) {
-    // browser event API: formElement.on('hf-success', ..)
-    element.dispatchEvent(new CustomEvent("hf-" + eventName));
+  // browser event API: formElement.on('hf-success', ..)
+  element.dispatchEvent(new CustomEvent("hf-" + eventName)); // custom events API: html_forms.on('success', ..)
 
-    // custom events API: html_forms.on('success', ..)
-    events.emit(eventName, [element]);
+  events.emit(eventName, [element]);
 }
 
 function createRequestHandler(formEl) {
-    var loader = new Loader(formEl);
-    loader.start();
+  var loader = new Loader(formEl);
+  loader.start();
+  return function () {
+    // are we done?
+    if (this.readyState === 4) {
+      var response;
+      loader.stop();
 
-    return function () {
-        // are we done?
-        if (this.readyState === 4) {
-            var response = void 0;
-            loader.stop();
-
-            if (this.status >= 200 && this.status < 400) {
-                try {
-                    response = JSON.parse(this.responseText);
-                } catch (error) {
-                    console.log('HTML Forms: failed to parse AJAX response.\n\nError: "' + error + '"');
-                    return;
-                }
-
-                emitEvent('submitted', formEl);
-
-                if (response.error) {
-                    emitEvent('error', formEl);
-                } else {
-                    emitEvent('success', formEl);
-                }
-
-                // Show form message
-                if (response.message) {
-                    addFormMessage(formEl, response.message);
-                }
-
-                // Should we hide form?
-                if (response.hide_form) {
-                    formEl.querySelector('.hf-fields-wrap').style.display = 'none';
-                }
-
-                // Should we redirect?
-                if (response.redirect_url) {
-                    window.location = response.redirect_url;
-                }
-
-                // clear form
-                if (!response.error) {
-                    formEl.reset();
-                }
-            } else {
-                // Server error :(
-                console.log(this.responseText);
-            }
+      if (this.status >= 200 && this.status < 400) {
+        try {
+          response = JSON.parse(this.responseText);
+        } catch (error) {
+          console.log('HTML Forms: failed to parse AJAX response.\n\nError: "' + error + '"');
+          return;
         }
-    };
+
+        emitEvent('submitted', formEl);
+
+        if (response.error) {
+          emitEvent('error', formEl);
+        } else {
+          emitEvent('success', formEl);
+        } // Show form message
+
+
+        if (response.message) {
+          addFormMessage(formEl, response.message);
+        } // Should we hide form?
+
+
+        if (response.hide_form) {
+          formEl.querySelector('.hf-fields-wrap').style.display = 'none';
+        } // Should we redirect?
+
+
+        if (response.redirect_url) {
+          window.location = response.redirect_url;
+        } // clear form
+
+
+        if (!response.error) {
+          formEl.reset();
+        }
+      } else {
+        // Server error :(
+        console.log(this.responseText);
+      }
+    }
+  };
 }
 
 document.addEventListener('submit', handleSubmitEvents, false); // useCapture=false to ensure we bubble upwards (and thus can cancel propagation)
-_conditionality2.default.init();
-_formPrefiller2.default.init();
+
+_conditionality.default.init();
+
+_formPrefiller.default.init();
 
 window.html_forms = {
-    'on': events.on.bind(events),
-    'submit': submitForm
+  'on': events.on.bind(events),
+  'submit': submitForm
 };
 
 },{"./conditionality.js":1,"./form-loading-indicator.js":2,"./form-prefiller.js":3,"./polyfills/custom-event.js":4,"es5-shim":6,"wolfy87-eventemitter":8}],6:[function(require,module,exports){
@@ -1421,16 +1439,28 @@ window.html_forms = {
         return ctor && ctor.prototype === o;
     };
     var excludedKeys = {
-        $window: true,
+        $applicationCache: true,
         $console: true,
-        $parent: true,
-        $self: true,
+        $external: true,
         $frame: true,
-        $frames: true,
         $frameElement: true,
+        $frames: true,
+        $innerHeight: true,
+        $innerWidth: true,
+        $outerHeight: true,
+        $outerWidth: true,
+        $pageXOffset: true,
+        $pageYOffset: true,
+        $parent: true,
+        $scrollLeft: true,
+        $scrollTop: true,
+        $scrollX: true,
+        $scrollY: true,
+        $self: true,
         $webkitIndexedDB: true,
         $webkitStorageInfo: true,
-        $external: true,
+        $window: true,
+
         $width: true,
         $height: true,
         $top: true,
