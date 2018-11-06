@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### 1.3.3 - November 6, 2018
+
+**Improvements**
+
+- Add filter & action hook for extending forms with custom messages & message settings.
+
+
 #### 1.3.2 - Aug 6, 2018
 
 **Improvements**
