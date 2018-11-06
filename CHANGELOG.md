@@ -3,9 +3,15 @@ Changelog
 
 #### 1.3.3 - November 6, 2018
 
+**Fixes**
+
+- Fix selected state of email content type.
+
 **Improvements**
 
 - Add filter & action hook for extending forms with custom messages & message settings.
+- Don't add line-breaks automatically when using HTML emails.
+- Delete all related postmeta when deleting a submission.
 
 
 #### 1.3.2 - Aug 6, 2018
