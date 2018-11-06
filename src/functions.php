@@ -56,7 +56,8 @@ function hf_get_form( $form_id_or_slug ) {
         'invalid_email' => __( 'Sorry, that email address looks invalid.', 'html-forms' ),
         'required_field_missing' => __( "Please fill in the required fields.", "html-forms" ),
         'error' => __( 'Oops. An error occurred.', 'html-forms' ),
-    );
+	);
+	$default_messages = apply_filters( 'hf_form_default_messages', $default_messages );
     $messages = array();
     foreach( $post_meta as $meta_key => $meta_values ) {
         if( strpos( $meta_key, 'hf_message_' ) === 0 ) {
