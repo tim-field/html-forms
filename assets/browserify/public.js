@@ -89,6 +89,7 @@ function createRequestHandler(formEl) {
                 // Show form message
                 if (response.message) {
                     addFormMessage(formEl, response.message);
+                    emitEvent('message', formEl);
                 }
 
                 // Should we hide form?
