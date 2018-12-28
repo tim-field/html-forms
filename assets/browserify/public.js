@@ -1,6 +1,5 @@
 "use strict";
 
-const shim = require('es5-shim');
 const Loader = require('./form-loading-indicator.js');
 const vars = window.hf_js_vars || { ajax_url: window.location.href };
 const EventEmitter = require('wolfy87-eventemitter');
