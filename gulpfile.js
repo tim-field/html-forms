@@ -13,9 +13,6 @@ const insert = require('gulp-insert');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const gutil = require('gulp-util');
-const babel  = require('gulp-babel');
-const es = require('event-stream');
-
 
 gulp.task('css', function () {
     let files = './assets/sass/[^_]*.scss';
@@ -33,8 +30,8 @@ function js(file) {
 		.transform("babelify", {
 			 presets: ["@babel/preset-env"],
 			 plugins: [
-				["@babel/plugin-proposal-decorators", { "legacy": true }],
-				["@babel/plugin-transform-react-jsx", { "pragma":"h" } ]
+				["@babel/plugin-proposal-decorators", {"legacy": true }],
+				["@babel/plugin-transform-react-jsx", {"pragma":"h" }]
 			]	
 		 })
 		.bundle()
@@ -44,9 +41,9 @@ function js(file) {
 		.pipe(gulp.dest('./assets/js'));
 }
 
-gulp.task( 'js-public', () => js('./assets/browserify/public.js' ) );
-gulp.task( 'js-admin', () => js('./assets/browserify/admin/admin.js' ) );
-gulp.task('js', gulp.parallel( 'js-public', 'js-admin' ));
+gulp.task('js-public', () => js('./assets/browserify/public.js'));
+gulp.task('js-admin', () => js('./assets/browserify/admin/admin.js'));
+gulp.task('js', gulp.parallel('js-public', 'js-admin'));
 
 gulp.task('minify-js', gulp.series('js', function() {
     return gulp.src(['./assets/js/**/*.js','!./assets/js/**/*.min.js'])
