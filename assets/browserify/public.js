@@ -20,7 +20,8 @@ function cleanFormMessages(formEl) {
 function addFormMessage(formEl, message) {
     let txtElement = document.createElement('p');
     txtElement.className = 'hf-message hf-message-' + message.type;
-    txtElement.innerHTML = message.text;
+    txtElement.innerHTML = message.text; // uses innerHTML because we allow some HTML strings in the message settings
+    txtElement.setAttribute('role', 'alert');
     formEl.insertBefore(txtElement, formEl.lastElementChild.nextElementSibling);
 }
 
