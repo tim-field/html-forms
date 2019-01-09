@@ -865,6 +865,7 @@ function addAction(e) {
   actions.appendChild(wrap); // hide "no form actions" message
 
   actions.querySelector('#hf-form-actions-empty').style.display = 'none';
+  window.html_forms.Editor.updateFieldVariables();
 }
 
 function createDeleteActionHandler(wrap) {
@@ -1062,7 +1063,8 @@ function uniq(a) {
 
 var _default = {
   init: init,
-  replaceSelection: replaceSelection
+  replaceSelection: replaceSelection,
+  updateFieldVariables: updateFieldVariables
 };
 exports.default = _default;
 

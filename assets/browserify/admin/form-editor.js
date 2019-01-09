@@ -157,5 +157,6 @@ function uniq(a) {
 
 export default {
     init,
-    replaceSelection
+    replaceSelection,
+    updateFieldVariables,
 };

@@ -1,4 +1,4 @@
-# Copyright (C) 2018 html-forms
+# Copyright (C) 2019 html-forms
 # This file is distributed under the same license as the html-forms package.
 msgid ""
 msgstr ""
