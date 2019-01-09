@@ -1002,6 +1002,7 @@ function updatePreview() {
   var markup = editor.getValue(); // replace template tags
 
   markup = markup.replace(templateRegex, function (s, m) {
+    // if a default value was provided, use that
     if (arguments[3]) {
       return arguments[3];
     }

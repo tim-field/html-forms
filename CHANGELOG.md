@@ -1,6 +1,15 @@
 Changelog
 =========
 
+#### 1.3.4 - January 9, 2019
+
+**Improvements**
+
+- Reload available field variables when adding action on form settings page.
+- Add role="alert" attribute to all form messages.
+- Emit "message" event whenever message is shown to user.
+
+
 #### 1.3.3 - November 6, 2018
 
 **Fixes**
