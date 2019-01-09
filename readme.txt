@@ -3,8 +3,8 @@ Contributors: Ibericode, DvanKooten, hchouhan, lapzor
 Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=donate-link
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
-Tested up to: 4.9.8
-Stable tag: 1.3.3
+Tested up to: 5.0.2
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -111,6 +111,15 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 
 == Changelog ==
+
+
+#### 1.3.4 - January 9, 2019
+
+**Improvements**
+
+- Reload available field variables when adding action on form settings page.
+- Add role="alert" attribute to all form messages.
+- Emit "message" event whenever message is shown to user.
 
 
 #### 1.3.3 - November 6, 2018
