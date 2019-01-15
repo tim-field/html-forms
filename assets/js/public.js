@@ -252,7 +252,11 @@ function parseUrlParams(q) {
 }
 
 function init() {
-  // only act on form elements outputted by HTML Forms
+  if (!window.URLSearchParams) {
+    return;
+  } // only act on form elements outputted by HTML Forms
+
+
   var forms = [].filter.call(document.forms, function (f) {
     return f.className.indexOf('hf-form') > -1;
   });

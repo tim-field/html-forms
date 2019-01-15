@@ -28,11 +28,13 @@ function js(file) {
 	let filename = file.split('/').pop();
   	return browserify({ entries: [file] }).on('error', gutil.log)
 		.transform("babelify", {
-			 presets: ["@babel/preset-env"],
+			 presets: [
+			 	["@babel/preset-env", { "targets": "> 0.25%, not dead", "forceAllTransforms": true }]
+			 ],
 			 plugins: [
 				["@babel/plugin-proposal-decorators", {"legacy": true }],
 				["@babel/plugin-transform-react-jsx", {"pragma":"h" }]
-			]	
+			]
 		 })
 		.bundle()
 		.pipe(source(filename))
