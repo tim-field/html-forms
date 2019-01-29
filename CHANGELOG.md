@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### 1.3.5 - January 29, 2019
+
+**Improvements**
+
+- Allow adding form field variables to the form's redirect URL.
+
+
 #### 1.3.4 - January 9, 2019
 
 **Improvements**
