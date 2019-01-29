@@ -211,11 +211,14 @@ function hf_template( $template ) {
  *
  * @return string
  */
-function hf_replace_data_variables( $string, $data = array() ) {
-    $string = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function( $matches ) use ( $data ) {
+function hf_replace_data_variables($string, $data = array(), $escape_function = null) {
+    $string = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function($matches) use ($data, $escape_function) {
         $key = $matches[1];
         $replacement = hf_array_get( $data, $key, '' );
         $replacement = hf_field_value( $replacement );
+        if (is_callable($escape_function)) {
+            $replacement = $escape_function($replacement);
+        }
         return $replacement;
     }, $string );
     return $string;
