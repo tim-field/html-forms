@@ -100,14 +100,14 @@ class Email extends Action {
 
     $settings = array_merge( $this->get_default_settings(), $settings );
 
-    $to = hf_replace_data_variables( $settings['to'], $submission->data );
-    $subject = ! empty( $settings['subject'] ) ? hf_replace_data_variables( $settings['subject'], $submission->data ) : '';
-    $message = hf_replace_data_variables( $settings['message'], $submission->data );
+    $to = hf_replace_data_variables( $settings['to'], $submission->data, 'strip_tags' );
+    $subject = ! empty( $settings['subject'] ) ? hf_replace_data_variables( $settings['subject'], $submission->data, 'strip_tags' ) : '';
+    $message = hf_replace_data_variables( $settings['message'], $submission->data, 'strip_tags' );
     
     // parse additional email headers from settings
     $headers = array();
     if( ! empty( $settings['headers'] ) ) {
-      $headers = explode( PHP_EOL, hf_replace_data_variables( $settings['headers'], $submission->data ) );
+      $headers = explode( PHP_EOL, hf_replace_data_variables( $settings['headers'], $submission->data, 'strip_tags' ) );
     }
 
     $html_email = $settings['content_type'] === 'text/html';
@@ -116,7 +116,7 @@ class Email extends Action {
     } 
 
     if( ! empty( $settings['from'] ) ) {
-      $from = hf_replace_data_variables($settings['from'], $submission->data);
+      $from = hf_replace_data_variables($settings['from'], $submission->data, 'strip_tags');
       $headers[] = sprintf( 'From: %s', $from );
     }
 

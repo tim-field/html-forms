@@ -216,7 +216,7 @@ function hf_replace_data_variables($string, $data = array(), $escape_function = 
         $key = $matches[1];
         $replacement = hf_array_get( $data, $key, '' );
         $replacement = hf_field_value( $replacement );
-        if (is_callable($escape_function)) {
+        if ($escape_function !== null && is_callable($escape_function)) {
             $replacement = $escape_function($replacement);
         }
         return $replacement;
