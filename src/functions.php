@@ -270,6 +270,8 @@ function hf_field_value( $value, $limit = 0 ) {
 
 /**
 * Returns true if value is a "file"
+*
+* @param mixed $value
 * @return bool
 */
 function hf_is_file( $value ) {
@@ -281,6 +283,7 @@ function hf_is_file( $value ) {
 
 /**
 * Returns true if value looks like a date-string submitted from a <input type="date">
+* @param mixed $value
 * @return bool
 * @since 1.3.1
 */
