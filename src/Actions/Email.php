@@ -99,10 +99,11 @@ class Email extends Action {
     }
 
     $settings = array_merge( $this->get_default_settings(), $settings );
+    $html_email = $settings['content_type'] === 'text/html';
 
     $to = hf_replace_data_variables( $settings['to'], $submission->data, 'strip_tags' );
     $subject = ! empty( $settings['subject'] ) ? hf_replace_data_variables( $settings['subject'], $submission->data, 'strip_tags' ) : '';
-    $message = hf_replace_data_variables( $settings['message'], $submission->data, 'strip_tags' );
+    $message = hf_replace_data_variables( $settings['message'], $submission->data, $html_email ? null : 'strip_tags' );
     
     // parse additional email headers from settings
     $headers = array();
@@ -110,10 +111,9 @@ class Email extends Action {
       $headers = explode( PHP_EOL, hf_replace_data_variables( $settings['headers'], $submission->data, 'strip_tags' ) );
     }
 
-    $html_email = $settings['content_type'] === 'text/html';
     if( $html_email ) {
       $headers[] = 'Content-Type: text/html';
-    } 
+    }
 
     if( ! empty( $settings['from'] ) ) {
       $from = hf_replace_data_variables($settings['from'], $submission->data, 'strip_tags');

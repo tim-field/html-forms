@@ -190,7 +190,6 @@ function hf_template( $template ) {
         $tag = $matches[1];
         $param = ! isset( $matches[2] ) ? "" : $matches[2];
         $default = ! isset( $matches[3] ) ? "" : $matches[3];
-        $value = "";
 
         // do not change anything if we have no replacer with that key, could be custom user logic or another plugin.
         if( ! isset( $tags[ $tag] ) ) {
@@ -229,7 +228,7 @@ function hf_replace_data_variables($string, $data = array(), $escape_function = 
 *
 * Caveat: if value is a file, an HTML string is returned (which means email action should use "Content-Type: html" when it includes a file field).
 *
-* @param string $value
+* @param string|array $value
 * @param int $limit 
 * @return string
 * @since 1.3.1
