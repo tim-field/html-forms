@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### 1.3.6 - March 27, 2019
+
+**Improvements**
+
+- Don't strip HTML from variable replacements in HTML emails. This change allows you to link to uploaded files properly.
+
+
 #### 1.3.5 - January 29, 2019
 
 **Improvements**
