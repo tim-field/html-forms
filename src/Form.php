@@ -23,7 +23,7 @@ class Form {
 
     /**
     * Magic method for accessing unexisting properties, eg lowercase "id".
-    *
+    * @param string $property
     * @return mixed
     */
     public function __get( $property ) {

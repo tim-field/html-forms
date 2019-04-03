@@ -4,6 +4,22 @@ use HTML_Forms\Form;
 use HTML_Forms\Submission;
 
 /**
+ * @param array $args
+ * @return array
+ */
+function hf_get_forms(array $args = array()) {
+    $default_args = array(
+        'post_type' => 'html-form',
+        'post_status' =>  array( 'publish', 'draft', 'pending', 'future' ),
+        'numberposts' => -1,
+    );
+    $args = array_merge($default_args, $args);
+    $posts = get_posts($args);
+    $forms = array_map('hf_get_form', $posts);
+    return $forms;
+}
+
+/**
  * @param $form_id_or_slug int|string|WP_Post
  * @return Form
  * @throws Exception

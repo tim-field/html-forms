@@ -1,6 +1,7 @@
 <?php
 
 namespace HTML_Forms\Admin;
+use HTML_Forms\Form;
 use WP_List_Table, WP_Post;
 
 // Check if WP Core class exists so that we can keep testing rest of HTML Forms in isolation..
@@ -31,15 +32,14 @@ if( class_exists( 'WP_List_Table' ) ) {
             );
 
             $this->settings = $settings;
+            $this->process_bulk_action();
 
             $columns  = $this->get_columns();
             $sortable = $this->get_sortable_columns();
             $hidden   = array();
             $this->_column_headers = array( $columns, $hidden, $sortable );
-
             $this->is_trash = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] === 'trash';
-            $this->process_bulk_action();
-            $this->prepare_items();
+            $this->items = $this->get_items();
             $this->set_pagination_args(
                 array(
                     'per_page' => 50,
@@ -48,10 +48,6 @@ if( class_exists( 'WP_List_Table' ) ) {
             );
         }
 
-
-        public function prepare_items() {
-            $this->items = $this->get_items();
-        }
         /**
          * Get an associative array ( id => link ) with the list
          * of views available on this table.
@@ -123,11 +119,8 @@ if( class_exists( 'WP_List_Table' ) ) {
          * @return array
          */
         public function get_items() {
-            $args = array(
-                'post_type' => 'html-form',
-                'post_status' =>  array( 'publish', 'draft', 'pending', 'future' ),
-                'numberposts' => -1,
-            );
+
+            $args = array();
 
             if( ! empty( $_GET['s'] ) ) {
                 $args['s'] = sanitize_text_field( $_GET['s'] );
@@ -137,43 +130,38 @@ if( class_exists( 'WP_List_Table' ) ) {
                 $args['post_status'] = sanitize_text_field( $_GET['post_status'] );
             }
 
-
-            $items = get_posts( $args );
-
+            $items = hf_get_forms($args);
             return $items;
         }
 
         /**
-         * @param $item
-         *
+         * @param Form $form
          * @return string
          */
-        public function column_cb( $item ) {
-            return sprintf( '<input type="checkbox" name="forms[]" value="%s" />', $item->ID );
+        public function column_cb($form) {
+            return sprintf( '<input type="checkbox" name="forms[]" value="%s" />', $form->ID );
         }
 
         /**
-         * @param WP_Post $post
+         * @param Form $form
          *
          * @return mixed
          */
-        public function column_ID( WP_Post $post ) {
-            return $post->ID;
+        public function column_ID( Form $form ) {
+            return $form->ID;
         }
 
         /**
-         * @param WP_Post $post
+         * @param Form $form
          * @return string
          */
-        public function column_form_name( WP_Post $post ) {
+        public function column_form_name( Form $form ) {
             if( $this->is_trash ) {
-                return sprintf( '<strong>%s</strong>', esc_html( $post->post_title ) );
+                return sprintf( '<strong>%s</strong>', esc_html( $form->title ) );
             }
 
-            $form = hf_get_form( $post );
-
-            $edit_link = admin_url( 'admin.php?page=html-forms&view=edit&form_id=' . $post->ID );
-            $title      = '<strong><a class="row-title" href="' . $edit_link . '">' . esc_html( $post->post_title ) . '</a></strong>';
+            $edit_link = admin_url( 'admin.php?page=html-forms&view=edit&form_id=' . $form->ID );
+            $title      = '<strong><a class="row-title" href="' . $edit_link . '">' . esc_html( $form->title ) . '</a></strong>';
 
             $actions = array();
             $tabs = array(
@@ -195,16 +183,15 @@ if( class_exists( 'WP_List_Table' ) ) {
         }
 
         /**
-         * @param WP_Post $post
-         *
+         * @param Form $form
          * @return string
          */
-        public function column_shortcode( WP_Post $post ) {
+        public function column_shortcode(Form $form) {
             if( $this->is_trash ) {
                 return '';
             }
 
-            return sprintf( '<input style="width: 260px;" type="text" onfocus="this.select();" readonly="readonly" value="%s">', esc_attr( '[hf_form slug="' . $post->post_name . '"]' ) );
+            return sprintf( '<input style="width: 260px;" type="text" onfocus="this.select();" readonly="readonly" value="%s">', esc_attr( '[hf_form slug="' . $form->slug . '"]' ) );
         }
 
         /**
@@ -269,11 +256,11 @@ if( class_exists( 'WP_List_Table' ) ) {
          *
          * @since 3.1.0
          *
-         * @param object $item The current item
+         * @param Form $form The current item
          */
-        public function single_row( $item ) {
-            echo sprintf( '<tr id="hf-forms-item-%d">',$item->ID );
-            $this->single_row_columns( $item );
+        public function single_row($form) {
+            echo sprintf( '<tr id="hf-forms-item-%d">', $form->ID );
+            $this->single_row_columns($form);
             echo '</tr>';
         }
 
