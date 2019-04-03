@@ -49,6 +49,12 @@ class Forms
             )
         );
 
+        if (function_exists('register_block_type')) {
+            register_block_type( 'html-forms/form', array(
+                'render_callback' => array($this, 'shortcode'),
+            ));
+        }
+
         add_shortcode('hf_form', array($this, 'shortcode'));
 
         // enable shortcodes in text widgets
@@ -143,6 +149,7 @@ class Forms
     * Sanitize array with values before saving. Can be called recursively.
     *
     * @param mixed $value
+    * @return mixed
     */
     public function sanitize( $value )
     {
@@ -376,8 +383,11 @@ class Forms
 
     public function shortcode($attributes = array(), $content = '')
     {
-        $slug_or_id = empty( $attributes['id'] ) ? $attributes['slug'] : $attributes['id'];
+        if (empty($attributes['slug']) && empty($attributes['id'])) {
+            return '';
+        }
 
+        $slug_or_id = empty( $attributes['id'] ) ? $attributes['slug'] : $attributes['id'];
         try {
             $form = hf_get_form( $slug_or_id );
         } catch( \Exception $e ) {

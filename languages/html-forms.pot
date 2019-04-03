@@ -17,27 +17,27 @@ msgstr ""
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/Forms.php:388
+#: src/Forms.php:398
 msgid "Error:"
 msgstr ""
 
-#: src/Forms.php:388
+#: src/Forms.php:398
 msgid "No form found with slug %s"
 msgstr ""
 
-#: src/functions.php:55
+#: src/functions.php:71
 msgid "Thank you! We will be in touch soon."
 msgstr ""
 
-#: src/functions.php:56
+#: src/functions.php:72
 msgid "Sorry, that email address looks invalid."
 msgstr ""
 
-#: src/functions.php:57
+#: src/functions.php:73
 msgid "Please fill in the required fields."
 msgstr ""
 
-#: src/functions.php:58
+#: src/functions.php:74
 msgid "Oops. An error occurred."
 msgstr ""
 
@@ -53,7 +53,7 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:55, src/Admin/Admin.php:345
+#: src/Actions/Email.php:55, src/Admin/Admin.php:361
 msgid "Subject"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Your email subject"
 msgstr ""
 
-#: src/Actions/Email.php:62, src/Admin/Admin.php:346
+#: src/Actions/Email.php:62, src/Admin/Admin.php:362
 msgid "Message"
 msgstr ""
 
@@ -101,35 +101,35 @@ msgstr ""
 msgid "Please connect your MailChimp account first."
 msgstr ""
 
-#: src/Admin/Admin.php:121
+#: src/Admin/Admin.php:137
 msgid "Forms"
 msgstr ""
 
-#: src/Admin/Admin.php:121
+#: src/Admin/Admin.php:137
 msgid "All Forms"
 msgstr ""
 
-#: src/Admin/Admin.php:122
+#: src/Admin/Admin.php:138
 msgid "Add new form"
 msgstr ""
 
-#: src/Admin/Admin.php:122
+#: src/Admin/Admin.php:138
 msgid "Add New"
 msgstr ""
 
-#: src/Admin/Admin.php:123, src/Admin/Admin.php:123, src/Admin/Table.php:182
+#: src/Admin/Admin.php:139, src/Admin/Admin.php:139, src/Admin/Table.php:170
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/Admin.php:343
+#: src/Admin/Admin.php:359
 msgid "Your name"
 msgstr ""
 
-#: src/Admin/Admin.php:344
+#: src/Admin/Admin.php:360
 msgid "Your email"
 msgstr ""
 
-#: src/Admin/Admin.php:347
+#: src/Admin/Admin.php:363
 msgid "Send"
 msgstr ""
 
@@ -137,30 +137,30 @@ msgstr ""
 msgid "Form submissions"
 msgstr ""
 
-#: src/Admin/Table.php:110
+#: src/Admin/Table.php:106
 msgid "Form"
 msgstr ""
 
-#: src/Admin/Table.php:111
+#: src/Admin/Table.php:107
 msgid "Shortcode"
 msgstr ""
 
-#: src/Admin/Table.php:180
+#: src/Admin/Table.php:168
 msgid "Fields"
 msgstr ""
 
-#: src/Admin/Table.php:181
+#: src/Admin/Table.php:169
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Table.php:183
+#: src/Admin/Table.php:171
 msgid "Actions"
 msgstr ""
 
-#: src/Admin/Table.php:187
+#: src/Admin/Table.php:175
 msgid "Submissions"
 msgstr ""
 
-#: src/Admin/Table.php:214
+#: src/Admin/Table.php:201
 msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
 msgstr ""

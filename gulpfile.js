@@ -33,7 +33,7 @@ function js(file) {
 			 ],
 			 plugins: [
 				["@babel/plugin-proposal-decorators", {"legacy": true }],
-				["@babel/plugin-transform-react-jsx", {"pragma":"h" }]
+				["@babel/plugin-transform-react-jsx", {"pragma": filename === 'gutenberg-block.js' ? 'React.createElement' : 'h'}]
 			]
 		 })
 		.bundle()
@@ -44,8 +44,9 @@ function js(file) {
 }
 
 gulp.task('js-public', () => js('./assets/browserify/public.js'));
+gulp.task('js-gutenberg-block', () => js('./assets/browserify/gutenberg-block.js'));
 gulp.task('js-admin', () => js('./assets/browserify/admin/admin.js'));
-gulp.task('js', gulp.parallel('js-public', 'js-admin'));
+gulp.task('js', gulp.parallel('js-public', 'js-admin', 'js-gutenberg-block'));
 
 gulp.task('minify-js', gulp.series('js', function() {
     return gulp.src(['./assets/js/**/*.js','!./assets/js/**/*.min.js'])

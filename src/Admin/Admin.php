@@ -38,7 +38,23 @@ class Admin {
         add_action( 'hf_admin_output_form_tab_actions', array( $this, 'tab_actions' ) );
 		add_action( 'hf_admin_output_form_tab_submissions', array( $this, 'tab_submissions_list' ) );
 		add_action( 'hf_admin_output_form_tab_submissions', array( $this, 'tab_submissions_detail' ) );
+        add_action('enqueue_block_editor_assets', array($this, 'enqueue_gutenberg_assets'));
 	}
+
+    public function enqueue_gutenberg_assets()
+    {
+        wp_enqueue_script('html-forms-block', plugins_url( 'assets/js/gutenberg-block.js', $this->plugin_file ),  array('wp-blocks', 'wp-i18n', 'wp-element', 'wp-components'));
+        $forms = hf_get_forms();
+        $data = array();
+        foreach ($forms as $form) {
+            $data[] = array(
+                'title' => $form->title,
+                'slug' => $form->slug,
+                'id' => $form->ID
+            );
+        }
+        wp_localize_script('html-forms-block', 'html_forms', $data );
+    }
 
 	public function register_settings() {
 		// register settings

@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 function init() {
   document.body.addEventListener('click', handleClickEvent, true);
@@ -27,7 +27,7 @@ function handleClickEvent(e) {
 var _default = {
   init: init
 };
-exports.default = _default;
+exports["default"] = _default;
 
 },{}],2:[function(require,module,exports){
 'use strict';
@@ -44,28 +44,28 @@ var _actionConfirmations = _interopRequireDefault(require("./action-confirmation
 
 var _tlite = _interopRequireDefault(require("tlite"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 window.html_forms = {};
 
 // init the various components
-_tabs.default.init();
+_tabs["default"].init();
 
-_actionConfirmations.default.init();
+_actionConfirmations["default"].init();
 
 if (document.getElementById('hf-form-editor')) {
-  _formEditor.default.init();
+  _formEditor["default"].init();
 
-  _formActions.default.init();
+  _formActions["default"].init();
 
-  _fieldBuilder.default.init(_formEditor.default);
+  _fieldBuilder["default"].init(_formEditor["default"]);
 }
 
-(0, _tlite.default)(function (el) {
+(0, _tlite["default"])(function (el) {
   return el.className.indexOf('hf-tooltip') > -1;
 });
-window.html_forms.FieldBuilder = _fieldBuilder.default;
-window.html_forms.Editor = _formEditor.default; // tell WP common.js to override the method used for determining hidden columns (screen options)
+window.html_forms.FieldBuilder = _fieldBuilder["default"];
+window.html_forms.Editor = _formEditor["default"]; // tell WP common.js to override the method used for determining hidden columns (screen options)
 
 if (hf_options.view === 'edit') {
   window.columns.useCheckboxesForHidden();
@@ -105,7 +105,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) { var desc = {}; Object['ke' + 'ys'](descriptor).forEach(function (key) { desc[key] = descriptor[key]; }); desc.enumerable = !!desc.enumerable; desc.configurable = !!desc.configurable; if ('value' in desc || desc.initializer) { desc.writable = true; } desc = decorators.slice().reverse().reduce(function (desc, decorator) { return decorator(target, property, desc) || desc; }, desc); if (context && desc.initializer !== void 0) { desc.value = desc.initializer ? desc.initializer.call(context) : void 0; desc.initializer = undefined; } if (desc.initializer === void 0) { Object['define' + 'Property'](target, property, desc); desc = null; } return desc; }
+function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) { var desc = {}; Object.keys(descriptor).forEach(function (key) { desc[key] = descriptor[key]; }); desc.enumerable = !!desc.enumerable; desc.configurable = !!desc.configurable; if ('value' in desc || desc.initializer) { desc.writable = true; } desc = decorators.slice().reverse().reduce(function (desc, decorator) { return decorator(target, property, desc) || desc; }, desc); if (context && desc.initializer !== void 0) { desc.value = desc.initializer ? desc.initializer.call(context) : void 0; desc.initializer = undefined; } if (desc.initializer === void 0) { Object.defineProperty(target, property, desc); desc = null; } return desc; }
 
 var FieldBuilder = (_class =
 /*#__PURE__*/
@@ -162,9 +162,9 @@ function (_Component) {
       var fieldType = state.activeField ? state.activeField.key : "";
       var rows = state.activeField ? state.activeField.configRows : [];
       return (0, _preact.h)("div", {
-        class: "hf-field-builder"
+        "class": "hf-field-builder"
       }, (0, _preact.h)("h4", null, "Add field"), (0, _preact.h)("div", {
-        class: "available-fields"
+        "class": "available-fields"
       }, fieldButtons), (0, _preact.h)("div", {
         style: "max-width: 480px;"
       }, (0, _preact.h)(_fieldConfigurator.FieldConfigurator, {
@@ -172,7 +172,7 @@ function (_Component) {
         rows: rows,
         onCancel: this.handleCancel
       })), state.activeField === null ? (0, _preact.h)("p", {
-        class: "help",
+        "class": "help",
         style: "margin-bottom: 0;"
       }, "Use the buttons above to generate your field HTML, or manually modify your form below.") : "");
     }
@@ -202,9 +202,9 @@ var _linkstate = _interopRequireDefault(require("linkstate"));
 
 var _class;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -224,7 +224,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) { var desc = {}; Object['ke' + 'ys'](descriptor).forEach(function (key) { desc[key] = descriptor[key]; }); desc.enumerable = !!desc.enumerable; desc.configurable = !!desc.configurable; if ('value' in desc || desc.initializer) { desc.writable = true; } desc = decorators.slice().reverse().reduce(function (desc, decorator) { return decorator(target, property, desc) || desc; }, desc); if (context && desc.initializer !== void 0) { desc.value = desc.initializer ? desc.initializer.call(context) : void 0; desc.initializer = undefined; } if (desc.initializer === void 0) { Object['define' + 'Property'](target, property, desc); desc = null; } return desc; }
+function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) { var desc = {}; Object.keys(descriptor).forEach(function (key) { desc[key] = descriptor[key]; }); desc.enumerable = !!desc.enumerable; desc.configurable = !!desc.configurable; if ('value' in desc || desc.initializer) { desc.writable = true; } desc = decorators.slice().reverse().reduce(function (desc, decorator) { return decorator(target, property, desc) || desc; }, desc); if (context && desc.initializer !== void 0) { desc.value = desc.initializer ? desc.initializer.call(context) : void 0; desc.initializer = undefined; } if (desc.initializer === void 0) { Object.defineProperty(target, property, desc); desc = null; } return desc; }
 
 var FieldConfigurator = (_class =
 /*#__PURE__*/
@@ -354,35 +354,35 @@ function (_Component) {
           case "label":
             formFields.push((0, _preact.h)(FS.Label, {
               value: state.fieldLabel,
-              onChange: (0, _linkstate.default)(this, 'fieldLabel')
+              onChange: (0, _linkstate["default"])(this, 'fieldLabel')
             }));
             break;
 
           case "placeholder":
             formFields.push((0, _preact.h)(FS.Placeholder, {
               value: state.placeholder,
-              onChange: (0, _linkstate.default)(this, 'placeholder')
+              onChange: (0, _linkstate["default"])(this, 'placeholder')
             }));
             break;
 
           case "default-value":
             formFields.push((0, _preact.h)(FS.DefaultValue, {
               value: state.value,
-              onChange: (0, _linkstate.default)(this, 'value')
+              onChange: (0, _linkstate["default"])(this, 'value')
             }));
             break;
 
           case "required":
             formFields.push((0, _preact.h)(FS.Required, {
               checked: state.required,
-              onChange: (0, _linkstate.default)(this, 'required')
+              onChange: (0, _linkstate["default"])(this, 'required')
             }));
             break;
 
           case "wrap":
             formFields.push((0, _preact.h)(FS.Wrap, {
               checked: state.wrap,
-              onChange: (0, _linkstate.default)(this, 'wrap')
+              onChange: (0, _linkstate["default"])(this, 'wrap')
             }));
             break;
 
@@ -404,21 +404,21 @@ function (_Component) {
           case "button-text":
             formFields.push((0, _preact.h)(FS.ButtonText, {
               value: state.value,
-              onChange: (0, _linkstate.default)(this, 'value')
+              onChange: (0, _linkstate["default"])(this, 'value')
             }));
             break;
 
           case "accept":
             formFields.push((0, _preact.h)(FS.Accept, {
               value: state.accept,
-              onChange: (0, _linkstate.default)(this, 'accept')
+              onChange: (0, _linkstate["default"])(this, 'accept')
             }));
             break;
         }
       }
 
       return (0, _preact.h)("div", {
-        class: "field-config",
+        "class": "field-config",
         onKeyPress: FieldConfigurator.handleKeyPress
       }, formFields);
     }
@@ -456,14 +456,14 @@ var _preact = require("preact");
 
 function AddToForm(props) {
   return (0, _preact.h)("div", {
-    class: "hf-small-margin"
+    "class": "hf-small-margin"
   }, (0, _preact.h)("button", {
-    class: "button",
+    "class": "button",
     type: "button",
     onClick: props.onSubmit
   }, "Add field to form"), " \xA0 ", (0, _preact.h)("a", {
     href: "javascript:void(0);",
-    class: "hf-small",
+    "class": "hf-small",
     style: "vertical-align: middle;",
     onClick: props.onCancel
   }, "or close field helper"));
@@ -471,11 +471,11 @@ function AddToForm(props) {
 
 function Label(props) {
   return (0, _preact.h)("div", {
-    class: "hf-small-margin"
+    "class": "hf-small-margin"
   }, (0, _preact.h)("label", {
-    for: "hf-fg-field-label"
+    "for": "hf-fg-field-label"
   }, "Field label ", (0, _preact.h)("span", {
-    class: "hf-required"
+    "class": "hf-required"
   }, "*")), (0, _preact.h)("input", {
     id: "hf-fg-field-label",
     type: "text",
@@ -486,60 +486,60 @@ function Label(props) {
 
 function Placeholder(props) {
   return (0, _preact.h)("div", {
-    class: "hf-small-margin"
+    "class": "hf-small-margin"
   }, (0, _preact.h)("label", {
-    for: "hf-fg-placeholder"
+    "for": "hf-fg-placeholder"
   }, "Placeholder ", (0, _preact.h)("span", {
-    class: "hf-italic hf-pull-right"
+    "class": "hf-italic hf-pull-right"
   }, "Optional")), (0, _preact.h)("input", {
     id: "hf-fg-placeholder",
     type: "text",
     value: props.value,
     onChange: props.onChange
   }), (0, _preact.h)("p", {
-    class: "help"
+    "class": "help"
   }, "Text to show when field has no value."));
 }
 
 function ButtonText(props) {
   return (0, _preact.h)("div", {
-    class: "hf-small-margin"
+    "class": "hf-small-margin"
   }, (0, _preact.h)("label", {
-    for: "hf-fg-default-value"
+    "for": "hf-fg-default-value"
   }, "Button text ", (0, _preact.h)("span", {
-    class: "hf-required"
+    "class": "hf-required"
   }, "*")), (0, _preact.h)("input", {
     id: "hf-fg-default-value",
     type: "text",
     value: props.value,
     onChange: props.onChange
   }), (0, _preact.h)("p", {
-    class: "help"
+    "class": "help"
   }, "Text to show on the button."));
 }
 
 function DefaultValue(props) {
   return (0, _preact.h)("div", {
-    class: "hf-small-margin"
+    "class": "hf-small-margin"
   }, (0, _preact.h)("label", {
-    for: "hf-fg-default-value"
+    "for": "hf-fg-default-value"
   }, "Default value ", (0, _preact.h)("span", {
-    class: "hf-italic hf-pull-right"
+    "class": "hf-italic hf-pull-right"
   }, "Optional")), (0, _preact.h)("input", {
     id: "hf-fg-default-value",
     type: "text",
     value: props.value,
     onChange: props.onChange
   }), (0, _preact.h)("p", {
-    class: "help"
+    "class": "help"
   }, "Text to pre-fill this field with."));
 }
 
 function Wrap(props) {
   return (0, _preact.h)("div", {
-    class: "hf-small-margin"
+    "class": "hf-small-margin"
   }, (0, _preact.h)("label", {
-    class: "inline"
+    "class": "inline"
   }, (0, _preact.h)("input", {
     type: "checkbox",
     value: "1",
@@ -550,9 +550,9 @@ function Wrap(props) {
 
 function Required(props) {
   return (0, _preact.h)("div", {
-    class: "hf-small-margin"
+    "class": "hf-small-margin"
   }, (0, _preact.h)("label", {
-    class: "inline"
+    "class": "inline"
   }, (0, _preact.h)("input", {
     type: "checkbox",
     value: "1",
@@ -579,13 +579,13 @@ function Choices(props) {
       onChange: props.handlers.changeLabel
     }), (0, _preact.h)("a", {
       href: "javascript:void(0);",
-      onClick: props.handlers.delete,
+      onClick: props.handlers["delete"],
       style: "text-decoration: none;",
       title: "Delete choice"
     }, "\u2715"));
   });
   return (0, _preact.h)("div", {
-    class: "hf-small-margin"
+    "class": "hf-small-margin"
   }, (0, _preact.h)("label", null, "Choices"), choiceFields, (0, _preact.h)("input", {
     type: props.multiple ? "checkbox" : "radio",
     style: "visibility: hidden;"
@@ -597,13 +597,13 @@ function Choices(props) {
 
 function Accept(props) {
   return (0, _preact.h)("div", {
-    class: "hf-small-margin"
+    "class": "hf-small-margin"
   }, (0, _preact.h)("label", null, "Accepted file types"), (0, _preact.h)("input", {
     type: "text",
     value: props.value,
     onChange: props.onChange
   }), (0, _preact.h)("p", {
-    class: "help"
+    "class": "help"
   }, "Use a comma-separated list of accepted file extensions, eg ", (0, _preact.h)("code", null, ".pdf"), ". ", (0, _preact.h)("br", null), "Leave empty to accept any file type."));
 }
 
@@ -613,7 +613,7 @@ function Accept(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _preact = require("preact");
 
@@ -647,7 +647,7 @@ var _default = {
     mount();
   }
 };
-exports.default = _default;
+exports["default"] = _default;
 
 },{"./components/field-builder.js":3,"preact":22}],7:[function(require,module,exports){
 'use strict';
@@ -661,7 +661,7 @@ var _preactRenderToString = _interopRequireDefault(require("preact-render-to-str
 
 var _preact = require("preact");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function htmlgenerate(conf) {
   var fieldName = namify(conf.fieldLabel);
@@ -759,15 +759,15 @@ function htmlgenerate(conf) {
 
   if (conf.wrap) {
     var tmpl = (0, _preact.h)("p", {}, [label, field]);
-    str = (0, _preactRenderToString.default)(tmpl, null, {
+    str = (0, _preactRenderToString["default"])(tmpl, null, {
       pretty: true
     });
   } else {
-    str += (0, _preactRenderToString.default)(label, null, {
+    str += (0, _preactRenderToString["default"])(label, null, {
       pretty: true
     });
     str += "\n";
-    str += (0, _preactRenderToString.default)(field, null, {
+    str += (0, _preactRenderToString["default"])(field, null, {
       pretty: true
     });
   }
@@ -801,7 +801,7 @@ function filterEmptyObjectValues(obj) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 var availableActions, actionTemplates, actions;
 
 function init() {
@@ -889,7 +889,7 @@ function createToggleActionHandler(wrap, content) {
 var _default = {
   init: init
 };
-exports.default = _default;
+exports["default"] = _default;
 
 },{}],9:[function(require,module,exports){
 'use strict'; // load CodeMirror & plugins
@@ -897,7 +897,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var CodeMirror = require('codemirror');
 
@@ -1067,7 +1067,7 @@ var _default = {
   replaceSelection: replaceSelection,
   updateFieldVariables: updateFieldVariables
 };
-exports.default = _default;
+exports["default"] = _default;
 
 },{"codemirror":14,"codemirror/addon/edit/closetag.js":11,"codemirror/addon/edit/matchtags":12,"codemirror/addon/fold/xml-fold":13,"codemirror/mode/css/css":15,"codemirror/mode/htmlmixed/htmlmixed":16,"codemirror/mode/javascript/javascript":17,"codemirror/mode/xml/xml":18}],10:[function(require,module,exports){
 'use strict';
@@ -1075,7 +1075,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 var tabs, tabNavs;
 
 function init() {
@@ -1122,7 +1122,7 @@ var _default = {
   init: init,
   open: open
 };
-exports.default = _default;
+exports["default"] = _default;
 
 },{}],11:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -3436,7 +3436,7 @@ exports.default = _default;
 
   // Build up the DOM representation for a single token, and add it to
   // the line map. Takes care to render special characters separately.
-  function buildToken(builder, text, style, startStyle, endStyle, title, css) {
+  function buildToken(builder, text, style, startStyle, endStyle, css, attributes) {
     if (!text) { return }
     var displayText = builder.splitSpaces ? splitSpaces(text, builder.trailingSpace) : text;
     var special = builder.cm.state.specialChars, mustWrap = false;
@@ -3492,7 +3492,10 @@ exports.default = _default;
       if (startStyle) { fullStyle += startStyle; }
       if (endStyle) { fullStyle += endStyle; }
       var token = elt("span", [content], fullStyle, css);
-      if (title) { token.title = title; }
+      if (attributes) {
+        for (var attr in attributes) { if (attributes.hasOwnProperty(attr) && attr != "style" && attr != "class")
+          { token.setAttribute(attr, attributes[attr]); } }
+      }
       return builder.content.appendChild(token)
     }
     builder.content.appendChild(content);
@@ -3516,7 +3519,7 @@ exports.default = _default;
   // Work around nonsense dimensions being reported for stretches of
   // right-to-left text.
   function buildTokenBadBidi(inner, order) {
-    return function (builder, text, style, startStyle, endStyle, title, css) {
+    return function (builder, text, style, startStyle, endStyle, css, attributes) {
       style = style ? style + " cm-force-border" : "cm-force-border";
       var start = builder.pos, end = start + text.length;
       for (;;) {
@@ -3526,8 +3529,8 @@ exports.default = _default;
           part = order[i];
           if (part.to > start && part.from <= start) { break }
         }
-        if (part.to >= end) { return inner(builder, text, style, startStyle, endStyle, title, css) }
-        inner(builder, text.slice(0, part.to - start), style, startStyle, null, title, css);
+        if (part.to >= end) { return inner(builder, text, style, startStyle, endStyle, css, attributes) }
+        inner(builder, text.slice(0, part.to - start), style, startStyle, null, css, attributes);
         startStyle = null;
         text = text.slice(part.to - start);
         start = part.to;
@@ -3562,10 +3565,11 @@ exports.default = _default;
     }
 
     var len = allText.length, pos = 0, i = 1, text = "", style, css;
-    var nextChange = 0, spanStyle, spanEndStyle, spanStartStyle, title, collapsed;
+    var nextChange = 0, spanStyle, spanEndStyle, spanStartStyle, collapsed, attributes;
     for (;;) {
       if (nextChange == pos) { // Update current marker set
-        spanStyle = spanEndStyle = spanStartStyle = title = css = "";
+        spanStyle = spanEndStyle = spanStartStyle = css = "";
+        attributes = null;
         collapsed = null; nextChange = Infinity;
         var foundBookmarks = [], endStyles = (void 0);
         for (var j = 0; j < spans.length; ++j) {
@@ -3581,7 +3585,13 @@ exports.default = _default;
             if (m.css) { css = (css ? css + ";" : "") + m.css; }
             if (m.startStyle && sp.from == pos) { spanStartStyle += " " + m.startStyle; }
             if (m.endStyle && sp.to == nextChange) { (endStyles || (endStyles = [])).push(m.endStyle, sp.to); }
-            if (m.title && !title) { title = m.title; }
+            // support for the old title property
+            // https://github.com/codemirror/CodeMirror/pull/5673
+            if (m.title) { (attributes || (attributes = {})).title = m.title; }
+            if (m.attributes) {
+              for (var attr in m.attributes)
+                { (attributes || (attributes = {}))[attr] = m.attributes[attr]; }
+            }
             if (m.collapsed && (!collapsed || compareCollapsedMarkers(collapsed.marker, m) < 0))
               { collapsed = sp; }
           } else if (sp.from > pos && nextChange > sp.from) {
@@ -3609,7 +3619,7 @@ exports.default = _default;
           if (!collapsed) {
             var tokenText = end > upto ? text.slice(0, upto - pos) : text;
             builder.addToken(builder, tokenText, style ? style + spanStyle : spanStyle,
-                             spanStartStyle, pos + tokenText.length == nextChange ? spanEndStyle : "", title, css);
+                             spanStartStyle, pos + tokenText.length == nextChange ? spanEndStyle : "", css, attributes);
           }
           if (end >= upto) {text = text.slice(upto - pos); pos = upto; break}
           pos = end;
@@ -4818,7 +4828,8 @@ exports.default = _default;
     var display = cm.display;
     var prevBottom = display.lineDiv.offsetTop;
     for (var i = 0; i < display.view.length; i++) {
-      var cur = display.view[i], height = (void 0);
+      var cur = display.view[i], wrapping = cm.options.lineWrapping;
+      var height = (void 0), width = 0;
       if (cur.hidden) { continue }
       if (ie && ie_version < 8) {
         var bot = cur.node.offsetTop + cur.node.offsetHeight;
@@ -4827,14 +4838,25 @@ exports.default = _default;
       } else {
         var box = cur.node.getBoundingClientRect();
         height = box.bottom - box.top;
+        // Check that lines don't extend past the right of the current
+        // editor width
+        if (!wrapping && cur.text.firstChild)
+          { width = cur.text.firstChild.getBoundingClientRect().right - box.left - 1; }
       }
       var diff = cur.line.height - height;
-      if (height < 2) { height = textHeight(display); }
       if (diff > .005 || diff < -.005) {
         updateLineHeight(cur.line, height);
         updateWidgetHeight(cur.line);
         if (cur.rest) { for (var j = 0; j < cur.rest.length; j++)
           { updateWidgetHeight(cur.rest[j]); } }
+      }
+      if (width > cm.display.sizerWidth) {
+        var chWidth = Math.ceil(width / charWidth(cm.display));
+        if (chWidth > cm.display.maxLineLength) {
+          cm.display.maxLineLength = chWidth;
+          cm.display.maxLine = cur.line;
+          cm.display.maxLineChanged = true;
+        }
       }
     }
   }
@@ -5284,7 +5306,7 @@ exports.default = _default;
       viewChanged: false,      // Flag that indicates that lines might need to be redrawn
       startHeight: cm.doc.height, // Used to detect need to update scrollbar
       forceUpdate: false,      // Used to force a redraw
-      updateInput: null,       // Whether to reset the input textarea
+      updateInput: 0,       // Whether to reset the input textarea
       typing: false,           // Whether this reset should be careful to leave existing text (for compositing)
       changeObjs: null,        // Accumulated changes, for firing change events
       cursorActivityHandlers: null, // Set of handlers to fire cursorActivity on
@@ -6633,7 +6655,8 @@ exports.default = _default;
     doc.sel = sel;
 
     if (doc.cm) {
-      doc.cm.curOp.updateInput = doc.cm.curOp.selectionChanged = true;
+      doc.cm.curOp.updateInput = 1;
+      doc.cm.curOp.selectionChanged = true;
       signalCursorActivity(doc.cm);
     }
     signalLater(doc, "cursorActivity", doc);
@@ -6745,7 +6768,10 @@ exports.default = _default;
     signal(doc, "beforeChange", doc, obj);
     if (doc.cm) { signal(doc.cm, "beforeChange", doc.cm, obj); }
 
-    if (obj.canceled) { return null }
+    if (obj.canceled) {
+      if (doc.cm) { doc.cm.curOp.updateInput = 2; }
+      return null
+    }
     return {from: obj.from, to: obj.to, text: obj.text, origin: obj.origin}
   }
 
@@ -7502,7 +7528,8 @@ exports.default = _default;
       if (updateMaxLine) { cm.curOp.updateMaxLine = true; }
       if (marker.collapsed)
         { regChange(cm, from.line, to.line + 1); }
-      else if (marker.className || marker.title || marker.startStyle || marker.endStyle || marker.css)
+      else if (marker.className || marker.startStyle || marker.endStyle || marker.css ||
+               marker.attributes || marker.title)
         { for (var i = from.line; i <= to.line; i++) { regLineChange(cm, i, "text"); } }
       if (marker.atomic) { reCheckSelection(cm.doc); }
       signalLater(cm, "markerAdded", cm, marker);
@@ -8120,11 +8147,14 @@ exports.default = _default;
 
   function forEachCodeMirror(f) {
     if (!document.getElementsByClassName) { return }
-    var byClass = document.getElementsByClassName("CodeMirror");
+    var byClass = document.getElementsByClassName("CodeMirror"), editors = [];
     for (var i = 0; i < byClass.length; i++) {
       var cm = byClass[i].CodeMirror;
-      if (cm) { f(cm); }
+      if (cm) { editors.push(cm); }
     }
+    if (editors.length) { editors[0].operation(function () {
+      for (var i = 0; i < editors.length; i++) { f(editors[i]); }
+    }); }
   }
 
   var globalsRegistered = false;
@@ -9217,6 +9247,8 @@ exports.default = _default;
       throw new Error("inputStyle can not (yet) be changed in a running editor") // FIXME
     }, true);
     option("spellcheck", false, function (cm, val) { return cm.getInputField().spellcheck = val; }, true);
+    option("autocorrect", false, function (cm, val) { return cm.getInputField().autocorrect = val; }, true);
+    option("autocapitalize", false, function (cm, val) { return cm.getInputField().autocapitalize = val; }, true);
     option("rtlMoveVisually", !windows);
     option("wholeLineUpdateBefore", true);
 
@@ -9365,7 +9397,7 @@ exports.default = _default;
       delayingBlurEvent: false,
       focused: false,
       suppressEdits: false, // used to disable editing during key handlers when in readOnly mode
-      pasteIncoming: false, cutIncoming: false, // help recognize paste/cut edits in input.poll
+      pasteIncoming: -1, cutIncoming: -1, // help recognize paste/cut edits in input.poll
       selectingText: false,
       draggingText: false,
       highlight: new Delayed(), // stores highlight worker timeout
@@ -9598,7 +9630,8 @@ exports.default = _default;
     cm.display.shift = false;
     if (!sel) { sel = doc.sel; }
 
-    var paste = cm.state.pasteIncoming || origin == "paste";
+    var recent = +new Date - 200;
+    var paste = origin == "paste" || cm.state.pasteIncoming > recent;
     var textLines = splitLinesAuto(inserted), multiPaste = null;
     // When pasting N lines into N selections, insert one line per selection
     if (paste && sel.ranges.length > 1) {
@@ -9613,7 +9646,7 @@ exports.default = _default;
       }
     }
 
-    var updateInput;
+    var updateInput = cm.curOp.updateInput;
     // Normal behavior is to insert the new text into every selection
     for (var i$1 = sel.ranges.length - 1; i$1 >= 0; i$1--) {
       var range$$1 = sel.ranges[i$1];
@@ -9626,9 +9659,8 @@ exports.default = _default;
         else if (paste && lastCopied && lastCopied.lineWise && lastCopied.text.join("\n") == inserted)
           { from = to = Pos(from.line, 0); }
       }
-      updateInput = cm.curOp.updateInput;
       var changeEvent = {from: from, to: to, text: multiPaste ? multiPaste[i$1 % multiPaste.length] : textLines,
-                         origin: origin || (paste ? "paste" : cm.state.cutIncoming ? "cut" : "+input")};
+                         origin: origin || (paste ? "paste" : cm.state.cutIncoming > recent ? "cut" : "+input")};
       makeChange(cm.doc, changeEvent);
       signalLater(cm, "inputRead", cm, changeEvent);
     }
@@ -9636,9 +9668,9 @@ exports.default = _default;
       { triggerElectric(cm, inserted); }
 
     ensureCursorVisible(cm);
-    cm.curOp.updateInput = updateInput;
+    if (cm.curOp.updateInput < 2) { cm.curOp.updateInput = updateInput; }
     cm.curOp.typing = true;
-    cm.state.pasteIncoming = cm.state.cutIncoming = false;
+    cm.state.pasteIncoming = cm.state.cutIncoming = -1;
   }
 
   function handlePaste(e, cm) {
@@ -9686,9 +9718,9 @@ exports.default = _default;
     return {text: text, ranges: ranges}
   }
 
-  function disableBrowserMagic(field, spellcheck) {
-    field.setAttribute("autocorrect", "off");
-    field.setAttribute("autocapitalize", "off");
+  function disableBrowserMagic(field, spellcheck, autocorrect, autocapitalize) {
+    field.setAttribute("autocorrect", !!autocorrect);
+    field.setAttribute("autocapitalize", !!autocapitalize);
     field.setAttribute("spellcheck", !!spellcheck);
   }
 
@@ -10259,7 +10291,7 @@ exports.default = _default;
 
     var input = this, cm = input.cm;
     var div = input.div = display.lineDiv;
-    disableBrowserMagic(div, cm.options.spellcheck);
+    disableBrowserMagic(div, cm.options.spellcheck, cm.options.autocorrect, cm.options.autocapitalize);
 
     on(div, "paste", function (e) {
       if (signalDOMEvent(cm, e) || handlePaste(e, cm)) { return }
@@ -10799,7 +10831,7 @@ exports.default = _default;
     on(te, "paste", function (e) {
       if (signalDOMEvent(cm, e) || handlePaste(e, cm)) { return }
 
-      cm.state.pasteIncoming = true;
+      cm.state.pasteIncoming = +new Date;
       input.fastPoll();
     });
 
@@ -10820,15 +10852,23 @@ exports.default = _default;
           selectInput(te);
         }
       }
-      if (e.type == "cut") { cm.state.cutIncoming = true; }
+      if (e.type == "cut") { cm.state.cutIncoming = +new Date; }
     }
     on(te, "cut", prepareCopyCut);
     on(te, "copy", prepareCopyCut);
 
     on(display.scroller, "paste", function (e) {
       if (eventInWidget(display, e) || signalDOMEvent(cm, e)) { return }
-      cm.state.pasteIncoming = true;
-      input.focus();
+      if (!te.dispatchEvent) {
+        cm.state.pasteIncoming = +new Date;
+        input.focus();
+        return
+      }
+
+      // Pass the `paste` event to the textarea so it's handled by its event listener.
+      var event = new Event("paste");
+      event.clipboardData = e.clipboardData;
+      te.dispatchEvent(event);
     });
 
     // Prevent normal selection in the editor (we handle our own)
@@ -11019,6 +11059,7 @@ exports.default = _default;
 
   TextareaInput.prototype.onContextMenu = function (e) {
     var input = this, cm = input.cm, display = cm.display, te = input.textarea;
+    if (input.contextMenuPending) { input.contextMenuPending(); }
     var pos = posFromMouse(cm, e), scrollPos = display.scroller.scrollTop;
     if (!pos || presto) { return } // Opera is difficult.
 
@@ -11029,8 +11070,8 @@ exports.default = _default;
       { operation(cm, setSelection)(cm.doc, simpleSelection(pos), sel_dontScroll); }
 
     var oldCSS = te.style.cssText, oldWrapperCSS = input.wrapper.style.cssText;
-    input.wrapper.style.cssText = "position: absolute";
-    var wrapperBox = input.wrapper.getBoundingClientRect();
+    var wrapperBox = input.wrapper.offsetParent.getBoundingClientRect();
+    input.wrapper.style.cssText = "position: static";
     te.style.cssText = "position: absolute; width: 30px; height: 30px;\n      top: " + (e.clientY - wrapperBox.top - 5) + "px; left: " + (e.clientX - wrapperBox.left - 5) + "px;\n      z-index: 1000; background: " + (ie ? "rgba(255, 255, 255, .05)" : "transparent") + ";\n      outline: none; border-width: 0; outline: none; overflow: hidden; opacity: .05; filter: alpha(opacity=5);";
     var oldScrollY;
     if (webkit) { oldScrollY = window.scrollY; } // Work around Chrome issue (#2712)
@@ -11039,7 +11080,7 @@ exports.default = _default;
     display.input.reset();
     // Adds "Select all" to context menu in FF
     if (!cm.somethingSelected()) { te.value = input.prevInput = " "; }
-    input.contextMenuPending = true;
+    input.contextMenuPending = rehide;
     display.selForContextMenu = cm.doc.sel;
     clearTimeout(display.detectingSelectAll);
 
@@ -11060,6 +11101,7 @@ exports.default = _default;
       }
     }
     function rehide() {
+      if (input.contextMenuPending != rehide) { return }
       input.contextMenuPending = false;
       input.wrapper.style.cssText = oldWrapperCSS;
       te.style.cssText = oldCSS;
@@ -11249,7 +11291,7 @@ exports.default = _default;
 
   addLegacyProps(CodeMirror);
 
-  CodeMirror.version = "5.41.0";
+  CodeMirror.version = "5.45.0";
 
   return CodeMirror;
 
@@ -11321,7 +11363,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       if (/[\d.]/.test(stream.peek())) {
         stream.eatWhile(/[\w.%]/);
         return ret("number", "unit");
-      } else if (stream.match(/^-[\w\\\-]+/)) {
+      } else if (stream.match(/^-[\w\\\-]*/)) {
         stream.eatWhile(/[\w\\\-]/);
         if (stream.match(/^\s*:/, false))
           return ret("variable-2", "variable-definition");
@@ -11335,12 +11377,11 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       return ret("qualifier", "qualifier");
     } else if (/[:;{}\[\]\(\)]/.test(ch)) {
       return ret(null, ch);
-    } else if (((ch == "u" || ch == "U") && stream.match(/rl(-prefix)?\(/i)) ||
-               ((ch == "d" || ch == "D") && stream.match("omain(", true, true)) ||
-               ((ch == "r" || ch == "R") && stream.match("egexp(", true, true))) {
-      stream.backUp(1);
-      state.tokenize = tokenParenthesized;
-      return ret("property", "word");
+    } else if (stream.match(/[\w-.]+(?=\()/)) {
+      if (/^(url(-prefix)?|domain|regexp)$/.test(stream.current().toLowerCase())) {
+        state.tokenize = tokenParenthesized;
+      }
+      return ret("variable callee", "variable");
     } else if (/[\w\\\-]/.test(ch)) {
       stream.eatWhile(/[\w\\\-]/);
       return ret("property", "word");
@@ -12197,7 +12238,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
           return maybeBackup(stream, endTag, state.localMode.token(stream, state.localState));
         };
         state.localMode = mode;
-        state.localState = CodeMirror.startState(mode, htmlMode.indent(state.htmlState, ""));
+        state.localState = CodeMirror.startState(mode, htmlMode.indent(state.htmlState, "", ""));
       } else if (state.inTag) {
         state.inTag += stream.current()
         if (stream.eol()) state.inTag += " "
@@ -12227,7 +12268,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
 
       indent: function (state, textAfter, line) {
         if (!state.localMode || /^\s*<\//.test(textAfter))
-          return htmlMode.indent(state.htmlState, textAfter);
+          return htmlMode.indent(state.htmlState, textAfter, line);
         else if (state.localMode.indent)
           return state.localMode.indent(state.localState, textAfter, line);
         else
@@ -12611,7 +12652,10 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     }
     if (type == "function") return cont(functiondef);
     if (type == "for") return cont(pushlex("form"), forspec, statement, poplex);
-    if (type == "class" || (isTS && value == "interface")) { cx.marked = "keyword"; return cont(pushlex("form"), className, poplex); }
+    if (type == "class" || (isTS && value == "interface")) {
+      cx.marked = "keyword"
+      return cont(pushlex("form", type == "class" ? type : value), className, poplex)
+    }
     if (type == "variable") {
       if (isTS && value == "declare") {
         cx.marked = "keyword"
@@ -12619,11 +12663,11 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       } else if (isTS && (value == "module" || value == "enum" || value == "type") && cx.stream.match(/^\s*\w/, false)) {
         cx.marked = "keyword"
         if (value == "enum") return cont(enumdef);
-        else if (value == "type") return cont(typeexpr, expect("operator"), typeexpr, expect(";"));
+        else if (value == "type") return cont(typename, expect("operator"), typeexpr, expect(";"));
         else return cont(pushlex("form"), pattern, expect("{"), pushlex("}"), block, poplex, poplex)
       } else if (isTS && value == "namespace") {
         cx.marked = "keyword"
-        return cont(pushlex("form"), expression, block, poplex)
+        return cont(pushlex("form"), expression, statement, poplex)
       } else if (isTS && value == "abstract") {
         cx.marked = "keyword"
         return cont(statement)
@@ -12798,6 +12842,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         }, proceed);
       }
       if (type == end || value == end) return cont();
+      if (sep && sep.indexOf(";") > -1) return pass(what)
       return cont(expect(end));
     }
     return function(type, value) {
@@ -12816,7 +12861,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function maybetype(type, value) {
     if (isTS) {
-      if (type == ":") return cont(typeexpr);
+      if (type == ":" || value == "in") return cont(typeexpr);
       if (value == "?") return cont(maybetype);
     }
   }
@@ -12833,18 +12878,19 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     }
   }
   function typeexpr(type, value) {
-    if (value == "keyof" || value == "typeof") {
+    if (value == "keyof" || value == "typeof" || value == "infer") {
       cx.marked = "keyword"
-      return cont(value == "keyof" ? typeexpr : expressionNoComma)
+      return cont(value == "typeof" ? expressionNoComma : typeexpr)
     }
     if (type == "variable" || value == "void") {
       cx.marked = "type"
       return cont(afterType)
     }
+    if (value == "|" || value == "&") return cont(typeexpr)
     if (type == "string" || type == "number" || type == "atom") return cont(afterType);
     if (type == "[") return cont(pushlex("]"), commasep(typeexpr, "]", ","), poplex, afterType)
     if (type == "{") return cont(pushlex("}"), commasep(typeprop, "}", ",;"), poplex, afterType)
-    if (type == "(") return cont(commasep(typearg, ")"), maybeReturnType)
+    if (type == "(") return cont(commasep(typearg, ")"), maybeReturnType, afterType)
     if (type == "<") return cont(commasep(typeexpr, ">"), typeexpr)
   }
   function maybeReturnType(type) {
@@ -12854,24 +12900,28 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "variable" || cx.style == "keyword") {
       cx.marked = "property"
       return cont(typeprop)
-    } else if (value == "?") {
+    } else if (value == "?" || type == "number" || type == "string") {
       return cont(typeprop)
     } else if (type == ":") {
       return cont(typeexpr)
     } else if (type == "[") {
-      return cont(expression, maybetype, expect("]"), typeprop)
+      return cont(expect("variable"), maybetype, expect("]"), typeprop)
+    } else if (type == "(") {
+      return pass(functiondecl, typeprop)
     }
   }
   function typearg(type, value) {
     if (type == "variable" && cx.stream.match(/^\s*[?:]/, false) || value == "?") return cont(typearg)
     if (type == ":") return cont(typeexpr)
+    if (type == "spread") return cont(typearg)
     return pass(typeexpr)
   }
   function afterType(type, value) {
     if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, afterType)
     if (value == "|" || type == "." || value == "&") return cont(typeexpr)
-    if (type == "[") return cont(expect("]"), afterType)
+    if (type == "[") return cont(typeexpr, expect("]"), afterType)
     if (value == "extends" || value == "implements") { cx.marked = "keyword"; return cont(typeexpr) }
+    if (value == "?") return cont(typeexpr, expect(":"), typeexpr)
   }
   function maybeTypeArgs(_, value) {
     if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, afterType)
@@ -12901,6 +12951,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "variable") cx.marked = "property";
     if (type == "spread") return cont(pattern);
     if (type == "}") return pass();
+    if (type == "[") return cont(expression, expect(']'), expect(':'), proppattern);
     return cont(expect(":"), pattern, maybeAssign);
   }
   function eltpattern() {
@@ -12917,25 +12968,18 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function forspec(type, value) {
     if (value == "await") return cont(forspec);
-    if (type == "(") return cont(pushlex(")"), forspec1, expect(")"), poplex);
+    if (type == "(") return cont(pushlex(")"), forspec1, poplex);
   }
   function forspec1(type) {
-    if (type == "var") return cont(vardef, expect(";"), forspec2);
-    if (type == ";") return cont(forspec2);
-    if (type == "variable") return cont(formaybeinof);
-    return pass(expression, expect(";"), forspec2);
-  }
-  function formaybeinof(_type, value) {
-    if (value == "in" || value == "of") { cx.marked = "keyword"; return cont(expression); }
-    return cont(maybeoperatorComma, forspec2);
+    if (type == "var") return cont(vardef, forspec2);
+    if (type == "variable") return cont(forspec2);
+    return pass(forspec2)
   }
   function forspec2(type, value) {
-    if (type == ";") return cont(forspec3);
-    if (value == "in" || value == "of") { cx.marked = "keyword"; return cont(expression); }
-    return pass(expression, expect(";"), forspec3);
-  }
-  function forspec3(type) {
-    if (type != ")") cont(expression);
+    if (type == ")") return cont()
+    if (type == ";") return cont(forspec2)
+    if (value == "in" || value == "of") { cx.marked = "keyword"; return cont(expression, forspec2) }
+    return pass(expression, forspec2)
   }
   function functiondef(type, value) {
     if (value == "*") {cx.marked = "keyword"; return cont(functiondef);}
@@ -12943,10 +12987,25 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "(") return cont(pushcontext, pushlex(")"), commasep(funarg, ")"), poplex, mayberettype, statement, popcontext);
     if (isTS && value == "<") return cont(pushlex(">"), commasep(typeparam, ">"), poplex, functiondef)
   }
+  function functiondecl(type, value) {
+    if (value == "*") {cx.marked = "keyword"; return cont(functiondecl);}
+    if (type == "variable") {register(value); return cont(functiondecl);}
+    if (type == "(") return cont(pushcontext, pushlex(")"), commasep(funarg, ")"), poplex, mayberettype, popcontext);
+    if (isTS && value == "<") return cont(pushlex(">"), commasep(typeparam, ">"), poplex, functiondecl)
+  }
+  function typename(type, value) {
+    if (type == "keyword" || type == "variable") {
+      cx.marked = "type"
+      return cont(typename)
+    } else if (value == "<") {
+      return cont(pushlex(">"), commasep(typeparam, ">"), poplex)
+    }
+  }
   function funarg(type, value) {
     if (value == "@") cont(expression, funarg)
     if (type == "spread") return cont(funarg);
     if (isTS && isModifier(value)) { cx.marked = "keyword"; return cont(funarg); }
+    if (isTS && type == "this") return cont(maybetype, maybeAssign)
     return pass(pattern, maybetype, maybeAssign);
   }
   function classExpression(type, value) {
@@ -12977,13 +13036,15 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       cx.marked = "property";
       return cont(isTS ? classfield : functiondef, classBody);
     }
+    if (type == "number" || type == "string") return cont(isTS ? classfield : functiondef, classBody);
     if (type == "[")
       return cont(expression, maybetype, expect("]"), isTS ? classfield : functiondef, classBody)
     if (value == "*") {
       cx.marked = "keyword";
       return cont(classBody);
     }
-    if (type == ";") return cont(classBody);
+    if (isTS && type == "(") return pass(functiondecl, classBody)
+    if (type == ";" || type == ",") return cont(classBody);
     if (type == "}") return cont();
     if (value == "@") return cont(expression, classBody)
   }
@@ -12991,7 +13052,8 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (value == "?") return cont(classfield)
     if (type == ":") return cont(typeexpr, maybeAssign)
     if (value == "=") return cont(expressionNoComma)
-    return pass(functiondef)
+    var context = cx.state.lexical.prev, isInterface = context && context.info == "interface"
+    return pass(isInterface ? functiondecl : functiondef)
   }
   function afterExport(type, value) {
     if (value == "*") { cx.marked = "keyword"; return cont(maybeFrom, expect(";")); }
@@ -13588,6 +13650,9 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
         for (var i in props) obj[i] = props[i];
         return obj;
     }
+    function applyRef(ref, value) {
+        if (null != ref) if ('function' == typeof ref) ref(value); else ref.current = value;
+    }
     function cloneElement(vnode, props) {
         return h(vnode.nodeName, extend(extend({}, vnode.attributes), props), arguments.length > 2 ? [].slice.call(arguments, 2) : vnode.children);
     }
@@ -13595,9 +13660,8 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
         if (!component.__d && (component.__d = !0) && 1 == items.push(component)) (options.debounceRendering || defer)(rerender);
     }
     function rerender() {
-        var p, list = items;
-        items = [];
-        while (p = list.pop()) if (p.__d) renderComponent(p);
+        var p;
+        while (p = items.pop()) if (p.__d) renderComponent(p);
     }
     function isSameNodeType(node, vnode, hydrating) {
         if ('string' == typeof vnode || 'number' == typeof vnode) return void 0 !== node.splitText;
@@ -13625,8 +13689,8 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
     function setAccessor(node, name, old, value, isSvg) {
         if ('className' === name) name = 'class';
         if ('key' === name) ; else if ('ref' === name) {
-            if (old) old(null);
-            if (value) value(node);
+            applyRef(old, null);
+            applyRef(value, node);
         } else if ('class' === name && !isSvg) node.className = value || ''; else if ('style' === name) {
             if (!value || 'string' == typeof value || 'string' == typeof old) node.style.cssText = value || '';
             if (value && 'object' == typeof value) {
@@ -13657,7 +13721,7 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
     }
     function flushMounts() {
         var c;
-        while (c = mounts.pop()) {
+        while (c = mounts.shift()) {
             if (options.afterMount) options.afterMount(c);
             if (c.componentDidMount) c.componentDidMount();
         }
@@ -13751,7 +13815,7 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
     function recollectNodeTree(node, unmountOnly) {
         var component = node._component;
         if (component) unmountComponent(component); else {
-            if (null != node.__preactattr_ && node.__preactattr_.ref) node.__preactattr_.ref(null);
+            if (null != node.__preactattr_) applyRef(node.__preactattr_.ref, null);
             if (!1 === unmountOnly || null == node.__preactattr_) removeNode(node);
             removeChildren(node);
         }
@@ -13807,7 +13871,7 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
             component.props = props;
             component.__x = !1;
             if (0 !== renderMode) if (1 === renderMode || !1 !== options.syncComponentUpdates || !component.base) renderComponent(component, 1, mountAll); else enqueueRender(component);
-            if (component.__r) component.__r(component);
+            applyRef(component.__r, component);
         }
     }
     function renderComponent(component, renderMode, mountAll, isChild) {
@@ -13873,7 +13937,7 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
                     base._componentConstructor = componentRef.constructor;
                 }
             }
-            if (!isUpdate || mountAll) mounts.unshift(component); else if (!skip) {
+            if (!isUpdate || mountAll) mounts.push(component); else if (!skip) {
                 if (component.componentDidUpdate) component.componentDidUpdate(previousProps, previousState, snapshot);
                 if (options.afterUpdate) options.afterUpdate(component);
             }
@@ -13914,13 +13978,13 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
         component.base = null;
         var inner = component._component;
         if (inner) unmountComponent(inner); else if (base) {
-            if (base.__preactattr_ && base.__preactattr_.ref) base.__preactattr_.ref(null);
+            if (null != base.__preactattr_) applyRef(base.__preactattr_.ref, null);
             component.__b = base;
             removeNode(base);
             recyclerComponents.push(component);
             removeChildren(base);
         }
-        if (component.__r) component.__r(null);
+        applyRef(component.__r, null);
     }
     function Component(props, context) {
         this.__d = !0;
@@ -13931,6 +13995,9 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
     }
     function render(vnode, parent, merge) {
         return diff(merge, vnode, {}, !1, parent, !1);
+    }
+    function createRef() {
+        return {};
     }
     var VNode = function() {};
     var options = {};
@@ -13961,6 +14028,7 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
         h: h,
         createElement: h,
         cloneElement: cloneElement,
+        createRef: createRef,
         Component: Component,
         render: render,
         rerender: rerender,

@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 function getFieldValues(form, fieldName, evt) {
   var values = [];
@@ -125,7 +125,7 @@ var _default = {
     evaluate();
   }
 };
-exports.default = _default;
+exports["default"] = _default;
 
 },{}],2:[function(require,module,exports){
 'use strict';
@@ -199,7 +199,7 @@ module.exports = Loader;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -238,8 +238,8 @@ function parseUrlParams(q) {
     _iteratorError = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
+      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+        _iterator["return"]();
       }
     } finally {
       if (_didIteratorError) {
@@ -275,7 +275,7 @@ function init() {
 var _default = {
   init: init
 };
-exports.default = _default;
+exports["default"] = _default;
 
 },{"populate.js":6}],4:[function(require,module,exports){
 "use strict";
@@ -308,7 +308,7 @@ var _conditionality = _interopRequireDefault(require("./conditionality.js"));
 
 require("./polyfills/custom-event.js");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Loader = require('./form-loading-indicator.js');
 
@@ -425,9 +425,9 @@ function createRequestHandler(formEl) {
 
 document.addEventListener('submit', handleSubmitEvents, false); // useCapture=false to ensure we bubble upwards (and thus can cancel propagation)
 
-_conditionality.default.init();
+_conditionality["default"].init();
 
-_formPrefiller.default.init();
+_formPrefiller["default"].init();
 
 window.html_forms = {
   'on': events.on.bind(events),
@@ -532,9 +532,9 @@ window.html_forms = {
 
 },{}],7:[function(require,module,exports){
 /*!
- * EventEmitter v5.2.5 - git.io/ee
+ * EventEmitter v5.2.6 - git.io/ee
  * Unlicense - http://unlicense.org/
- * Oliver Caldwell - http://oli.me.uk/
+ * Oliver Caldwell - https://oli.me.uk/
  * @preserve
  */
 
