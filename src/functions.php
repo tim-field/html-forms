@@ -29,7 +29,7 @@ function hf_get_form( $form_id_or_slug ) {
     if( is_numeric( $form_id_or_slug ) || $form_id_or_slug instanceof WP_Post ) {
         $post = get_post( $form_id_or_slug );
 
-        if( ! $post || $post->post_type !== 'html-form' ) {
+        if( ! $post instanceof WP_Post || $post->post_type !== 'html-form' ) {
             throw new Exception( "Invalid form ID" );
         }
     } else {
