@@ -62,8 +62,8 @@ function _install() {
     /** @var wpdb */
     global $wpdb;
 
+    // create table for storing submissions
     $table = $wpdb->prefix . 'hf_submissions';
-
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$table}(
         `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `form_id` INT UNSIGNED NOT NULL,
@@ -74,6 +74,9 @@ function _install() {
         `submitted_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );");
 
+    // add "edit_forms" cap to user that activated the plugin
+    $user = wp_get_current_user();
+    $user->add_cap('edit_forms', true);
 }
 
 define( 'HTML_FORMS_VERSION', '1.3.6' );
