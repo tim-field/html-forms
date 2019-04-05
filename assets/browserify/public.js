@@ -22,8 +22,8 @@ function addFormMessage(formEl, message) {
     txtElement.innerHTML = message.text; // uses innerHTML because we allow some HTML strings in the message settings
     txtElement.setAttribute('role', 'alert');
 
-    let responseWrap = formEl.querySelector('.hf-response') || formEl;
-    responseWrap.appendChild(txtElement);
+    let wrapperElement = formEl.querySelector('.hf-messages') || formEl;
+    wrapperElement.appendChild(txtElement);
 }
 
 function handleSubmitEvents(e) {
