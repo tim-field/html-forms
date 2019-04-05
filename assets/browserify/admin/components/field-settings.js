@@ -49,6 +49,17 @@ function DefaultValue(props){
     )
 }
 
+function Multiple(props) {
+    return (
+        <div class="hf-small-margin">
+            <label class="inline">
+                <input type="checkbox" value="1" defaultChecked={props.checked} onChange={props.onChange} />
+                Accept multiple values.
+            </label>
+        </div>
+    )
+}
+
 function Wrap(props) {
     return (
         <div class="hf-small-margin">
@@ -100,5 +111,5 @@ function Accept(props){
 }
 
 export {
-    AddToForm, Label, Placeholder, DefaultValue, Wrap, Required, Choices, ButtonText, Accept
+    AddToForm, Label, Placeholder, DefaultValue, Wrap, Required, Choices, ButtonText, Accept, Multiple
 }

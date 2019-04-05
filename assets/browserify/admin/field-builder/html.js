@@ -1,7 +1,8 @@
 'use strict';
 
-import renderToString from 'preact-render-to-string';
+import renderToString from 'preact-render-to-string/jsx';
 import { h } from 'preact';
+export const ENABLE_PRETTY = true;
 
 function htmlgenerate(conf) {
     const fieldName = namify(conf.fieldLabel); 
@@ -38,6 +39,7 @@ function htmlgenerate(conf) {
             fieldAttr = {
                 name: fieldName,
                 required: conf.required,
+                multiple: conf.multiple,
                 id: fieldId,
             };
             const opts = conf.choices.map((choice) => (
@@ -102,7 +104,6 @@ function htmlgenerate(conf) {
 
     }
 
-
     let str = "";
     if( conf.wrap ) {
         let tmpl = h("p", {}, [label, field]);
@@ -117,7 +118,8 @@ function htmlgenerate(conf) {
 }
 
 function html(tag, attr, children) {
-    return h(tag, filterEmptyObjectValues(attr), children);
+    attr = filterEmptyObjectValues(attr)
+    return h(tag, attr, children);
 }
 
 function namify(str) {

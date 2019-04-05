@@ -27,6 +27,7 @@ class FieldConfigurator extends Component {
             fieldLabel: "",
             placeholder: "",
             value: "",
+            multiple: false,
             wrap: true,
             required: false,
             choices: [
@@ -109,7 +110,7 @@ class FieldConfigurator extends Component {
     }
 
     render(props, state) {
-        if(props.rows.length == 0) {
+        if (props.rows.length === 0) {
             return "";
         }
 
@@ -128,6 +129,10 @@ class FieldConfigurator extends Component {
                 case "default-value":
                     formFields.push(<FS.DefaultValue value={state.value} onChange={linkState(this, 'value')}/>);
                 break;
+
+                case "multiple":
+                    formFields.push(<FS.Multiple checked={state.multiple} onChange={linkState(this, 'multiple')}/>);
+                    break;
 
                 case "required":
                     formFields.push(<FS.Required checked={state.required} onChange={linkState(this, 'required')}/>);
