@@ -2,7 +2,12 @@
 
 import renderToString from 'preact-render-to-string/jsx';
 import { h } from 'preact';
-export const ENABLE_PRETTY = true;
+const renderOpts = {
+    pretty: true,
+    jsx: false,
+    xml: true,
+    attributeHook: null,
+};
 
 function htmlgenerate(conf) {
     const fieldName = namify(conf.fieldLabel); 
@@ -37,7 +42,7 @@ function htmlgenerate(conf) {
 
         case "dropdown":
             fieldAttr = {
-                name: fieldName,
+                name: fieldName + (conf.multiple ? '[]' : ''),
                 required: conf.required,
                 multiple: conf.multiple,
                 id: fieldId,
@@ -105,13 +110,14 @@ function htmlgenerate(conf) {
     }
 
     let str = "";
+
     if( conf.wrap ) {
         let tmpl = h("p", {}, [label, field]);
-        str = renderToString(tmpl, null, { pretty: true });
+        str = renderToString(tmpl, null, renderOpts);
     } else {
-        str += renderToString(label, null, { pretty: true });
+        str += renderToString(label, null, renderOpts);
         str += "\n";
-        str += renderToString(field, null, { pretty: true });
+        str += renderToString(field, null, renderOpts);
     }
 
     return str;

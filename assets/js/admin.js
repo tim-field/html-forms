@@ -678,7 +678,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.htmlgenerate = htmlgenerate;
-exports.ENABLE_PRETTY = void 0;
 
 var _jsx = _interopRequireDefault(require("preact-render-to-string/jsx"));
 
@@ -686,8 +685,12 @@ var _preact = require("preact");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var ENABLE_PRETTY = true;
-exports.ENABLE_PRETTY = ENABLE_PRETTY;
+var renderOpts = {
+  pretty: true,
+  jsx: false,
+  xml: true,
+  attributeHook: null
+};
 
 function htmlgenerate(conf) {
   var fieldName = namify(conf.fieldLabel);
@@ -723,7 +726,7 @@ function htmlgenerate(conf) {
 
     case "dropdown":
       fieldAttr = {
-        name: fieldName,
+        name: fieldName + (conf.multiple ? '[]' : ''),
         required: conf.required,
         multiple: conf.multiple,
         id: fieldId
@@ -786,17 +789,11 @@ function htmlgenerate(conf) {
 
   if (conf.wrap) {
     var tmpl = (0, _preact.h)("p", {}, [label, field]);
-    str = (0, _jsx["default"])(tmpl, null, {
-      pretty: true
-    });
+    str = (0, _jsx["default"])(tmpl, null, renderOpts);
   } else {
-    str += (0, _jsx["default"])(label, null, {
-      pretty: true
-    });
+    str += (0, _jsx["default"])(label, null, renderOpts);
     str += "\n";
-    str += (0, _jsx["default"])(field, null, {
-      pretty: true
-    });
+    str += (0, _jsx["default"])(field, null, renderOpts);
   }
 
   return str;
