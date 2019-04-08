@@ -1,6 +1,19 @@
 Changelog
 =========
 
+#### 1.3.7 - April 8, 2019
+
+**Additions**
+
+- Add Gutenberg block for adding shortcode to content.
+- Add setting in field builder for the `multiple` attribute on `<select>` elements.
+- Add `hf_get_forms()` function for retrieving multiple form objects.
+
+**Improvements**
+
+- Add `edit_form` capability to user that activates the plugin.
+
+
 #### 1.3.6 - March 27, 2019
 
 **Improvements**
