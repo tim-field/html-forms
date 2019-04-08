@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 5.1
-Stable tag: 1.3.6
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -111,6 +111,19 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 
 == Changelog ==
+
+
+#### 1.3.7 - April 8, 2019
+
+**Additions**
+
+- Add Gutenberg block for adding shortcode to content.
+- Add setting in field builder for the `multiple` attribute on `<select>` elements.
+- Add `hf_get_forms()` function for retrieving multiple form objects.
+
+**Improvements**
+
+- Add `edit_form` capability to user that activates the plugin.
 
 
 #### 1.3.6 - March 27, 2019
