@@ -33,7 +33,7 @@ function getFieldValues(form, fieldName, evt) {
   // Usage: data-show-if="FIELDNAME:"
 
 
-  if (values.length == 0) {
+  if (values.length === 0) {
     values.push("");
   }
 

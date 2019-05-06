@@ -27,7 +27,7 @@ function getFieldValues(form, fieldName, evt) {
     // default to an empty string
     // can be used to show or hide an element when a field is empty or has not been set 
     // Usage: data-show-if="FIELDNAME:"
-    if(values.length == 0) {
+    if(values.length === 0) {
         values.push("")
     }
 
