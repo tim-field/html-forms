@@ -112,7 +112,7 @@ class Email extends Action {
     }
 
     if( $html_email ) {
-      $headers[] = 'Content-Type: text/html';
+      $headers[] = 'Content-Type: text/html; charset=UTF-8';
     }
 
     if( ! empty( $settings['from'] ) ) {
