@@ -275,12 +275,16 @@ function hf_field_value( $value, $limit = 0 ) {
     }
 
     // limit string to certain length
-    $value = esc_html( $value );
     if( $limit > 0 ) {
-        return sprintf( '%s%s', substr( $value, 0, $limit ), strlen( $value ) > $limit ? '...' : '' );
+        $limited = strlen($value) > $limit;
+        $value = substr( $value, 0, $limit );
+
+        if ($limited) {
+            $value .= '...';
+        }
     }
 
-    return $value;
+    return esc_html( $value );
 }
 
 /**
