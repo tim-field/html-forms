@@ -240,7 +240,7 @@ function hf_replace_data_variables($string, $data = array(), $escape_function = 
 } 
 
 /**
-* Returns an escaped and formatted field value. Detects file-, array- and date-types.
+* Returns a formatted field value. Detects file-, array- and date-types.
 *
 * Caveat: if value is a file, an HTML string is returned (which means email action should use "Content-Type: html" when it includes a file field).
 *
@@ -284,7 +284,10 @@ function hf_field_value( $value, $limit = 0 ) {
         }
     }
 
-    return esc_html( $value );
+    // escape
+    $value = wp_check_invalid_utf8($value);
+    $value = htmlentities($value, ENT_NOQUOTES);
+    return $value;
 }
 
 /**
