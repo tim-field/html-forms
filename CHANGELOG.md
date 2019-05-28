@@ -1,6 +1,19 @@
 Changelog
 =========
 
+#### 1.3.8 - May 28, 2019
+
+**Fixes**
+
+- Invalid HTML for generated textarea tag.
+
+**Improvements**
+
+- Improved HTML escaping, preserve double and single quotes.
+- Explicitly set charset of HTML emails to UTF-8 by default.
+- Escape HTML after limiting string length, not before.
+
+
 #### 1.3.7 - April 8, 2019
 
 **Additions**
