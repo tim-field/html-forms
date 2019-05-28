@@ -1,13 +1,6 @@
 'use strict';
 
-import renderToString from 'preact-render-to-string/jsx';
-import { h } from 'preact';
-const renderOpts = {
-    pretty: true,
-    jsx: false,
-    xml: true,
-    attributeHook: null,
-};
+import { h, render } from 'preact';
 
 function htmlgenerate(conf) {
     const fieldName = namify(conf.fieldLabel); 
@@ -112,15 +105,25 @@ function htmlgenerate(conf) {
     let str = "";
 
     if( conf.wrap ) {
-        let tmpl = h("p", {}, [label, field]);
-        str = renderToString(tmpl, null, renderOpts);
+        let children = label !== "" ? ["\n\t", label] : [];
+        children = children.concat([ "\n\t", field, "\n"]);
+        let tmpl = h("p", {}, children);
+        str = renderToString(tmpl);
     } else {
-        str += renderToString(label, null, renderOpts);
+        str += renderToString(label);
         str += "\n";
-        str += renderToString(field, null, renderOpts);
+        str += renderToString(field);
     }
 
+    str += "\n";
+
     return str;
+}
+
+function renderToString(vdom) {
+    let el = document.createElement('div');
+    render(vdom, el);
+    return el.innerHTML;
 }
 
 function html(tag, attr, children) {

@@ -8,7 +8,6 @@
     "linkstate": "^1.1.1",
     "populate.js": "^1.0.3",
     "preact": "^8.4.2",
-    "preact-render-to-string": "^4.0.1",
     "tlite": "^0.1.7",
     "wolfy87-eventemitter": "^5.2.4"
   },
