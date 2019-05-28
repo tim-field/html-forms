@@ -17,3 +17,7 @@ function esc_html($a) {
 function __( $a, $text_domain = '' ) { 
 	return $a; 
 }
+
+function wp_check_invalid_utf8($a) {
+    return $a;
+}
