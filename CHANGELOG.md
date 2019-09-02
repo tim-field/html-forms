@@ -1,6 +1,17 @@
 Changelog
 =========
 
+#### 1.3.9 - Sep 2, 2019
+
+**Fixes**
+
+- Strip out [WPBruiser](https://wordpress.org/plugins/goodbye-captcha/) token field to prevent it from being stored.
+
+**Improvements**
+
+- Add filter hooks to variables inside the email action. Thanks to [Ryan Salerno](https://github.com/ryansalerno).
+
+
 #### 1.3.8 - May 28, 2019
 
 **Fixes**
