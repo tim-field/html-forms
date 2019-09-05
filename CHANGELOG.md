@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### 1.3.10 - Sep 5, 2019
+
+**Fixes**
+
+- PHP warning introduced in latest update when using array fields.
+
+
 #### 1.3.9 - Sep 2, 2019
 
 **Fixes**
