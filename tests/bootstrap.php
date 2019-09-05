@@ -14,10 +14,19 @@ function esc_html($a) {
    return $a;
 }
 
-function __( $a, $text_domain = '' ) { 
+function __($a, $text_domain = '' ) {
 	return $a; 
 }
 
 function wp_check_invalid_utf8($a) {
     return $a;
+}
+
+function get_bloginfo($option) {
+    switch($option) {
+        case 'charset':
+            return 'UTF-8';
+    }
+
+    return '';
 }
