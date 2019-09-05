@@ -112,9 +112,9 @@ class Email extends Action {
       $headers = explode( PHP_EOL, hf_replace_data_variables( $settings['headers'], $submission->data, 'strip_tags' ) );
     }
 
-    if( $html_email ) {
-      $headers[] = 'Content-Type: text/html; charset=UTF-8';
-    }
+    $content_type = $html_email ? 'text/html' : 'text/plain';
+    $charset = get_bloginfo('charset');
+    $headers[] = sprintf('Content-Type: %s; charset=%s', $content_type, $charset);
 
     if( ! empty( $settings['from'] ) ) {
       $from = apply_filters( 'hf_action_email_from', hf_replace_data_variables( $settings['from'], $submission->data, 'strip_tags' ), $submission );
