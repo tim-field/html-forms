@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### 1.3.11 - Sep 17, 2019
+
+**Improvements**
+
+- Write results from Mailchimp action to MC4WP debug log.
+
+
 #### 1.3.10 - Sep 5, 2019
 
 **Fixes**
