@@ -84,19 +84,21 @@ class MailChimp extends Action {
         }
 
         $merge_fields = array();
-        $merge_fields = apply_filters( 'hf_mailchimp_action_merge_fields', $merge_fields, $submission, $form );
+        $merge_fields = apply_filters('hf_mailchimp_action_merge_fields', $merge_fields, $submission, $form);
+        $mailchimp_data = array(
+           'merge_fields' => $merge_fields,
+           'status' => 'pending',
+        );
+        $mailchimp_data = apply_filters('hf_mailchimp_action_subscriber_data', $mailchimp_data, $submission, $form);
 
         // subscribe the email address to the selected list
         $mailchimp = new \MC4WP_MailChimp();
-        $result = $mailchimp->list_subscribe( $mailchimp_list_id, $email_address, array(
-            'merge_fields' => $merge_fields,
-            'status' => 'pending',
-        ) );
+        $result = $mailchimp->list_subscribe( $mailchimp_list_id, $email_address, $mailchimp_data);
 
-       // if result failed, show error message
-       $log = mc4wp_get_debug_log();
-       $name = sprintf('HTML Forms: %s', $form->title);
-       if (! $result) {
+        // if result failed, show error message
+        $log = mc4wp_get_debug_log();
+        $name = sprintf('HTML Forms: %s', $form->title);
+        if (! $result) {
            if ($mailchimp->get_error_code() == 214) {
                $log->warning(sprintf("%s: %s is already subscribed to the selected list(s)", $name, $email_address));
            } else {
@@ -104,8 +106,8 @@ class MailChimp extends Action {
            }
 
            return;
-       }
+        }
 
-       $log->info(sprintf('%s > Successfully subscribed %s', $name, $email_address));
+        $log->info(sprintf('%s > Successfully subscribed %s', $name, $email_address));
    }
 }
