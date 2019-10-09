@@ -1,6 +1,31 @@
 Changelog
 =========
 
+#### 1.3.11 - Sep 17, 2019
+
+**Improvements**
+
+- Write results from Mailchimp action to MC4WP debug log.
+
+
+#### 1.3.10 - Sep 5, 2019
+
+**Fixes**
+
+- PHP warning introduced in latest update when using array fields.
+
+
+#### 1.3.9 - Sep 2, 2019
+
+**Fixes**
+
+- Strip out [WPBruiser](https://wordpress.org/plugins/goodbye-captcha/) token field to prevent it from being stored.
+
+**Improvements**
+
+- Add filter hooks to variables inside the email action. Thanks to [Ryan Salerno](https://github.com/ryansalerno).
+
+
 #### 1.3.8 - May 28, 2019
 
 **Fixes**

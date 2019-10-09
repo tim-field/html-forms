@@ -4,7 +4,7 @@ Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-for
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
 Tested up to: 5.2
-Stable tag: 1.3.8
+Stable tag: 1.3.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -42,7 +42,6 @@ You define your form fields in HTML and the plugin takes care of submitting the 
 - Configurable & translatable form messages.
 - Field validation.
 - Developer friendly. HTML Forms comes with a myriad of [JavaScript events](https://kb.htmlforms.io/javascript-events/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description) and WordPress hooks that allow you to modify or extend the plugin's default behavior.
-- Advanced features are bundled in [HTML Forms Premium](https://www.htmlforms.io/premium-features/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description).
 
 ## Who is this for?
 
@@ -111,6 +110,31 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 
 == Changelog ==
+
+
+#### 1.3.11 - Sep 17, 2019
+
+**Improvements**
+
+- Write results from Mailchimp action to MC4WP debug log.
+
+
+#### 1.3.10 - Sep 5, 2019
+
+**Fixes**
+
+- PHP warning introduced in latest update when using array fields.
+
+
+#### 1.3.9 - Sep 2, 2019
+
+**Fixes**
+
+- Strip out [WPBruiser](https://wordpress.org/plugins/goodbye-captcha/) token field to prevent it from being stored.
+
+**Improvements**
+
+- Add filter hooks to variables inside the email action. Thanks to [Ryan Salerno](https://github.com/ryansalerno).
 
 
 #### 1.3.8 - May 28, 2019

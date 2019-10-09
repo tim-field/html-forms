@@ -64,33 +64,50 @@ class MailChimp extends Action {
    }
 
    public function process( array $settings, Submission $submission, Form $form ) {
-	if( empty( $settings['list_id'] ) ) {
-		return;
-	}
+        if( empty( $settings['list_id'] ) ) {
+            return;
+        }
 
-	$mailchimp_list_id = $settings['list_id'];
-	$email_address = '';
+        $mailchimp_list_id = $settings['list_id'];
+        $email_address = '';
 
-	// find email field
-	foreach( $submission->data as $field => $value ) {
-		if( is_email( $value ) ) {
-			$email_address = $value;
-		}
-	}
+        // find email field
+        foreach( $submission->data as $field => $value ) {
+            if( is_email( $value ) ) {
+                $email_address = $value;
+            }
+        }
 
-	// bail if no email address found
-	if( empty( $email_address ) ) {
-		return;
-	}
+        // bail if no email address found
+        if( empty( $email_address ) ) {
+            return;
+        }
 
-	$merge_fields = array();
-	$merge_fields = apply_filters( 'hf_mailchimp_action_merge_fields', $merge_fields, $submission, $form );
+        $merge_fields = array();
+        $merge_fields = apply_filters('hf_mailchimp_action_merge_fields', $merge_fields, $submission, $form);
+        $mailchimp_data = array(
+           'merge_fields' => $merge_fields,
+           'status' => 'pending',
+        );
+        $mailchimp_data = apply_filters('hf_mailchimp_action_subscriber_data', $mailchimp_data, $submission, $form);
 
-	// subscribe the email address to the selected list
-	$mailchimp = new \MC4WP_MailChimp();
-	$mailchimp->list_subscribe( $mailchimp_list_id, $email_address, array( 
-		'merge_fields' => $merge_fields,
-		'status' => 'pending',
-	) );
+        // subscribe the email address to the selected list
+        $mailchimp = new \MC4WP_MailChimp();
+        $result = $mailchimp->list_subscribe( $mailchimp_list_id, $email_address, $mailchimp_data);
+
+        // if result failed, show error message
+        $log = mc4wp_get_debug_log();
+        $name = sprintf('HTML Forms: %s', $form->title);
+        if (! $result) {
+           if ($mailchimp->get_error_code() == 214) {
+               $log->warning(sprintf("%s: %s is already subscribed to the selected list(s)", $name, $email_address));
+           } else {
+                $log->error(sprintf('%s > Mailchimp API Error: %s', $name, $mailchimp->get_error_message()));
+           }
+
+           return;
+        }
+
+        $log->info(sprintf('%s > Successfully subscribed %s', $name, $email_address));
    }
 }
