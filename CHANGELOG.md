@@ -1,6 +1,11 @@
 Changelog
 =========
 
+#### 1.3.12 - Oct 11, 2019
+
+Compatibility with Mailchimp for WordPress 4.6.
+
+
 #### 1.3.11 - Sep 17, 2019
 
 **Improvements**
