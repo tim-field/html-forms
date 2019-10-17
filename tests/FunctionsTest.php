@@ -57,6 +57,12 @@ class FunctionsTest extends TestCase {
         self::assertEquals( 'Hi John+Foo', hf_replace_data_variables( 'Hi [NAME]', array( 'NAME' => 'John Foo'), 'urlencode' ) );
 	}
 
+	public function test_hf_field_value() {
+        //Functions\when('esc_html')->alias('htmlspecialchars');
+	    self::assertEquals('Hi', hf_field_value('Hi'));
+        self::assertEquals('Hi&lt;script&gt;alert(1);&lt;/script&gt;', hf_field_value('Hi<script>alert(1);</script>'));
+    }
+
 	/**
 	 * @covers \hf_array_get
 	 */
