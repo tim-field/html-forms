@@ -73,7 +73,7 @@ $datetime_format = sprintf('%s %s', $date_format, get_option( 'time_format' ) );
                     echo sprintf( '<th>%s</th>', esc_html( str_replace( '_', ' ', ucfirst( strtolower( $field ) ) ) ) );
 
                     echo '<td>';
-                    echo hf_field_value( $value );
+                    echo hf_field_value($value);
                     echo '</td>';
                     echo '</tr>';
                 }

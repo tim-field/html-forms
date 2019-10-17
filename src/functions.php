@@ -223,7 +223,7 @@ function hf_template( $template ) {
 /**
  * @param string $string
  * @param array $data
- *
+ * @param Closure $escape_function
  * @return string
  */
 function hf_replace_data_variables($string, $data = array(), $escape_function = null) {
@@ -240,7 +240,7 @@ function hf_replace_data_variables($string, $data = array(), $escape_function = 
 } 
 
 /**
-* Returns a formatted field value. Detects file-, array- and date-types.
+* Returns a formatted & HTML-escaped field value. Detects file-, array- and date-types.
 *
 * Caveat: if value is a file, an HTML string is returned (which means email action should use "Content-Type: html" when it includes a file field).
 *
@@ -261,7 +261,7 @@ function hf_field_value( $value, $limit = 0 ) {
         }
         $short_name = substr( $value['name'], 0, 20 );
         $suffix = strlen( $value['name'] ) > 20 ? '...' : '';
-        return sprintf( '<a href="%s">%s%s</a> (%s)', esc_attr( $file_url ), esc_html( $short_name ), esc_html( $suffix ), hf_human_filesize( $value['size'] ) ); 
+        return sprintf( '<a href="%s">%s%s</a> (%s)', esc_attr( $file_url ), esc_html( $short_name ), esc_html( $suffix ), hf_human_filesize( $value['size'] ) );
     }
 
     if( hf_is_date( $value ) ) {
@@ -284,10 +284,7 @@ function hf_field_value( $value, $limit = 0 ) {
         }
     }
 
-    // escape
-    $value = wp_check_invalid_utf8($value);
-    $value = htmlentities($value, ENT_NOQUOTES);
-    return $value;
+    return esc_html($value);
 }
 
 /**
@@ -317,8 +314,10 @@ function hf_is_date( $value ) {
         && $timestamp != false;
 }
 
-/** 
-* @return string
+/**
+ * @param int $size
+ * @param int $precision
+ * @return string
 */
 function hf_human_filesize($size, $precision = 2) {
     for( $i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024 ) {
