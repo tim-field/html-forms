@@ -58,8 +58,8 @@ class FormsTest extends TestCase {
 	public function test_sanitize() {
 		$instance = new Forms( '', array() );
 		
-		self::assertEquals( 'foo', $instance->sanitize( '<script>foo</script>' ) );
-		self::assertEquals( array( 'alert(1);' => 'alert(1);' ), $instance->sanitize( array( ' <script>alert(1);</script>' => '<script>alert(1); </script>' ) ) );
-		self::assertEquals( 'foo & bar', $instance->sanitize( '<script>foo &amp; bar</script>' ) );
+		self::assertEquals( '<script>foo</script>', $instance->sanitize( '<script>foo</script> ' ) );
+		self::assertEquals( array( 'alert(1);' => '<script>alert(1); </script>' ), $instance->sanitize( array( ' <script>alert(1);</script>' => '<script>alert(1); </script>' ) ) );
+		self::assertEquals( '<script>foo & bar</script>', $instance->sanitize( '<script>foo &amp; bar</script>' ) );
 	}
 }
