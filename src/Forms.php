@@ -167,17 +167,13 @@ class Forms
             $vars = is_array( $value ) ? $value : get_object_vars( $value );
 
             foreach($vars as $key => $sub_value) {
-                // skip empty values
-                if(empty($sub_value)) {
-                   continue;
-                }
-
                 // sanitize key
                 $key = trim(strip_tags($key));
 
                 // sanitize sub value
                 $new_value[$key] = $this->sanitize($sub_value);
             }
+
             $value = is_object( $value ) ? (object) $new_value : $new_value;
         }
 
