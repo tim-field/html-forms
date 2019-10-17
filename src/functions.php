@@ -223,17 +223,14 @@ function hf_template( $template ) {
 /**
  * @param string $string
  * @param array $data
- * @param Closure $escape_function
+ * @param Closure|string $escape_function
  * @return string
  */
 function hf_replace_data_variables($string, $data = array(), $escape_function = null) {
     $string = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function($matches) use ($data, $escape_function) {
         $key = $matches[1];
         $replacement = hf_array_get( $data, $key, '' );
-        $replacement = hf_field_value( $replacement );
-        if ($escape_function !== null && is_callable($escape_function)) {
-            $replacement = $escape_function($replacement);
-        }
+        $replacement = hf_field_value( $replacement, 0, $escape_function);
         return $replacement;
     }, $string );
     return $string;
@@ -245,11 +242,12 @@ function hf_replace_data_variables($string, $data = array(), $escape_function = 
 * Caveat: if value is a file, an HTML string is returned (which means email action should use "Content-Type: html" when it includes a file field).
 *
 * @param string|array $value
-* @param int $limit 
+* @param int $limit
+* @param Closure|string $escape_function
 * @return string
 * @since 1.3.1
 */
-function hf_field_value( $value, $limit = 0 ) {
+function hf_field_value( $value, $limit = 0, $escape_function = 'esc_html') {
     if( $value === '' ) {
         return $value;
     }
@@ -284,7 +282,12 @@ function hf_field_value( $value, $limit = 0 ) {
         }
     }
 
-    return esc_html($value);
+    // escape value
+    if ($escape_function !== null && is_callable($escape_function)) {
+        $value = $escape_function($value);
+    }
+
+    return $value;
 }
 
 /**
