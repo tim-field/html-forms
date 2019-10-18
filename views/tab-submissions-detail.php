@@ -86,8 +86,12 @@ $datetime_format = sprintf('%s %s', $date_format, get_option( 'time_format' ) );
 
 <div class="hf-small-margin">
     <h3><?php _e( 'Raw', 'html-forms' ); ?></h3>
-    <pre class="hf-well"><?php 
-    echo version_compare( PHP_VERSION, '5.4', '>=' ) ? json_encode( $submission, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT ) : json_encode( $submission ); 
+    <pre class="hf-well"><?php
+        if (version_compare( PHP_VERSION, '5.4', '>=' )) {
+            echo esc_html(json_encode( $submission, JSON_PRETTY_PRINT ));
+        } else {
+           echo esc_html(json_encode( $submission ));
+        }
     ?></pre>
 </div>
 
