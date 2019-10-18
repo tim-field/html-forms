@@ -3,6 +3,8 @@
 defined( 'ABSPATH' ) or exit;
 $date_format = get_option( 'date_format' );
 $datetime_format = sprintf('%s %s', $date_format, get_option( 'time_format' ) );
+
+/** @var \HTML_Forms\Submission $submission */
 ?>
 
 <h2><?php _e( 'Viewing Form Submission', 'html-forms' ); ?></h2>
