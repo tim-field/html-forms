@@ -154,6 +154,11 @@ class Forms
     public function sanitize( $value )
     {
         if (is_string($value)) {
+            // do nothing if empty string
+            if ($value === '') {
+                return $value;
+            }
+
             // strip slashes
             $value = stripslashes($value);
 
@@ -165,6 +170,11 @@ class Forms
         } elseif ( is_array($value) || is_object($value) ) {
             $new_value = array();
             $vars = is_array( $value ) ? $value : get_object_vars( $value );
+
+            // do nothing if empty array or object
+            if (count($vars) === 0) {
+                return $value;
+            }
 
             foreach($vars as $key => $sub_value) {
                 // strip all whitespace & HTML from keys (!)

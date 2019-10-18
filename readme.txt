@@ -3,8 +3,8 @@ Contributors: Ibericode, DvanKooten, hchouhan, lapzor
 Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=donate-link
 Tags: form, contact form, email, contact, contact form 7
 Requires at least: 4.5
-Tested up to: 5.2
-Stable tag: 1.3.12
+Tested up to: 5.3
+Stable tag: 1.3.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.3
@@ -110,6 +110,17 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 
 == Changelog ==
+
+
+#### 1.3.13 - Oct 18, 2019
+
+**Fixes**
+
+- Special HTML characters being encoded even in plain text emails.
+
+**Improvements**
+
+- HTML tags are no longer stripped from field values, so forms can now accept HTML. HTML is still escaped upon display to prevent XSS.
 
 
 #### 1.3.12 - Oct 11, 2019
