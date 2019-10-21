@@ -1,6 +1,22 @@
 Changelog
 =========
 
+#### 1.3.13 - Oct 18, 2019
+
+**Fixes**
+
+- Special HTML characters being encoded even in plain text emails.
+
+**Improvements**
+
+- HTML tags are no longer stripped from field values, so forms can now accept HTML. HTML is still escaped upon display to prevent XSS.
+
+
+#### 1.3.12 - Oct 11, 2019
+
+Compatibility with Mailchimp for WordPress 4.6.
+
+
 #### 1.3.11 - Sep 17, 2019
 
 **Improvements**

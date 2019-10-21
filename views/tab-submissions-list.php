@@ -11,6 +11,11 @@ add_action( 'hf_admin_form_submissions_table_output_column_header', function( $f
 $bulk_actions = apply_filters( 'hf_admin_form_submissions_bulk_actions', array(
   'bulk_delete_submissions' => __( 'Move to Trash' ),
 ));
+
+/**
+ * @var array $hidden_columns
+ * @var array $submissions
+ */
 ?>
 
 <h2><?php _e( 'Form Submissions', 'html-forms' ); ?></h2>

@@ -11,10 +11,13 @@ function hf_get_forms(array $args = array()) {
     $default_args = array(
         'post_type' => 'html-form',
         'post_status' =>  array( 'publish', 'draft', 'pending', 'future' ),
-        'numberposts' => -1,
+        'posts_per_page' => -1,
+        'ignore_sticky_posts' => true,
+        'no_found_rows' => true,
     );
     $args = array_merge($default_args, $args);
-    $posts = get_posts($args);
+    $query = new WP_Query;
+    $posts = $query->query($args);
     $forms = array_map('hf_get_form', $posts);
     return $forms;
 }
@@ -33,15 +36,16 @@ function hf_get_form( $form_id_or_slug ) {
             throw new Exception( "Invalid form ID" );
         }
     } else {
-        $posts = get_posts(
-            array(
-                'post_type' => 'html-form',
-                'name' => $form_id_or_slug,
-                'post_status' => 'publish',
-                'numberposts' => 1,
-            )
-        );
 
+        $query = new WP_Query;
+        $posts = $query->query(array(
+            'post_type' => 'html-form',
+            'name' => $form_id_or_slug,
+            'post_status' => 'publish',
+            'posts_per_page' => 1,
+            'ignore_sticky_posts' => true,
+            'no_found_rows' => true,
+        ));
         if( empty( $posts ) ) {
             throw new Exception( 'Invalid form slug' );
         }
@@ -223,33 +227,31 @@ function hf_template( $template ) {
 /**
  * @param string $string
  * @param array $data
- *
+ * @param Closure|string $escape_function
  * @return string
  */
 function hf_replace_data_variables($string, $data = array(), $escape_function = null) {
     $string = preg_replace_callback( '/\[([a-zA-Z0-9\-\._]+)\]/', function($matches) use ($data, $escape_function) {
         $key = $matches[1];
         $replacement = hf_array_get( $data, $key, '' );
-        $replacement = hf_field_value( $replacement );
-        if ($escape_function !== null && is_callable($escape_function)) {
-            $replacement = $escape_function($replacement);
-        }
+        $replacement = hf_field_value( $replacement, 0, $escape_function);
         return $replacement;
     }, $string );
     return $string;
 } 
 
 /**
-* Returns a formatted field value. Detects file-, array- and date-types.
+* Returns a formatted & HTML-escaped field value. Detects file-, array- and date-types.
 *
 * Caveat: if value is a file, an HTML string is returned (which means email action should use "Content-Type: html" when it includes a file field).
 *
 * @param string|array $value
-* @param int $limit 
+* @param int $limit
+* @param Closure|string $escape_function
 * @return string
 * @since 1.3.1
 */
-function hf_field_value( $value, $limit = 0 ) {
+function hf_field_value( $value, $limit = 0, $escape_function = 'esc_html') {
     if( $value === '' ) {
         return $value;
     }
@@ -261,7 +263,7 @@ function hf_field_value( $value, $limit = 0 ) {
         }
         $short_name = substr( $value['name'], 0, 20 );
         $suffix = strlen( $value['name'] ) > 20 ? '...' : '';
-        return sprintf( '<a href="%s">%s%s</a> (%s)', esc_attr( $file_url ), esc_html( $short_name ), esc_html( $suffix ), hf_human_filesize( $value['size'] ) ); 
+        return sprintf( '<a href="%s">%s%s</a> (%s)', esc_attr( $file_url ), esc_html( $short_name ), esc_html( $suffix ), hf_human_filesize( $value['size'] ) );
     }
 
     if( hf_is_date( $value ) ) {
@@ -284,9 +286,11 @@ function hf_field_value( $value, $limit = 0 ) {
         }
     }
 
-    // escape
-    $value = wp_check_invalid_utf8($value);
-    $value = htmlentities($value, ENT_NOQUOTES);
+    // escape value
+    if ($escape_function !== null && is_callable($escape_function)) {
+        $value = $escape_function($value);
+    }
+
     return $value;
 }
 
@@ -317,8 +321,10 @@ function hf_is_date( $value ) {
         && $timestamp != false;
 }
 
-/** 
-* @return string
+/**
+ * @param int $size
+ * @param int $precision
+ * @return string
 */
 function hf_human_filesize($size, $precision = 2) {
     for( $i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024 ) {

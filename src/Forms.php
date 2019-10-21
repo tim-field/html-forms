@@ -154,11 +154,16 @@ class Forms
     public function sanitize( $value )
     {
         if (is_string($value)) {
-            // strip slashes
-            $value = stripslashes( $value );
+            // do nothing if empty string
+            if ($value === '') {
+                return $value;
+            }
 
-            // strip all HTML tags & whitespace
-            $value = trim(strip_tags($value));
+            // strip slashes
+            $value = stripslashes($value);
+
+            // strip all whitespace
+            $value = trim($value);
 
             // convert &amp; back to &
             $value = html_entity_decode($value, ENT_NOQUOTES);
@@ -166,18 +171,19 @@ class Forms
             $new_value = array();
             $vars = is_array( $value ) ? $value : get_object_vars( $value );
 
-            foreach($vars as $key => $sub_value) {
-                // skip empty values
-                if(empty($sub_value)) {
-                   continue;
-                }
+            // do nothing if empty array or object
+            if (count($vars) === 0) {
+                return $value;
+            }
 
-                // sanitize key
+            foreach($vars as $key => $sub_value) {
+                // strip all whitespace & HTML from keys (!)
                 $key = trim(strip_tags($key));
 
                 // sanitize sub value
                 $new_value[$key] = $this->sanitize($sub_value);
             }
+
             $value = is_object( $value ) ? (object) $new_value : $new_value;
         }
 

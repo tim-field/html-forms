@@ -7,11 +7,11 @@ require __DIR__ . '/../vendor/autoload.php';
 
 // mocked functions
 function esc_attr( $a ) { 
-	return $a; 
+	return htmlspecialchars($a);
 }
 
 function esc_html($a) {
-   return $a;
+   return htmlspecialchars($a);
 }
 
 function __($a, $text_domain = '' ) {

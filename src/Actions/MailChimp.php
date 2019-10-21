@@ -30,10 +30,10 @@ class MailChimp extends Action {
    public function page_settings( $settings, $index ) {
    	$settings = array_merge( $this->get_default_settings(), $settings );
    	$mailchimp = new \MC4WP_MailChimp();
-   	$lists = $mailchimp->get_cached_lists();
+   	$lists = $mailchimp->get_lists();
 
    	if( ! empty( $settings['list_id'] ) ) {
-   		$selected_list = $mailchimp->get_cached_list( $settings['list_id'] );
+   		$selected_list = $mailchimp->get_list($settings['list_id']);
    	}
    	?>
 
@@ -93,7 +93,7 @@ class MailChimp extends Action {
 
         // subscribe the email address to the selected list
         $mailchimp = new \MC4WP_MailChimp();
-        $result = $mailchimp->list_subscribe( $mailchimp_list_id, $email_address, $mailchimp_data);
+        $result = $mailchimp->list_subscribe($mailchimp_list_id, $email_address, $mailchimp_data);
 
         // if result failed, show error message
         $log = mc4wp_get_debug_log();
