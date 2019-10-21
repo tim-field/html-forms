@@ -11,10 +11,11 @@ function hf_get_forms(array $args = array()) {
     $default_args = array(
         'post_type' => 'html-form',
         'post_status' =>  array( 'publish', 'draft', 'pending', 'future' ),
-        'numberposts' => -1,
+        'posts_per_page' => -1,
     );
     $args = array_merge($default_args, $args);
-    $posts = get_posts($args);
+    $query = new WP_Query;
+    $posts = $query->query($args);
     $forms = array_map('hf_get_form', $posts);
     return $forms;
 }
@@ -33,15 +34,13 @@ function hf_get_form( $form_id_or_slug ) {
             throw new Exception( "Invalid form ID" );
         }
     } else {
-        $posts = get_posts(
-            array(
-                'post_type' => 'html-form',
-                'name' => $form_id_or_slug,
-                'post_status' => 'publish',
-                'numberposts' => 1,
-            )
-        );
-
+        $query = new WP_Query;
+        $posts = $query->query(array(
+            'post_type' => 'html-form',
+            'name' => $form_id_or_slug,
+            'post_status' => 'publish',
+            'posts_per_page' => 1,
+        ));
         if( empty( $posts ) ) {
             throw new Exception( 'Invalid form slug' );
         }
