@@ -139,7 +139,13 @@ function hf_get_settings() {
         'load_stylesheet' => 0,
     );
 
-    $settings = get_option( 'hf_settings', array() );
+    $settings = get_option( 'hf_settings', null );
+
+    // prevent a SQL query when option does not yet exist
+    if ($settings === null) {
+        update_option('hf_settings', array(), true);
+        $settings = array();
+    }
 
     // merge with default settings
     $settings = array_merge( $default_settings, $settings );
