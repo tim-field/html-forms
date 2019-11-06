@@ -8,32 +8,40 @@
         <span class="current-crumb"><strong><?php _e( 'Settings', 'html-forms' ); ?></strong></span>
     </p>
 
-    <h1 class="page-title"><?php _e( 'Settings', 'html-forms' ); ?></h1>
-    
-     <?php if ( ! empty( $_GET['settings-updated'] ) ) { 
-        echo '<div class="notice notice-success"><p>' . __( 'Settings updated.', 'html-forms' ) . '</p></div>';
-    } ?>
+	<div class="hf-row" style="border-top: 1px dashed #ddd; border-bottom: 1px dashed #ddd;">
+		<!-- Main column -->
+		<div class="hf-col hf-col-4">
+		<h1 class="page-title"><?php _e( 'Settings', 'html-forms' ); ?></h1>
 
-    <form method="post" action="<?php echo admin_url( 'options.php' ); ?>">
-        <?php settings_fields( 'hf_settings' ); ?>
+		 <?php if ( ! empty( $_GET['settings-updated'] ) ) {
+			echo '<div class="notice notice-success"><p>' . __( 'Settings updated.', 'html-forms' ) . '</p></div>';
+		} ?>
 
-            <table class="form-table">
-                <tr valign="top">
-                    <th scope="row"><?php _e( 'Load stylesheet?', 'html-forms' ); ?></th>
-                    <td>
-                        <label><input type="radio" name="hf_settings[load_stylesheet]" value="1" <?php checked( $settings['load_stylesheet'], 1 ); ?>> <?php _e( 'Yes' ); ?></label> &nbsp;
-                        <label><input type="radio"  name="hf_settings[load_stylesheet]" value="0"  <?php checked( $settings['load_stylesheet'], 0 ); ?>> <?php _e( 'No' ); ?></label>
+		<form method="post" action="<?php echo admin_url( 'options.php' ); ?>">
+			<?php settings_fields( 'hf_settings' ); ?>
 
-                        <p class="help"><?php _e( 'Select "yes" to apply some basic form styles to all HTML Forms.', 'html-forms' ); ?></p>
-                    </td>
-                </tr>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><?php _e( 'Load stylesheet?', 'html-forms' ); ?></th>
+						<td>
+							<label><input type="radio" name="hf_settings[load_stylesheet]" value="1" <?php checked( $settings['load_stylesheet'], 1 ); ?>> <?php _e( 'Yes' ); ?></label> &nbsp;
+							<label><input type="radio"  name="hf_settings[load_stylesheet]" value="0"  <?php checked( $settings['load_stylesheet'], 0 ); ?>> <?php _e( 'No' ); ?></label>
 
-            </table>
-        <?php submit_button(); ?>
-    </form>
+							<p class="help"><?php _e( 'Select "yes" to apply some basic form styles to all HTML Forms.', 'html-forms' ); ?></p>
+						</td>
+					</tr>
 
+				</table>
+			<?php submit_button(); ?>
+		</form>
 
-    <?php do_action( 'hf_admin_output_misc_settings' ); ?>
+		<?php do_action( 'hf_admin_output_misc_settings' ); ?>
+		</div>
+
+		<div class="hf-col hf-col-2 hf-sidebar">
+			<?php require __DIR__ . '/admin-sidebar.php'; ?>
+		</div>
+	</div>
 
     <?php require __DIR__ . '/admin-footer.php'; ?>
 </div>

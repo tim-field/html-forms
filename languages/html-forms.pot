@@ -25,19 +25,19 @@ msgstr ""
 msgid "No form found with slug %s"
 msgstr ""
 
-#: src/functions.php:71
+#: src/functions.php:75
 msgid "Thank you! We will be in touch soon."
 msgstr ""
 
-#: src/functions.php:72
+#: src/functions.php:76
 msgid "Sorry, that email address looks invalid."
 msgstr ""
 
-#: src/functions.php:73
+#: src/functions.php:77
 msgid "Please fill in the required fields."
 msgstr ""
 
-#: src/functions.php:74
+#: src/functions.php:78
 msgid "Oops. An error occurred."
 msgstr ""
 

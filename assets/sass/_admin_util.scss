@@ -69,17 +69,29 @@
 }
 
 .hf-col-1 {
-  width: 100% / 6 * 1;
+	max-width: 100% / 6 * 1;
 }
 
 .hf-col-2 {
-  width: 100% / 6 * 2;
+	max-width: 100% / 6 * 2;
 }
 
 .hf-col-3 {
-  width: 100% / 6 * 3;
+	max-width: 100% / 6 * 3;
 }
 
 .hf-col-4 {
-  width: 100% / 6 * 4;
+  	max-width: 100% / 6 * 4;
+}
+
+.hf-sidebar {
+	border-left: 1px dashed #ddd;
+	margin-left: 24px;
+	padding-left: 24px;
+}
+
+@media(max-width: 640px) {
+	.hf-row {display: block;}
+	.hf-col { max-width: 100%; }
+	.hf-sidebar { border: 0; margin-top: 24px; margin-left: 0; padding-left: 0; }
 }
