@@ -1,6 +1,14 @@
 Changelog
 =========
 
+#### 1.3.14 - Nov 6, 2019
+
+**Improvements**
+
+- Stop using `supress_filters` argument when retrieving forms, for a possible performance improvement.
+- Prevent extra SQL query for options when global settings have not been saved yet.
+
+
 #### 1.3.13 - Oct 18, 2019
 
 **Fixes**
@@ -156,7 +164,7 @@ Compatibility with Mailchimp for WordPress 4.6.
 
 **Additions**
 
-- Add simple action for subscribing to MailChimp. Requires [MailChimp for WordPress](https://wordpress.org/plugins/mailchimp-for-wp/).
+- Add simple action for subscribing to Mailchimp. Requires the [Mailchimp for WordPress plugin](https://wordpress.org/plugins/mailchimp-for-wp/).
 
 
 #### 1.1.5 - April 9, 2018
