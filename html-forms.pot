@@ -1,0 +1,404 @@
+# Copyright (C) 2019 ibericode
+# This file is distributed under the same license as the HTML Forms plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: HTML Forms 1.3.13\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/html-forms\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2019-11-06T10:29:08+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.3.0\n"
+"X-Domain: html-forms\n"
+
+#. Plugin Name of the plugin
+msgid "HTML Forms"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://www.htmlforms.io/#utm_source=wp-plugin&utm_medium=html-forms&utm_campaign=plugins-page"
+msgstr ""
+
+#. Description of the plugin
+msgid "Not just another forms plugin. Simple and flexible."
+msgstr ""
+
+#. Author of the plugin
+msgid "ibericode"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://ibericode.com/"
+msgstr ""
+
+#: src/Actions/Email.php:14
+msgid "Send Email"
+msgstr ""
+
+#: src/Actions/Email.php:43
+msgid "From"
+msgstr ""
+
+#: src/Actions/Email.php:49
+msgid "To"
+msgstr ""
+
+#: src/Actions/Email.php:55
+#: src/Admin/Admin.php:361
+msgid "Subject"
+msgstr ""
+
+#: src/Actions/Email.php:57
+msgid "Your email subject"
+msgstr ""
+
+#: src/Actions/Email.php:62
+#: src/Admin/Admin.php:362
+msgid "Message"
+msgstr ""
+
+#: src/Actions/Email.php:64
+msgid "Your email message"
+msgstr ""
+
+#: src/Actions/Email.php:65
+msgid "You can use the following variables (in all fields): "
+msgstr ""
+
+#: src/Actions/Email.php:70
+msgid "Content Type"
+msgstr ""
+
+#: src/Actions/Email.php:80
+msgid "Additional headers"
+msgstr ""
+
+#: src/Actions/MailChimp.php:13
+msgid "MailChimp"
+msgstr ""
+
+#: src/Actions/MailChimp.php:41
+msgid "Subscribe to %s"
+msgstr ""
+
+#: src/Actions/MailChimp.php:46
+msgid "List"
+msgstr ""
+
+#: src/Actions/MailChimp.php:50
+msgid "Select MailChimp list"
+msgstr ""
+
+#: src/Actions/MailChimp.php:57
+msgid "Please connect your MailChimp account first."
+msgstr ""
+
+#: src/Admin/Admin.php:137
+#: views/page-overview.php:14
+#: views/page-overview.php:17
+msgid "Forms"
+msgstr ""
+
+#: src/Admin/Admin.php:137
+msgid "All Forms"
+msgstr ""
+
+#: src/Admin/Admin.php:138
+#: views/page-add-form.php:12
+#: views/page-add-form.php:15
+#: views/page-overview.php:20
+msgid "Add new form"
+msgstr ""
+
+#: src/Admin/Admin.php:138
+msgid "Add New"
+msgstr ""
+
+#: src/Admin/Admin.php:139
+#: src/Admin/Table.php:170
+#: views/page-edit-form.php:6
+#: views/page-global-settings.php:8
+#: views/page-global-settings.php:14
+msgid "Settings"
+msgstr ""
+
+#: src/Admin/Admin.php:359
+msgid "Your name"
+msgstr ""
+
+#: src/Admin/Admin.php:360
+msgid "Your email"
+msgstr ""
+
+#: src/Admin/Admin.php:363
+msgid "Send"
+msgstr ""
+
+#: src/Admin/GDPR.php:36
+msgid "Form submissions"
+msgstr ""
+
+#: src/Admin/Table.php:106
+msgid "Form"
+msgstr ""
+
+#: src/Admin/Table.php:107
+msgid "Shortcode"
+msgstr ""
+
+#: src/Admin/Table.php:168
+#: views/page-edit-form.php:4
+#: views/tab-submissions-detail.php:67
+msgid "Fields"
+msgstr ""
+
+#: src/Admin/Table.php:169
+#: views/page-edit-form.php:5
+msgid "Messages"
+msgstr ""
+
+#: src/Admin/Table.php:171
+#: views/page-edit-form.php:7
+msgid "Actions"
+msgstr ""
+
+#: src/Admin/Table.php:175
+#: views/page-edit-form.php:11
+msgid "Submissions"
+msgstr ""
+
+#: src/Admin/Table.php:201
+msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
+msgstr ""
+
+#: src/Form.php:66
+msgid "Please enable JavaScript for this form to work."
+msgstr ""
+
+#: src/Forms.php:412
+msgid "Error:"
+msgstr ""
+
+#: src/Forms.php:412
+msgid "No form found with slug %s"
+msgstr ""
+
+#: src/functions.php:75
+msgid "Thank you! We will be in touch soon."
+msgstr ""
+
+#: src/functions.php:76
+msgid "Sorry, that email address looks invalid."
+msgstr ""
+
+#: src/functions.php:77
+msgid "Please fill in the required fields."
+msgstr ""
+
+#: src/functions.php:78
+msgid "Oops. An error occurred."
+msgstr ""
+
+#: views/admin-footer.php:2
+msgid "Looking for help?"
+msgstr ""
+
+#: views/admin-footer.php:3
+msgid "Check out the <a href=\"%s\">HTML Forms knowledge base</a>"
+msgstr ""
+
+#: views/page-add-form.php:10
+#: views/page-edit-form.php:19
+#: views/page-global-settings.php:6
+#: views/page-overview.php:12
+msgid "You are here: "
+msgstr ""
+
+#: views/page-add-form.php:22
+msgid "Your form title.."
+msgstr ""
+
+#: views/page-edit-form.php:21
+#: views/page-edit-form.php:24
+msgid "Edit form"
+msgstr ""
+
+#: views/page-edit-form.php:27
+msgid "Form updated."
+msgstr ""
+
+#: views/page-edit-form.php:37
+msgid "Form title"
+msgstr ""
+
+#: views/page-edit-form.php:38
+msgid "Enter the title of your form"
+msgstr ""
+
+#: views/page-edit-form.php:42
+msgid "Edit slug"
+msgstr ""
+
+#: views/page-edit-form.php:42
+msgid "Edit"
+msgstr ""
+
+#: views/page-edit-form.php:45
+msgid "Copy this shortcode and paste it into your post, page, or text widget content:"
+msgstr ""
+
+#: views/page-global-settings.php:17
+msgid "Settings updated."
+msgstr ""
+
+#: views/page-global-settings.php:25
+msgid "Load stylesheet?"
+msgstr ""
+
+#: views/page-global-settings.php:30
+msgid "Select \"yes\" to apply some basic form styles to all HTML Forms."
+msgstr ""
+
+#: views/tab-actions.php:6
+msgid "Form Actions"
+msgstr ""
+
+#: views/tab-actions.php:39
+msgid "No form actions configured for this form."
+msgstr ""
+
+#: views/tab-actions.php:45
+msgid "Add form action"
+msgstr ""
+
+#: views/tab-actions.php:46
+msgid "Use the below button(s) to configure and perform an action whenever this form is successfully submitted."
+msgstr ""
+
+#: views/tab-fields.php:9
+msgid "Form code"
+msgstr ""
+
+#: views/tab-fields.php:14
+msgid "Form preview"
+msgstr ""
+
+#: views/tab-fields.php:14
+msgid "The form may look slightly different than this when shown in a post, page or widget area."
+msgstr ""
+
+#: views/tab-messages.php:6
+msgid "Form Messages"
+msgstr ""
+
+#: views/tab-messages.php:10
+msgid "Success"
+msgstr ""
+
+#: views/tab-messages.php:13
+msgid "The text that shows after a successful form submission."
+msgstr ""
+
+#: views/tab-messages.php:17
+msgid "Invalid email address"
+msgstr ""
+
+#: views/tab-messages.php:20
+msgid "The text that shows when an invalid email address is given."
+msgstr ""
+
+#: views/tab-messages.php:24
+msgid "Required field missing"
+msgstr ""
+
+#: views/tab-messages.php:27
+msgid "The text that shows when a required field for the selected list(s) is missing."
+msgstr ""
+
+#: views/tab-messages.php:32
+msgid "General error"
+msgstr ""
+
+#: views/tab-messages.php:35
+msgid "The text that shows when a general error occured."
+msgstr ""
+
+#: views/tab-messages.php:44
+msgid "HTML tags like %s are allowed in the message fields."
+msgstr ""
+
+#: views/tab-settings.php:1
+msgid "Form Settings"
+msgstr ""
+
+#: views/tab-settings.php:6
+msgid "Save form submissions?"
+msgstr ""
+
+#: views/tab-settings.php:11
+msgid "Select \"yes\" to store successful form submissions."
+msgstr ""
+
+#: views/tab-settings.php:16
+msgid "Hide form after a successful sign-up?"
+msgstr ""
+
+#: views/tab-settings.php:27
+msgid "Select \"yes\" to hide the form fields after a successful sign-up."
+msgstr ""
+
+#: views/tab-settings.php:33
+msgid "Redirect to URL after successful sign-ups"
+msgstr ""
+
+#: views/tab-settings.php:35
+msgid "Example: %s"
+msgstr ""
+
+#: views/tab-settings.php:37
+msgid "Leave empty or enter <code>0</code> for no redirect. Otherwise, use complete (absolute) URLs, including <code>http://</code>."
+msgstr ""
+
+#: views/tab-settings.php:40
+msgid "You can use the following variables in the redirect URL: "
+msgstr ""
+
+#: views/tab-submissions-detail.php:10
+msgid "Viewing Form Submission"
+msgstr ""
+
+#: views/tab-submissions-detail.php:40
+#: views/tab-submissions-list.php:49
+msgid "Timestamp"
+msgstr ""
+
+#: views/tab-submissions-detail.php:46
+msgid "User Agent"
+msgstr ""
+
+#: views/tab-submissions-detail.php:53
+msgid "IP Address"
+msgstr ""
+
+#: views/tab-submissions-detail.php:59
+msgid "Referrer URL"
+msgstr ""
+
+#: views/tab-submissions-detail.php:90
+msgid "Raw"
+msgstr ""
+
+#: views/tab-submissions-detail.php:101
+msgid "Back to submissions list"
+msgstr ""
+
+#: views/tab-submissions-list.php:21
+msgid "Form Submissions"
+msgstr ""
+
+#: views/tab-submissions-list.php:89
+msgid "Nothing to see here, yet!"
+msgstr ""
