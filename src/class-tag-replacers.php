@@ -11,8 +11,8 @@ class TagReplacers {
 	* @return mixed
 	*/
 	public function user( $prop ) {
-		if( ! is_user_logged_in() ) {
-		    return '';
+		if ( ! is_user_logged_in() ) {
+			return '';
 		}
 
 		$user = wp_get_current_user();
@@ -26,8 +26,8 @@ class TagReplacers {
 	public function post( $prop ) {
 		global $post;
 
-		if( ! $post instanceof WP_Post || ! isset( $post->{$prop} ) ) {
-		    return '';
+		if ( ! $post instanceof WP_Post || ! isset( $post->{$prop} ) ) {
+			return '';
 		}
 
 		return $post->{$prop};
@@ -38,10 +38,10 @@ class TagReplacers {
 	* @return mixed
 	*/
 	public function url_params( $key ) {
-		if( ! isset( $_GET[ $key] ) ) {
-		    return '';
+		if ( ! isset( $_GET[ $key ] ) ) {
+			return '';
 		}
 
-		return esc_attr( strip_tags( $_GET[$key] ) );
+		return esc_attr( strip_tags( $_GET[ $key ] ) );
 	}
 }

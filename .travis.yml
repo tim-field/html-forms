@@ -8,3 +8,4 @@ install:
 - composer update --no-interaction --prefer-dist
 script:
 - composer test
+- composer cs

@@ -2,7 +2,7 @@
 Contributors: Ibericode, DvanKooten, hchouhan, lapzor
 Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=donate-link
 Tags: form, contact form, email, contact, contact form 7
-Requires at least: 4.5
+Requires at least: 4.6
 Tested up to: 5.3
 Stable tag: 1.3.14
 License: GPLv2 or later

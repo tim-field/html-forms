@@ -33,8 +33,8 @@ class Migrations {
 	 * @param string $migrations_dir
 	 */
 	public function __construct( $from, $to, $migrations_dir ) {
-		$this->version_from = $from;
-		$this->version_to = $to;
+		$this->version_from   = $from;
+		$this->version_to     = $to;
 		$this->migrations_dir = $migrations_dir;
 	}
 
@@ -53,20 +53,20 @@ class Migrations {
 	 */
 	public function find_migrations() {
 
-		$files = glob( rtrim( $this->migrations_dir, '/' ) . '/*.php' );
-		$migrations =  array();
+		$files      = glob( rtrim( $this->migrations_dir, '/' ) . '/*.php' );
+		$migrations = array();
 
 		// return empty array when glob returns non-array value.
-		if( ! is_array( $files ) ) {
+		if ( ! is_array( $files ) ) {
 			return $migrations;
 		}
 
-		foreach( $files as $file ) {
+		foreach ( $files as $file ) {
 			$migration = basename( $file );
-			$parts = explode( '-', $migration );
-			$version = $parts[0];
+			$parts     = explode( '-', $migration );
+			$version   = $parts[0];
 
-			if( version_compare( $this->version_from, $version, '<' ) ) {
+			if ( version_compare( $this->version_from, $version, '<' ) ) {
 				$migrations[] = $file;
 			}
 		}
