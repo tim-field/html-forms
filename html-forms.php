@@ -9,7 +9,7 @@ Author URI: https://ibericode.com/
 License: GPL v3
 Text Domain: html-forms
 
-HTML Forms 
+HTML Forms
 Copyright (C) 2017-2019, Danny van Kooten, danny@ibericode.com
 
 This program is free software: you can redistribute it and/or modify
@@ -70,7 +70,7 @@ function _install() {
         `ip_address` VARCHAR(255) NULL,
         `referer_url` VARCHAR(255) NULL,
         `submitted_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);");
+) ENGINE=INNODB CHARACTER SET={$wpdb->charset};");
 
     // add "edit_forms" cap to user that activated the plugin
     $user = wp_get_current_user();
