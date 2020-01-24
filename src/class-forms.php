@@ -196,6 +196,7 @@ class Forms {
 		$data = $_POST;
 
 		if ( ! empty( $_FILES ) ) {
+
 			foreach ( $_FILES as $field_name => $file ) {
 				// only add non-empty files so that required field validation works as expected
 				// upload could still have errored at this point

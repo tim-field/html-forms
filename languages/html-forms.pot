@@ -1,4 +1,4 @@
-# Copyright (C) 2019 html-forms
+# Copyright (C) 2020 html-forms
 # This file is distributed under the same license as the html-forms package.
 msgid ""
 msgstr ""
@@ -13,154 +13,178 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Form.php:66
+#: src/class-form.php:64
 msgid "Please enable JavaScript for this form to work."
 msgstr ""
 
-#: src/Forms.php:412
+#: src/class-forms.php:415
 msgid "Error:"
 msgstr ""
 
-#: src/Forms.php:412
+#: src/class-forms.php:415
 msgid "No form found with slug %s"
 msgstr ""
 
-#: src/functions.php:75
+#: src/functions.php:77
 msgid "Thank you! We will be in touch soon."
 msgstr ""
 
-#: src/functions.php:76
+#: src/functions.php:78
 msgid "Sorry, that email address looks invalid."
 msgstr ""
 
-#: src/functions.php:77
+#: src/functions.php:79
 msgid "Please fill in the required fields."
 msgstr ""
 
-#: src/functions.php:78
+#: src/functions.php:80
 msgid "Oops. An error occurred."
 msgstr ""
 
-#: src/Actions/Email.php:14
+#: src/actions/class-email.php:14
 msgid "Send Email"
 msgstr ""
 
-#: src/Actions/Email.php:43
+#: src/actions/class-email.php:43
 msgid "From"
 msgstr ""
 
-#: src/Actions/Email.php:49
+#: src/actions/class-email.php:49
 msgid "To"
 msgstr ""
 
-#: src/Actions/Email.php:55, src/Admin/Admin.php:361
+#: src/actions/class-email.php:55, src/admin/class-admin.php:375
 msgid "Subject"
 msgstr ""
 
-#: src/Actions/Email.php:57
+#: src/actions/class-email.php:57
 msgid "Your email subject"
 msgstr ""
 
-#: src/Actions/Email.php:62, src/Admin/Admin.php:362
+#: src/actions/class-email.php:62, src/admin/class-admin.php:376
 msgid "Message"
 msgstr ""
 
-#: src/Actions/Email.php:64
+#: src/actions/class-email.php:64
 msgid "Your email message"
 msgstr ""
 
-#: src/Actions/Email.php:65
+#: src/actions/class-email.php:65
 msgid "You can use the following variables (in all fields): "
 msgstr ""
 
-#: src/Actions/Email.php:70
+#: src/actions/class-email.php:70
 msgid "Content Type"
 msgstr ""
 
-#: src/Actions/Email.php:80
+#: src/actions/class-email.php:80
 msgid "Additional headers"
 msgstr ""
 
-#: src/Actions/MailChimp.php:13
+#: src/actions/class-mailchimp.php:13
 msgid "MailChimp"
 msgstr ""
 
-#: src/Actions/MailChimp.php:41
+#: src/actions/class-mailchimp.php:41
 msgid "Subscribe to %s"
 msgstr ""
 
-#: src/Actions/MailChimp.php:46
+#: src/actions/class-mailchimp.php:46
 msgid "List"
 msgstr ""
 
-#: src/Actions/MailChimp.php:50
+#: src/actions/class-mailchimp.php:50
 msgid "Select MailChimp list"
 msgstr ""
 
-#: src/Actions/MailChimp.php:57
+#: src/actions/class-mailchimp.php:60
 msgid "Please connect your MailChimp account first."
 msgstr ""
 
-#: src/Admin/Admin.php:137
+#: src/admin/class-admin.php:140
 msgid "Forms"
 msgstr ""
 
-#: src/Admin/Admin.php:137
+#: src/admin/class-admin.php:140
 msgid "All Forms"
 msgstr ""
 
-#: src/Admin/Admin.php:138
+#: src/admin/class-admin.php:141
 msgid "Add new form"
 msgstr ""
 
-#: src/Admin/Admin.php:138
+#: src/admin/class-admin.php:141
 msgid "Add New"
 msgstr ""
 
-#: src/Admin/Admin.php:139, src/Admin/Admin.php:139, src/Admin/Table.php:170
+#: src/admin/class-admin.php:142, src/admin/class-admin.php:142, src/admin/class-table.php:170
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/Admin.php:359
+#: src/admin/class-admin.php:373
 msgid "Your name"
 msgstr ""
 
-#: src/Admin/Admin.php:360
+#: src/admin/class-admin.php:374
 msgid "Your email"
 msgstr ""
 
-#: src/Admin/Admin.php:363
+#: src/admin/class-admin.php:377
 msgid "Send"
 msgstr ""
 
-#: src/Admin/GDPR.php:36
+#: src/admin/class-gdpr.php:36
 msgid "Form submissions"
 msgstr ""
 
-#: src/Admin/Table.php:106
+#: src/admin/class-table.php:66
+msgid "All"
+msgstr ""
+
+#: src/admin/class-table.php:67
+msgid "Trash"
+msgstr ""
+
+#: src/admin/class-table.php:79
+msgid "Restore"
+msgstr ""
+
+#: src/admin/class-table.php:80
+msgid "Delete Permanently"
+msgstr ""
+
+#: src/admin/class-table.php:84
+msgid "Move to Trash"
+msgstr ""
+
+#: src/admin/class-table.php:85
+msgid "Duplicate"
+msgstr ""
+
+#: src/admin/class-table.php:106
 msgid "Form"
 msgstr ""
 
-#: src/Admin/Table.php:107
+#: src/admin/class-table.php:107
 msgid "Shortcode"
 msgstr ""
 
-#: src/Admin/Table.php:168
+#: src/admin/class-table.php:168
 msgid "Fields"
 msgstr ""
 
-#: src/Admin/Table.php:169
+#: src/admin/class-table.php:169
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Table.php:171
+#: src/admin/class-table.php:171
 msgid "Actions"
 msgstr ""
 
-#: src/Admin/Table.php:175
+#: src/admin/class-table.php:175
 msgid "Submissions"
 msgstr ""
 
-#: src/Admin/Table.php:201
+#: src/admin/class-table.php:201
 msgid "No forms found. <a href=\"%s\">Would you like to create one now</a>?"
 msgstr ""

@@ -30,7 +30,7 @@ var _default = {
 exports["default"] = _default;
 
 },{}],2:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _tabs = _interopRequireDefault(require("./tabs.js"));
 
@@ -44,11 +44,12 @@ var _actionConfirmations = _interopRequireDefault(require("./action-confirmation
 
 var _tlite = _interopRequireDefault(require("tlite"));
 
+var _preact = require("preact");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-window.html_forms = {};
+window.html_forms = {}; // init the various components
 
-// init the various components
 _tabs["default"].init();
 
 _actionConfirmations["default"].init();
@@ -67,11 +68,11 @@ if (document.getElementById('hf-form-editor')) {
 window.html_forms.FieldBuilder = _fieldBuilder["default"];
 window.html_forms.Editor = _formEditor["default"]; // tell WP common.js to override the method used for determining hidden columns (screen options)
 
-if (hf_options.view === 'edit') {
+if (window.hf_options.view === 'edit') {
   window.columns.useCheckboxesForHidden();
 }
 
-},{"./action-confirmations.js":1,"./field-builder.js":6,"./form-actions.js":8,"./form-editor.js":9,"./tabs.js":10,"tlite":22}],3:[function(require,module,exports){
+},{"./action-confirmations.js":1,"./field-builder.js":6,"./form-actions.js":8,"./form-editor.js":9,"./tabs.js":10,"preact":20,"tlite":21}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -81,11 +82,7 @@ exports.FieldBuilder = void 0;
 
 var _preact = require("preact");
 
-var _decko = require("decko");
-
 var _fieldConfigurator = require("./field-configurator.js");
-
-var _class;
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -97,17 +94,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) { var desc = {}; Object.keys(descriptor).forEach(function (key) { desc[key] = descriptor[key]; }); desc.enumerable = !!desc.enumerable; desc.configurable = !!desc.configurable; if ('value' in desc || desc.initializer) { desc.writable = true; } desc = decorators.slice().reverse().reduce(function (desc, decorator) { return decorator(target, property, desc) || desc; }, desc); if (context && desc.initializer !== void 0) { desc.value = desc.initializer ? desc.initializer.call(context) : void 0; desc.initializer = undefined; } if (desc.initializer === void 0) { Object.defineProperty(target, property, desc); desc = null; } return desc; }
-
-var FieldBuilder = (_class =
+var FieldBuilder =
 /*#__PURE__*/
 function (_Component) {
   _inherits(FieldBuilder, _Component);
@@ -121,6 +116,8 @@ function (_Component) {
     _this.state = {
       activeField: null
     };
+    _this.handleCancel = _this.handleCancel.bind(_assertThisInitialized(_this));
+    _this.openFieldConfig = _this.openFieldConfig.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -155,11 +152,11 @@ function (_Component) {
         return (0, _preact.h)("button", {
           type: "button",
           value: i,
-          className: "button " + (state.activeField === f ? "active" : ""),
+          className: 'button ' + (state.activeField === f ? 'active' : ''),
           onClick: _this2.openFieldConfig
         }, f.label);
       });
-      var fieldType = state.activeField ? state.activeField.key : "";
+      var fieldType = state.activeField ? state.activeField.key : '';
       var rows = state.activeField ? state.activeField.configRows : [];
       return (0, _preact.h)("div", {
         "class": "hf-field-builder"
@@ -174,15 +171,16 @@ function (_Component) {
       })), state.activeField === null ? (0, _preact.h)("p", {
         "class": "help",
         style: "margin-bottom: 0;"
-      }, "Use the buttons above to generate your field HTML, or manually modify your form below.") : "");
+      }, "Use the buttons above to generate your field HTML, or manually modify your form below.") : '');
     }
   }]);
 
   return FieldBuilder;
-}(_preact.Component), (_applyDecoratedDescriptor(_class.prototype, "handleCancel", [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, "handleCancel"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "openFieldConfig", [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, "openFieldConfig"), _class.prototype)), _class);
+}(_preact.Component);
+
 exports.FieldBuilder = FieldBuilder;
 
-},{"./field-configurator.js":4,"decko":19,"preact":21}],4:[function(require,module,exports){
+},{"./field-configurator.js":4,"preact":20}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -192,15 +190,11 @@ exports.FieldConfigurator = void 0;
 
 var _preact = require("preact");
 
-var _decko = require("decko");
-
 var _html = require("../field-builder/html.js");
 
 var FS = _interopRequireWildcard(require("./field-settings.js"));
 
 var _linkstate = _interopRequireDefault(require("linkstate"));
-
-var _class;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -216,17 +210,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) { var desc = {}; Object.keys(descriptor).forEach(function (key) { desc[key] = descriptor[key]; }); desc.enumerable = !!desc.enumerable; desc.configurable = !!desc.configurable; if ('value' in desc || desc.initializer) { desc.writable = true; } desc = decorators.slice().reverse().reduce(function (desc, decorator) { return decorator(target, property, desc) || desc; }, desc); if (context && desc.initializer !== void 0) { desc.value = desc.initializer ? desc.initializer.call(context) : void 0; desc.initializer = undefined; } if (desc.initializer === void 0) { Object.defineProperty(target, property, desc); desc = null; } return desc; }
-
-var FieldConfigurator = (_class =
+var FieldConfigurator =
 /*#__PURE__*/
 function (_Component) {
   _inherits(FieldConfigurator, _Component);
@@ -239,11 +231,13 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(FieldConfigurator).call(this, props));
     _this.state = _this.getInitialState();
     _this.choiceHandlers = {
-      "add": _this.addChoice,
-      "delete": _this.deleteChoice,
-      "changeLabel": _this.changeChoiceLabel,
-      "toggleChecked": _this.toggleChoiceChecked
+      add: _this.addChoice.bind(_assertThisInitialized(_this)),
+      "delete": _this.deleteChoice.bind(_assertThisInitialized(_this)),
+      changeLabel: _this.changeChoiceLabel.bind(_assertThisInitialized(_this)),
+      toggleChecked: _this.toggleChoiceChecked.bind(_assertThisInitialized(_this))
     };
+    _this.addToForm = _this.addToForm.bind(_assertThisInitialized(_this));
+    _this.handleCancel = _this.handleCancel.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -253,19 +247,19 @@ function (_Component) {
       return {
         formId: document.querySelector('input[name="form_id"]').value,
         formSlug: document.querySelector('input[name="form[slug]"]').value,
-        fieldType: "",
-        fieldLabel: "",
-        placeholder: "",
-        value: "",
+        fieldType: '',
+        fieldLabel: '',
+        placeholder: '',
+        value: '',
         multiple: false,
         wrap: true,
         required: false,
         choices: [{
           checked: false,
-          label: "One"
+          label: 'One'
         }, {
           checked: false,
-          label: "Two"
+          label: 'Two'
         }],
         accept: ''
       };
@@ -274,8 +268,9 @@ function (_Component) {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(props) {
       var newState = {
-        fieldType: props.fieldType
-      }; // when changing from field that accepts multiple values to single-value field, reset all pre-selections 
+        fieldType: props.fieldType // when changing from field that accepts multiple values to single-value field, reset all pre-selections
+
+      };
 
       if (this.state.fieldType === 'checkbox' && props.fieldType !== 'checkbox') {
         newState.choices = this.state.choices.map(function (c, i) {
@@ -290,7 +285,7 @@ function (_Component) {
     key: "addToForm",
     value: function addToForm() {
       var html = (0, _html.htmlgenerate)(this.state);
-      html_forms.Editor.replaceSelection(html);
+      window.html_forms.Editor.replaceSelection(html);
     }
   }, {
     key: "addChoice",
@@ -298,7 +293,7 @@ function (_Component) {
       var arr = this.state.choices;
       arr.push({
         checked: false,
-        label: "..."
+        label: '...'
       });
       this.setState({
         choices: arr
@@ -345,63 +340,63 @@ function (_Component) {
     key: "render",
     value: function render(props, state) {
       if (props.rows.length === 0) {
-        return "";
+        return '';
       }
 
       var formFields = [];
 
       for (var i = 0; i < props.rows.length; i++) {
         switch (props.rows[i]) {
-          case "label":
+          case 'label':
             formFields.push((0, _preact.h)(FS.Label, {
               value: state.fieldLabel,
               onChange: (0, _linkstate["default"])(this, 'fieldLabel')
             }));
             break;
 
-          case "placeholder":
+          case 'placeholder':
             formFields.push((0, _preact.h)(FS.Placeholder, {
               value: state.placeholder,
               onChange: (0, _linkstate["default"])(this, 'placeholder')
             }));
             break;
 
-          case "default-value":
+          case 'default-value':
             formFields.push((0, _preact.h)(FS.DefaultValue, {
               value: state.value,
               onChange: (0, _linkstate["default"])(this, 'value')
             }));
             break;
 
-          case "multiple":
+          case 'multiple':
             formFields.push((0, _preact.h)(FS.Multiple, {
               checked: state.multiple,
               onChange: (0, _linkstate["default"])(this, 'multiple')
             }));
             break;
 
-          case "required":
+          case 'required':
             formFields.push((0, _preact.h)(FS.Required, {
               checked: state.required,
               onChange: (0, _linkstate["default"])(this, 'required')
             }));
             break;
 
-          case "wrap":
+          case 'wrap':
             formFields.push((0, _preact.h)(FS.Wrap, {
               checked: state.wrap,
               onChange: (0, _linkstate["default"])(this, 'wrap')
             }));
             break;
 
-          case "add-to-form":
+          case 'add-to-form':
             formFields.push((0, _preact.h)(FS.AddToForm, {
               onSubmit: this.addToForm,
               onCancel: this.handleCancel
             }));
             break;
 
-          case "choices":
+          case 'choices':
             formFields.push((0, _preact.h)(FS.Choices, {
               multiple: state.fieldType === 'checkbox',
               choices: state.choices,
@@ -409,14 +404,14 @@ function (_Component) {
             }));
             break;
 
-          case "button-text":
+          case 'button-text':
             formFields.push((0, _preact.h)(FS.ButtonText, {
               value: state.value,
               onChange: (0, _linkstate["default"])(this, 'value')
             }));
             break;
 
-          case "accept":
+          case 'accept':
             formFields.push((0, _preact.h)(FS.Accept, {
               value: state.accept,
               onChange: (0, _linkstate["default"])(this, 'accept')
@@ -441,11 +436,12 @@ function (_Component) {
   }]);
 
   return FieldConfigurator;
-}(_preact.Component), (_applyDecoratedDescriptor(_class.prototype, "addToForm", [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, "addToForm"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "addChoice", [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, "addChoice"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "deleteChoice", [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, "deleteChoice"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "changeChoiceLabel", [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, "changeChoiceLabel"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "toggleChoiceChecked", [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, "toggleChoiceChecked"), _class.prototype), _applyDecoratedDescriptor(_class, "handleKeyPress", [_decko.bind], Object.getOwnPropertyDescriptor(_class, "handleKeyPress"), _class), _applyDecoratedDescriptor(_class.prototype, "handleCancel", [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, "handleCancel"), _class.prototype)), _class);
+}(_preact.Component);
+
 exports.FieldConfigurator = FieldConfigurator;
 
-},{"../field-builder/html.js":7,"./field-settings.js":5,"decko":19,"linkstate":20,"preact":21}],5:[function(require,module,exports){
-'use strict';
+},{"../field-builder/html.js":7,"./field-settings.js":5,"linkstate":19,"preact":20}],5:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -588,7 +584,7 @@ function Choices(props) {
     return (0, _preact.h)("div", {
       "data-key": k
     }, (0, _preact.h)("input", {
-      type: props.multiple ? "checkbox" : "radio",
+      type: props.multiple ? 'checkbox' : 'radio',
       name: "selected",
       defaultChecked: choice.checked,
       onChange: props.handlers.toggleChecked,
@@ -609,7 +605,7 @@ function Choices(props) {
   return (0, _preact.h)("div", {
     "class": "hf-small-margin"
   }, (0, _preact.h)("label", null, "Choices"), choiceFields, (0, _preact.h)("input", {
-    type: props.multiple ? "checkbox" : "radio",
+    type: props.multiple ? 'checkbox' : 'radio',
     style: "visibility: hidden;"
   }), (0, _preact.h)("a", {
     href: "javascript:void(0);",
@@ -629,7 +625,7 @@ function Accept(props) {
   }, "Use a comma-separated list of accepted file extensions, eg ", (0, _preact.h)("code", null, ".pdf"), ". ", (0, _preact.h)("br", null), "Leave empty to accept any file type."));
 }
 
-},{"preact":21}],6:[function(require,module,exports){
+},{"preact":20}],6:[function(require,module,exports){
 'use strict'; // imports
 
 Object.defineProperty(exports, "__esModule", {
@@ -642,9 +638,7 @@ var _preact = require("preact");
 var _fieldBuilder = require("./components/field-builder.js");
 
 // vars
-var rootElement;
-var Editor;
-var fields; // functions
+var rootElement; // functions
 
 function Field(key, label, configRows) {
   this.key = key;
@@ -659,7 +653,7 @@ function mount() {
 } // bootstrap
 
 
-fields = [new Field("text", "Text", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("email", "Email", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("url", "URL", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("number", "Number", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("date", "Date", ["label", "default-value", "required", "wrap", "add-to-form"]), new Field("textarea", "Textarea", ["label", "placeholder", "default-value", "required", "wrap", "add-to-form"]), new Field("dropdown", "Dropdown", ["label", "choices", "multiple", "required", "wrap", "add-to-form"]), new Field("checkbox", "Checkboxes", ["label", "choices", "wrap", "add-to-form"]), new Field("radio", "Radio buttons", ["label", "choices", "wrap", "add-to-form"]), new Field("submit", "Submit button", ["button-text", "wrap", "add-to-form"])];
+var fields = [new Field('text', 'Text', ['label', 'placeholder', 'default-value', 'required', 'wrap', 'add-to-form']), new Field('email', 'Email', ['label', 'placeholder', 'default-value', 'required', 'wrap', 'add-to-form']), new Field('url', 'URL', ['label', 'placeholder', 'default-value', 'required', 'wrap', 'add-to-form']), new Field('number', 'Number', ['label', 'placeholder', 'default-value', 'required', 'wrap', 'add-to-form']), new Field('date', 'Date', ['label', 'default-value', 'required', 'wrap', 'add-to-form']), new Field('textarea', 'Textarea', ['label', 'placeholder', 'default-value', 'required', 'wrap', 'add-to-form']), new Field('dropdown', 'Dropdown', ['label', 'choices', 'multiple', 'required', 'wrap', 'add-to-form']), new Field('checkbox', 'Checkboxes', ['label', 'choices', 'wrap', 'add-to-form']), new Field('radio', 'Radio buttons', ['label', 'choices', 'wrap', 'add-to-form']), new Field('submit', 'Submit button', ['button-text', 'wrap', 'add-to-form'])];
 var _default = {
   init: function init() {
     mount();
@@ -671,7 +665,7 @@ var _default = {
 };
 exports["default"] = _default;
 
-},{"./components/field-builder.js":3,"preact":21}],7:[function(require,module,exports){
+},{"./components/field-builder.js":3,"preact":20}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -684,13 +678,13 @@ var _preact = require("preact");
 function htmlgenerate(conf) {
   var fieldName = namify(conf.fieldLabel);
   var fieldId = conf.formSlug + '-' + fieldName;
-  var label = conf.fieldLabel.length && conf.fieldType !== 'submit' ? (0, _preact.h)("label", {
+  var label = conf.fieldLabel.length && conf.fieldType !== 'submit' ? (0, _preact.h)('label', {
     "for": fieldId
-  }, conf.fieldLabel) : "";
+  }, conf.fieldLabel) : '';
   var fieldAttr, field;
 
   switch (conf.fieldType) {
-    case "text":
+    case 'text':
     default:
       fieldAttr = {
         type: conf.fieldType,
@@ -700,94 +694,93 @@ function htmlgenerate(conf) {
         required: conf.required,
         id: fieldId
       };
-      field = html("input", fieldAttr);
+      field = html('input', fieldAttr);
       break;
 
-    case "textarea":
+    case 'textarea':
       fieldAttr = {
         name: fieldName,
         placeholder: conf.placeholder,
         required: conf.required,
         id: fieldId
       };
-      field = html("textarea", fieldAttr, conf.value);
+      field = html('textarea', fieldAttr, conf.value);
       break;
 
-    case "dropdown":
+    case 'dropdown':
       fieldAttr = {
         name: fieldName + (conf.multiple ? '[]' : ''),
         required: conf.required,
         multiple: conf.multiple,
         id: fieldId
       };
-      var opts = conf.choices.map(function (choice) {
-        return html("option", {
+      field = html('select', fieldAttr, conf.choices.map(function (choice) {
+        return html('option', {
           selected: choice.checked
         }, choice.label);
-      });
-      field = html("select", fieldAttr, opts);
+      }));
       break;
 
-    case "radio":
+    case 'radio':
       field = conf.choices.map(function (choice) {
-        return html("label", {}, [html("input", {
-          type: "radio",
+        return html('label', {}, [html('input', {
+          type: 'radio',
           name: fieldName,
           value: choice.label,
           selected: choice.checked
-        }), " ", html("span", {}, choice.label)]);
+        }), ' ', html('span', {}, choice.label)]);
       });
       break;
 
-    case "checkbox":
+    case 'checkbox':
       field = conf.choices.map(function (choice) {
-        return html("label", {}, [html("input", {
-          type: "checkbox",
-          name: fieldName + "[]",
+        return html('label', {}, [html('input', {
+          type: 'checkbox',
+          name: fieldName + '[]',
           value: choice.label,
           checked: choice.checked
-        }), " ", html("span", {}, choice.label)]);
+        }), ' ', html('span', {}, choice.label)]);
       });
       break;
 
-    case "file":
+    case 'file':
       fieldAttr = {
-        type: "file",
+        type: 'file',
         name: fieldName,
         required: conf.required,
         id: fieldId
       };
 
-      if (conf['accept']) {
-        fieldAttr['accept'] = conf['accept'];
+      if (conf.accept) {
+        fieldAttr.accept = conf.accept;
       }
 
-      field = html("input", fieldAttr);
+      field = html('input', fieldAttr);
       break;
 
-    case "submit":
+    case 'submit':
       fieldAttr = {
-        type: "submit",
+        type: 'submit',
         value: conf.value
       };
-      field = html("input", fieldAttr);
+      field = html('input', fieldAttr);
       break;
   }
 
-  var str = "";
+  var str = '';
 
   if (conf.wrap) {
-    var children = label !== "" ? ["\n\t", label] : [];
-    children = children.concat(["\n\t", field, "\n"]);
-    var tmpl = (0, _preact.h)("p", {}, children);
+    var children = label !== '' ? ['\n\t', label] : [];
+    children = children.concat(['\n\t', field, '\n']);
+    var tmpl = (0, _preact.h)('p', {}, children);
     str = renderToString(tmpl);
   } else {
     str += renderToString(label);
-    str += "\n";
+    str += '\n';
     str += renderToString(field);
   }
 
-  str += "\n";
+  str += '\n';
   return str;
 }
 
@@ -803,14 +796,14 @@ function html(tag, attr, children) {
 }
 
 function namify(str) {
-  return str.replace(/ /g, '_').replace(/[^\w\[\]_]*/g, "").toUpperCase();
+  return str.replace(/ /g, '_').replace(/[^\w[\]_]*/g, '').toUpperCase();
 }
 
 function filterEmptyObjectValues(obj) {
   var newObj = {};
 
   for (var propName in obj) {
-    if (obj[propName] !== false && obj[propName] !== "") {
+    if (obj[propName] !== false && obj[propName] !== '') {
       newObj[propName] = obj[propName];
     }
   }
@@ -818,7 +811,7 @@ function filterEmptyObjectValues(obj) {
   return newObj;
 }
 
-},{"preact":21}],8:[function(require,module,exports){
+},{"preact":20}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -850,20 +843,20 @@ function init() {
 
 function createAccordion(headingHTML, contentHTML) {
   var wrap = document.createElement('div');
-  wrap.className = "hf-accordion expanded ";
+  wrap.className = 'hf-accordion expanded ';
   var heading = document.createElement('h4');
-  heading.className = "hf-accordion-heading";
+  heading.className = 'hf-accordion-heading';
   heading.innerHTML = headingHTML;
   wrap.appendChild(heading);
   var content = document.createElement('div');
-  content.className = "hf-accordion-content";
+  content.className = 'hf-accordion-content';
   content.innerHTML = contentHTML;
   wrap.appendChild(content);
   var deleteWrap = document.createElement('p');
   deleteWrap.style.textAlign = 'right';
   var deleteLink = document.createElement('a');
   deleteLink.href = 'javascript:void(0);';
-  deleteLink.className = "danger";
+  deleteLink.className = 'danger';
   deleteLink.innerText = 'Delete this action';
   deleteWrap.appendChild(deleteLink);
   content.appendChild(deleteWrap); // bind handlers
@@ -939,7 +932,7 @@ require('codemirror/addon/edit/matchtags');
 require('codemirror/addon/edit/closetag.js');
 
 var editor, element, dom, requiredFieldsInput, emailFieldsInput, previewFrame, previewDom;
-var templateRegex = /\{\{ *(\w+)(?:\.([\w\.]+))? *(?:\|\| *(\w+))? *\}\}/g;
+var templateRegex = /\{\{ *(\w+)(?:\.([\w.]+))? *(?:\|\| *(\w+))? *\}\}/g;
 
 function init() {
   previewFrame = document.getElementById('hf-form-preview');
@@ -953,7 +946,7 @@ function init() {
     matchTags: {
       bothTags: true
     },
-    mode: "htmlmixed",
+    mode: 'htmlmixed',
     htmlMode: true,
     autoCloseTags: true,
     autoRefresh: true,
@@ -1008,11 +1001,15 @@ function updateFieldVariables() {
       wpbody.removeChild(sizeEl); // add input el
 
       var el = document.createElement('input');
-      el.setAttribute('type', 'text');
+      el.type = 'text';
       el.style.maxWidth = width * 1.1 + 14 + 'px';
-      el.setAttribute('value', n);
-      el.setAttribute('readonly', true);
-      el.setAttribute('onfocus', 'this.select()');
+      el.value = n;
+      el.readonly = true;
+
+      el.onfocus = function () {
+        return el.select();
+      };
+
       return el;
     });
     variableElements.forEach(function (vel, i, arr) {
@@ -1061,8 +1058,8 @@ function replaceSelection(str) {
 function debounce(func, wait, immediate) {
   var timeout;
   return function () {
-    var context = this,
-        args = arguments;
+    var context = this;
+    var args = arguments;
 
     var later = function later() {
       timeout = null;
@@ -1126,12 +1123,12 @@ function open(e) {
     tab.classList.toggle('hf-tab-active', tab.getAttribute('data-tab') === tabTarget);
   }
 
-  document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + " ");
+  document.title = document.title.replace(document.title.split(' - ').shift(), this.innerText + ' ');
 
   if (window.history) {
     var newUrl = window.location.href;
-    newUrl = newUrl.replace(/\&tab\=\w+/, "");
-    newUrl += "&tab=" + tabTarget;
+    newUrl = newUrl.replace(/&tab=\w+/, '');
+    newUrl += '&tab=' + tabTarget;
     window.history.replaceState({
       tab: tabTarget
     }, document.title, newUrl);
@@ -13657,14 +13654,10 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 });
 
 },{"../../lib/codemirror":14}],19:[function(require,module,exports){
-(function(global,factory){if(typeof define === 'function' && define.amd){define(['exports'],factory);}else if(typeof exports !== 'undefined'){factory(exports);}else {var mod={exports:{}};factory(mod.exports);global.decko = mod.exports;}})(this,function(exports){'use strict';exports.__esModule = true;var EMPTY={};var HOP=Object.prototype.hasOwnProperty;var fns={memoize:function memoize(fn){var opt=arguments.length <= 1 || arguments[1] === undefined?EMPTY:arguments[1];var cache=opt.cache || {};return function(){for(var _len=arguments.length,a=Array(_len),_key=0;_key < _len;_key++) {a[_key] = arguments[_key];}var k=String(a[0]);if(opt.caseSensitive === false)k = k.toLowerCase();return HOP.call(cache,k)?cache[k]:cache[k] = fn.apply(this,a);};},debounce:function debounce(fn,opts){if(typeof opts === 'function'){var p=fn;fn = opts;opts = p;}var delay=opts && opts.delay || opts || 0,args=undefined,context=undefined,timer=undefined;return function(){for(var _len2=arguments.length,a=Array(_len2),_key2=0;_key2 < _len2;_key2++) {a[_key2] = arguments[_key2];}args = a;context = this;if(!timer)timer = setTimeout(function(){fn.apply(context,args);args = context = timer = null;},delay);};},bind:function bind(target,key,_ref){var fn=_ref.value;return {configurable:true,get:function get(){var value=fn.bind(this);Object.defineProperty(this,key,{value:value,configurable:true,writable:true});return value;}};}};var memoize=multiMethod(fns.memoize),debounce=multiMethod(fns.debounce),bind=multiMethod(function(f,c){return f.bind(c);},function(){return fns.bind;});exports.memoize = memoize;exports.debounce = debounce;exports.bind = bind;exports['default'] = {memoize:memoize,debounce:debounce,bind:bind};function multiMethod(inner,deco){deco = deco || inner.decorate || decorator(inner);var d=deco();return function(){for(var _len3=arguments.length,args=Array(_len3),_key3=0;_key3 < _len3;_key3++) {args[_key3] = arguments[_key3];}var l=args.length;return (l < 2?deco:l > 2?d:inner).apply(undefined,args);};}function decorator(fn){return function(opt){return typeof opt === 'function'?fn(opt):function(target,key,desc){desc.value = fn(desc.value,opt,target,key,desc);};};}});
-
-
-},{}],20:[function(require,module,exports){
 function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]];return void 0===t?n:t}function linkState(t,e,n){var l=e.split("."),r=t.__lsc||(t.__lsc={});return r[e+n]||(r[e+n]=function(e){for(var r=e&&e.target||this,a={},i=a,o="string"==typeof n?dlv(e,n):r.nodeName?r.type.match(/^che|rad/)?r.checked:r.value:e,s=0;s<l.length-1;s++)i=i[l[s]]||(i[l[s]]=!s&&t.state[l[s]]||{});i[l[s]]=o,t.setState(a)})}module.exports=linkState;
 
 
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 !function() {
     'use strict';
     function h(nodeName, attributes) {
@@ -14079,7 +14072,7 @@ function dlv(t,e,n,l){for(l=0,e=e.split?e.split("."):e;t&&l<e.length;)t=t[e[l++]
     if ('undefined' != typeof module) module.exports = preact; else self.preact = preact;
 }();
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 function tlite(getTooltipOpts) {
   document.addEventListener('mouseover', function (e) {
     var el = e.target;

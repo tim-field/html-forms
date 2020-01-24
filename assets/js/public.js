@@ -12,9 +12,9 @@ function getFieldValues(form, fieldName, evt) {
 
   for (var i = 0; i < inputs.length; i++) {
     var input = inputs[i];
-    var type = input.getAttribute("type").toLowerCase();
+    var type = input.type.toLowerCase();
 
-    if ((type === "radio" || type === "checkbox") && !input.checked) {
+    if ((type === 'radio' || type === 'checkbox') && !input.checked) {
       continue;
     } // ignore buttons which are not clicked (in case there's more than one button with same name)
 
@@ -29,12 +29,12 @@ function getFieldValues(form, fieldName, evt) {
 
     values.push(input.value);
   } // default to an empty string
-  // can be used to show or hide an element when a field is empty or has not been set 
+  // can be used to show or hide an element when a field is empty or has not been set
   // Usage: data-show-if="FIELDNAME:"
 
 
   if (values.length === 0) {
-    values.push("");
+    values.push('');
   }
 
   return values;
@@ -58,7 +58,7 @@ function toggleElement(el, evt) {
   var show = !!el.getAttribute('data-show-if');
   var conditions = show ? el.getAttribute('data-show-if').split(':') : el.getAttribute('data-hide-if').split(':');
   var fieldName = conditions[0];
-  var expectedValues = (conditions.length > 1 ? conditions[1] : "*").split('|');
+  var expectedValues = (conditions.length > 1 ? conditions[1] : '*').split('|');
   var form = findForm(el);
   var values = getFieldValues(form, fieldName, evt); // determine whether condition is met
 
@@ -90,7 +90,7 @@ function toggleElement(el, evt) {
     }
 
     if ((!conditionMet || !show) && el.required) {
-      el.setAttribute('data-was-required', "true");
+      el.setAttribute('data-was-required', 'true');
       el.required = false;
     }
   });
@@ -116,7 +116,7 @@ function handleInputEvent(evt) {
 }
 
 var _default = {
-  'init': function init() {
+  init: function init() {
     document.addEventListener('click', handleInputEvent, true);
     document.addEventListener('keyup', handleInputEvent, true);
     document.addEventListener('change', handleInputEvent, true);
@@ -177,7 +177,7 @@ Loader.prototype.tick = function () {
   // count chars, start over at 5
   var text = getButtonText(this.button);
   var loadingChar = this.character;
-  setButtonText(this.button, text.length >= 5 ? loadingChar : text + " " + loadingChar);
+  setButtonText(this.button, text.length >= 5 ? loadingChar : text + ' ' + loadingChar);
 };
 
 Loader.prototype.stop = function () {
@@ -225,7 +225,7 @@ function parseUrlParams(q) {
           name = _step$value[0],
           value = _step$value[1];
 
-      if (name.substr(name.length - 2) === "[]") {
+      if (name.substr(name.length - 2) === '[]') {
         var arrName = name.substr(0, name.length - 2);
         obj[arrName] = obj[arrName] || [];
         obj[arrName].push(value);
@@ -282,7 +282,7 @@ exports["default"] = _default;
 
 /* window.CustomEvent polyfill for IE */
 (function () {
-  if (typeof window.CustomEvent === "function") return false;
+  if (typeof window.CustomEvent === 'function') return false;
 
   function CustomEvent(event, params) {
     params = params || {
@@ -332,7 +332,7 @@ function addFormMessage(formEl, message) {
   txtElement.className = 'hf-message hf-message-' + message.type;
   txtElement.innerHTML = message.text; // uses innerHTML because we allow some HTML strings in the message settings
 
-  txtElement.setAttribute('role', 'alert');
+  txtElement.role = 'alert';
   var wrapperElement = formEl.querySelector('.hf-messages') || formEl;
   wrapperElement.appendChild(txtElement);
 }
@@ -359,14 +359,14 @@ function submitForm(formEl) {
   var request = new XMLHttpRequest();
   request.onreadystatechange = createRequestHandler(formEl);
   request.open('POST', vars.ajax_url, true);
-  request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
   request.send(formData);
   request = null;
 }
 
 function emitEvent(eventName, element) {
   // browser event API: formElement.on('hf-success', ..)
-  element.dispatchEvent(new CustomEvent("hf-" + eventName)); // custom events API: html_forms.on('success', ..)
+  element.dispatchEvent(new CustomEvent('hf-' + eventName)); // custom events API: html_forms.on('success', ..)
 
   events.emit(eventName, [element]);
 }
@@ -431,8 +431,8 @@ _conditionality["default"].init();
 _formPrefiller["default"].init();
 
 window.html_forms = {
-  'on': events.on.bind(events),
-  'submit': submitForm
+  on: events.on.bind(events),
+  submit: submitForm
 };
 
 },{"./conditionality.js":1,"./form-loading-indicator.js":2,"./form-prefiller.js":3,"./polyfills/custom-event.js":4,"wolfy87-eventemitter":7}],6:[function(require,module,exports){
