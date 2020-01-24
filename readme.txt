@@ -1,7 +1,7 @@
 === HTML Forms ===
 Contributors: Ibericode, DvanKooten, hchouhan, lapzor
 Donate link: https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=donate-link
-Tags: form, contact form, email, contact, contact form 7
+Tags: form, forms, contact form, html form
 Requires at least: 4.6
 Tested up to: 5.3
 Stable tag: 1.3.14
@@ -13,35 +13,33 @@ Not just another contact form plugin.
 
 == Description ==
 
-With [HTML Forms](https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description), you can easily add multi-purpose forms to your WordPress site.
+With [HTML Forms](https://htmlforms.io/), you can easily add multi-purpose forms to your WordPress site.
 
-The idea behind HTML Forms is different than most other form builder plugins. **You manage the form HTML. The plugin manages the PHP and JavaScript**.
+The idea behind HTML Forms is different than most other form builder plugins: **You manage the form HTML. The plugin manages the PHP and a tiny bit of JavaScript**.
 
-That's right. No intuitive drag & drop interface but full control over the form HTML. No limitations.
-
-We believe that dynamic form builders can be great, but they also severely limit your options. Also, they're slow.
+That's right. No "intuitive" drag & drop interface. We believe that dynamic form builders can be great, but they also severely limit your options. Also, they're slow and overly complicated from a technical point of view.
 
 HTML Forms aims to be simpler, faster and smarter.
 
-You define your form fields in HTML and the plugin takes care of submitting the form, saving the form submission and running a configurable set of form actions.
+You define your form fields in HTML and the plugin takes care of submitting the form, saving the data and running a configurable set of form actions.
 
 > ### 1. Define your form fields
-> You can use anything that resembles valid HTML. Ensure all `input` elements in your form have a `name` attribute to save data entered in that field.
+> You can use anything that is valid HTML. Just ensure all `input` elements in your form have a `name` attribute to save the data entered in that field.
 > ### 2. Configure your form actions
 > By default, form submissions are automatically saved for you. You can configure several other actions to run when a form is submitted, like sending an email notification or subscribing to Mailchimp.
 > ### 3. Show the form somewhere on your site
-> You can show your form by using the `[hf_form]` shortcode in your WordPress posts, pages or widget areas.
+> Show your form by using the `[hf_form]` shortcode in your WordPress posts, pages or widget areas.
 
 ## HTML Forms features
 
-- Full control over the form HTML. If you want, we'll help you in generating the field HTML though.
+- Full control over the HTML for the form fields. If you want, we'll help you in generating the field HTML though.
 - Each form submission is automatically saved in your database and can be viewed in a simple table format.
 - Configure an unlimited amount of actions to run when a form is successfully submitted. For example, sending out email notifications.
 - Access form field values by referencing the field name, eg `[NAME]` or `[EMAIL]`.
 - Hide form or redirect to URL after a successful submission.
 - Configurable & translatable form messages.
 - Field validation.
-- Developer friendly. HTML Forms comes with a myriad of [JavaScript events](https://kb.htmlforms.io/javascript-events/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description) and WordPress hooks that allow you to modify or extend the plugin's default behavior.
+- Developer friendly. HTML Forms comes with a myriad of [JavaScript events](https://kb.htmlforms.io/javascript-events/) and WordPress hooks that allow you to modify or extend the plugin's default behavior.
 
 ## Who is this for?
 
@@ -53,18 +51,21 @@ HTML Forms is for everyone that wants a flexible & high performing form solution
 
 With HTML Forms you can create any type of form. Contact forms, registration forms, price quote forms, you name it. It's somewhat similar to Contact Form 7, but without yet another template language for you to learn.
 
-For more information, please refer to [htmlforms.io](https://htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description).
+For more information, please refer to [htmlforms.io](https://htmlforms.io/).
 
 #### Support
 
 Use the [WordPress.org plugin forums](https://wordpress.org/support/plugin/html-forms) for community support where we try to help all of our users. If you found a bug, please create an issue on Github where we can act upon them more efficiently.
 
-The [HTML Forms knowledge base](https://kb.htmlforms.io/#utm_source=wp-plugin-repo&utm_medium=html-forms&utm_campaign=plugin-description) covers a wide range of frequently asked questions and is updated on a regular basis.
+The [HTML Forms knowledge base](https://kb.htmlforms.io/) covers a wide range of frequently asked questions and is updated on a regular basis.
 
-#### Development
+#### Contributing
 
-HTML Forms is being developed on GitHub. If you want to collaborate, please look at [ibericode/html-forms](https://github.com/ibericode/html-forms).
+You can contribute to HTML Forms in many different ways. For example:
 
+- Write about the plugin on your blog or share it on social media.
+- [Translate the plugin into your language](https://translate.wordpress.org/projects/wp-plugins/html-forms/stable/) using your WordPress.org account.
+- Leave feedback on issues in GitHub: [ibericode/html-forms](https://github.com/ibericode/html-forms)
 
 == Installation ==
 
@@ -95,7 +96,7 @@ Yes! You can configure this by opening up the "Actions" tab when editing your fo
 
 ### Does the plugin include anti-spam measures?
 
-The plugin comes with built-in spam protection that should stop all automated attacks, unless specifically targeted at your site. When the built-in protection doesn't cut it, [WPBruiser](https://wordpress.org/plugins/goodbye-captcha/) surely will.
+The plugin comes with built-in spam protection that should stop all automated attacks. When the built-in protection doesn't cut it, [WPBruiser](https://wordpress.org/plugins/goodbye-captcha/) surely will.
 
 
 == Screenshots ==
@@ -116,7 +117,7 @@ The plugin comes with built-in spam protection that should stop all automated at
 
 **Improvements**
 
-- Stop using `supress_filters` argument when retrieving forms, for a possible performance improvement.
+- Stop using `suppress_filters` argument when retrieving forms, for a possible performance improvement.
 - Prevent extra SQL query for options when global settings have not been saved yet.
 
 
