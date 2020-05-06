@@ -94,8 +94,8 @@ function hf_get_form( $form_id_or_slug ) {
 	$form->title    = $post->post_title;
 	$form->slug     = $post->post_name;
 	$form->markup   = $post->post_content;
-	$form->settings = $settings;
-	$form->messages = $messages;
+	$form->settings = apply_filters( 'hf_form_settings', $settings, $form->slug );
+	$form->messages = apply_filters( 'hf_form_messages', $messages, $form->slug );
 	return $form;
 }
 
